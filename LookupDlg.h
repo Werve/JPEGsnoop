@@ -29,42 +29,45 @@
 
 class CLookupDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CLookupDlg)
+    DECLARE_DYNAMIC(CLookupDlg)
 
 public:
-	CLookupDlg(CWnd* pParent = NULL);   // standard constructor
-	CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
-	virtual ~CLookupDlg();
+    CLookupDlg(CWnd* pParent = NULL); // standard constructor
+    CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
+    virtual ~CLookupDlg();
 
-// Dialog Data
-	enum { IDD = IDD_LOOKUP };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_LOOKUP
+    };
 
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void	OnBnClickedBtnCalc();
+    afx_msg void OnBnClickedBtnCalc();
 
 public:
-	// Callback function for LookupFilePosPix()
-	void SetCbLookup(void* pClassCbLookup,
-					void (*pCbLookup)(void* pClassCbBuf, unsigned nX,unsigned nY,unsigned &nByte,unsigned &nBit));
+    // Callback function for LookupFilePosPix()
+    void SetCbLookup(void* pClassCbLookup,
+                     void (*pCbLookup)(void* pClassCbBuf, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit));
 private:
-	// References to callback function for LookupFilePosPix()
-	void*			m_pClassCbLookup;
-	void			(*m_pCbLookup)(void* pClassCbLookup,unsigned nX,unsigned nY,unsigned &nByte,unsigned &nBit);
+    // References to callback function for LookupFilePosPix()
+    void* m_pClassCbLookup;
+    void (*m_pCbLookup)(void* pClassCbLookup, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit);
 
 private:
-	UINT			m_nPixX;
-	UINT			m_nPixY;
-	CString			m_strOffset;
-	UINT			m_nTestVal;
+    UINT m_nPixX;
+    UINT m_nPixY;
+    CString m_strOffset;
+    UINT m_nTestVal;
 
-	UINT			m_nSizeX;
-	UINT			m_nSizeY;
+    UINT m_nSizeX;
+    UINT m_nSizeY;
 
-	CString			m_strRngX;
-	CString			m_strRngY;
+    CString m_strRngX;
+    CString m_strRngY;
 };

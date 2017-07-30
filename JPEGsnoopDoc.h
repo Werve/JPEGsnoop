@@ -41,135 +41,131 @@
 class CJPEGsnoopDoc : public CRichEditDoc
 {
 protected: // create from serialization only
-	CJPEGsnoopDoc();
-	DECLARE_DYNCREATE(CJPEGsnoopDoc)
+    CJPEGsnoopDoc();
+    DECLARE_DYNCREATE(CJPEGsnoopDoc)
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
-	public:
-	virtual BOOL	OnNewDocument();
-	virtual void	Serialize(CArchive& ar);
-	virtual CRichEditCntrItem* CreateClientItem(REOBJECT* preo) const;
-
-// Implementation
+    // Overrides
 public:
-	virtual			~CJPEGsnoopDoc();
+    virtual BOOL OnNewDocument();
+    virtual void Serialize(CArchive& ar);
+    virtual CRichEditCntrItem* CreateClientItem(REOBJECT* preo) const;
+
+    // Implementation
+public:
+    virtual ~CJPEGsnoopDoc();
 #ifdef _DEBUG
-	virtual void	AssertValid() const;
-	virtual void	Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	void			SetupView(CRichEditView* pView);
+    void SetupView(CRichEditView* pView);
 
-	int				AppendToLog(CString strTxt, COLORREF sColor);
-	int				InsertQuickLog();
+    int AppendToLog(CString strTxt, COLORREF sColor);
+    int InsertQuickLog();
 
-	CStatusBar*		GetStatusBar();
+    CStatusBar* GetStatusBar();
 
-	void			DoBatchProcess(CString strBatchDir,bool bRecSubdir,bool bExtractAll);
+    void DoBatchProcess(CString strBatchDir, bool bRecSubdir, bool bExtractAll);
 
-	BOOL			ReadLine(CString& strLine, int nLength, LONG lOffset = -1L);
+    BOOL ReadLine(CString& strLine, int nLength, LONG lOffset = -1L);
 
-	void			Reset();
-	BOOL			Reprocess();
-
-
+    void Reset();
+    BOOL Reprocess();
 
 
 protected:
 
-// Generated message map functions
+    // Generated message map functions
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 
 private:
 
-	CSnoopConfig*	m_pAppConfig;		// Pointer to application config
+    CSnoopConfig* m_pAppConfig; // Pointer to application config
 
-	// Input JPEG file
-	CFile*			m_pFile;
-	ULONGLONG		m_lFileSize;
+    // Input JPEG file
+    CFile* m_pFile;
+    ULONGLONG m_lFileSize;
 
-	// The following is a mirror of m_strPathName, but only set during Open
-	// This is used only during OnSaveDocument() to ensure that we are
-	// not overwriting our input file.
-	CString			m_strPathNameOpened;
-	
-	CRichEditView*	m_pView;				// Preserved reference to View
+    // The following is a mirror of m_strPathName, but only set during Open
+    // This is used only during OnSaveDocument() to ensure that we are
+    // not overwriting our input file.
+    CString m_strPathNameOpened;
 
-public:
-	// Allocate the processing core
-	// - Public access by CJPEGsnoopViewImg
-	CJPEGsnoopCore* m_pCore;
+    CRichEditView* m_pView; // Preserved reference to View
 
 public:
-
-	// Public accessors from CJPEGsnoopApp
-	void			J_ImgSrcChanged();
-
-	// Public accessors from CJPEGsnoopViewImg
-	void			I_ViewOnDraw(CDC* pDC,CRect rectClient,CPoint ptScrolledPos,CFont* pFont, CSize &szNewScrollSize);
-	void			I_GetPreviewPos(unsigned &nX,unsigned &nY);
-	void			I_GetPreviewSize(unsigned &nX,unsigned &nY);
-	float			I_GetPreviewZoom();
-
-
-	// Callback functions
-	static BYTE		CbWrap_B_Buf(void* pWrapClass,
-						unsigned long nNum,bool bBool);
-	static void		CbWrap_I_LookupFilePosPix(void* pWrapClass,
-						unsigned int nX, unsigned int nY, unsigned int &nByte, unsigned int &nBit);
+    // Allocate the processing core
+    // - Public access by CJPEGsnoopViewImg
+    CJPEGsnoopCore* m_pCore;
 
 public:
-	void			DoGuiExtractEmbeddedJPEG();
+
+    // Public accessors from CJPEGsnoopApp
+    void J_ImgSrcChanged();
+
+    // Public accessors from CJPEGsnoopViewImg
+    void I_ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos, CFont* pFont, CSize& szNewScrollSize);
+    void I_GetPreviewPos(unsigned& nX, unsigned& nY);
+    void I_GetPreviewSize(unsigned& nX, unsigned& nY);
+    float I_GetPreviewZoom();
+
+
+    // Callback functions
+    static BYTE CbWrap_B_Buf(void* pWrapClass,
+                             unsigned long nNum, bool bBool);
+    static void CbWrap_I_LookupFilePosPix(void* pWrapClass,
+                                          unsigned int nX, unsigned int nY, unsigned int& nByte, unsigned int& nBit);
+
+public:
+    void DoGuiExtractEmbeddedJPEG();
 private:
-	virtual void	DeleteContents();
-	void			RedrawLog();
+    virtual void DeleteContents();
+    void RedrawLog();
 
 public:
-	// OnOpenDocument() is public for View:OnDropFiles()
-	virtual BOOL	OnOpenDocument(LPCTSTR lpszPathName);
+    // OnOpenDocument() is public for View:OnDropFiles()
+    virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 private:
-	virtual BOOL	OnSaveDocument(LPCTSTR lpszPathName);
-	afx_msg void	OnFileOffset();
-	afx_msg void	OnToolsDecode();
-	afx_msg void	OnToolsAddcameratodb();
-	afx_msg void	OnUpdateToolsAddcameratodb(CCmdUI *pCmdUI);
-	afx_msg void	OnToolsSearchforward();
-	afx_msg void	OnToolsSearchreverse();
-	afx_msg void	OnUpdateToolsSearchforward(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateToolsSearchreverse(CCmdUI *pCmdUI);
-	afx_msg void	OnFileReprocess();
-	afx_msg void	OnFileOpenimage();
-	afx_msg void	OnFileSaveAs();
-	afx_msg void	OnPreviewRng(UINT nID);
-	afx_msg void	OnUpdatePreviewRng(CCmdUI *pCmdUI);
-	afx_msg void	OnZoomRng(UINT nID);
-	afx_msg void	OnUpdateZoomRng(CCmdUI * pCmdUI);
-	afx_msg void	OnToolsSearchexecutablefordqt();
-	afx_msg void	OnUpdateFileReprocess(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateFileSaveAs(CCmdUI *pCmdUI);
-	afx_msg void	OnToolsExtractembeddedjpeg();
-	afx_msg void	OnUpdateToolsExtractembeddedjpeg(CCmdUI *pCmdUI);
-	afx_msg void	OnToolsFileoverlay();
-	afx_msg void	OnUpdateToolsFileoverlay(CCmdUI *pCmdUI);
-	afx_msg void	OnToolsLookupmcuoffset();
-	afx_msg void	OnUpdateToolsLookupmcuoffset(CCmdUI *pCmdUI);
-	afx_msg void	OnOverlaysMcugrid();
-	afx_msg void	OnUpdateOverlaysMcugrid(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateIndicatorYcc(CCmdUI* pCmdUI);
-	afx_msg void	OnUpdateIndicatorMcu(CCmdUI* pCmdUI);
-	afx_msg void	OnUpdateIndicatorFilePos(CCmdUI* pCmdUI);
-	afx_msg void	OnScansegmentDetaileddecode();
-	afx_msg void	OnUpdateScansegmentDetaileddecode(CCmdUI *pCmdUI);
-	afx_msg void	OnToolsExporttiff();
-	afx_msg void	OnUpdateToolsExporttiff(CCmdUI *pCmdUI);
+    virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+    afx_msg void OnFileOffset();
+    afx_msg void OnToolsDecode();
+    afx_msg void OnToolsAddcameratodb();
+    afx_msg void OnUpdateToolsAddcameratodb(CCmdUI* pCmdUI);
+    afx_msg void OnToolsSearchforward();
+    afx_msg void OnToolsSearchreverse();
+    afx_msg void OnUpdateToolsSearchforward(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateToolsSearchreverse(CCmdUI* pCmdUI);
+    afx_msg void OnFileReprocess();
+    afx_msg void OnFileOpenimage();
+    afx_msg void OnFileSaveAs();
+    afx_msg void OnPreviewRng(UINT nID);
+    afx_msg void OnUpdatePreviewRng(CCmdUI* pCmdUI);
+    afx_msg void OnZoomRng(UINT nID);
+    afx_msg void OnUpdateZoomRng(CCmdUI* pCmdUI);
+    afx_msg void OnToolsSearchexecutablefordqt();
+    afx_msg void OnUpdateFileReprocess(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateFileSaveAs(CCmdUI* pCmdUI);
+    afx_msg void OnToolsExtractembeddedjpeg();
+    afx_msg void OnUpdateToolsExtractembeddedjpeg(CCmdUI* pCmdUI);
+    afx_msg void OnToolsFileoverlay();
+    afx_msg void OnUpdateToolsFileoverlay(CCmdUI* pCmdUI);
+    afx_msg void OnToolsLookupmcuoffset();
+    afx_msg void OnUpdateToolsLookupmcuoffset(CCmdUI* pCmdUI);
+    afx_msg void OnOverlaysMcugrid();
+    afx_msg void OnUpdateOverlaysMcugrid(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateIndicatorYcc(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateIndicatorMcu(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateIndicatorFilePos(CCmdUI* pCmdUI);
+    afx_msg void OnScansegmentDetaileddecode();
+    afx_msg void OnUpdateScansegmentDetaileddecode(CCmdUI* pCmdUI);
+    afx_msg void OnToolsExporttiff();
+    afx_msg void OnUpdateToolsExporttiff(CCmdUI* pCmdUI);
 };
-
-

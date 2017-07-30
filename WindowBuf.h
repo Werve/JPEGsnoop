@@ -46,83 +46,82 @@
 
 #define	MAX_BUF_READ_STR	255	// Max number of bytes to fetch in BufReadStr()
 
-typedef struct {
-	bool			bEn;					// Enabled? -- not used currently
-	unsigned		nStart;					// File position
-	unsigned		nLen;					// MCU Length
-	BYTE			anData[MAX_OVERLAY];	// Byte data
+typedef struct
+{
+    bool bEn; // Enabled? -- not used currently
+    unsigned nStart; // File position
+    unsigned nLen; // MCU Length
+    BYTE anData[MAX_OVERLAY]; // Byte data
 
-	// For reporting purposes:
-	unsigned		nMcuX;			// Starting MCU X
-	unsigned		nMcuY;			// Starting MCU Y
-	unsigned		nMcuLen;		// Number of MCUs deleted
-	unsigned		nMcuLenIns;		// Number of MCUs inserted
-	int				nDcAdjustY;
-	int				nDcAdjustCb;
-	int				nDcAdjustCr;
-
+    // For reporting purposes:
+    unsigned nMcuX; // Starting MCU X
+    unsigned nMcuY; // Starting MCU Y
+    unsigned nMcuLen; // Number of MCUs deleted
+    unsigned nMcuLenIns; // Number of MCUs inserted
+    int nDcAdjustY;
+    int nDcAdjustCb;
+    int nDcAdjustCr;
 } sOverlay;
 
 class CwindowBuf
 {
 public:
-	CwindowBuf();
-	~CwindowBuf();
+    CwindowBuf();
+    ~CwindowBuf();
 
 public:
-	void			SetStatusBar(CStatusBar* pStatBar);
+    void SetStatusBar(CStatusBar* pStatBar);
 
-	void			BufLoadWindow(unsigned long nPosition);
-	void			BufFileSet(CFile* inFile);
-	void			BufFileUnset();
-	BYTE			Buf(unsigned long nOffset,bool bClean=false);
-	unsigned		BufX(unsigned long nOffset,unsigned nSz,bool bByteSwap=false);
+    void BufLoadWindow(unsigned long nPosition);
+    void BufFileSet(CFile* inFile);
+    void BufFileUnset();
+    BYTE Buf(unsigned long nOffset, bool bClean = false);
+    unsigned BufX(unsigned long nOffset, unsigned nSz, bool bByteSwap = false);
 
-	unsigned char	BufRdAdv1(unsigned long &nOffset,bool bByteSwap);
-	unsigned short	BufRdAdv2(unsigned long &nOffset,bool bByteSwap);
-	unsigned        BufRdAdv4(unsigned long &nOffset,bool bByteSwap);
+    unsigned char BufRdAdv1(unsigned long& nOffset, bool bByteSwap);
+    unsigned short BufRdAdv2(unsigned long& nOffset, bool bByteSwap);
+    unsigned BufRdAdv4(unsigned long& nOffset, bool bByteSwap);
 
 
-	CString			BufReadStr(unsigned long nPosition);
-	CString			BufReadUniStr(unsigned long nPosition);
-	CString			BufReadUniStr2(unsigned long nPos, unsigned nBufLen);
-	CString			BufReadStrn(unsigned long nPosition,unsigned nLen);
+    CString BufReadStr(unsigned long nPosition);
+    CString BufReadUniStr(unsigned long nPosition);
+    CString BufReadUniStr2(unsigned long nPos, unsigned nBufLen);
+    CString BufReadStrn(unsigned long nPosition, unsigned nLen);
 
-	bool			BufSearch(unsigned long nStartPos, unsigned nSearchVal, unsigned nSearchLen,
-						   bool bDirFwd, unsigned long &nFoundPos);
-	bool			BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned nSearchLen,
-						   bool bDirFwd, unsigned long &nFoundPos);
+    bool BufSearch(unsigned long nStartPos, unsigned nSearchVal, unsigned nSearchLen,
+                   bool bDirFwd, unsigned long& nFoundPos);
+    bool BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned nSearchLen,
+                    bool bDirFwd, unsigned long& nFoundPos);
 
-	bool			OverlayAlloc(unsigned nInd);
-	bool			OverlayInstall(unsigned nOvrInd, BYTE* pOverlay,unsigned nLen,unsigned nBegin,
-							unsigned nMcuX,unsigned nMcuY,unsigned nMcuLen,unsigned nMcuLenIns,
-							int nAdjY,int nAdjCb,int nAdjCr);
-	void			OverlayRemove();
-	void			OverlayRemoveAll();
-	bool			OverlayGet(unsigned nOvrInd, BYTE* &pOverlay,unsigned &nLen,unsigned &nBegin);
-	unsigned		OverlayGetNum();
-	void			ReportOverlays(CDocLog* pLog);
-	
-	bool			GetBufOk();
-	unsigned long	GetPosEof();
+    bool OverlayAlloc(unsigned nInd);
+    bool OverlayInstall(unsigned nOvrInd, BYTE* pOverlay, unsigned nLen, unsigned nBegin,
+                        unsigned nMcuX, unsigned nMcuY, unsigned nMcuLen, unsigned nMcuLenIns,
+                        int nAdjY, int nAdjCb, int nAdjCr);
+    void OverlayRemove();
+    void OverlayRemoveAll();
+    bool OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, unsigned& nBegin);
+    unsigned OverlayGetNum();
+    void ReportOverlays(CDocLog* pLog);
 
-private:
-	void			Reset();
-
+    bool GetBufOk();
+    unsigned long GetPosEof();
 
 private:
-	BYTE*			m_pBuffer;
-	CFile*			m_pBufFile;
-	unsigned long	m_nBufWinSize;
-	unsigned long	m_nBufWinStart;
+    void Reset();
 
-	unsigned		m_nOverlayMax;	// Number of overlays allocated (limited by mem)
-	unsigned		m_nOverlayNum;
-	sOverlay*		m_psOverlay[NUM_OVERLAYS];
 
-	CStatusBar*		m_pStatBar;
+private:
+    BYTE* m_pBuffer;
+    CFile* m_pBufFile;
+    unsigned long m_nBufWinSize;
+    unsigned long m_nBufWinStart;
 
-	bool			m_bBufOK;
-	unsigned long	m_nPosEof;	// Byte count at EOF
+    unsigned m_nOverlayMax; // Number of overlays allocated (limited by mem)
+    unsigned m_nOverlayNum;
+    sOverlay* m_psOverlay[NUM_OVERLAYS];
 
+    CStatusBar* m_pStatBar;
+
+    bool m_bBufOK;
+    unsigned long m_nPosEof; // Byte count at EOF
 };

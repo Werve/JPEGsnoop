@@ -75,104 +75,114 @@
 // You can set CFolderDialog::bTRACE=TRUE to turn on debugging TRACE
 // diagnostics to help you understand what's going on.
 //
-class CFolderDialog : public CWnd {
+class CFolderDialog : public CWnd
+{
 public:
-	static BOOL bTRACE;		// controls tracing
+    static BOOL bTRACE; // controls tracing
 
-	CFolderDialog(CWnd* pWnd);
-	~CFolderDialog();
+    CFolderDialog(CWnd* pWnd);
+    ~CFolderDialog();
 
-	LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
-		LPCITEMIDLIST pidRoot=NULL, BOOL bFilter=FALSE);
+    LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
+                                  LPCITEMIDLIST pidRoot = NULL, BOOL bFilter = FALSE);
 
-	CString GetDisplayName() { return m_sDisplayName; }
+    CString GetDisplayName() { return m_sDisplayName; }
 
-	// helpers
-	static CString GetPathName(LPCITEMIDLIST pidl);
-	static CString GetDisplayNameOf(IShellFolder* psf, LPCITEMIDLIST pidl, DWORD uFlags);
-	static void FreePIDL(LPCITEMIDLIST pidl);
+    // helpers
+    static CString GetPathName(LPCITEMIDLIST pidl);
+    static CString GetDisplayNameOf(IShellFolder* psf, LPCITEMIDLIST pidl, DWORD uFlags);
+    static void FreePIDL(LPCITEMIDLIST pidl);
 
-	void SetStartPath(CString strPath); //CAL!
+    void SetStartPath(CString strPath); //CAL!
 private:
-	CString		m_strStartPath;	//CAL!
+    CString m_strStartPath; //CAL!
 
 protected:
-	BROWSEINFO m_brinfo;						 // internal structure for SHBrowseForFolder
-	CString m_sDisplayName;					 // display name of folder chosen
-	BOOL m_bFilter;							 // do custom filtering?
-	CComQIPtr<IShellFolder> m_shfRoot;	 // handy to have root folder
+    BROWSEINFO m_brinfo; // internal structure for SHBrowseForFolder
+    CString m_sDisplayName; // display name of folder chosen
+    BOOL m_bFilter; // do custom filtering?
+    CComQIPtr<IShellFolder> m_shfRoot; // handy to have root folder
 
-	static int CALLBACK CallbackProc(HWND hwnd, UINT msg, LPARAM lp, LPARAM lpData);
+    static int CALLBACK CallbackProc(HWND hwnd, UINT msg, LPARAM lp, LPARAM lpData);
 
-	virtual int OnMessage(UINT msg, LPARAM lp);	// internal catch-all
+    virtual int OnMessage(UINT msg, LPARAM lp); // internal catch-all
 
-	// Virtual message handlers: override these instead of using callback
-	virtual void OnInitialized();
-	virtual void OnIUnknown(IUnknown* punk);
-	virtual void OnSelChanged(LPCITEMIDLIST pidl);
-	virtual BOOL OnValidateFailed(LPCTSTR lpsz);
+    // Virtual message handlers: override these instead of using callback
+    virtual void OnInitialized();
+    virtual void OnIUnknown(IUnknown* punk);
+    virtual void OnSelChanged(LPCITEMIDLIST pidl);
+    virtual BOOL OnValidateFailed(LPCTSTR lpsz);
 
-	// Wrapper functions for folder dialog messages--call these only from
-	// virtual handler functions above!
+    // Wrapper functions for folder dialog messages--call these only from
+    // virtual handler functions above!
 
-	// Enable or disable the OK button
-	void EnableOK(BOOL bEnable) {
-		SendMessage(BFFM_ENABLEOK,0,bEnable);
-	}
+    // Enable or disable the OK button
+    void EnableOK(BOOL bEnable)
+    {
+        SendMessage(BFFM_ENABLEOK, 0, bEnable);
+    }
 
-	// The Microsoft documentation is wrong for this: text in LPARAM, not WPARAM!
-	void SetOKText(LPCWSTR lpText) {
-		SendMessage(BFFM_SETOKTEXT,0,(LPARAM)lpText);
-	}
+    // The Microsoft documentation is wrong for this: text in LPARAM, not WPARAM!
+    void SetOKText(LPCWSTR lpText)
+    {
+        SendMessage(BFFM_SETOKTEXT, 0, (LPARAM)lpText);
+    }
 
-	// Set selected item from string or PIDL.
-	// The documentation says lpText must be Unicode, but it can be LPCTSTR.
-	void SetSelection(LPCTSTR lpText) {
-		SendMessage(BFFM_SETSELECTION,TRUE,(LPARAM)lpText);
-	}
-	void SetSelection(LPCITEMIDLIST pidl) {
-		SendMessage(BFFM_SETSELECTION,FALSE,(LPARAM)pidl);
-	}
+    // Set selected item from string or PIDL.
+    // The documentation says lpText must be Unicode, but it can be LPCTSTR.
+    void SetSelection(LPCTSTR lpText)
+    {
+        SendMessage(BFFM_SETSELECTION,TRUE, (LPARAM)lpText);
+    }
 
-	// Expand item from string or PIDL
-	void SetExpanded(LPCWSTR lpText) {
-		SendMessage(BFFM_SETEXPANDED,TRUE,(LPARAM)lpText);
-	}
-	void SetExpanded(LPCITEMIDLIST pidl) {
-		SendMessage(BFFM_SETEXPANDED,FALSE,(LPARAM)pidl);
-	}
+    void SetSelection(LPCITEMIDLIST pidl)
+    {
+        SendMessage(BFFM_SETSELECTION,FALSE, (LPARAM)pidl);
+    }
 
-	// Set status window text
-	void SetStatusText(LPCTSTR pText) {
-		SendMessage(BFFM_SETSTATUSTEXT,0,(LPARAM)pText);
-	}
+    // Expand item from string or PIDL
+    void SetExpanded(LPCWSTR lpText)
+    {
+        SendMessage(BFFM_SETEXPANDED,TRUE, (LPARAM)lpText);
+    }
 
-	// Override for custom filtering. You must call BrowseForFolder with bFilter=TRUE.
-	virtual HRESULT OnGetEnumFlags(IShellFolder* psf,
-		LPCITEMIDLIST pidlFolder,
-		DWORD *pgrfFlags);
-	virtual HRESULT OnShouldShow(IShellFolder* psf,
-		LPCITEMIDLIST pidlFolder,
-		LPCITEMIDLIST pidlItem);
+    void SetExpanded(LPCITEMIDLIST pidl)
+    {
+        SendMessage(BFFM_SETEXPANDED,FALSE, (LPARAM)pidl);
+    }
 
-   // COM interfaces. The only one currently is IFolderFilter
-	DECLARE_INTERFACE_MAP()
+    // Set status window text
+    void SetStatusText(LPCTSTR pText)
+    {
+        SendMessage(BFFM_SETSTATUSTEXT, 0, (LPARAM)pText);
+    }
 
-	// IUnknown--all nested interfaces call these
-	STDMETHOD_(ULONG, AddRef)();
-	STDMETHOD_(ULONG, Release)();
-	STDMETHOD(QueryInterface)(REFIID iid, LPVOID* ppvObj);
+    // Override for custom filtering. You must call BrowseForFolder with bFilter=TRUE.
+    virtual HRESULT OnGetEnumFlags(IShellFolder* psf,
+                                   LPCITEMIDLIST pidlFolder,
+                                   DWORD* pgrfFlags);
+    virtual HRESULT OnShouldShow(IShellFolder* psf,
+                                 LPCITEMIDLIST pidlFolder,
+                                 LPCITEMIDLIST pidlItem);
 
-	// COM interface IFolderFilter, used to do custom filtering
-	BEGIN_INTERFACE_PART(FolderFilter, IFolderFilter)
-   STDMETHOD(GetEnumFlags) (IShellFolder* psf,
-		LPCITEMIDLIST pidlFolder,
-		HWND *pHwnd,
-		DWORD *pgrfFlags);
-   STDMETHOD(ShouldShow) (IShellFolder* psf,
-		LPCITEMIDLIST pidlFolder,
-		LPCITEMIDLIST pidlItem);
-	END_INTERFACE_PART(FolderFilter)
+    // COM interfaces. The only one currently is IFolderFilter
+    DECLARE_INTERFACE_MAP()
 
-	DECLARE_DYNAMIC(CFolderDialog)
+    // IUnknown--all nested interfaces call these
+    STDMETHOD_(ULONG, AddRef)();
+    STDMETHOD_(ULONG, Release)();
+    STDMETHOD(QueryInterface)(REFIID iid, LPVOID* ppvObj);
+
+    // COM interface IFolderFilter, used to do custom filtering
+    BEGIN_INTERFACE_PART(FolderFilter, IFolderFilter)
+        STDMETHOD(GetEnumFlags)(IShellFolder* psf,
+                                LPCITEMIDLIST pidlFolder,
+                                HWND* pHwnd,
+                                DWORD* pgrfFlags);
+        STDMETHOD(ShouldShow)(IShellFolder* psf,
+                              LPCITEMIDLIST pidlFolder,
+                              LPCITEMIDLIST pidlItem);
+    END_INTERFACE_PART(FolderFilter)
+
+    DECLARE_DYNAMIC(CFolderDialog)
 };

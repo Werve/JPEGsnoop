@@ -32,66 +32,76 @@
 
 // Structure used for each Tag entry
 // Reference: Types defined in Part 3, Section 5.2
-enum teDicomType { DICOM_T_UNK,
-	DICOM_T_TYPE1,
-	DICOM_T_TYPE1C,
-	DICOM_T_TYPE3,
-	DICOM_T_END };
+enum teDicomType
+{
+    DICOM_T_UNK,
+    DICOM_T_TYPE1,
+    DICOM_T_TYPE1C,
+    DICOM_T_TYPE3,
+    DICOM_T_END
+};
+
 // Definition of Group & Element in Part 10, Section 5
-struct tsDicomTag {
-	unsigned	nTagGroup;
-	unsigned	nTagElement;
-	teDicomType	eTagType;
-	CString		strTagName;
+struct tsDicomTag
+{
+    unsigned nTagGroup;
+    unsigned nTagElement;
+    teDicomType eTagType;
+    CString strTagName;
 };
 
 // Definition of Transfer Syntaxes and other UIDs
-struct tsDicomTagSpec {
-	unsigned	nTagGroup;
-	unsigned	nTagElement;
-	CString		strVal;
-	CString		strDefinition;
+struct tsDicomTagSpec
+{
+    unsigned nTagGroup;
+    unsigned nTagElement;
+    CString strVal;
+    CString strDefinition;
 };
 
-struct tsTagDetail {
-	unsigned		nTagGroup;
-	unsigned		nTagElement;
-	CString			strVR;
-	unsigned		nLen;
-	unsigned		nOffset;		// Offset after parsing this tag
+struct tsTagDetail
+{
+    unsigned nTagGroup;
+    unsigned nTagElement;
+    CString strVR;
+    unsigned nLen;
+    unsigned nOffset; // Offset after parsing this tag
 
-	bool			bVrExplicit;
-	bool			bLen4B;
+    bool bVrExplicit;
+    bool bLen4B;
 
-	bool			bTagOk;
-	CString			strTag;
-	bool			bValOk;
-	CString			strVal;
+    bool bTagOk;
+    CString strTag;
+    bool bValOk;
+    CString strVal;
 
-	bool			bTagIsJpeg;
-	unsigned long	nPosJpeg;
+    bool bTagIsJpeg;
+    unsigned long nPosJpeg;
 
-	tsTagDetail() {
-		Reset();		
-	};
-	void Reset() {
-		nTagGroup		= 0;
-		nTagElement		= 0;
-		strVR			= _T("");
-		nLen			= 0;
-		nOffset			= 0;
+    tsTagDetail()
+    {
+        Reset();
+    };
 
-		bVrExplicit		= false;
-		bLen4B			= false;
+    void Reset()
+    {
+        nTagGroup = 0;
+        nTagElement = 0;
+        strVR = _T("");
+        nLen = 0;
+        nOffset = 0;
 
-		bTagOk			= false;
-		strTag			= _T("");
-		bValOk			= false;
-		strVal			= _T("");
+        bVrExplicit = false;
+        bLen4B = false;
 
-		bTagIsJpeg		= false;
-		nPosJpeg		= 0;
-	};
+        bTagOk = false;
+        strTag = _T("");
+        bValOk = false;
+        strVal = _T("");
+
+        bTagIsJpeg = false;
+        nPosJpeg = 0;
+    };
 };
 
 
@@ -110,37 +120,35 @@ struct tsTagDetail {
 class CDecodeDicom
 {
 public:
-	CDecodeDicom(CwindowBuf* pWBuf,CDocLog* pLog);
-	~CDecodeDicom(void);
+    CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog);
+    ~CDecodeDicom(void);
 
-	void			Reset();
+    void Reset();
 
-	bool			DecodeDicom(unsigned long nPos,unsigned long nPosFileEnd,unsigned long &nPosJpeg);
-	//bool			DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg);
-	bool			GetTagHeader(unsigned long nPos,tsTagDetail &sTagDetail);
-	bool			FindTag(unsigned nTagGroup,unsigned nTagElement,unsigned &nFldInd);
+    bool DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, unsigned long& nPosJpeg);
+    //bool			DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg);
+    bool GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail);
+    bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
 
-	BYTE			Buf(unsigned long offset,bool bClean);
+    BYTE Buf(unsigned long offset, bool bClean);
 
-	CString			ParseIndent(unsigned nIndent);
-	void			ReportFldStr(unsigned nIndent,CString strField,CString strVal);
-	void			ReportFldStrEnc(unsigned nIndent,CString strField,CString strVal,CString strEncVal);
-	void			ReportFldHex(unsigned nIndent,CString strField,unsigned long nPosStart,unsigned nLen);
-	void			ReportFldEnum(unsigned nIndent,CString strField,unsigned nTagGroup,unsigned nTagElement,CString strVal);
-	bool			LookupEnum(unsigned nTagGroup,unsigned nTagElement,CString strVal,CString &strDesc);
+    CString ParseIndent(unsigned nIndent);
+    void ReportFldStr(unsigned nIndent, CString strField, CString strVal);
+    void ReportFldStrEnc(unsigned nIndent, CString strField, CString strVal, CString strEncVal);
+    void ReportFldHex(unsigned nIndent, CString strField, unsigned long nPosStart, unsigned nLen);
+    void ReportFldEnum(unsigned nIndent, CString strField, unsigned nTagGroup, unsigned nTagElement, CString strVal);
+    bool LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString strVal, CString& strDesc);
 
 private:
-	// Configuration
-	CSnoopConfig*	m_pAppConfig;
+    // Configuration
+    CSnoopConfig* m_pAppConfig;
 
-	// General classes required for decoding
-	CwindowBuf*		m_pWBuf;
-	CDocLog*		m_pLog;
+    // General classes required for decoding
+    CwindowBuf* m_pWBuf;
+    CDocLog* m_pLog;
 
 public:
-	bool			m_bDicom;
-	bool			m_bJpegEncap;
-	bool			m_bJpegEncapOffsetNext;
-
+    bool m_bDicom;
+    bool m_bJpegEncap;
+    bool m_bJpegEncapOffsetNext;
 };
-

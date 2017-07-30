@@ -31,26 +31,32 @@
 
 class CModelessDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CModelessDlg)
+    DECLARE_DYNAMIC(CModelessDlg)
 
 public:
-	CModelessDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CModelessDlg();
+    CModelessDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CModelessDlg();
 
-// Dialog Data
-	enum { IDD = IDD_MODELESSDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_MODELESSDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	BOOL Create(UINT nID, CWnd* pWnd)
-		{ return CDialog::Create(nID,pWnd); }
-	CString strMsg;
+    BOOL Create(UINT nID, CWnd* pWnd)
+    {
+        return CDialog::Create(nID, pWnd);
+    }
 
-	virtual void OnCancel();
+    CString strMsg;
+
+    virtual void OnCancel();
 
 protected:
-	virtual void PostNcDestroy() {delete this;}
+    virtual void PostNcDestroy() { delete this; }
 };

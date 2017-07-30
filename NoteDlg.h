@@ -31,21 +31,24 @@
 
 class CNoteDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CNoteDlg)
+    DECLARE_DYNAMIC(CNoteDlg)
 
 public:
-	CNoteDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CNoteDlg();
+    CNoteDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CNoteDlg();
 
-// Dialog Data
-	enum { IDD = IDD_NOTEDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_NOTEDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 public:
-	CString			strMsg;
-	BOOL			bCoachOff;
+    CString strMsg;
+    BOOL bCoachOff;
 };

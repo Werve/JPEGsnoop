@@ -56,38 +56,35 @@
 #define TIFF_TAG_REF_BLACK_WHITE	0x0214
 
 
-
 class FileTiff
 {
-
 public:
-	FileTiff();
-	~FileTiff();
+    FileTiff();
+    ~FileTiff();
 
-	void		WriteFile(CString sFnameOut,bool bModeYcc,bool bMode16b,void* pBitmap,unsigned nSizeX,unsigned nSizeY);
-	void		WriteIfd(unsigned nSizeX,unsigned nSizeY,bool bModeYcc,bool bMode16b);
-	void		WriteIfdEntrySingle(unsigned short nTag,unsigned short nType,unsigned nValOffset);
-	void		WriteIfdEntryMult(unsigned short nTag,unsigned short nType,unsigned nNumVals,unsigned* nVals);
+    void WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* pBitmap, unsigned nSizeX, unsigned nSizeY);
+    void WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bMode16b);
+    void WriteIfdEntrySingle(unsigned short nTag, unsigned short nType, unsigned nValOffset);
+    void WriteIfdEntryMult(unsigned short nTag, unsigned short nType, unsigned nNumVals, unsigned* nVals);
 
-	unsigned	GetTypeLen(unsigned nType);
+    unsigned GetTypeLen(unsigned nType);
 
-	void		WriteVal8(BYTE nVal);
-	void		WriteVal16(unsigned short nVal);
-	void		WriteVal32(unsigned int nVal);
-	void		WriteIfdExtraBuf8(BYTE nVal);
-	void		WriteIfdExtraBuf16(unsigned short nVal);
-	void		WriteIfdExtraBuf32(unsigned int nVal);
+    void WriteVal8(BYTE nVal);
+    void WriteVal16(unsigned short nVal);
+    void WriteVal32(unsigned int nVal);
+    void WriteIfdExtraBuf8(BYTE nVal);
+    void WriteIfdExtraBuf16(unsigned short nVal);
+    void WriteIfdExtraBuf32(unsigned int nVal);
 
 private:
-	CFile*		m_pFileOutput;
+    CFile* m_pFileOutput;
 
-	unsigned	m_nPtrIfdExtra;
-	unsigned	m_nPtrImg;
-	unsigned	m_nPos;
+    unsigned m_nPtrIfdExtra;
+    unsigned m_nPtrImg;
+    unsigned m_nPos;
 
-	bool			m_bPreCalc;
-	unsigned short	m_nNumIfd;
-	BYTE*			m_pIfdExtraBuf;
-	unsigned		m_nIfdExtraLen;
-
+    bool m_bPreCalc;
+    unsigned short m_nNumIfd;
+    BYTE* m_pIfdExtraBuf;
+    unsigned m_nIfdExtraLen;
 };

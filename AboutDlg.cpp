@@ -22,21 +22,20 @@
 
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-, m_staticVerNum(_T(""))
+                         , m_staticVerNum(_T(""))
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_URL, m_staticURL);
-	DDX_Control(pDX, IDC_URL_DOC, m_staticURLdoc);
-	DDX_Text(pDX, IDC_VER_NUM, m_staticVerNum);
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_URL, m_staticURL);
+    DDX_Control(pDX, IDC_URL_DOC, m_staticURLdoc);
+    DDX_Text(pDX, IDC_VER_NUM, m_staticVerNum);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
-
 
 
 // CjpegsnoopApp message handlers
@@ -44,26 +43,25 @@ END_MESSAGE_MAP()
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+    CDialog::OnInitDialog();
 
-	// TODO:  Add extra initialization here
+    // TODO:  Add extra initialization here
 
-	// Dynamically change static text of version number
-	CString strTmp;
+    // Dynamically change static text of version number
+    CString strTmp;
 
-	strTmp.Format(_T("Version %s"),VERSION_STR);
-	m_staticVerNum.SetString(strTmp);
-	m_staticVerNum.Format(_T("Version %s"),VERSION_STR);
+    strTmp.Format(_T("Version %s"),VERSION_STR);
+    m_staticVerNum.SetString(strTmp);
+    m_staticVerNum.Format(_T("Version %s"),VERSION_STR);
 
-	UpdateData(FALSE);
+    UpdateData(FALSE);
 
 
-	// Update the URLs
-	m_staticURL.SetHyperlink(_T("http://www.impulseadventure.com/photo/"));
-	strTmp.Format(_T("http://www.impulseadventure.com/photo/jpeg-snoop.html?ver=%s"),VERSION_STR);
-	m_staticURLdoc.SetHyperlink(strTmp);
+    // Update the URLs
+    m_staticURL.SetHyperlink(_T("http://www.impulseadventure.com/photo/"));
+    strTmp.Format(_T("http://www.impulseadventure.com/photo/jpeg-snoop.html?ver=%s"),VERSION_STR);
+    m_staticURLdoc.SetHyperlink(strTmp);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE; // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
-

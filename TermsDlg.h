@@ -31,26 +31,28 @@
 
 class CTermsDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CTermsDlg)
+    DECLARE_DYNAMIC(CTermsDlg)
 
 public:
-	CTermsDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CTermsDlg();
+    CTermsDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CTermsDlg();
 
-// Dialog Data
-	enum { IDD = IDD_TERMSDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_TERMSDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedOk();
 
 private:
-	CString			strEula;
+    CString strEula;
 public:
-	BOOL			bEulaOk;
-	BOOL			bUpdateAuto;
-
+    BOOL bEulaOk;
+    BOOL bUpdateAuto;
 };

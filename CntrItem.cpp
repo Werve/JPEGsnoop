@@ -36,14 +36,14 @@
 IMPLEMENT_SERIAL(CJPEGsnoopCntrItem, CRichEditCntrItem, 0)
 
 CJPEGsnoopCntrItem::CJPEGsnoopCntrItem(REOBJECT* preo, CJPEGsnoopDoc* pContainer)
-	: CRichEditCntrItem(preo, pContainer)
+    : CRichEditCntrItem(preo, pContainer)
 {
-	// TODO: add one-time construction code here
+    // TODO: add one-time construction code here
 }
 
 CJPEGsnoopCntrItem::~CJPEGsnoopCntrItem()
 {
-	// TODO: add cleanup code here
+    // TODO: add cleanup code here
 }
 
 
@@ -52,12 +52,11 @@ CJPEGsnoopCntrItem::~CJPEGsnoopCntrItem()
 #ifdef _DEBUG
 void CJPEGsnoopCntrItem::AssertValid() const
 {
-	CRichEditCntrItem::AssertValid();
+    CRichEditCntrItem::AssertValid();
 }
 
 void CJPEGsnoopCntrItem::Dump(CDumpContext& dc) const
 {
-	CRichEditCntrItem::Dump(dc);
+    CRichEditCntrItem::Dump(dc);
 }
 #endif
-

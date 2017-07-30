@@ -28,15 +28,16 @@
 // CExportDlg dialog
 
 IMPLEMENT_DYNAMIC(CExportDlg, CDialog)
+
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExportDlg::IDD, pParent)
-	, m_bOverlayEn(FALSE)
-	, m_bDhtAviInsert(FALSE)
-	, m_strOffsetStart(_T(""))
-	, m_bForceEoi(FALSE)
-	, m_bIgnoreEoi(FALSE)
-	, m_bForceSoi(FALSE)
-	, m_bExtractAllEn(FALSE)
+    : CDialog(CExportDlg::IDD, pParent)
+      , m_bOverlayEn(FALSE)
+      , m_bDhtAviInsert(FALSE)
+      , m_strOffsetStart(_T(""))
+      , m_bForceEoi(FALSE)
+      , m_bIgnoreEoi(FALSE)
+      , m_bForceSoi(FALSE)
+      , m_bExtractAllEn(FALSE)
 {
 }
 
@@ -46,18 +47,16 @@ CExportDlg::~CExportDlg()
 
 void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Check(pDX, IDC_OVERLAY, m_bOverlayEn);
-	DDX_Check(pDX, IDC_DHTAVI, m_bDhtAviInsert);
-	DDX_Text(pDX, IDC_OFFSET_START, m_strOffsetStart);
-	DDX_Check(pDX, IDC_FORCE_EOI, m_bForceEoi);
-	DDX_Check(pDX, IDC_IGNORE_EOI, m_bIgnoreEoi);
-	DDX_Check(pDX, IDC_FORCE_SOI, m_bForceSoi);
-	DDX_Check(pDX, IDC_EXT_ALL, m_bExtractAllEn);
+    CDialog::DoDataExchange(pDX);
+    DDX_Check(pDX, IDC_OVERLAY, m_bOverlayEn);
+    DDX_Check(pDX, IDC_DHTAVI, m_bDhtAviInsert);
+    DDX_Text(pDX, IDC_OFFSET_START, m_strOffsetStart);
+    DDX_Check(pDX, IDC_FORCE_EOI, m_bForceEoi);
+    DDX_Check(pDX, IDC_IGNORE_EOI, m_bIgnoreEoi);
+    DDX_Check(pDX, IDC_FORCE_SOI, m_bForceSoi);
+    DDX_Check(pDX, IDC_EXT_ALL, m_bExtractAllEn);
 }
 
 
 BEGIN_MESSAGE_MAP(CExportDlg, CDialog)
 END_MESSAGE_MAP()
-
-

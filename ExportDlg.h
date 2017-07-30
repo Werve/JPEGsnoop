@@ -30,25 +30,28 @@
 
 class CExportDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CExportDlg)
+    DECLARE_DYNAMIC(CExportDlg)
 
 public:
-	CExportDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CExportDlg();
+    CExportDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CExportDlg();
 
-// Dialog Data
-	enum { IDD = IDD_EXPORTDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_EXPORTDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	BOOL			m_bOverlayEn;
-	BOOL			m_bDhtAviInsert;
-	CString			m_strOffsetStart;
-	BOOL			m_bForceEoi;
-	BOOL			m_bIgnoreEoi;
-	BOOL			m_bForceSoi;
-	BOOL			m_bExtractAllEn;
+    BOOL m_bOverlayEn;
+    BOOL m_bDhtAviInsert;
+    CString m_strOffsetStart;
+    BOOL m_bForceEoi;
+    BOOL m_bIgnoreEoi;
+    BOOL m_bForceSoi;
+    BOOL m_bExtractAllEn;
 };

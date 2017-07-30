@@ -30,25 +30,28 @@
 
 class CUpdateAvailDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CUpdateAvailDlg)
+    DECLARE_DYNAMIC(CUpdateAvailDlg)
 
 public:
-	CUpdateAvailDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CUpdateAvailDlg();
+    CUpdateAvailDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CUpdateAvailDlg();
 
-// Dialog Data
-	enum { IDD = IDD_UPDATEAVAILDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_UPDATEAVAILDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void	OnBnClickedButton1();
+    afx_msg void OnBnClickedButton1();
 
 public:
-	CString			strVerCur;
-	CString			strVerLatest;
-	BOOL			bUpdateAutoStill;
-	CString			strDateLatest;
+    CString strVerCur;
+    CString strVerLatest;
+    BOOL bUpdateAutoStill;
+    CString strDateLatest;
 };

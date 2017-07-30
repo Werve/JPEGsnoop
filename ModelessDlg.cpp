@@ -28,8 +28,9 @@
 // CModelessDlg dialog
 
 IMPLEMENT_DYNAMIC(CModelessDlg, CDialog)
+
 CModelessDlg::CModelessDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CModelessDlg::IDD, pParent)
+    : CDialog(CModelessDlg::IDD, pParent)
 {
 }
 
@@ -39,7 +40,7 @@ CModelessDlg::~CModelessDlg()
 
 void CModelessDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 }
 
 
@@ -52,10 +53,10 @@ END_MESSAGE_MAP()
 
 void CModelessDlg::OnCancel()
 {
-	// NOTE: The following OnCancel() routine is apparently not supposed to be
-	// called for a modeless dialog. Instead, we are supposed to call
-	// DestroyWindow().
+    // NOTE: The following OnCancel() routine is apparently not supposed to be
+    // called for a modeless dialog. Instead, we are supposed to call
+    // DestroyWindow().
 
-	//CDialog::OnCancel();
-	DestroyWindow();
+    //CDialog::OnCancel();
+    DestroyWindow();
 }

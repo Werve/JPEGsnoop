@@ -45,50 +45,50 @@
 
 class CHyperlinkStatic : public CStatic
 {
-// Construction
+    // Construction
 public:
-	CHyperlinkStatic();
+    CHyperlinkStatic();
 
-// Attributes
-public:
-
-// Operations
+    // Attributes
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CHyperlinkStatic)
-	protected:
-	virtual void PreSubclassWindow();
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Operations
 public:
-	virtual ~CHyperlinkStatic();
 
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CHyperlinkStatic)
 protected:
-	//{{AFX_MSG(CHyperlinkStatic)
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnPaint();
-	afx_msg void OnDestroy();
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	//}}AFX_MSG
-	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
-	DECLARE_MESSAGE_MAP()
-public:
-	void SetHyperlink(CString strHyperlink);
-	void SetCaption(CString strCaption);
-private:
-	CString _strCaption, _strHyperlink;
-	CFont _fontCaption;
-	CSize _sizeCaption;
-	bool _bCreateFont, _bMouseInControl, _bGetCaptionSize;
-	HCURSOR	_hHandCursor, _hArrowCursor;
+    virtual void PreSubclassWindow();
+    //}}AFX_VIRTUAL
 
-	void CreateFont();
-	void GetCaptionSize();
-	bool InCaptionRange(CPoint &point);
+    // Implementation
+public:
+    virtual ~CHyperlinkStatic();
+
+    // Generated message map functions
+protected:
+    //{{AFX_MSG(CHyperlinkStatic)
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnPaint();
+    afx_msg void OnDestroy();
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    //}}AFX_MSG
+    afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);
+    DECLARE_MESSAGE_MAP()
+public:
+    void SetHyperlink(CString strHyperlink);
+    void SetCaption(CString strCaption);
+private:
+    CString _strCaption, _strHyperlink;
+    CFont _fontCaption;
+    CSize _sizeCaption;
+    bool _bCreateFont, _bMouseInControl, _bGetCaptionSize;
+    HCURSOR _hHandCursor, _hArrowCursor;
+
+    void CreateFont();
+    void GetCaptionSize();
+    bool InCaptionRange(CPoint& point);
 };
 
 /////////////////////////////////////////////////////////////////////////////

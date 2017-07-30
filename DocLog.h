@@ -28,42 +28,41 @@
 class CDocLog
 {
 public:
-	CDocLog();
-	~CDocLog(void);
+    CDocLog();
+    ~CDocLog(void);
 
-	void		AddLine(CString str);
-	void		AddLineHdr(CString str);
-	void		AddLineHdrDesc(CString str);
-	void		AddLineWarn(CString str);
-	void		AddLineErr(CString str);
-	void		AddLineGood(CString str);
+    void AddLine(CString str);
+    void AddLineHdr(CString str);
+    void AddLineHdrDesc(CString str);
+    void AddLineWarn(CString str);
+    void AddLineErr(CString str);
+    void AddLineGood(CString str);
 
-	void		Enable();
-	void		Disable();
-	void		SetQuickMode(bool bQuick);
-	bool		GetQuickMode();
+    void Enable();
+    void Disable();
+    void SetQuickMode(bool bQuick);
+    bool GetQuickMode();
 
-	void		SetDoc(CDocument *pDoc);
-	void		Clear();
+    void SetDoc(CDocument* pDoc);
+    void Clear();
 
-	unsigned	GetNumLinesLocal();
-	bool		GetLineLogLocal(unsigned nLine,CString &strOut,COLORREF &sCol);
+    unsigned GetNumLinesLocal();
+    bool GetLineLogLocal(unsigned nLine, CString& strOut, COLORREF& sCol);
 
-	void		DoLogSave(CString strLogName);
-
-private:
-	unsigned	AppendToLogLocal(CString strTxt, COLORREF sColor);
+    void DoLogSave(CString strLogName);
 
 private:
+    unsigned AppendToLogLocal(CString strTxt, COLORREF sColor);
 
-	bool			m_bUseDoc;		// Use Document or local buffer
-	CDocument*		m_pDoc;
-	bool			m_bEn;
+private:
 
-	// Local buffer
-	CStringArray	m_saLogQuickTxt;
-	CUIntArray		m_naLogQuickCol;
+    bool m_bUseDoc; // Use Document or local buffer
+    CDocument* m_pDoc;
+    bool m_bEn;
 
-	bool			m_bLogQuickMode;	// In m_bUseDoc=TRUE, do we write to local buffer instead?
+    // Local buffer
+    CStringArray m_saLogQuickTxt;
+    CUIntArray m_naLogQuickCol;
 
+    bool m_bLogQuickMode; // In m_bUseDoc=TRUE, do we write to local buffer instead?
 };

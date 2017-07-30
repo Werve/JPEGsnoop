@@ -36,44 +36,43 @@ class CJPEGsnoopCntrItem;
 class CJPEGsnoopView : public CRichEditView
 {
 protected: // create from serialization only
-	CJPEGsnoopView();
-	DECLARE_DYNCREATE(CJPEGsnoopView)
+    CJPEGsnoopView();
+    DECLARE_DYNCREATE(CJPEGsnoopView)
 
-// Attributes
+    // Attributes
 public:
-	CJPEGsnoopDoc*	GetDocument() const;
+    CJPEGsnoopDoc* GetDocument() const;
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
-	virtual void	OnInitialUpdate(); // called first time after construct
-	virtual BOOL	OnPreparePrinting(CPrintInfo* pInfo);
+    virtual void OnInitialUpdate(); // called first time after construct
+    virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 
-// Implementation
+    // Implementation
 public:
-	virtual			~CJPEGsnoopView();
+    virtual ~CJPEGsnoopView();
 #ifdef _DEBUG
-	virtual void	AssertValid() const;
-	virtual void	Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
 protected:
 
-// Generated message map functions
+    // Generated message map functions
 protected:
-	afx_msg void	OnDestroy();
+    afx_msg void OnDestroy();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void	OnDropFiles(HDROP hDropInfo);
+    afx_msg void OnDropFiles(HDROP hDropInfo);
 };
 
 #ifndef _DEBUG  // debug version in JPEGsnoopView.cpp
 inline CJPEGsnoopDoc* CJPEGsnoopView::GetDocument() const
    { return reinterpret_cast<CJPEGsnoopDoc*>(m_pDocument); }
 #endif
-

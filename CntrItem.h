@@ -26,32 +26,36 @@ class CJPEGsnoopView;
 
 class CJPEGsnoopCntrItem : public CRichEditCntrItem
 {
-	DECLARE_SERIAL(CJPEGsnoopCntrItem)
+    DECLARE_SERIAL(CJPEGsnoopCntrItem)
 
-// Constructors
+    // Constructors
 public:
-	CJPEGsnoopCntrItem(REOBJECT* preo = NULL, CJPEGsnoopDoc* pContainer = NULL);
-		// Note: pContainer is allowed to be NULL to enable IMPLEMENT_SERIALIZE
-		//  IMPLEMENT_SERIALIZE requires the class have a constructor with
-		//  zero arguments.  Normally, OLE items are constructed with a
-		//  non-NULL document pointer
+    CJPEGsnoopCntrItem(REOBJECT* preo = NULL, CJPEGsnoopDoc* pContainer = NULL);
+    // Note: pContainer is allowed to be NULL to enable IMPLEMENT_SERIALIZE
+    //  IMPLEMENT_SERIALIZE requires the class have a constructor with
+    //  zero arguments.  Normally, OLE items are constructed with a
+    //  non-NULL document pointer
 
-// Attributes
+    // Attributes
 public:
-	CJPEGsnoopDoc* GetDocument()
-		{ return reinterpret_cast<CJPEGsnoopDoc*>(CRichEditCntrItem::GetDocument()); }
-	CJPEGsnoopView* GetActiveView()
-		{ return reinterpret_cast<CJPEGsnoopView*>(CRichEditCntrItem::GetActiveView()); }
+    CJPEGsnoopDoc* GetDocument()
+    {
+        return reinterpret_cast<CJPEGsnoopDoc*>(CRichEditCntrItem::GetDocument());
+    }
 
-	public:
-	protected:
+    CJPEGsnoopView* GetActiveView()
+    {
+        return reinterpret_cast<CJPEGsnoopView*>(CRichEditCntrItem::GetActiveView());
+    }
 
-// Implementation
 public:
-	~CJPEGsnoopCntrItem();
+protected:
+
+    // Implementation
+public:
+    ~CJPEGsnoopCntrItem();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 };
-

@@ -28,20 +28,21 @@
 // CDecodeDetailDlg dialog
 
 IMPLEMENT_DYNAMIC(CDecodeDetailDlg, CDialog)
+
 CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CDecodeDetailDlg::IDD, pParent)
-	, m_nMcuX(0)
-	, m_nMcuY(0)
-	, m_nMcuLen(0)
-	, m_bEn(FALSE)
+    : CDialog(CDecodeDetailDlg::IDD, pParent)
+      , m_nMcuX(0)
+      , m_nMcuY(0)
+      , m_nMcuLen(0)
+      , m_bEn(FALSE)
 {
-	// Initialize the "load" values that come from
-	// the caller. This will generally be a coordinate
-	// that is passed in on the basis of a MCU click
-	// before opening the Detailed Decode dialog.
-	m_nLoadMcuX = 0;
-	m_nLoadMcuY = 0;
-	m_nLoadMcuLen = 0;
+    // Initialize the "load" values that come from
+    // the caller. This will generally be a coordinate
+    // that is passed in on the basis of a MCU click
+    // before opening the Detailed Decode dialog.
+    m_nLoadMcuX = 0;
+    m_nLoadMcuY = 0;
+    m_nLoadMcuLen = 0;
 }
 
 CDecodeDetailDlg::~CDecodeDetailDlg()
@@ -50,16 +51,16 @@ CDecodeDetailDlg::~CDecodeDetailDlg()
 
 void CDecodeDetailDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT1, m_nMcuX);
-	DDX_Text(pDX, IDC_EDIT2, m_nMcuY);
-	DDX_Text(pDX, IDC_EDIT3, m_nMcuLen);
-	DDX_Check(pDX, IDC_CHECK1, m_bEn);
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT1, m_nMcuX);
+    DDX_Text(pDX, IDC_EDIT2, m_nMcuY);
+    DDX_Text(pDX, IDC_EDIT3, m_nMcuLen);
+    DDX_Check(pDX, IDC_CHECK1, m_bEn);
 }
 
 
 BEGIN_MESSAGE_MAP(CDecodeDetailDlg, CDialog)
-	ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoad)
+    ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoad)
 END_MESSAGE_MAP()
 
 
@@ -67,9 +68,9 @@ END_MESSAGE_MAP()
 
 void CDecodeDetailDlg::OnBnClickedBtnLoad()
 {
-	m_nMcuX = m_nLoadMcuX;
-	m_nMcuY = m_nLoadMcuY;
-	m_nMcuLen = m_nLoadMcuLen;
-	m_bEn = true;
-	UpdateData(false);
+    m_nMcuX = m_nLoadMcuX;
+    m_nMcuY = m_nLoadMcuY;
+    m_nMcuLen = m_nLoadMcuLen;
+    m_bEn = true;
+    UpdateData(false);
 }

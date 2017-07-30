@@ -31,114 +31,113 @@
 class CSnoopConfig
 {
 public:
-	CSnoopConfig(void);
-	~CSnoopConfig(void);
+    CSnoopConfig(void);
+    ~CSnoopConfig(void);
 
-	void		UseDefaults();
+    void UseDefaults();
 
-	void		RegistryLoadStr(CString strKey,CString strDefault,CString &strSetting);
-	void		RegistryLoadBool(CString strKey,unsigned nDefault,bool &bSetting);
-	void		RegistryLoadUint(CString strKey,unsigned nDefault,unsigned &nSetting);
-	void		RegistryStoreStr(CString strKey,CString strSetting);
-	void		RegistryStoreBool(CString strKey,bool bSetting);
-	void		RegistryStoreUint(CString strKey,unsigned nSetting);
+    void RegistryLoadStr(CString strKey, CString strDefault, CString& strSetting);
+    void RegistryLoadBool(CString strKey, unsigned nDefault, bool& bSetting);
+    void RegistryLoadUint(CString strKey, unsigned nDefault, unsigned& nSetting);
+    void RegistryStoreStr(CString strKey, CString strSetting);
+    void RegistryStoreBool(CString strKey, bool bSetting);
+    void RegistryStoreUint(CString strKey, unsigned nSetting);
 
-	void		RegistryLoad();
-	void		RegistryStore();
-	void		Dirty(bool mode=true);
+    void RegistryLoad();
+    void RegistryStore();
+    void Dirty(bool mode = true);
 
-	void		CoachReset();		// Reset all coach messages
+    void CoachReset(); // Reset all coach messages
 
-	CString		GetDefaultDbDir();	// Public use by CSettingsDlg
+    CString GetDefaultDbDir(); // Public use by CSettingsDlg
 
 public:
-	// Debug Log
-	// - Used if DEBUG_LOG_OUT
-	bool		DebugLogCreate();
-	bool		DebugLogAdd(CString strText);
+    // Debug Log
+    // - Used if DEBUG_LOG_OUT
+    bool DebugLogCreate();
+    bool DebugLogAdd(CString strText);
 
 private:
-	CString		GetExeDir();
-	void		CreateDir(LPTSTR Path);
+    CString GetExeDir();
+    void CreateDir(LPTSTR Path);
 
 
 public:
 
-	// Interactive mode: shows message dialog box alerts
-	// In non-interactive mode we suppress most alert dialogs but still
-	// show them in certain circumstances:
-	// - They involve an interactive user function (eg. another dialog box)
-	// - They indicate a critical error
-	bool		bInteractive;			// Do we want user input (interactive mode)? (ie. show message boxes)
+    // Interactive mode: shows message dialog box alerts
+    // In non-interactive mode we suppress most alert dialogs but still
+    // show them in certain circumstances:
+    // - They involve an interactive user function (eg. another dialog box)
+    // - They indicate a critical error
+    bool bInteractive; // Do we want user input (interactive mode)? (ie. show message boxes)
 
-	bool		bGuiMode;			// Do we want to show the GUI?
-	bool		bCmdLineOpenEn;			// input file specified
-	CString		strCmdLineOpenFname;		// input filename
-	bool		bCmdLineOutputEn;			// output file specified?
-	CString		strCmdLineOutputFname;	// output filename
+    bool bGuiMode; // Do we want to show the GUI?
+    bool bCmdLineOpenEn; // input file specified
+    CString strCmdLineOpenFname; // input filename
+    bool bCmdLineOutputEn; // output file specified?
+    CString strCmdLineOutputFname; // output filename
 
-	bool		bCmdLineBatchEn;			// Do we run a batch job on a directory?
-	CString		strCmdLineBatchDirName;	// directory path for batch job
-	bool		bCmdLineBatchRec;		// recursive subdir batch operation?
+    bool bCmdLineBatchEn; // Do we run a batch job on a directory?
+    CString strCmdLineBatchDirName; // directory path for batch job
+    bool bCmdLineBatchRec; // recursive subdir batch operation?
 
-	bool		bCmdLineBatchSrch;		// In batch process, perform search forward first?
+    bool bCmdLineBatchSrch; // In batch process, perform search forward first?
 
-	bool		bCmdLineExtractEn;		// Do we extract all JPEGs from file?
-	bool		bCmdLineExtractDhtAvi;	// Do we force MotionJPEG DHT?
+    bool bCmdLineExtractEn; // Do we extract all JPEGs from file?
+    bool bCmdLineExtractDhtAvi; // Do we force MotionJPEG DHT?
 
-	bool		bCmdLineDoneMsg;		// Indicate to user when command-line operations complete?
+    bool bCmdLineDoneMsg; // Indicate to user when command-line operations complete?
 
-	teOffsetMode	eCmdLineOffset;		// Offset operating mode
-	unsigned long	nCmdLineOffsetPos;	// File offset for DEC_OFFSET_POS mode
+    teOffsetMode eCmdLineOffset; // Offset operating mode
+    unsigned long nCmdLineOffsetPos; // File offset for DEC_OFFSET_POS mode
 
-	bool		bCmdLineHelp;			// Show command list
+    bool bCmdLineHelp; // Show command list
 
-	unsigned	nPosStart;				// Starting decode file offset
+    unsigned nPosStart; // Starting decode file offset
 
-	// Operating system
-    bool		bIsWindowsNTorLater;
-    bool		bIsWindowsXPorLater;
+    // Operating system
+    bool bIsWindowsNTorLater;
+    bool bIsWindowsXPorLater;
 
-	// Registry Configuration options
-	bool		bDirty;					// Registry entry options dirtied?
-	bool		bEulaAccepted;			// Accepted the EULA?
-	bool		bUpdateAuto;			// Automatically check for updates
-	unsigned	nUpdateAutoDays;		// How many days between checks
-	CString		strDbDir;				// Directory for User DB
-	CString		strUpdateLastChk;		// When last checked for updates
-	bool		bReprocessAuto;			// Auto reprocess file when option change
-	bool		bSigSearch;				// Automatically search for comp signatures
-	bool		bDecodeScanImg;			// Scan image decode enabled
-	bool		bDecodeScanImgAc;		// When scan image decode, do full AC
-	bool		bOutputScanDump;		// Do we dump a portion of scan data?
-	bool		bOutputDHTexpand;
-	bool		bDecodeMaker;
-	bool		bHistoEn;				// Histogram calcs enabled?
-	bool		bStatClipEn;			// Enable scan decode clip stats?
-	bool		bDumpHistoY;			// Dump full Y DC Histogram
-	bool		bDbSubmitNet;			// Submit new entries to net?
-	bool		bExifHideUnknown;		// Hide unknown exif tags?
-	bool		bRelaxedParsing;		// Proceed despite bad marker / format?
+    // Registry Configuration options
+    bool bDirty; // Registry entry options dirtied?
+    bool bEulaAccepted; // Accepted the EULA?
+    bool bUpdateAuto; // Automatically check for updates
+    unsigned nUpdateAutoDays; // How many days between checks
+    CString strDbDir; // Directory for User DB
+    CString strUpdateLastChk; // When last checked for updates
+    bool bReprocessAuto; // Auto reprocess file when option change
+    bool bSigSearch; // Automatically search for comp signatures
+    bool bDecodeScanImg; // Scan image decode enabled
+    bool bDecodeScanImgAc; // When scan image decode, do full AC
+    bool bOutputScanDump; // Do we dump a portion of scan data?
+    bool bOutputDHTexpand;
+    bool bDecodeMaker;
+    bool bHistoEn; // Histogram calcs enabled?
+    bool bStatClipEn; // Enable scan decode clip stats?
+    bool bDumpHistoY; // Dump full Y DC Histogram
+    bool bDbSubmitNet; // Submit new entries to net?
+    bool bExifHideUnknown; // Hide unknown exif tags?
+    bool bRelaxedParsing; // Proceed despite bad marker / format?
 
-	unsigned	nErrMaxDecodeScan;		// Max # errs to show in scan decode
+    unsigned nErrMaxDecodeScan; // Max # errs to show in scan decode
 
-	CString		strBatchLastInput;		// Last batch process input directory
-	CString		strBatchLastOutput;		// Last batch process output directory
-	CString		strBatchExtensions;		// Extension list for batch processing (eg. ".jpg,.jpeg")
+    CString strBatchLastInput; // Last batch process input directory
+    CString strBatchLastOutput; // Last batch process output directory
+    CString strBatchExtensions; // Extension list for batch processing (eg. ".jpg,.jpeg")
 
-	bool		bCoachReprocessAuto;	// Coach msg: Need to reprocess or change to auto
-	bool		bCoachDecodeIdct;		// Coach msg: Warn about slow AC decode / lowres DC
+    bool bCoachReprocessAuto; // Coach msg: Need to reprocess or change to auto
+    bool bCoachDecodeIdct; // Coach msg: Warn about slow AC decode / lowres DC
 
-	// Extra config (not in registry)
-	bool		bDecodeColorConvert;	// Do we do color convert after scan decode?
+    // Extra config (not in registry)
+    bool bDecodeColorConvert; // Do we do color convert after scan decode?
 
-	// Temporary status (not saved)
-	CString		strCurFname;			// Current filename (Debug use only)
+    // Temporary status (not saved)
+    CString strCurFname; // Current filename (Debug use only)
 
-	// Debug log
-	// - Used if DEBUG_LOG_OUT
-	bool		bDebugLogEnable;
-	CString		strDebugLogFname;
-	CStdioFile*	fpDebugLog;
-
+    // Debug log
+    // - Used if DEBUG_LOG_OUT
+    bool bDebugLogEnable;
+    CString strDebugLogFname;
+    CStdioFile* fpDebugLog;
 };

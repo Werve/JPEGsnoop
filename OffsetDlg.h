@@ -31,38 +31,41 @@
 
 class COffsetDlg : public CDialog
 {
-	DECLARE_DYNAMIC(COffsetDlg)
+    DECLARE_DYNAMIC(COffsetDlg)
 
 public:
-	COffsetDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~COffsetDlg();
-// Dialog Data
-	enum { IDD = IDD_OFFSETDLG };
+    COffsetDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~COffsetDlg();
+
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_OFFSETDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 
 public:
-	void			SetOffset(unsigned nPos);
-	unsigned		GetOffset();
+    void SetOffset(unsigned nPos);
+    unsigned GetOffset();
 
 private:
-	void			OffsetNum2Str();
-	bool			OffsetStr2Num();
+    void OffsetNum2Str();
+    bool OffsetStr2Num();
 
 private:
-	afx_msg void	OnBnClickedOk();
-	afx_msg void	OnBnClickedBaseh();
-	afx_msg void	OnBnClickedBased();
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedBaseh();
+    afx_msg void OnBnClickedBased();
 
 
 private:
-	unsigned		m_nOffsetVal;
-	int				m_nRadioBaseMode;
-	unsigned		m_nBaseMode;
-	CString			m_sOffsetVal;
-
+    unsigned m_nOffsetVal;
+    int m_nRadioBaseMode;
+    unsigned m_nBaseMode;
+    CString m_sOffsetVal;
 };

@@ -34,45 +34,41 @@
 // CJPEGsnoopViewImg view
 
 
-
 class CJPEGsnoopViewImg : public CScrollView
 {
-	DECLARE_DYNCREATE(CJPEGsnoopViewImg)
+    DECLARE_DYNCREATE(CJPEGsnoopViewImg)
 
 protected:
-	CJPEGsnoopViewImg();           // protected constructor used by dynamic creation
-	virtual ~CJPEGsnoopViewImg();
+    CJPEGsnoopViewImg(); // protected constructor used by dynamic creation
+    virtual ~CJPEGsnoopViewImg();
 
 public:
 #ifdef _DEBUG
-	virtual void	AssertValid() const;
-	virtual void	Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
 protected:
-	virtual void	OnDraw(CDC* pDC);      // overridden to draw this view
-	virtual void	OnInitialUpdate();     // first time after construct
+    virtual void OnDraw(CDC* pDC); // overridden to draw this view
+    virtual void OnInitialUpdate(); // first time after construct
 
-	DECLARE_MESSAGE_MAP()
-
-private:
-	CJPEGsnoopCore*	GetCore();
-	bool			InPreviewArea(CPoint point,CPoint &ptPix);
-	void			SetScrollCenter(float fZoomOld, float fZoomNew);
-	int				MeasureFontHeight(CFont* pFont, CDC* pDC);
-
-	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void	OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg BOOL	OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
+    DECLARE_MESSAGE_MAP()
 
 private:
-	CFont*			m_pFont;
-	LOGFONT			m_logfont;
-	int				m_nPointSize;
+    CJPEGsnoopCore* GetCore();
+    bool InPreviewArea(CPoint point, CPoint& ptPix);
+    void SetScrollCenter(float fZoomOld, float fZoomNew);
+    int MeasureFontHeight(CFont* pFont, CDC* pDC);
 
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+    afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+    afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+
+private:
+    CFont* m_pFont;
+    LOGFONT m_logfont;
+    int m_nPointSize;
 };
-
-

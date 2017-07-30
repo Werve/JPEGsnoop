@@ -37,48 +37,44 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
 protected: // create from serialization only
-	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
+    CMainFrame();
+    DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// Implementation
+    // Implementation
 public:
-	virtual			~CMainFrame();
+    virtual ~CMainFrame();
 #ifdef _DEBUG
-	virtual void	AssertValid() const;
-	virtual void	Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
 private:
-	int				FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+    int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
 protected:
-	// Generated message map functions
-	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
-	virtual BOOL	OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void	OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
 
 private:
-	// Splitter
-	CSplitterWnd	m_mainSplitter;
-	BOOL			m_bInitSplitter;
+    // Splitter
+    CSplitterWnd m_mainSplitter;
+    BOOL m_bInitSplitter;
 
-protected:  // control bar embedded members
-	CStatusBar		m_wndStatusBar;
-	CToolBar		m_wndToolBar;
-
+protected: // control bar embedded members
+    CStatusBar m_wndStatusBar;
+    CToolBar m_wndToolBar;
 };
-
-

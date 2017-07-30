@@ -28,12 +28,13 @@
 // CUpdateAvailDlg dialog
 
 IMPLEMENT_DYNAMIC(CUpdateAvailDlg, CDialog)
+
 CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CUpdateAvailDlg::IDD, pParent)
-	, strVerCur(_T(""))
-	, strVerLatest(_T(""))
-	, bUpdateAutoStill(FALSE)
-	, strDateLatest(_T(""))
+    : CDialog(CUpdateAvailDlg::IDD, pParent)
+      , strVerCur(_T(""))
+      , strVerLatest(_T(""))
+      , bUpdateAutoStill(FALSE)
+      , strDateLatest(_T(""))
 {
 }
 
@@ -43,16 +44,16 @@ CUpdateAvailDlg::~CUpdateAvailDlg()
 
 void CUpdateAvailDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_VER_CUR, strVerCur);
-	DDX_Text(pDX, IDC_VER_LATEST, strVerLatest);
-	DDX_Check(pDX, IDC_UPDATE_AUTO_STILL, bUpdateAutoStill);
-	DDX_Text(pDX, IDC_DATE_LATEST, strDateLatest);
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_VER_CUR, strVerCur);
+    DDX_Text(pDX, IDC_VER_LATEST, strVerLatest);
+    DDX_Check(pDX, IDC_UPDATE_AUTO_STILL, bUpdateAutoStill);
+    DDX_Text(pDX, IDC_DATE_LATEST, strDateLatest);
 }
 
 
 BEGIN_MESSAGE_MAP(CUpdateAvailDlg, CDialog)
-	ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
+    ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -60,6 +61,6 @@ END_MESSAGE_MAP()
 
 void CUpdateAvailDlg::OnBnClickedButton1()
 {
-	// Open website
-	ShellExecute(0, _T("open"), IA_UPDATES_DL_PAGE, 0, 0, SW_SHOWNORMAL);
+    // Open website
+    ShellExecute(0, _T("open"), IA_UPDATES_DL_PAGE, 0, 0, SW_SHOWNORMAL);
 }

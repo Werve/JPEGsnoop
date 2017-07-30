@@ -30,28 +30,31 @@
 
 class CDecodeDetailDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CDecodeDetailDlg)
+    DECLARE_DYNAMIC(CDecodeDetailDlg)
 
 public:
-	CDecodeDetailDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CDecodeDetailDlg();
+    CDecodeDetailDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CDecodeDetailDlg();
 
-// Dialog Data
-	enum { IDD = IDD_DECODEDETAILDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_DECODEDETAILDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void	OnBnClickedBtnLoad();
+    afx_msg void OnBnClickedBtnLoad();
 
-	UINT			m_nMcuX;
-	UINT			m_nMcuY;
-	UINT			m_nMcuLen;
-	BOOL			m_bEn;
+    UINT m_nMcuX;
+    UINT m_nMcuY;
+    UINT m_nMcuLen;
+    BOOL m_bEn;
 
-	UINT			m_nLoadMcuX;
-	UINT			m_nLoadMcuY;
-	UINT			m_nLoadMcuLen;
+    UINT m_nLoadMcuX;
+    UINT m_nLoadMcuY;
+    UINT m_nLoadMcuLen;
 };

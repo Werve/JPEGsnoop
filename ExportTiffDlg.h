@@ -31,22 +31,25 @@
 
 class CExportTiffDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CExportTiffDlg)
+    DECLARE_DYNAMIC(CExportTiffDlg)
 
 public:
-	CExportTiffDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CExportTiffDlg();
+    CExportTiffDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CExportTiffDlg();
 
-// Dialog Data
-	enum { IDD = IDD_EXPORTTIFFDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_EXPORTTIFFDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL		OnInitDialog();
+    virtual BOOL OnInitDialog();
 
-	int					m_nCtlFmt;
-	CString				m_sFname;
+    int m_nCtlFmt;
+    CString m_sFname;
 };

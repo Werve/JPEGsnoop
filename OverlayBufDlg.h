@@ -31,47 +31,49 @@
 
 class COverlayBufDlg : public CDialog
 {
-	DECLARE_DYNAMIC(COverlayBufDlg)
+    DECLARE_DYNAMIC(COverlayBufDlg)
 
 public:
-	COverlayBufDlg(CWnd* pParent = NULL);   // standard constructor
-	COverlayBufDlg(CWnd* pParent, 
-		bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin);
-	virtual ~COverlayBufDlg();
+    COverlayBufDlg(CWnd* pParent = NULL); // standard constructor
+    COverlayBufDlg(CWnd* pParent,
+                   bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin);
+    virtual ~COverlayBufDlg();
 
 
-// Dialog Data
-	enum { IDD = IDD_OVERLAYBUFDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_OVERLAYBUFDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void	OnBnClickedOvrLoad();
-	afx_msg void	OnBnClickedOk();
-	afx_msg void	OnBnClickedApply();
-	virtual BOOL	OnInitDialog();
+    afx_msg void OnBnClickedOvrLoad();
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedApply();
+    virtual BOOL OnInitDialog();
 
 public:
-	// Callback function for Buf()
-	void SetCbBuf(void* pClassCbBuf,
-					BYTE (*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
+    // Callback function for Buf()
+    void SetCbBuf(void* pClassCbBuf,
+                  BYTE (*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
 private:
-	// References to callback function for Buf()
-	void*			m_pClassCbBuf;
-	BYTE			(*m_pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool);
+    // References to callback function for Buf()
+    void* m_pClassCbBuf;
+    BYTE (*m_pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool);
 
 public:
-	unsigned		m_nOffset;
-	unsigned		m_nLen;
-	bool			m_bApply;		// When OnOK(), indicate apply and redo dialog
-	BOOL			m_bEn;
-	CString			m_sValueNewHex;
+    unsigned m_nOffset;
+    unsigned m_nLen;
+    bool m_bApply; // When OnOK(), indicate apply and redo dialog
+    BOOL m_bEn;
+    CString m_sValueNewHex;
 private:
-	CString			m_sOffset;
-	CString			m_sValueCurHex;
-	CString			m_sValueCurBin;
-	CString			m_sValueNewBin;
-
+    CString m_sOffset;
+    CString m_sValueCurHex;
+    CString m_sValueCurBin;
+    CString m_sValueNewBin;
 };

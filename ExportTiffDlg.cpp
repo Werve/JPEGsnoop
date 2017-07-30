@@ -28,10 +28,11 @@
 // CExportTiffDlg dialog
 
 IMPLEMENT_DYNAMIC(CExportTiffDlg, CDialog)
+
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CExportTiffDlg::IDD, pParent)
-	, m_nCtlFmt(0)
-	, m_sFname(_T(""))
+    : CDialog(CExportTiffDlg::IDD, pParent)
+      , m_nCtlFmt(0)
+      , m_sFname(_T(""))
 {
 }
 
@@ -41,9 +42,9 @@ CExportTiffDlg::~CExportTiffDlg()
 
 void CExportTiffDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Radio(pDX, IDC_RAD_RGB8, m_nCtlFmt);
-	DDX_Text(pDX, IDC_EDIT_FNAME, m_sFname);
+    CDialog::DoDataExchange(pDX);
+    DDX_Radio(pDX, IDC_RAD_RGB8, m_nCtlFmt);
+    DDX_Text(pDX, IDC_EDIT_FNAME, m_sFname);
 }
 
 
@@ -55,12 +56,12 @@ END_MESSAGE_MAP()
 
 BOOL CExportTiffDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+    CDialog::OnInitDialog();
 
-	// TODO:  Add extra initialization here
-	m_nCtlFmt = 0;
-	UpdateData(false);
+    // TODO:  Add extra initialization here
+    m_nCtlFmt = 0;
+    UpdateData(false);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE; // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }

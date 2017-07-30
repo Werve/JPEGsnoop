@@ -61,27 +61,36 @@
  */
 class CRegBase
 {
-public:	//methods
-	/**
-	 * Removes the whole registry key including all values. So if you set the registry
-	 * entry to be HKCU\Software\Company\Product\key\value there will only be
-	 * HKCU\Software\Company\Product key in the registry.
-	 * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
-	 */
-	DWORD removeKey() { RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey); return SHDeleteKey(m_base, (LPCTSTR)m_path); }
-	/**
-	 * Removes the value of the registry object. If you set the registry entry to
-	 * be HKCU\Software\Company\Product\key\value there will only be
-	 * HKCU\Software\Company\Product\key\ in the registry.
-	 * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
-	 */
-	LONG removeValue() { RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey); return RegDeleteValue(m_hKey, (LPCTSTR)m_key); }
+public: //methods
+    /**
+     * Removes the whole registry key including all values. So if you set the registry
+     * entry to be HKCU\Software\Company\Product\key\value there will only be
+     * HKCU\Software\Company\Product key in the registry.
+     * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
+     */
+    DWORD removeKey()
+    {
+        RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey);
+        return SHDeleteKey(m_base, (LPCTSTR)m_path);
+    }
 
-public:	//members
-	HKEY m_base;		///< handle to the registry base
-	HKEY m_hKey;		///< handle to the open registry key
-	CString m_key;		///< the name of the value
-	CString m_path;		///< the path to the key
+    /**
+     * Removes the value of the registry object. If you set the registry entry to
+     * be HKCU\Software\Company\Product\key\value there will only be
+     * HKCU\Software\Company\Product\key\ in the registry.
+     * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
+     */
+    LONG removeValue()
+    {
+        RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey);
+        return RegDeleteValue(m_hKey, (LPCTSTR)m_key);
+    }
+
+public: //members
+    HKEY m_base; ///< handle to the registry base
+    HKEY m_hKey; ///< handle to the open registry key
+    CString m_key; ///< the name of the value
+    CString m_path; ///< the path to the key
 };
 
 /**
@@ -147,43 +156,43 @@ public:	//members
 class CRegDWORD : public CRegBase
 {
 public:
-	CRegDWORD(void);
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
-	CRegDWORD(CString key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegDWORD(void);
-	/**
-	 * reads the assigned value from the registry. Use this method only if you think the registry
-	 * value could have been altered without using the CRegDWORD object.
-	 * \return the read value
-	 */
-	DWORD	read();						///< reads the value from the registry
-	void	write();					///< writes the value to the registry
+    CRegDWORD(void);
+    /**
+     * Constructor.
+     * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+     * \param def the default value used when the key does not exist or a read error occured
+     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     */
+    CRegDWORD(CString key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegDWORD(void);
+    /**
+     * reads the assigned value from the registry. Use this method only if you think the registry
+     * value could have been altered without using the CRegDWORD object.
+     * \return the read value
+     */
+    DWORD read(); ///< reads the value from the registry
+    void write(); ///< writes the value to the registry
 
-	operator DWORD();
-	CRegDWORD& operator=(DWORD d);
-	CRegDWORD& operator+=(DWORD d) { return *this = *this + d;}
-	CRegDWORD& operator-=(DWORD d) { return *this = *this - d;}
-	CRegDWORD& operator*=(DWORD d) { return *this = *this * d;}
-	CRegDWORD& operator/=(DWORD d) { return *this = *this / d;}
-	CRegDWORD& operator%=(DWORD d) { return *this = *this % d;}
-	CRegDWORD& operator<<=(DWORD d) { return *this = *this << d;}
-	CRegDWORD& operator>>=(DWORD d) { return *this = *this >> d;}
-	CRegDWORD& operator&=(DWORD d) { return *this = *this & d;}
-	CRegDWORD& operator|=(DWORD d) { return *this = *this | d;}
-	CRegDWORD& operator^=(DWORD d) { return *this = *this ^ d;}
-	
+    operator DWORD();
+    CRegDWORD& operator=(DWORD d);
+    CRegDWORD& operator+=(DWORD d) { return *this = *this + d; }
+    CRegDWORD& operator-=(DWORD d) { return *this = *this - d; }
+    CRegDWORD& operator*=(DWORD d) { return *this = *this * d; }
+    CRegDWORD& operator/=(DWORD d) { return *this = *this / d; }
+    CRegDWORD& operator%=(DWORD d) { return *this = *this % d; }
+    CRegDWORD& operator<<=(DWORD d) { return *this = *this << d; }
+    CRegDWORD& operator>>=(DWORD d) { return *this = *this >> d; }
+    CRegDWORD& operator&=(DWORD d) { return *this = *this & d; }
+    CRegDWORD& operator|=(DWORD d) { return *this = *this | d; }
+    CRegDWORD& operator^=(DWORD d) { return *this = *this ^ d; }
+
 protected:
 
-	DWORD	m_value;					///< the cached value of the registry
-	DWORD	m_defaultvalue;				///< the default value to use
-	BOOL	m_read;						///< indicates if the value has already been read from the registry
-	BOOL	m_force;					///< indicates if no cache should be used, i.e. always read and write directly from registry
+    DWORD m_value; ///< the cached value of the registry
+    DWORD m_defaultvalue; ///< the default value to use
+    BOOL m_read; ///< indicates if the value has already been read from the registry
+    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 /**
@@ -257,32 +266,31 @@ protected:
 class CRegString : public CRegBase
 {
 public:
-	CRegString();
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
-	CRegString(CString key, CString def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegString(void);
-	
-	CString read();						///< reads the value from the registry
-	void	write();					///< writes the value to the registry
-		
-	operator CString();
-	CRegString& operator=(CString s);
-	CRegString& operator+=(CString s) { return *this = (CString)*this + s; }
-	
-	
-	
+    CRegString();
+    /**
+     * Constructor.
+     * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+     * \param def the default value used when the key does not exist or a read error occured
+     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     */
+    CRegString(CString key, CString def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegString(void);
+
+    CString read(); ///< reads the value from the registry
+    void write(); ///< writes the value to the registry
+
+    operator CString();
+    CRegString& operator=(CString s);
+    CRegString& operator+=(CString s) { return *this = (CString)*this + s; }
+
+
 protected:
 
-	CString	m_value;					///< the cached value of the registry
-	CString	m_defaultvalue;				///< the default value to use
-	BOOL	m_read;						///< indicates if the value has already been read from the registry
-	BOOL	m_force;					///< indicates if no cache should be used, i.e. always read and write directly from registry
+    CString m_value; ///< the cached value of the registry
+    CString m_defaultvalue; ///< the default value to use
+    BOOL m_read; ///< indicates if the value has already been read from the registry
+    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 /**
@@ -359,13 +367,13 @@ class CRegRect : public CRegBase
 {
 public:
 	CRegRect();
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
+/**
+ * Constructor.
+ * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+ * \param def the default value used when the key does not exist or a read error occured
+ * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+ * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+ */
 	CRegRect(CString key, CRect def = CRect(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
 	~CRegRect(void);
 	
@@ -467,33 +475,33 @@ protected:
 class CRegPoint : public CRegBase
 {
 public:
-	CRegPoint();
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
-	CRegPoint(CString key, CPoint def = CPoint(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegPoint(void);
-	
-	CPoint read();
-	void	write();					///< writes the value to the registry
-	
-	operator CPoint();
-	CRegPoint& operator=(CPoint p);
-	
-	CRegPoint& operator+=(CPoint p) { return *this = p + *this; }
-	CRegPoint& operator-=(CPoint p) { return *this = p - *this; }
-	
-	
+    CRegPoint();
+    /**
+     * Constructor.
+     * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+     * \param def the default value used when the key does not exist or a read error occured
+     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     */
+    CRegPoint(CString key, CPoint def = CPoint(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegPoint(void);
+
+    CPoint read();
+    void write(); ///< writes the value to the registry
+
+    operator CPoint();
+    CRegPoint& operator=(CPoint p);
+
+    CRegPoint& operator+=(CPoint p) { return *this = p + *this; }
+    CRegPoint& operator-=(CPoint p) { return *this = p - *this; }
+
+
 protected:
 
-	CPoint	m_value;					///< the cached value of the registry
-	CPoint	m_defaultvalue;				///< the default value to use
-	BOOL	m_read;						///< indicates if the value has already been read from the registry
-	BOOL	m_force;					///< indicates if no cache should be used, i.e. always read and write directly from registry
+    CPoint m_value; ///< the cached value of the registry
+    CPoint m_defaultvalue; ///< the default value to use
+    BOOL m_read; ///< indicates if the value has already been read from the registry
+    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 #endif
@@ -502,27 +510,36 @@ typedef std::basic_string<TCHAR> stdstring;
 
 class CRegStdBase
 {
-public:	//methods
-	/**
-	 * Removes the whole registry key including all values. So if you set the registry
-	 * entry to be HKCU\Software\Company\Product\key\value there will only be
-	 * HKCU\Software\Company\Product key in the registry.
-	 * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
-	 */
-	DWORD removeKey() { RegOpenKeyEx(m_base, m_path.c_str(), 0, KEY_WRITE, &m_hKey); return SHDeleteKey(m_base, m_path.c_str()); }
-	/**
-	 * Removes the value of the registry object. If you set the registry entry to
-	 * be HKCU\Software\Company\Product\key\value there will only be
-	 * HKCU\Software\Company\Product\key\ in the registry.
-	 * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
-	 */
-	LONG removeValue() { RegOpenKeyEx(m_base, m_path.c_str(), 0, KEY_WRITE, &m_hKey); return RegDeleteValue(m_hKey, m_key.c_str()); }
+public: //methods
+    /**
+     * Removes the whole registry key including all values. So if you set the registry
+     * entry to be HKCU\Software\Company\Product\key\value there will only be
+     * HKCU\Software\Company\Product key in the registry.
+     * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
+     */
+    DWORD removeKey()
+    {
+        RegOpenKeyEx(m_base, m_path.c_str(), 0, KEY_WRITE, &m_hKey);
+        return SHDeleteKey(m_base, m_path.c_str());
+    }
 
-public:	//members
-	HKEY m_base;		///< handle to the registry base
-	HKEY m_hKey;		///< handle to the open registry key
-	stdstring m_key;		///< the name of the value
-	stdstring m_path;		///< the path to the key
+    /**
+     * Removes the value of the registry object. If you set the registry entry to
+     * be HKCU\Software\Company\Product\key\value there will only be
+     * HKCU\Software\Company\Product\key\ in the registry.
+     * \return ERROR_SUCCESS or an nonzero errorcode. Use FormatMessage() to get an error description.
+     */
+    LONG removeValue()
+    {
+        RegOpenKeyEx(m_base, m_path.c_str(), 0, KEY_WRITE, &m_hKey);
+        return RegDeleteValue(m_hKey, m_key.c_str());
+    }
+
+public: //members
+    HKEY m_base; ///< handle to the registry base
+    HKEY m_hKey; ///< handle to the open registry key
+    stdstring m_key; ///< the name of the value
+    stdstring m_path; ///< the path to the key
 };
 
 /**
@@ -577,34 +594,34 @@ public:	//members
 class CRegStdString : public CRegStdBase
 {
 public:
-	CRegStdString();
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
-	CRegStdString(stdstring key, stdstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegStdString(void);
-	
-	stdstring read();						///< reads the value from the registry
-	void	write();					///< writes the value to the registry
-		
-	operator stdstring();
-	CRegStdString& operator=(stdstring s);
-	//CAL! Commended out the following as otherwise we get error C2440. We don't
-	//     use this function anyway.
-	//CRegStdString& operator+=(stdstring s) { return *this = (stdstring)*this + s; }
-	operator LPCTSTR();
-	
-	
+    CRegStdString();
+    /**
+     * Constructor.
+     * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+     * \param def the default value used when the key does not exist or a read error occured
+     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     */
+    CRegStdString(stdstring key, stdstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegStdString(void);
+
+    stdstring read(); ///< reads the value from the registry
+    void write(); ///< writes the value to the registry
+
+    operator stdstring();
+    CRegStdString& operator=(stdstring s);
+    //CAL! Commended out the following as otherwise we get error C2440. We don't
+    //     use this function anyway.
+    //CRegStdString& operator+=(stdstring s) { return *this = (stdstring)*this + s; }
+    operator LPCTSTR();
+
+
 protected:
 
-	stdstring	m_value;				///< the cached value of the registry
-	stdstring	m_defaultvalue;			///< the default value to use
-	BOOL	m_read;						///< indicates if the value has already been read from the registry
-	BOOL	m_force;					///< indicates if no cache should be used, i.e. always read and write directly from registry
+    stdstring m_value; ///< the cached value of the registry
+    stdstring m_defaultvalue; ///< the default value to use
+    BOOL m_read; ///< indicates if the value has already been read from the registry
+    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 /**
@@ -668,39 +685,38 @@ protected:
 class CRegStdWORD : public CRegStdBase
 {
 public:
-	CRegStdWORD();
-	/**
-	 * Constructor.
-	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
-	 * \param def the default value used when the key does not exist or a read error occured
-	 * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
-	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
-	 */
-	CRegStdWORD(stdstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegStdWORD(void);
-	
-	DWORD read();						///< reads the value from the registry
-	void	write();					///< writes the value to the registry
-		
-	operator DWORD();
-	CRegStdWORD& operator=(DWORD d);
-	CRegStdWORD& operator+=(DWORD d) { return *this = *this + d;}
-	CRegStdWORD& operator-=(DWORD d) { return *this = *this - d;}
-	CRegStdWORD& operator*=(DWORD d) { return *this = *this * d;}
-	CRegStdWORD& operator/=(DWORD d) { return *this = *this / d;}
-	CRegStdWORD& operator%=(DWORD d) { return *this = *this % d;}
-	CRegStdWORD& operator<<=(DWORD d) { return *this = *this << d;}
-	CRegStdWORD& operator>>=(DWORD d) { return *this = *this >> d;}
-	CRegStdWORD& operator&=(DWORD d) { return *this = *this & d;}
-	CRegStdWORD& operator|=(DWORD d) { return *this = *this | d;}
-	CRegStdWORD& operator^=(DWORD d) { return *this = *this ^ d;}
-	
-	
+    CRegStdWORD();
+    /**
+     * Constructor.
+     * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
+     * \param def the default value used when the key does not exist or a read error occured
+     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     */
+    CRegStdWORD(stdstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegStdWORD(void);
+
+    DWORD read(); ///< reads the value from the registry
+    void write(); ///< writes the value to the registry
+
+    operator DWORD();
+    CRegStdWORD& operator=(DWORD d);
+    CRegStdWORD& operator+=(DWORD d) { return *this = *this + d; }
+    CRegStdWORD& operator-=(DWORD d) { return *this = *this - d; }
+    CRegStdWORD& operator*=(DWORD d) { return *this = *this * d; }
+    CRegStdWORD& operator/=(DWORD d) { return *this = *this / d; }
+    CRegStdWORD& operator%=(DWORD d) { return *this = *this % d; }
+    CRegStdWORD& operator<<=(DWORD d) { return *this = *this << d; }
+    CRegStdWORD& operator>>=(DWORD d) { return *this = *this >> d; }
+    CRegStdWORD& operator&=(DWORD d) { return *this = *this & d; }
+    CRegStdWORD& operator|=(DWORD d) { return *this = *this | d; }
+    CRegStdWORD& operator^=(DWORD d) { return *this = *this ^ d; }
+
+
 protected:
 
-	DWORD	m_value;				///< the cached value of the registry
-	DWORD	m_defaultvalue;			///< the default value to use
-	BOOL	m_read;					///< indicates if the value has already been read from the registry
-	BOOL	m_force;				///< indicates if no cache should be used, i.e. always read and write directly from registry
+    DWORD m_value; ///< the cached value of the registry
+    DWORD m_defaultvalue; ///< the default value to use
+    BOOL m_read; ///< indicates if the value has already been read from the registry
+    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
-	

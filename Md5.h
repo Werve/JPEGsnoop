@@ -88,19 +88,20 @@ typedef unsigned long int UINT4;
 #endif
 
 /* Data structure for MD5 (Message Digest) computation */
-typedef struct {
-	UINT4 i[2];                   /* Number of _bits_ handled mod 2^64 */
-	UINT4 buf[4];                                    /* Scratch buffer */
-	unsigned char in[64];                              /* Input buffer */
-	unsigned char digest[16];     /* Actual digest after MD5Final call */
+typedef struct
+{
+    UINT4 i[2]; /* Number of _bits_ handled mod 2^64 */
+    UINT4 buf[4]; /* Scratch buffer */
+    unsigned char in[64]; /* Input buffer */
+    unsigned char digest[16]; /* Actual digest after MD5Final call */
 
-	unsigned int digest32[4]; //CAL! Added
+    unsigned int digest32[4]; //CAL! Added
 } MD5_CTX;
 
-static void MD5_Transform (UINT4 *buf, UINT4 *in);
+static void MD5_Transform(UINT4* buf, UINT4* in);
 
-void MD5Init(MD5_CTX *mdContext, unsigned long pseudoRandomNumber = 0);
-void MD5Update(MD5_CTX *mdContext, unsigned char *inBuf, unsigned int inLen);
-void MD5Final(MD5_CTX *mdContext);
+void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber = 0);
+void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen);
+void MD5Final(MD5_CTX* mdContext);
 
 #endif /* ___MD5_H___ included */

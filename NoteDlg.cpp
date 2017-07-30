@@ -27,10 +27,11 @@
 // CNoteDlg dialog
 
 IMPLEMENT_DYNAMIC(CNoteDlg, CDialog)
+
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CNoteDlg::IDD, pParent)
-	, strMsg(_T(""))
-	, bCoachOff(TRUE)
+    : CDialog(CNoteDlg::IDD, pParent)
+      , strMsg(_T(""))
+      , bCoachOff(TRUE)
 {
 }
 
@@ -40,9 +41,9 @@ CNoteDlg::~CNoteDlg()
 
 void CNoteDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_MSG, strMsg);
-	DDX_Check(pDX, IDC_COACH_OFF, bCoachOff);
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_MSG, strMsg);
+    DDX_Check(pDX, IDC_COACH_OFF, bCoachOff);
 }
 
 

@@ -46,92 +46,92 @@
 //
 
 // Define global variable for application log
-extern CDocLog*	glb_pDocLog;
+extern CDocLog* glb_pDocLog;
 
 
 class CJPEGsnoopApp : public CWinApp
 {
 public:
-	CJPEGsnoopApp();
-	~CJPEGsnoopApp();
+    CJPEGsnoopApp();
+    ~CJPEGsnoopApp();
 
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL	InitInstance();
+    virtual BOOL InitInstance();
 
-// Implementation
-	afx_msg void	OnAppAbout();
+    // Implementation
+    afx_msg void OnAppAbout();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 private:
-	void			MyOnFileOpen();
-	void			MyOnFileNew();
+    void MyOnFileOpen();
+    void MyOnFileNew();
 
-	void			DoCmdLineCore();
-	void			CmdLineHelp();
-	void			CmdLineMessage(CString strMsg);
-	void			CmdLineDoneMessage();
+    void DoCmdLineCore();
+    void CmdLineHelp();
+    void CmdLineMessage(CString strMsg);
+    void CmdLineDoneMessage();
 
-	void			CheckUpdates(bool bForceNow);
-	bool			CheckUpdatesWww();
-	bool			CheckEula();
-	CString			RemoveTokenWithSeparators(CString& strText, LPCTSTR szCharSet);
-	CString			RemoveTokenFromCharset(CString& strText, LPCTSTR szCharSet);
-	CJPEGsnoopDoc*	GetCurDoc();
-	void			DocReprocess();
-	void			DocImageDirty();
-	void			HandleAutoReprocess();
+    void CheckUpdates(bool bForceNow);
+    bool CheckUpdatesWww();
+    bool CheckEula();
+    CString RemoveTokenWithSeparators(CString& strText, LPCTSTR szCharSet);
+    CString RemoveTokenFromCharset(CString& strText, LPCTSTR szCharSet);
+    CJPEGsnoopDoc* GetCurDoc();
+    void DocReprocess();
+    void DocImageDirty();
+    void HandleAutoReprocess();
 
-	HINSTANCE		LoadAppLangResourceDLL();	// MFC override
+    HINSTANCE LoadAppLangResourceDLL(); // MFC override
 
-	afx_msg void	OnOptionsDhtexpand();
-	afx_msg void	OnOptionsMakernotes();
-	afx_msg void	OnOptionsScandump();
-	afx_msg void	OnOptionsDecodescan();
-	afx_msg void	OnOptionsHistoydump();
-	afx_msg void	OnUpdateOptionsDhtexpand(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateOptionsMakernotes(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateOptionsScandump(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateOptionsDecodescan(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateOptionsHistoydump(CCmdUI *pCmdUI);
-	afx_msg void	OnOptionsConfiguration();
-	afx_msg void	OnOptionsCheckforupdates();
-	afx_msg void	OnToolsManagelocaldb();
-	afx_msg void	OnOptionsSignaturesearch();
-	afx_msg void	OnUpdateOptionsSignaturesearch(CCmdUI *pCmdUI);
-	afx_msg void	OnOptionsDecodeac();
-	afx_msg void	OnUpdateOptionsDecodeac(CCmdUI *pCmdUI);
-	afx_msg void	OnScansegmentDecodeimage();
-	afx_msg void	OnScansegmentFullidct();
-	afx_msg void	OnScansegmentHistogramy();
-	afx_msg void	OnScansegmentDump();
-	afx_msg void	OnUpdateScansegmentDecodeimage(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateScansegmentFullidct(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateScansegmentHistogramy(CCmdUI *pCmdUI);
-	afx_msg void	OnUpdateScansegmentDump(CCmdUI *pCmdUI);
-	afx_msg void	OnScansegmentNoidct();
-	afx_msg void	OnUpdateScansegmentNoidct(CCmdUI *pCmdUI);
-	afx_msg void	OnScansegmentHistogram();
-	afx_msg void	OnUpdateScansegmentHistogram(CCmdUI *pCmdUI);
-	afx_msg void	OnOptionsHideuknownexiftags();
-	afx_msg void	OnUpdateOptionsHideuknownexiftags(CCmdUI *pCmdUI);
-	afx_msg void	OnFileBatchprocess();
+    afx_msg void OnOptionsDhtexpand();
+    afx_msg void OnOptionsMakernotes();
+    afx_msg void OnOptionsScandump();
+    afx_msg void OnOptionsDecodescan();
+    afx_msg void OnOptionsHistoydump();
+    afx_msg void OnUpdateOptionsDhtexpand(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateOptionsMakernotes(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateOptionsScandump(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateOptionsDecodescan(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateOptionsHistoydump(CCmdUI* pCmdUI);
+    afx_msg void OnOptionsConfiguration();
+    afx_msg void OnOptionsCheckforupdates();
+    afx_msg void OnToolsManagelocaldb();
+    afx_msg void OnOptionsSignaturesearch();
+    afx_msg void OnUpdateOptionsSignaturesearch(CCmdUI* pCmdUI);
+    afx_msg void OnOptionsDecodeac();
+    afx_msg void OnUpdateOptionsDecodeac(CCmdUI* pCmdUI);
+    afx_msg void OnScansegmentDecodeimage();
+    afx_msg void OnScansegmentFullidct();
+    afx_msg void OnScansegmentHistogramy();
+    afx_msg void OnScansegmentDump();
+    afx_msg void OnUpdateScansegmentDecodeimage(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateScansegmentFullidct(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateScansegmentHistogramy(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateScansegmentDump(CCmdUI* pCmdUI);
+    afx_msg void OnScansegmentNoidct();
+    afx_msg void OnUpdateScansegmentNoidct(CCmdUI* pCmdUI);
+    afx_msg void OnScansegmentHistogram();
+    afx_msg void OnUpdateScansegmentHistogram(CCmdUI* pCmdUI);
+    afx_msg void OnOptionsHideuknownexiftags();
+    afx_msg void OnUpdateOptionsHideuknownexiftags(CCmdUI* pCmdUI);
+    afx_msg void OnFileBatchprocess();
 
 public:
-	// Main config options
-	CSnoopConfig*	m_pAppConfig;
+    // Main config options
+    CSnoopConfig* m_pAppConfig;
 
-	// Needs to be accessed by JfifDec
-	CDbSigs*		m_pDbSigs;
+    // Needs to be accessed by JfifDec
+    CDbSigs* m_pDbSigs;
 
 private:
-	bool			m_bFatal;		// Fatal error occurred (e.g. mem alloc)
+    bool m_bFatal; // Fatal error occurred (e.g. mem alloc)
 
 public:
-	afx_msg void OnOptionsRelaxedparsing();
-	afx_msg void OnUpdateOptionsRelaxedparsing(CCmdUI *pCmdUI);
+    afx_msg void OnOptionsRelaxedparsing();
+    afx_msg void OnUpdateOptionsRelaxedparsing(CCmdUI* pCmdUI);
 };
 
 extern CJPEGsnoopApp theApp;

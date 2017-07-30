@@ -36,25 +36,28 @@
 
 class CBatchDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CBatchDlg)
+    DECLARE_DYNAMIC(CBatchDlg)
 
 public:
-	CBatchDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CBatchDlg();
+    CBatchDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CBatchDlg();
 
-// Dialog Data
-	enum { IDD = IDD_BATCHDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_BATCHDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void	OnBnClickedBtnDirSrcBrowse();
-	afx_msg void	OnBnClickedBtnDirDstBrowse();
+    afx_msg void OnBnClickedBtnDirSrcBrowse();
+    afx_msg void OnBnClickedBtnDirDstBrowse();
 
-	BOOL			m_bProcessSubdir;
-	BOOL			m_bExtractAll;
-	CString			m_strDirSrc;
-	CString			m_strDirDst;
+    BOOL m_bProcessSubdir;
+    BOOL m_bExtractAll;
+    CString m_strDirSrc;
+    CString m_strDirDst;
 };

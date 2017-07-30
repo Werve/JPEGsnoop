@@ -31,28 +31,31 @@
 
 class CDbSubmitDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CDbSubmitDlg)
+    DECLARE_DYNAMIC(CDbSubmitDlg)
 
 public:
-	CDbSubmitDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CDbSubmitDlg();
+    CDbSubmitDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CDbSubmitDlg();
 
-// Dialog Data
-	enum { IDD = IDD_DBSUBMITDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_DBSUBMITDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	CString			m_strSig;
-	CString			m_strExifModel;
-	CString			m_strExifSoftware;
-	CString			m_strExifMake;
-	CString			m_strQual;
-	CString			m_strUserSoftware;
-	int				m_nSource;
-	CString			m_strNotes;
+    CString m_strSig;
+    CString m_strExifModel;
+    CString m_strExifSoftware;
+    CString m_strExifMake;
+    CString m_strQual;
+    CString m_strUserSoftware;
+    int m_nSource;
+    CString m_strNotes;
 
-	afx_msg void	OnBnClickedOk();
+    afx_msg void OnBnClickedOk();
 };

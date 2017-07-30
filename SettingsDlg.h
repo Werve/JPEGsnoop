@@ -30,31 +30,34 @@
 
 class CSettingsDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CSettingsDlg)
+    DECLARE_DYNAMIC(CSettingsDlg)
 
 public:
-	CSettingsDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CSettingsDlg();
+    CSettingsDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CSettingsDlg();
 
-// Dialog Data
-	enum { IDD = IDD_SETTINGSDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_SETTINGSDLG
+    };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
-	afx_msg void	OnBnClickedDbDirBrowse();
-	CString			SelectFolder(const CString& strMessage);
-	LPITEMIDLIST	ConvertPathToLpItemIdList(const char *pszPath);
-	afx_msg void	OnBnClickedDbDirDefault();
-	afx_msg void	OnBnClickedCoachReset();
+    afx_msg void OnBnClickedDbDirBrowse();
+    CString SelectFolder(const CString& strMessage);
+    LPITEMIDLIST ConvertPathToLpItemIdList(const char* pszPath);
+    afx_msg void OnBnClickedDbDirDefault();
+    afx_msg void OnBnClickedCoachReset();
 
 public:
-	CString			m_strDbDir;
-	BOOL			m_bUpdateAuto;
-	UINT			m_nUpdateChkDays;
-	BOOL			m_bReprocessAuto;
-	BOOL			m_bDbSubmitNet;
-	UINT			m_nRptErrMaxScanDecode;
+    CString m_strDbDir;
+    BOOL m_bUpdateAuto;
+    UINT m_nUpdateChkDays;
+    BOOL m_bReprocessAuto;
+    BOOL m_bDbSubmitNet;
+    UINT m_nRptErrMaxScanDecode;
 };

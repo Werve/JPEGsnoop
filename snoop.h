@@ -96,74 +96,88 @@
 #define	MAX_BUF_EX_ERR_MSG	512
 
 // Preview Modes
-enum tePreviewMode {
-	PREVIEW_NONE=0,			// Preview not calculated yet
-	PREVIEW_RGB,
-	PREVIEW_YCC,
-	PREVIEW_R,
-	PREVIEW_G,
-	PREVIEW_B,
-	PREVIEW_Y,
-	PREVIEW_CB,
-	PREVIEW_CR,
+enum tePreviewMode
+{
+    PREVIEW_NONE=0, // Preview not calculated yet
+    PREVIEW_RGB,
+    PREVIEW_YCC,
+    PREVIEW_R,
+    PREVIEW_G,
+    PREVIEW_B,
+    PREVIEW_Y,
+    PREVIEW_CB,
+    PREVIEW_CR,
 };
 
-enum tePreviewZoom {
-	PRV_ZOOMBEGIN=0,
-	PRV_ZOOM_12,
-	PRV_ZOOM_25,
-	PRV_ZOOM_50,
-	PRV_ZOOM_100,
-	PRV_ZOOM_150,
-	PRV_ZOOM_200,
-	PRV_ZOOM_300,
-	PRV_ZOOM_400,
-	PRV_ZOOM_800,
-	PRV_ZOOMEND,
+enum tePreviewZoom
+{
+    PRV_ZOOMBEGIN=0,
+    PRV_ZOOM_12,
+    PRV_ZOOM_25,
+    PRV_ZOOM_50,
+    PRV_ZOOM_100,
+    PRV_ZOOM_150,
+    PRV_ZOOM_200,
+    PRV_ZOOM_300,
+    PRV_ZOOM_400,
+    PRV_ZOOM_800,
+    PRV_ZOOMEND,
 };
 
 // DB Signature modes
-enum teSource {
-	ENUM_SOURCE_UNSET=0,
-	ENUM_SOURCE_CAM,
-	ENUM_SOURCE_SW,
-	ENUM_SOURCE_UNSURE,
+enum teSource
+{
+    ENUM_SOURCE_UNSET=0,
+    ENUM_SOURCE_CAM,
+    ENUM_SOURCE_SW,
+    ENUM_SOURCE_UNSURE,
 };
 
-enum teMaker {
-	ENUM_MAKER_UNSET=0,
-	ENUM_MAKER_PRESENT,
-	ENUM_MAKER_NONE,
+enum teMaker
+{
+    ENUM_MAKER_UNSET=0,
+    ENUM_MAKER_PRESENT,
+    ENUM_MAKER_NONE,
 };
 
-enum teEdited {
-	EDITED_UNSET=0,
-	EDITED_YES,
-	EDITED_NO,
-	EDITED_UNSURE,
-	EDITED_YESPROB,	// Probably edited
+enum teEdited
+{
+    EDITED_UNSET=0,
+    EDITED_YES,
+    EDITED_NO,
+    EDITED_UNSURE,
+    EDITED_YESPROB, // Probably edited
 };
 
-enum teDbAdd {
-	DB_ADD_SUGGEST_UNSET=0,
-	DB_ADD_SUGGEST_CAM,
-	DB_ADD_SUGGEST_SW,
+enum teDbAdd
+{
+    DB_ADD_SUGGEST_UNSET=0,
+    DB_ADD_SUGGEST_CAM,
+    DB_ADD_SUGGEST_SW,
 };
 
-enum teEditor {
-	ENUM_EDITOR_UNSET=0,
-	ENUM_EDITOR_CAM,
-	ENUM_EDITOR_SW,
-	ENUM_EDITOR_UNSURE,
+enum teEditor
+{
+    ENUM_EDITOR_UNSET=0,
+    ENUM_EDITOR_CAM,
+    ENUM_EDITOR_SW,
+    ENUM_EDITOR_UNSURE,
 };
 
-enum teLandscape {
-	ENUM_LANDSCAPE_UNSET=0,
-	ENUM_LANDSCAPE_YES,
-	ENUM_LANDSCAPE_NO,
+enum teLandscape
+{
+    ENUM_LANDSCAPE_UNSET=0,
+    ENUM_LANDSCAPE_YES,
+    ENUM_LANDSCAPE_NO,
 };
 
-enum teOffsetMode {DEC_OFFSET_START,DEC_OFFSET_SRCH1,DEC_OFFSET_SRCH2,DEC_OFFSET_POS};
+enum teOffsetMode
+{
+    DEC_OFFSET_START,
+    DEC_OFFSET_SRCH1,
+    DEC_OFFSET_SRCH2,
+    DEC_OFFSET_POS
+};
 
 // Define a few coach messages
 
@@ -174,4 +188,3 @@ enum teOffsetMode {DEC_OFFSET_START,DEC_OFFSET_SRCH1,DEC_OFFSET_SRCH2,DEC_OFFSET
 	_T("can be enabled in [Options->Scan Segment->Full IDCT], but it is slower.")
 #define COACH_DECODE_IDCT_AC _T("Currently decoding high-res view (AC+DC), which can be slow. For faster ")\
 	_T("operation, low-resolution image decode can be enabled in [Options->Scan Segment->No IDCT].")
-

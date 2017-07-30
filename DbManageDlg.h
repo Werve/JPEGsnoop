@@ -38,35 +38,35 @@
 
 class CDbManageDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CDbManageDlg)
+    DECLARE_DYNAMIC(CDbManageDlg)
 
 public:
-	CDbManageDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CDbManageDlg();
+    CDbManageDlg(CWnd* pParent = NULL); // standard constructor
+    virtual ~CDbManageDlg();
 
-// Dialog Data
-	enum { IDD = IDD_DBMANAGEDLG };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_DBMANAGEDLG
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	void			InsertEntry(unsigned ind,CString strMake, CString strModel, CString strQual, CString strSig);
-	void			PopulateList();
-	void			GetRemainIndices(CUIntArray& anRemain);
+    void InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig);
+    void PopulateList();
+    void GetRemainIndices(CUIntArray& anRemain);
 
 private:
-	virtual BOOL	OnInitDialog();
-	afx_msg void	OnBnClickedRemove();
-	afx_msg void	OnBnClickedRemoveall();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnBnClickedRemove();
+    afx_msg void OnBnClickedRemoveall();
 
 private:
-	CListBox		m_ctlListBox;		// Listbox representing custom signatures
-	CStringArray	m_asToInsert;		// Entries to be added to Listbox via PopulateList()
+    CListBox m_ctlListBox; // Listbox representing custom signatures
+    CStringArray m_asToInsert; // Entries to be added to Listbox via PopulateList()
 
-	CUIntArray		m_anListBoxInd;		// Index of entries currently in listBox  (e.g 1,2,4,7,15)
-
-
-
+    CUIntArray m_anListBoxInd; // Index of entries currently in listBox  (e.g 1,2,4,7,15)
 };

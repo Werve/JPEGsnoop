@@ -31,21 +31,24 @@
 class CAboutDlg : public CDialog
 {
 public:
-	CAboutDlg();
+    CAboutDlg();
 
-// Dialog Data
-	enum { IDD = IDD_ABOUTBOX };
+    // Dialog Data
+    enum
+    {
+        IDD = IDD_ABOUTBOX
+    };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-// Implementation
+    // Implementation
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL		OnInitDialog();
+    virtual BOOL OnInitDialog();
 
-	CHyperlinkStatic	m_staticURL;
-	CHyperlinkStatic	m_staticURLdoc;
-	CString				m_staticVerNum;
+    CHyperlinkStatic m_staticURL;
+    CHyperlinkStatic m_staticURLdoc;
+    CString m_staticVerNum;
 };

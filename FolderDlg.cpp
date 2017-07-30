@@ -28,7 +28,6 @@
 // ====================================================================================================
 
 
-
 //////////////////////////////////////////////////////////////////
 // MSDN Magazine -- June 2005
 // If this code works, it was written by Paul DiLascia.
@@ -69,21 +68,21 @@ IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget);
 //
 CFolderDialog::CFolderDialog(CWnd* pWnd)
 {
-	pWnd;	// Unreferenced param
+    pWnd; // Unreferenced param
 
-	//CAL! Modified the following to allow us to call this
-	//     routine without a parent window defined. This
-	//     is a temporary workaround so that I can call
-	//     CFolderDialog() from the JPEGsnoopDoc class.
+    //CAL! Modified the following to allow us to call this
+    //     routine without a parent window defined. This
+    //     is a temporary workaround so that I can call
+    //     CFolderDialog() from the JPEGsnoopDoc class.
 
-//CAL!	ASSERT(pWnd);
-	memset(&m_brinfo,0,sizeof(m_brinfo));
-//CAL!	m_brinfo.hwndOwner=pWnd->m_hWnd;		 // use parent window
-	m_bFilter = FALSE;						 // default: no filtering
-	SHGetDesktopFolder(&m_shfRoot);		 // get root IShellFolder
+    //CAL!	ASSERT(pWnd);
+    memset(&m_brinfo, 0, sizeof(m_brinfo));
+    //CAL!	m_brinfo.hwndOwner=pWnd->m_hWnd;		 // use parent window
+    m_bFilter = FALSE; // default: no filtering
+    SHGetDesktopFolder(&m_shfRoot); // get root IShellFolder
 
-	//CAL! Add support for start path
-	m_strStartPath = "";
+    //CAL! Add support for start path
+    m_strStartPath = "";
 }
 
 //////////////////
@@ -100,25 +99,25 @@ CFolderDialog::~CFolderDialog()
 // careful!
 //
 LPCITEMIDLIST CFolderDialog::BrowseForFolder(LPCTSTR title, UINT flags,
-	LPCITEMIDLIST root, BOOL bFilter)
+                                             LPCITEMIDLIST root, BOOL bFilter)
 {
-	//BFTRACE(_T("CFolderDialog::BrowseForFolder\n"));
-	TCHAR* buf = m_sDisplayName.GetBuffer(MAX_PATH);
-	m_brinfo.pidlRoot = root;
-	m_brinfo.pszDisplayName = buf;
-	m_brinfo.lpszTitle = title;
-	m_brinfo.ulFlags = flags;
-	m_brinfo.lpfn = CallbackProc;
-	m_brinfo.lParam = (LPARAM)this;
+    //BFTRACE(_T("CFolderDialog::BrowseForFolder\n"));
+    TCHAR* buf = m_sDisplayName.GetBuffer(MAX_PATH);
+    m_brinfo.pidlRoot = root;
+    m_brinfo.pszDisplayName = buf;
+    m_brinfo.lpszTitle = title;
+    m_brinfo.ulFlags = flags;
+    m_brinfo.lpfn = CallbackProc;
+    m_brinfo.lParam = (LPARAM)this;
 
-	// filtering only supported for new-style dialogs
-	m_bFilter = bFilter;
-	ASSERT(!bFilter||(m_brinfo.ulFlags & BIF_NEWDIALOGSTYLE));
+    // filtering only supported for new-style dialogs
+    m_bFilter = bFilter;
+    ASSERT(!bFilter||(m_brinfo.ulFlags & BIF_NEWDIALOGSTYLE));
 
-	LPCITEMIDLIST pidl = SHBrowseForFolder(&m_brinfo); // do it
-	m_sDisplayName.ReleaseBuffer();
+    LPCITEMIDLIST pidl = SHBrowseForFolder(&m_brinfo); // do it
+    m_sDisplayName.ReleaseBuffer();
 
-	return pidl;
+    return pidl;
 }
 
 //////////////////
@@ -126,33 +125,34 @@ LPCITEMIDLIST CFolderDialog::BrowseForFolder(LPCTSTR title, UINT flags,
 //
 CString CFolderDialog::GetPathName(LPCITEMIDLIST pidl)
 {
-	CString path;
-	TCHAR* buf = path.GetBuffer(MAX_PATH);
-	SHGetPathFromIDList(pidl, buf);
-	path.ReleaseBuffer();
-	return path;
+    CString path;
+    TCHAR* buf = path.GetBuffer(MAX_PATH);
+    SHGetPathFromIDList(pidl, buf);
+    path.ReleaseBuffer();
+    return path;
 }
 
 //CAL! Added
 void CFolderDialog::SetStartPath(CString strPath)
 {
-	m_strStartPath = strPath;
+    m_strStartPath = strPath;
 }
 
 //////////////////
 // Handy function to get the display name from pidl.
 //
 CString CFolderDialog::GetDisplayNameOf(IShellFolder* psf, LPCITEMIDLIST pidl,
-	DWORD uFlags)
+                                        DWORD uFlags)
 {
-	CString dn;
-	STRRET strret;								 // special struct for GetDisplayNameOf
-	strret.uType = STRRET_CSTR;			 // get as CSTR
-	if (SUCCEEDED(psf->GetDisplayNameOf(pidl, uFlags, &strret))) {
-		StrRetToBuf(&strret, pidl, dn.GetBuffer(MAX_PATH), MAX_PATH);
-		dn.ReleaseBuffer();
-	}
-	return dn;
+    CString dn;
+    STRRET strret; // special struct for GetDisplayNameOf
+    strret.uType = STRRET_CSTR; // get as CSTR
+    if (SUCCEEDED(psf->GetDisplayNameOf(pidl, uFlags, &strret)))
+    {
+        StrRetToBuf(&strret, pidl, dn.GetBuffer(MAX_PATH), MAX_PATH);
+        dn.ReleaseBuffer();
+    }
+    return dn;
 }
 
 //////////////////
@@ -160,10 +160,10 @@ CString CFolderDialog::GetDisplayNameOf(IShellFolder* psf, LPCITEMIDLIST pidl,
 //
 void CFolderDialog::FreePIDL(LPCITEMIDLIST pidl)
 {
-	CComQIPtr<IMalloc> iMalloc;	// shell's IMalloc
-	HRESULT hr = SHGetMalloc(&iMalloc);
-	ASSERT(SUCCEEDED(hr));
-	iMalloc->Free((void*)pidl);
+    CComQIPtr<IMalloc> iMalloc; // shell's IMalloc
+    HRESULT hr = SHGetMalloc(&iMalloc);
+    ASSERT(SUCCEEDED(hr));
+    iMalloc->Free((void*)pidl);
 }
 
 //////////////////
@@ -171,16 +171,17 @@ void CFolderDialog::FreePIDL(LPCITEMIDLIST pidl)
 // appropriate virtual function after attaching browser window.
 //
 int CALLBACK CFolderDialog::CallbackProc(HWND hwnd,
-	UINT msg, LPARAM lp, LPARAM lpData)
+                                         UINT msg, LPARAM lp, LPARAM lpData)
 {
-	CFolderDialog* pDlg = (CFolderDialog*)lpData;
-	ASSERT(pDlg);
-	if (pDlg->m_hWnd!=hwnd) {
-		if (pDlg->m_hWnd)
-			pDlg->UnsubclassWindow();
-		pDlg->SubclassWindow(hwnd);
-	}
-	return pDlg->OnMessage(msg, lp);
+    CFolderDialog* pDlg = (CFolderDialog*)lpData;
+    ASSERT(pDlg);
+    if (pDlg->m_hWnd != hwnd)
+    {
+        if (pDlg->m_hWnd)
+            pDlg->UnsubclassWindow();
+        pDlg->SubclassWindow(hwnd);
+    }
+    return pDlg->OnMessage(msg, lp);
 }
 
 //////////////////
@@ -189,31 +190,33 @@ int CALLBACK CFolderDialog::CallbackProc(HWND hwnd,
 //
 int CFolderDialog::OnMessage(UINT msg, LPARAM lp)
 {
-	switch (msg) {
-	case BFFM_INITIALIZED:
-		OnInitialized();
-		//CAL!
-		// Add support for initial start directory
-		if (!m_strStartPath.IsEmpty()) {
-			LPARAM	lpStartPath;
-			lpStartPath = (LPARAM)(m_strStartPath.GetBuffer(1));
-			m_strStartPath.ReleaseBuffer();
-			::SendMessage(this->m_hWnd,BFFM_SETSELECTION,TRUE,lpStartPath);
-		}
-		//CAL!
-		return 0;
-	case BFFM_IUNKNOWN:
-		OnIUnknown((IUnknown*)lp);
-		return 0;
-	case BFFM_SELCHANGED:
-		OnSelChanged((LPCITEMIDLIST)lp);
-		return 0;
-	case BFFM_VALIDATEFAILED:
-		return OnValidateFailed((LPCTSTR)lp);
-	default:
-		TRACE(_T("***Warning: unknown message %d in CFolderDialog::OnMessage\n"));
-	}
-	return 0;
+    switch (msg)
+    {
+    case BFFM_INITIALIZED:
+        OnInitialized();
+        //CAL!
+        // Add support for initial start directory
+        if (!m_strStartPath.IsEmpty())
+        {
+            LPARAM lpStartPath;
+            lpStartPath = (LPARAM)(m_strStartPath.GetBuffer(1));
+            m_strStartPath.ReleaseBuffer();
+            ::SendMessage(this->m_hWnd,BFFM_SETSELECTION,TRUE, lpStartPath);
+        }
+        //CAL!
+        return 0;
+    case BFFM_IUNKNOWN:
+        OnIUnknown((IUnknown*)lp);
+        return 0;
+    case BFFM_SELCHANGED:
+        OnSelChanged((LPCITEMIDLIST)lp);
+        return 0;
+    case BFFM_VALIDATEFAILED:
+        return OnValidateFailed((LPCTSTR)lp);
+    default:
+        TRACE(_T("***Warning: unknown message %d in CFolderDialog::OnMessage\n"));
+    }
+    return 0;
 }
 
 /////////////////
@@ -221,7 +224,7 @@ int CFolderDialog::OnMessage(UINT msg, LPARAM lp)
 //
 void CFolderDialog::OnInitialized()
 {
-	//BFTRACE(_T("CFolderDialog::OnInitialized\n"));
+    //BFTRACE(_T("CFolderDialog::OnInitialized\n"));
 }
 
 /////////////////
@@ -230,14 +233,15 @@ void CFolderDialog::OnInitialized()
 //
 void CFolderDialog::OnIUnknown(IUnknown* punk)
 {
-	//BFTRACE(_T("CFolderDialog::OnIUnknown: %p\n"), punk);
-	if (punk && m_bFilter) {
-		CComQIPtr<IFolderFilterSite> iffs;
-		VERIFY(SUCCEEDED(punk->QueryInterface(IID_IFolderFilterSite, (void**)&iffs)));
-		iffs->SetFilter((IFolderFilter*)&m_xFolderFilter);
-		// smart pointer automatically Releases iffs,
-		// no longer needed once you call SetFilter
-	}
+    //BFTRACE(_T("CFolderDialog::OnIUnknown: %p\n"), punk);
+    if (punk && m_bFilter)
+    {
+        CComQIPtr<IFolderFilterSite> iffs;
+        VERIFY(SUCCEEDED(punk->QueryInterface(IID_IFolderFilterSite, (void**)&iffs)));
+        iffs->SetFilter((IFolderFilter*)&m_xFolderFilter);
+        // smart pointer automatically Releases iffs,
+        // no longer needed once you call SetFilter
+    }
 }
 
 //////////////////
@@ -245,9 +249,9 @@ void CFolderDialog::OnIUnknown(IUnknown* punk)
 //
 void CFolderDialog::OnSelChanged(LPCITEMIDLIST pidl)
 {
-	pidl;	// Unrefernced param
-	//BFTRACE(_T("CFolderDialog::OnSelChanged: %s\n"),
-	//	GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
+    pidl; // Unrefernced param
+    //BFTRACE(_T("CFolderDialog::OnSelChanged: %s\n"),
+    //	GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
 }
 
 //////////////////
@@ -255,66 +259,66 @@ void CFolderDialog::OnSelChanged(LPCITEMIDLIST pidl)
 //
 BOOL CFolderDialog::OnValidateFailed(LPCTSTR lpsz)
 {
-	lpsz;	// Unreferenced param
-	//BFTRACE(_T("CFolderDialog::OnValidateFailed: %s\n"), lpsz);
-	return TRUE; // don't close dialog.
+    lpsz; // Unreferenced param
+    //BFTRACE(_T("CFolderDialog::OnValidateFailed: %s\n"), lpsz);
+    return TRUE; // don't close dialog.
 }
 
 //////////////////
 // Used for custom filtering. You must override to specify filter flags.
 //
 HRESULT CFolderDialog::OnGetEnumFlags(
-	IShellFolder* psf,			// this folder's IShellFolder
-	LPCITEMIDLIST pidlFolder,	// folder's PIDL
-	DWORD *pgrfFlags)				// [out] return flags you want to allow
+    IShellFolder* psf, // this folder's IShellFolder
+    LPCITEMIDLIST pidlFolder, // folder's PIDL
+    DWORD* pgrfFlags) // [out] return flags you want to allow
 {
-	psf;		// Unreferenced param
-	pidlFolder;	// Unreferenced param
-	pgrfFlags;	// Unreferenced param
-	//BFTRACE(_T("CFolderDialog::OnGetEnumFlags(%p): %s\n"),
-	//	psf, GetPathName(pidlFolder));
-	return S_OK;
+    psf; // Unreferenced param
+    pidlFolder; // Unreferenced param
+    pgrfFlags; // Unreferenced param
+    //BFTRACE(_T("CFolderDialog::OnGetEnumFlags(%p): %s\n"),
+    //	psf, GetPathName(pidlFolder));
+    return S_OK;
 }
 
 //////////////////
 // Used for custom filtering. You must override to filter items.
 //
 HRESULT CFolderDialog::OnShouldShow(
-	IShellFolder* psf,			// This folder's IShellFolder
-	LPCITEMIDLIST pidlFolder,	// PIDL for folder containing item
-	LPCITEMIDLIST pidlItem)		// PIDL for item
+    IShellFolder* psf, // This folder's IShellFolder
+    LPCITEMIDLIST pidlFolder, // PIDL for folder containing item
+    LPCITEMIDLIST pidlItem) // PIDL for item
 {
-	psf;		// Unreferenced param
-	pidlFolder;	// Unreferenced param
-	pidlItem;	// Unreferenced param
-	//BFTRACE(_T("CFolderDialog::OnShouldShow(%p): %s: %s\n"), psf,
-	//	GetDisplayNameOf(psf,pidlFolder,SHGDN_NORMAL),
-	//	GetDisplayNameOf(psf,pidlItem,SHGDN_NORMAL));
-	return S_OK;
+    psf; // Unreferenced param
+    pidlFolder; // Unreferenced param
+    pidlItem; // Unreferenced param
+    //BFTRACE(_T("CFolderDialog::OnShouldShow(%p): %s: %s\n"), psf,
+    //	GetDisplayNameOf(psf,pidlFolder,SHGDN_NORMAL),
+    //	GetDisplayNameOf(psf,pidlItem,SHGDN_NORMAL));
+    return S_OK;
 }
 
 //////////////// Standard MFC IUnknown -- nested classes call these ////////////////
 
 STDMETHODIMP_(ULONG) CFolderDialog::AddRef()
 {
-	//BFTRACE(_T("CFolderDialog(%p)::AddRef\n"),this);
-	return ExternalAddRef();
+    //BFTRACE(_T("CFolderDialog(%p)::AddRef\n"),this);
+    return ExternalAddRef();
 }
 
 STDMETHODIMP_(ULONG) CFolderDialog::Release()
 {
-	//BFTRACE(_T("CFolderDialog(%p)::Release\n"), this);
-	return ExternalRelease();
+    //BFTRACE(_T("CFolderDialog(%p)::Release\n"), this);
+    return ExternalRelease();
 }
 
 STDMETHODIMP CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
 {
-	if (ppvRet==NULL)
-		return E_INVALIDARG;
-	//BFTRACE(_T("CFolderDialog(%p)::QueryInterface(%s)\n"),this,_TR(iid));
-	HRESULT hr = ExternalQueryInterface(&iid, ppvRet);
-	//BFTRACE(_T(">CFolderDialog::QueryInterface returns %s, *ppv=%p\n"),_TR(hr),*ppvRet);
-   return hr;
+    if (ppvRet == NULL)
+        return E_INVALIDARG;
+    //BFTRACE(_T("CFolderDialog(%p)::QueryInterface(%s)\n"),this,_TR(iid));
+    HRESULT hr = ExternalQueryInterface(&iid, ppvRet);
+    //BFTRACE(_T(">CFolderDialog::QueryInterface returns %s, *ppv=%p\n"),_TR(hr),*ppvRet);
+    return hr;
 }
 
 //////////////////////////////// IFolderFilter ////////////////////////////////
@@ -322,39 +326,39 @@ STDMETHODIMP CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
 // Implementation passes control to parent class CFolderDialog (pThis)
 //
 BEGIN_INTERFACE_MAP(CFolderDialog, CCmdTarget)
-	INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
+    INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
 END_INTERFACE_MAP()
 
 STDMETHODIMP_(ULONG) CFolderDialog::XFolderFilter::AddRef()
 {
-	METHOD_PROLOGUE(CFolderDialog, FolderFilter);
-	return pThis->AddRef();
+    METHOD_PROLOGUE(CFolderDialog, FolderFilter);
+    return pThis->AddRef();
 }
 
 STDMETHODIMP_(ULONG) CFolderDialog::XFolderFilter::Release()
 {
-	METHOD_PROLOGUE(CFolderDialog, FolderFilter);
-	return pThis->Release();
+    METHOD_PROLOGUE(CFolderDialog, FolderFilter);
+    return pThis->Release();
 }
 
 STDMETHODIMP CFolderDialog::XFolderFilter::QueryInterface(REFIID iid, LPVOID* ppv)
 {
-	METHOD_PROLOGUE(CFolderDialog, FolderFilter);
-	return pThis->QueryInterface(iid, ppv);
+    METHOD_PROLOGUE(CFolderDialog, FolderFilter);
+    return pThis->QueryInterface(iid, ppv);
 }
 
 // Note: pHwnd is always NULL here as far as I can tell.
 STDMETHODIMP CFolderDialog::XFolderFilter::GetEnumFlags(IShellFolder* psf,
-	LPCITEMIDLIST pidlFolder, HWND *pHwnd, DWORD *pgrfFlags)
+                                                        LPCITEMIDLIST pidlFolder, HWND* pHwnd, DWORD* pgrfFlags)
 {
-	pHwnd;	// Unreferenced param
-	METHOD_PROLOGUE(CFolderDialog, FolderFilter);
-	return pThis->OnGetEnumFlags(psf, pidlFolder, pgrfFlags);
+    pHwnd; // Unreferenced param
+    METHOD_PROLOGUE(CFolderDialog, FolderFilter);
+    return pThis->OnGetEnumFlags(psf, pidlFolder, pgrfFlags);
 }
 
 STDMETHODIMP CFolderDialog::XFolderFilter::ShouldShow(IShellFolder* psf,
-	LPCITEMIDLIST pidlFolder, LPCITEMIDLIST pidlItem)
+                                                      LPCITEMIDLIST pidlFolder, LPCITEMIDLIST pidlItem)
 {
-	METHOD_PROLOGUE(CFolderDialog, FolderFilter);
-	return pThis->OnShouldShow(psf, pidlFolder, pidlItem);
+    METHOD_PROLOGUE(CFolderDialog, FolderFilter);
+    return pThis->OnShouldShow(psf, pidlFolder, pidlItem);
 }
