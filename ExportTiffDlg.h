@@ -34,7 +34,7 @@ class CExportTiffDlg : public CDialog
     DECLARE_DYNAMIC(CExportTiffDlg)
 
 public:
-    CExportTiffDlg(CWnd* pParent = NULL); // standard constructor
+    CExportTiffDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CExportTiffDlg();
 
     // Dialog Data
@@ -44,11 +44,11 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:
-    virtual BOOL OnInitDialog();
+    BOOL OnInitDialog() override;
 
     int m_nCtlFmt;
     CString m_sFname;

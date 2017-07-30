@@ -321,8 +321,8 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
 
 void CDbSigs::DatabaseExtraLoad()
 {
-    CFile* pInFile = NULL;
-    PBYTE pBuf = NULL;
+    CFile* pInFile = nullptr;
+    PBYTE pBuf = nullptr;
     unsigned nBufLenBytes = 0;
     unsigned nBufOffset = 0;
     CString strError;
@@ -361,7 +361,7 @@ void CDbSigs::DatabaseExtraLoad()
             OutputDebugString(strError);
             AfxMessageBox(strError);
         }
-        pInFile = NULL;
+        pInFile = nullptr;
 
         // Now create default database file in current DB location
         DatabaseExtraStore();
@@ -439,7 +439,7 @@ void CDbSigs::DatabaseExtraLoad()
         {
             pInFile->Close();
             delete pInFile;
-            pInFile = NULL;
+            pInFile = nullptr;
         }
         // Copy old config file
         TCHAR szFilePathNameBak[200];
@@ -586,13 +586,13 @@ void CDbSigs::DatabaseExtraLoad()
     {
         pInFile->Close();
         delete pInFile;
-        pInFile = NULL;
+        pInFile = nullptr;
     }
 
     if (pBuf)
     {
         delete [] pBuf;
-        pBuf = NULL;
+        pBuf = nullptr;
     }
 
     // If we did make changes to the database (trim), then rewrite it!
@@ -641,8 +641,8 @@ CompSig CDbSigs::DatabaseExtraGet(unsigned nInd)
 
 void CDbSigs::DatabaseExtraStore()
 {
-    CFile* pOutFile = NULL;
-    PBYTE pBuf = NULL;
+    CFile* pOutFile = nullptr;
+    PBYTE pBuf = nullptr;
     //unsigned	nBufLenBytes = 0;
     unsigned nBufOffset = 0;
 
@@ -674,7 +674,7 @@ void CDbSigs::DatabaseExtraStore()
         strError.Format(_T("ERROR: Couldn't open file: [%s]"), (LPCTSTR)msg);
         OutputDebugString(strError);
         AfxMessageBox(strError);
-        pOutFile = NULL;
+        pOutFile = nullptr;
         return;
     }
 
@@ -745,13 +745,13 @@ void CDbSigs::DatabaseExtraStore()
 
         pOutFile->Close();
         delete pOutFile;
-        pOutFile = NULL;
+        pOutFile = nullptr;
     }
 
     if (pBuf)
     {
         delete [] pBuf;
-        pBuf = NULL;
+        pBuf = nullptr;
     }
 }
 
@@ -872,10 +872,7 @@ unsigned CDbSigs::IsDBEntryUser(unsigned nInd)
     {
         return false;
     }
-    else
-    {
-        return true;
-    }
+    return true;
 }
 
 // Return a ptr to the struct containing the indexed entry
@@ -898,20 +895,17 @@ bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry)
         pEntry->strMSwDisp = m_sSigList[nInd].strMSwDisp;
         return true;
     }
-    else
-    {
-        nIndOffset = nInd - m_nSigListNum;
-        pEntry->eEditor = m_sSigListExtra[nIndOffset].eEditor;
-        pEntry->strXMake = m_sSigListExtra[nIndOffset].strXMake;
-        pEntry->strXModel = m_sSigListExtra[nIndOffset].strXModel;
-        pEntry->strUmQual = m_sSigListExtra[nIndOffset].strUmQual;
-        pEntry->strCSig = m_sSigListExtra[nIndOffset].strCSig;
-        pEntry->strCSigRot = m_sSigListExtra[nIndOffset].strCSigRot;
-        pEntry->strXSubsamp = m_sSigListExtra[nIndOffset].strXSubsamp;
-        pEntry->strMSwTrim = m_sSigListExtra[nIndOffset].strMSwTrim;
-        pEntry->strMSwDisp = m_sSigListExtra[nIndOffset].strMSwDisp;
-        return true;
-    }
+    nIndOffset = nInd - m_nSigListNum;
+    pEntry->eEditor = m_sSigListExtra[nIndOffset].eEditor;
+    pEntry->strXMake = m_sSigListExtra[nIndOffset].strXMake;
+    pEntry->strXModel = m_sSigListExtra[nIndOffset].strXModel;
+    pEntry->strUmQual = m_sSigListExtra[nIndOffset].strUmQual;
+    pEntry->strCSig = m_sSigListExtra[nIndOffset].strCSig;
+    pEntry->strCSigRot = m_sSigListExtra[nIndOffset].strCSigRot;
+    pEntry->strXSubsamp = m_sSigListExtra[nIndOffset].strXSubsamp;
+    pEntry->strMSwTrim = m_sSigListExtra[nIndOffset].strMSwTrim;
+    pEntry->strMSwDisp = m_sSigListExtra[nIndOffset].strMSwDisp;
+    return true;
 }
 
 void CDbSigs::SetEntryValid(unsigned nInd, bool bValid)
@@ -982,7 +976,7 @@ bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
                     LPTSTR pWildcard;
                     unsigned nCompareLen;
                     pWildcard = _tcschr(m_sExcMmNoMkrList[nInd].strXModel, '*');
-                    if (pWildcard != NULL)
+                    if (pWildcard != nullptr)
                     {
                         // Wildcard present
                         nCompareLen = pWildcard - (m_sExcMmNoMkrList[nInd].strXModel);

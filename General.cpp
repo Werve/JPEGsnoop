@@ -61,10 +61,7 @@ bool TestBit(unsigned nVal, unsigned nBit)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 // Convert between unsigned integer to a 4-byte character string
@@ -176,7 +173,7 @@ bool Str2Uint32(CString strVal, unsigned nBase, unsigned& nVal)
         {
             return false;
         }
-        nVal = _tcstoul(strVal,NULL, 16);
+        nVal = _tcstoul(strVal, nullptr, 16);
     }
     else if (nBase == 10)
     {
@@ -185,7 +182,7 @@ bool Str2Uint32(CString strVal, unsigned nBase, unsigned& nVal)
         {
             return false;
         }
-        nVal = _tcstoul(strVal,NULL, 10);
+        nVal = _tcstoul(strVal, nullptr, 10);
     }
     else
     {

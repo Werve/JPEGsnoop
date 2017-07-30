@@ -50,7 +50,7 @@
 #endif
 
 // Global log file
-CDocLog* glb_pDocLog = NULL;
+CDocLog* glb_pDocLog = nullptr;
 
 // CJPEGsnoopApp
 
@@ -166,7 +166,7 @@ public:
         next_arg = cla_idle;
     };
 
-    virtual void ParseParam(LPCTSTR pszParam, BOOL bFlag, BOOL bLast)
+    void ParseParam(LPCTSTR pszParam, BOOL bFlag, BOOL bLast) override
     {
         bLast; // Unreferenced param
 
@@ -445,9 +445,9 @@ CJPEGsnoopApp::CJPEGsnoopApp()
         m_bFatal = true;
     }
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogCreate();
+    if (false) m_pAppConfig->DebugLogCreate();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 1"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 1"));
     glb_pDocLog = new CDocLog();
     if (!glb_pDocLog)
     {
@@ -455,7 +455,7 @@ CJPEGsnoopApp::CJPEGsnoopApp()
         exit(1);
     }
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 2"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 2"));
     m_pDbSigs = new CDbSigs();
     if (!m_pDbSigs)
     {
@@ -463,36 +463,36 @@ CJPEGsnoopApp::CJPEGsnoopApp()
         m_bFatal = true;
     }
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 3"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 3"));
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() End"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() End"));
 }
 
 // Destructor
 CJPEGsnoopApp::~CJPEGsnoopApp()
 {
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::~CJPEGsnoopApp() Start"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::~CJPEGsnoopApp() Start"));
 
     // Save and then Delete
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::~CJPEGsnoopApp() About to destroy Config"));
-    if (m_pAppConfig != NULL)
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::~CJPEGsnoopApp() About to destroy Config"));
+    if (m_pAppConfig != nullptr)
     {
         m_pAppConfig->RegistryStore();
 
         delete m_pAppConfig;
-        m_pAppConfig = NULL;
+        m_pAppConfig = nullptr;
     }
 
-    if (glb_pDocLog != NULL)
+    if (glb_pDocLog != nullptr)
     {
         delete glb_pDocLog;
-        glb_pDocLog = NULL;
+        glb_pDocLog = nullptr;
     }
 
-    if (m_pDbSigs != NULL)
+    if (m_pDbSigs != nullptr)
     {
         delete m_pDbSigs;
-        m_pDbSigs = NULL;
+        m_pDbSigs = nullptr;
     }
 }
 
@@ -506,22 +506,22 @@ CJPEGsnoopApp theApp;
 // satellite DLL hijacking
 HINSTANCE CJPEGsnoopApp::LoadAppLangResourceDLL()
 {
-    return NULL;
+    return nullptr;
 }
 
 BOOL CJPEGsnoopApp::InitInstance()
 {
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Start"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Start"));
 
     // InitCommonControls() is required on Windows XP if an application
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
     // visual styles.  Otherwise, any window creation will fail.
     InitCommonControls();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 1"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 1"));
     CWinApp::InitInstance();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 2"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 2"));
 
 
     // Initialize OLE libraries
@@ -532,7 +532,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     }
     AfxEnableControlContainer();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 3"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 3"));
 
     // Check to see if we had any fatal errors yet (e.g. mem alloc)
     if (m_bFatal)
@@ -552,11 +552,11 @@ BOOL CJPEGsnoopApp::InitInstance()
     // key path "Software/ImpulseAdventure/JPEGsnoop/Recent File List"
     SetRegistryKey(REG_COMPANY_NAME);
     LoadStdProfileSettings(4); // Load standard INI file options (including MRU)
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 4"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 4"));
 
     // ------------------------------------
     m_pAppConfig->RegistryLoad();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 5"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 5"));
 
     // Now that we've loaded the registry, assign the first-run status (from EULA)
     // Set the "First Run" flag for the Signature database to avoid warning messages
@@ -564,30 +564,30 @@ BOOL CJPEGsnoopApp::InitInstance()
 
     // Assign defaults
     m_pAppConfig->UseDefaults();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 6"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 6"));
 
     // Ensure that the user has previously signed the EULA
     if (!CheckEula())
     {
         return false;
     }
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 7"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 7"));
 
     // Has the user enabled checking for program updates?
     if (m_pAppConfig->bUpdateAuto)
     {
         CheckUpdates(false);
     }
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 8"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 8"));
 
     m_pAppConfig->RegistryStore();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 9"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 9"));
 
     // Update the User database directory setting
     m_pDbSigs->SetDbDir(m_pAppConfig->strDbDir);
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 10"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 10"));
 
     // Register the application's document templates.  Document templates
     //  serve as the connection between documents, frame windows and views
@@ -604,7 +604,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     pDocTemplate->SetContainerInfo(IDR_CNTR_INPLACE);
     AddDocTemplate(pDocTemplate);
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 11"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 11"));
 
     // Establish GUI mode defaults that can be overridden by the
     // command line parsing results.
@@ -615,7 +615,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     CMyCommandParser cmdInfo(m_pAppConfig);
     ParseCommandLine(cmdInfo);
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 12"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 12"));
 
     if (m_pAppConfig->bGuiMode)
     {
@@ -639,7 +639,7 @@ BOOL CJPEGsnoopApp::InitInstance()
         m_pMainWnd->UpdateWindow();
     }
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 13"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 13"));
 
     // Do my own ProcessShellCommand(). The following is based
     // on part of what exists in appui2.cpp with no real changes.
@@ -649,7 +649,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     // ----------------------------------------------------------
     if (!ProcessShellCommand(cmdInfo))
         return FALSE;
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 14"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 14"));
     // ----------------------------------------------------------
 
     // Now handle any other command-line directives that we haven't
@@ -664,7 +664,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     // We only arrive here if there is a window to show (bResult)
 
     // Original wizard code follows
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 20"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 20"));
 
     // The one and only window has been initialized, so show and update it
     m_pMainWnd->ShowWindow(SW_SHOW);
@@ -672,10 +672,10 @@ BOOL CJPEGsnoopApp::InitInstance()
     // call DragAcceptFiles only if there's a suffix
     //  In an SDI app, this should occur after ProcessShellCommand
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 21"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() Checkpoint 21"));
     // ----------------
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() End"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::InitInstance() End"));
 
     return TRUE;
 }
@@ -686,7 +686,7 @@ void CJPEGsnoopApp::DoCmdLineCore()
     ASSERT(m_pAppConfig->bGuiMode == false);
 
     // Allocate the command-line processing core
-    CJPEGsnoopCore* pSnoopCore = NULL;
+    CJPEGsnoopCore* pSnoopCore = nullptr;
     pSnoopCore = new CJPEGsnoopCore;
     ASSERT(pSnoopCore);
     if (!pSnoopCore)
@@ -798,7 +798,7 @@ void CJPEGsnoopApp::DoCmdLineCore()
     if (pSnoopCore)
     {
         delete pSnoopCore;
-        pSnoopCore = NULL;
+        pSnoopCore = nullptr;
     }
 
     // If requested, issue done indication to the prompt
@@ -832,14 +832,14 @@ void CJPEGsnoopApp::CmdLineMessage(CString strMsg)
 {
     // Report to the console
     // REF: http://stackoverflow.com/questions/5094502/how-do-i-write-to-stdout-from-an-mfc-program
-    bool bConsoleAttached = FALSE;
+    bool bConsoleAttached = false;
     if (AttachConsole(ATTACH_PARENT_PROCESS))
     {
         int osfh = _open_osfhandle((intptr_t)GetStdHandle(STD_OUTPUT_HANDLE), 8);
         if ((HANDLE)osfh != INVALID_HANDLE_VALUE)
         {
             *stdout = *_tfdopen(osfh, _T("a"));
-            bConsoleAttached = TRUE;
+            bConsoleAttached = true;
         }
     }
     if (bConsoleAttached)
@@ -907,7 +907,7 @@ void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
             // Fatal error
             exit(1);
         }
-        pdlg->Create(IDD_MODELESSDLG,NULL);
+        pdlg->Create(IDD_MODELESSDLG, nullptr);
 
         CheckUpdatesWww();
 
@@ -938,7 +938,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
     strSubmitHost = IA_HOST;
     strSubmitPage = IA_UPDATES_CHK_PAGE;
 
-    static LPTSTR acceptTypes[2] = {_T("*/*"), NULL};
+    static LPTSTR acceptTypes[2] = {_T("*/*"), nullptr};
     HINTERNET hINet, hConnection, hData;
 
     unsigned nLen;
@@ -960,7 +960,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
     CHAR pcBuffer[2048];
     CString strContents;
     DWORD dwRead; //dwStatus;
-    hINet = InternetOpen(_T("JPEGsnoop/1.0"), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+    hINet = InternetOpen(_T("JPEGsnoop/1.0"), INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
     if (!hINet)
     {
         AfxMessageBox(_T("InternetOpen Failed"));
@@ -968,13 +968,13 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
     }
     try
     {
-        hConnection = InternetConnect(hINet, (LPCTSTR)strSubmitHost, 80, NULL,NULL, INTERNET_SERVICE_HTTP, 0, 1);
+        hConnection = InternetConnect(hINet, (LPCTSTR)strSubmitHost, 80, nullptr, nullptr, INTERNET_SERVICE_HTTP, 0, 1);
         if (!hConnection)
         {
             InternetCloseHandle(hINet);
             return false;
         }
-        hData = HttpOpenRequest(hConnection, _T("POST"), (LPCTSTR)strSubmitPage, NULL, NULL, NULL, 0, 1);
+        hData = HttpOpenRequest(hConnection, _T("POST"), (LPCTSTR)strSubmitPage, nullptr, nullptr, nullptr, 0, 1);
         if (!hData)
         {
             InternetCloseHandle(hConnection);
@@ -1154,30 +1154,24 @@ bool CJPEGsnoopApp::CheckEula()
     {
         return true;
     }
-    else
+    CTermsDlg dlg;
+    if (dlg.DoModal() == IDOK)
     {
-        CTermsDlg dlg;
-        if (dlg.DoModal() == IDOK)
-        {
-            // They must have accepted the terms, update the
-            // acceptance in the registry
-            m_pAppConfig->bEulaAccepted = (dlg.bEulaOk != 0);
-            m_pAppConfig->bUpdateAuto = (dlg.bUpdateAuto != 0);
-            m_pAppConfig->Dirty();
-            m_pAppConfig->RegistryStore();
-            return true;
-        }
-        else
-        {
-            // They didn't accept, so quit the application
-            m_pAppConfig->bEulaAccepted = false;
-            m_pAppConfig->Dirty();
-            m_pAppConfig->RegistryStore();
-
-            // How to quit?
-            return false;
-        }
+        // They must have accepted the terms, update the
+        // acceptance in the registry
+        m_pAppConfig->bEulaAccepted = (dlg.bEulaOk != 0);
+        m_pAppConfig->bUpdateAuto = (dlg.bUpdateAuto != 0);
+        m_pAppConfig->Dirty();
+        m_pAppConfig->RegistryStore();
+        return true;
     }
+    // They didn't accept, so quit the application
+    m_pAppConfig->bEulaAccepted = false;
+    m_pAppConfig->Dirty();
+    m_pAppConfig->RegistryStore();
+
+    // How to quit?
+    return false;
 }
 
 
@@ -1222,7 +1216,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
         */
 
     // BUG: #1008
-    CFileDialog FileDlg(TRUE, _T(".jpg"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
+    CFileDialog FileDlg(TRUE, _T(".jpg"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
 
     CString strTitle;
     CString strFileName;
@@ -1281,7 +1275,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
 void CJPEGsnoopApp::MyOnFileNew()
 {
     // Default
-    CWinApp::OnFileNew();
+    OnFileNew();
 }
 
 // Retreive the currently active document (if it exists)
@@ -1326,11 +1320,11 @@ void CJPEGsnoopApp::OnOptionsDhtexpand()
 {
     if (m_pAppConfig->bOutputDHTexpand)
     {
-        m_pAppConfig->bOutputDHTexpand = FALSE;
+        m_pAppConfig->bOutputDHTexpand = false;
     }
     else
     {
-        m_pAppConfig->bOutputDHTexpand = TRUE;
+        m_pAppConfig->bOutputDHTexpand = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1344,11 +1338,11 @@ void CJPEGsnoopApp::OnOptionsMakernotes()
 {
     if (m_pAppConfig->bDecodeMaker)
     {
-        m_pAppConfig->bDecodeMaker = FALSE;
+        m_pAppConfig->bDecodeMaker = false;
     }
     else
     {
-        m_pAppConfig->bDecodeMaker = TRUE;
+        m_pAppConfig->bDecodeMaker = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1362,11 +1356,11 @@ void CJPEGsnoopApp::OnScansegmentDump()
 {
     if (m_pAppConfig->bOutputScanDump)
     {
-        m_pAppConfig->bOutputScanDump = FALSE;
+        m_pAppConfig->bOutputScanDump = false;
     }
     else
     {
-        m_pAppConfig->bOutputScanDump = TRUE;
+        m_pAppConfig->bOutputScanDump = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1381,11 +1375,11 @@ void CJPEGsnoopApp::OnScansegmentDecodeimage()
 {
     if (m_pAppConfig->bDecodeScanImg)
     {
-        m_pAppConfig->bDecodeScanImg = FALSE;
+        m_pAppConfig->bDecodeScanImg = false;
     }
     else
     {
-        m_pAppConfig->bDecodeScanImg = TRUE;
+        m_pAppConfig->bDecodeScanImg = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1401,11 +1395,11 @@ void CJPEGsnoopApp::OnScansegmentHistogramy()
 {
     if (m_pAppConfig->bDumpHistoY)
     {
-        m_pAppConfig->bDumpHistoY = FALSE;
+        m_pAppConfig->bDumpHistoY = false;
     }
     else
     {
-        m_pAppConfig->bDumpHistoY = TRUE;
+        m_pAppConfig->bDumpHistoY = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1456,11 +1450,11 @@ void CJPEGsnoopApp::OnScansegmentFullidct()
 {
     if (m_pAppConfig->bDecodeScanImgAc)
     {
-        m_pAppConfig->bDecodeScanImgAc = FALSE;
+        m_pAppConfig->bDecodeScanImgAc = false;
     }
     else
     {
-        m_pAppConfig->bDecodeScanImgAc = TRUE;
+        m_pAppConfig->bDecodeScanImgAc = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1723,11 +1717,11 @@ void CJPEGsnoopApp::OnOptionsSignaturesearch()
 {
     if (m_pAppConfig->bSigSearch)
     {
-        m_pAppConfig->bSigSearch = FALSE;
+        m_pAppConfig->bSigSearch = false;
     }
     else
     {
-        m_pAppConfig->bSigSearch = TRUE;
+        m_pAppConfig->bSigSearch = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1755,11 +1749,11 @@ void CJPEGsnoopApp::OnScansegmentHistogram()
 {
     if (m_pAppConfig->bHistoEn)
     {
-        m_pAppConfig->bHistoEn = FALSE;
+        m_pAppConfig->bHistoEn = false;
     }
     else
     {
-        m_pAppConfig->bHistoEn = TRUE;
+        m_pAppConfig->bHistoEn = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1807,11 +1801,11 @@ void CJPEGsnoopApp::OnOptionsHideuknownexiftags()
 {
     if (m_pAppConfig->bExifHideUnknown)
     {
-        m_pAppConfig->bExifHideUnknown = FALSE;
+        m_pAppConfig->bExifHideUnknown = false;
     }
     else
     {
-        m_pAppConfig->bExifHideUnknown = TRUE;
+        m_pAppConfig->bExifHideUnknown = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
@@ -1852,11 +1846,11 @@ void CJPEGsnoopApp::OnOptionsRelaxedparsing()
 {
     if (m_pAppConfig->bRelaxedParsing)
     {
-        m_pAppConfig->bRelaxedParsing = FALSE;
+        m_pAppConfig->bRelaxedParsing = false;
     }
     else
     {
-        m_pAppConfig->bRelaxedParsing = TRUE;
+        m_pAppConfig->bRelaxedParsing = true;
     }
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();

@@ -32,7 +32,7 @@ class CLookupDlg : public CDialog
     DECLARE_DYNAMIC(CLookupDlg)
 
 public:
-    CLookupDlg(CWnd* pParent = NULL); // standard constructor
+    CLookupDlg(CWnd* pParent = nullptr); // standard constructor
     CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
     virtual ~CLookupDlg();
 
@@ -44,7 +44,7 @@ public:
 
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 private:

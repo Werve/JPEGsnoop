@@ -34,7 +34,7 @@ class CDbSubmitDlg : public CDialog
     DECLARE_DYNAMIC(CDbSubmitDlg)
 
 public:
-    CDbSubmitDlg(CWnd* pParent = NULL); // standard constructor
+    CDbSubmitDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CDbSubmitDlg();
 
     // Dialog Data
@@ -44,7 +44,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:

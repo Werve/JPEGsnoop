@@ -34,7 +34,7 @@ class CTermsDlg : public CDialog
     DECLARE_DYNAMIC(CTermsDlg)
 
 public:
-    CTermsDlg(CWnd* pParent = NULL); // standard constructor
+    CTermsDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CTermsDlg();
 
     // Dialog Data
@@ -44,7 +44,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 private:

@@ -34,7 +34,7 @@ class COverlayBufDlg : public CDialog
     DECLARE_DYNAMIC(COverlayBufDlg)
 
 public:
-    COverlayBufDlg(CWnd* pParent = NULL); // standard constructor
+    COverlayBufDlg(CWnd* pParent = nullptr); // standard constructor
     COverlayBufDlg(CWnd* pParent,
                    bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin);
     virtual ~COverlayBufDlg();
@@ -47,14 +47,14 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnBnClickedOvrLoad();
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedApply();
-    virtual BOOL OnInitDialog();
+    BOOL OnInitDialog() override;
 
 public:
     // Callback function for Buf()

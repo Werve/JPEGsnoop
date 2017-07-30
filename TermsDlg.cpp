@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "TermsDlg.h"
-#include ".\termsdlg.h"
+#include "./termsdlg.h"
 
 
 // CTermsDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CTermsDlg, CDialog)
 
 CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CTermsDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , strEula(_T(""))
       , bEulaOk(FALSE)
       , bUpdateAuto(FALSE)

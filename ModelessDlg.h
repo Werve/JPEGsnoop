@@ -34,7 +34,7 @@ class CModelessDlg : public CDialog
     DECLARE_DYNAMIC(CModelessDlg)
 
 public:
-    CModelessDlg(CWnd* pParent = NULL); // standard constructor
+    CModelessDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CModelessDlg();
 
     // Dialog Data
@@ -44,19 +44,19 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:
-    BOOL Create(UINT nID, CWnd* pWnd)
+    BOOL Create(UINT nID, CWnd* pWnd) override
     {
         return CDialog::Create(nID, pWnd);
     }
 
     CString strMsg;
 
-    virtual void OnCancel();
+    void OnCancel() override;
 
 protected:
-    virtual void PostNcDestroy() { delete this; }
+    void PostNcDestroy() override { delete this; }
 };

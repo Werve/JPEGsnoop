@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "SettingsDlg.h"
-#include ".\settingsdlg.h"
+#include "./settingsdlg.h"
 
 #include "FolderDlg.h"
 #include "JPEGsnoop.h"
@@ -34,11 +34,11 @@
 IMPLEMENT_DYNAMIC(CSettingsDlg, CDialog)
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CSettingsDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_strDbDir(_T(""))
       , m_bUpdateAuto(FALSE)
-      , m_bReprocessAuto(FALSE)
       , m_nUpdateChkDays(0)
+      , m_bReprocessAuto(FALSE)
       , m_bDbSubmitNet(FALSE)
       , m_nRptErrMaxScanDecode(0)
 {
@@ -107,7 +107,7 @@ CString CSettingsDlg::SelectFolder(const CString& strMessage)
     LPITEMIDLIST pList = SHBrowseForFolder(&BrowseInfo);
     ASSERT(_tcslen(szBuffer) < sizeof(szBuffer));
 
-    if (pList != NULL)
+    if (pList != nullptr)
     {
         // Convert from MIDLISt to real string path
         SHGetPathFromIDList(pList, szBuffer);
@@ -127,17 +127,17 @@ CString CSettingsDlg::SelectFolder(const CString& strMessage)
 
 LPITEMIDLIST CSettingsDlg::ConvertPathToLpItemIdList(const char* pszPath)
 {
-    LPITEMIDLIST pidl = NULL;
+    LPITEMIDLIST pidl = nullptr;
     LPSHELLFOLDER pDesktopFolder;
     OLECHAR olePath[MAX_PATH];
-    ULONG* pchEaten = NULL;
+    ULONG* pchEaten = nullptr;
     ULONG dwAttributes = 0;
     HRESULT hr;
 
     if (SUCCEEDED(SHGetDesktopFolder(&pDesktopFolder)))
     {
         MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pszPath, -1, olePath, MAX_PATH);
-        hr = pDesktopFolder->ParseDisplayName(NULL,NULL, olePath, pchEaten, &pidl, &dwAttributes);
+        hr = pDesktopFolder->ParseDisplayName(nullptr, nullptr, olePath, pchEaten, &pidl, &dwAttributes);
         pDesktopFolder->Release();
     }
     return pidl;

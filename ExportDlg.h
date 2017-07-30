@@ -33,7 +33,7 @@ class CExportDlg : public CDialog
     DECLARE_DYNAMIC(CExportDlg)
 
 public:
-    CExportDlg(CWnd* pParent = NULL); // standard constructor
+    CExportDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CExportDlg();
 
     // Dialog Data
@@ -43,7 +43,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:

@@ -33,7 +33,7 @@ class CDecodeDetailDlg : public CDialog
     DECLARE_DYNAMIC(CDecodeDetailDlg)
 
 public:
-    CDecodeDetailDlg(CWnd* pParent = NULL); // standard constructor
+    CDecodeDetailDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CDecodeDetailDlg();
 
     // Dialog Data
@@ -43,7 +43,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:

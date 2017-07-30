@@ -39,7 +39,7 @@ class CBatchDlg : public CDialog
     DECLARE_DYNAMIC(CBatchDlg)
 
 public:
-    CBatchDlg(CWnd* pParent = NULL); // standard constructor
+    CBatchDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CBatchDlg();
 
     // Dialog Data
@@ -49,7 +49,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:

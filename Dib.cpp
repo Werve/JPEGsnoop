@@ -32,7 +32,7 @@
 #include "dib.h"
 
 
-CDIB::CDIB() : m_pDIB(NULL)
+CDIB::CDIB() : m_pDIB(nullptr)
 {
 }
 
@@ -46,13 +46,13 @@ void CDIB::Kill()
     if (m_pDIB)
     {
         delete m_pDIB;
-        m_pDIB = FALSE;
+        m_pDIB = nullptr;
     }
 }
 
 bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
 {
-    if (m_pDIB) return FALSE;
+    if (m_pDIB) return false;
     const DWORD dwcBihSize = sizeof(BITMAPINFOHEADER);
 
     // Calculate the memory required for the DIB
@@ -66,7 +66,7 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
 
 
     m_pDIB = (LPBITMAPINFO)new BYTE[dwSize];
-    if (!m_pDIB) return FALSE;
+    if (!m_pDIB) return false;
 
     //CAL! Added
     // Erase the DIB
@@ -84,7 +84,7 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
     m_pDIB->bmiHeader.biClrImportant = 0;
 
     InitializeColors();
-    return TRUE;
+    return true;
 }
 
 
@@ -115,15 +115,12 @@ int CDIB::GetDIBCols() const
     {
         return 0;
     }
-    else
-    {
-        return (2 >> m_pDIB->bmiHeader.biBitCount);
-    }
+    return (2 >> m_pDIB->bmiHeader.biBitCount);
 }
 
 void* CDIB::GetDIBBitArray() const
 {
-    if (!m_pDIB) return FALSE;
+    if (!m_pDIB) return nullptr;
 
     unsigned char* ptr;
     ptr = (unsigned char*)m_pDIB;
@@ -134,14 +131,14 @@ void* CDIB::GetDIBBitArray() const
 
 bool CDIB::CreateDIBFromBitmap(CDC* pDC)
 {
-    if (!pDC) return FALSE;
+    if (!pDC) return false;
     HDC hDC = pDC->GetSafeHdc();
 
     BITMAP bimapInfo;
     m_bmBitmap.GetBitmap(&bimapInfo);
     if (!CreateDIB(bimapInfo.bmWidth, bimapInfo.bmHeight,
                    bimapInfo.bmBitsPixel))
-        return FALSE;
+        return false;
 
     LPRGBQUAD lpColors = m_pDIB->bmiColors;
 
@@ -158,7 +155,7 @@ bool CDIB::CreateDIBFromBitmap(CDC* pDC)
 
 bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale)
 {
-    if (!m_pDIB || !pDestDC) return FALSE;
+    if (!m_pDIB || !pDestDC) return false;
     int nOldMapMode = pDestDC->SetMapMode(MM_TEXT);
 
     // NOTE: The following line was added to make the down-sampling
@@ -220,7 +217,7 @@ bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float sca
 {
     scale; // Unreferenced param
 
-    if (!m_pDIB || !pDestDC) return FALSE;
+    if (!m_pDIB || !pDestDC) return false;
 
     int nDstW;
     int nDstH;
@@ -309,7 +306,7 @@ bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float sca
 // redraw issues, likely due to client rect boundaries
 bool CDIB::CopyDIBsmall(CDC* pDestDC, int x, int y, float scale)
 {
-    if (!m_pDIB || !pDestDC) return FALSE;
+    if (!m_pDIB || !pDestDC) return false;
 
     // --------------
     CDC dcm;

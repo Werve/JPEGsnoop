@@ -17,7 +17,7 @@
 //
 
 #include "StdAfx.h"
-#include ".\doclog.h"
+#include "./doclog.h"
 
 #include "JPEGsnoopDoc.h"
 
@@ -26,7 +26,7 @@
 //
 CDocLog::CDocLog(void)
 {
-    m_pDoc = NULL;
+    m_pDoc = nullptr;
     m_bEn = true;
 
     // Default to local log
@@ -266,7 +266,7 @@ unsigned CDocLog::AppendToLogLocal(CString strTxt, COLORREF sColor)
         m_naLogQuickCol.Add((unsigned)sColor);
         return 0;
     }
-    else if (numLines > DOCLOG_MAX_LINES)
+    if (numLines > DOCLOG_MAX_LINES)
     {
         return 0;
     }
@@ -339,7 +339,7 @@ void CDocLog::DoLogSave(CString strLogName)
                         (LPCTSTR)strLogName, (LPCTSTR)msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
-        pLog = NULL;
+        pLog = nullptr;
 
         return;
     }

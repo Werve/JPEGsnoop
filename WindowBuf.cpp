@@ -26,7 +26,7 @@ void CwindowBuf::Reset()
 {
     // File handling
     m_bBufOK = false; // Initialize the buffer to not loaded yet
-    m_pBufFile = NULL; // No file open yet
+    m_pBufFile = nullptr; // No file open yet
 }
 
 // Constructor for WindowBuf class
@@ -43,7 +43,7 @@ CwindowBuf::CwindowBuf()
         exit(1);
     }
 
-    m_pStatBar = NULL;
+    m_pStatBar = nullptr;
 
     Reset();
 
@@ -53,17 +53,17 @@ CwindowBuf::CwindowBuf()
     m_nOverlayMax = 0;
     for (unsigned nInd = 0; nInd < NUM_OVERLAYS; nInd++)
     {
-        m_psOverlay[nInd] = NULL;
+        m_psOverlay[nInd] = nullptr;
     }
 }
 
 // Destructor deallocates buffers and overlays
 CwindowBuf::~CwindowBuf()
 {
-    if (m_pBuffer != NULL)
+    if (m_pBuffer != nullptr)
     {
         delete m_pBuffer;
-        m_pBuffer = NULL;
+        m_pBuffer = nullptr;
         m_bBufOK = false;
     }
 
@@ -73,7 +73,7 @@ CwindowBuf::~CwindowBuf()
         if (m_psOverlay[nInd])
         {
             delete m_psOverlay[nInd];
-            m_psOverlay[nInd] = NULL;
+            m_psOverlay[nInd] = nullptr;
         }
     }
 }
@@ -110,7 +110,7 @@ void CwindowBuf::BufFileSet(CFile* inFile)
     m_nPosEof = (unsigned long)m_pBufFile->GetLength();
     if (m_nPosEof == 0)
     {
-        m_pBufFile = NULL;
+        m_pBufFile = nullptr;
         AfxMessageBox(_T("ERROR: BufFileSet() File length zero"));
     }
 }
@@ -127,7 +127,7 @@ void CwindowBuf::BufFileUnset()
 {
     if (m_pBufFile)
     {
-        m_pBufFile = NULL;
+        m_pBufFile = nullptr;
     }
 }
 
@@ -442,18 +442,12 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
         nVal = (unsigned long)m_pBufFile->Read(m_pBuffer,MAX_BUF_WINDOW);
         if (nVal <= 0)
         {
-            // Failed to read anything!
-            // ERROR!
-            return;
         }
-        else
-        {
-            // Read OK
-            // Recalculate bounds
-            m_bBufOK = true;
-            m_nBufWinStart = nPositionAdj;
-            m_nBufWinSize = nVal;
-        }
+        // Read OK
+        // Recalculate bounds
+        m_bBufOK = true;
+        m_nBufWinStart = nPositionAdj;
+        m_nBufWinSize = nVal;
     }
     else
     {
@@ -481,45 +475,39 @@ bool CwindowBuf::OverlayAlloc(unsigned nInd)
         AfxMessageBox(_T("ERROR: Maximum number of overlays reached"));
         return false;
     }
-    else if (m_psOverlay[nInd])
+    if (m_psOverlay[nInd])
     {
         // Already allocated, move on
         return true;
     }
-    else
+    m_psOverlay[nInd] = new sOverlay();
+    if (!m_psOverlay[nInd])
     {
-        m_psOverlay[nInd] = new sOverlay();
-        if (!m_psOverlay[nInd])
-        {
-            AfxMessageBox(_T("NOTE: Out of memory for extra file overlays"));
-            return false;
-        }
-        else
-        {
-            memset(m_psOverlay[nInd], 0, sizeof(sOverlay));
-            // FIXME: may not be necessary
-            m_psOverlay[nInd]->bEn = false;
-            m_psOverlay[nInd]->nStart = 0;
-            m_psOverlay[nInd]->nLen = 0;
-
-            m_psOverlay[nInd]->nMcuX = 0;
-            m_psOverlay[nInd]->nMcuY = 0;
-            m_psOverlay[nInd]->nMcuLen = 0;
-            m_psOverlay[nInd]->nMcuLenIns = 0;
-            m_psOverlay[nInd]->nDcAdjustY = 0;
-            m_psOverlay[nInd]->nDcAdjustCb = 0;
-            m_psOverlay[nInd]->nDcAdjustCr = 0;
-
-            // FIXME: Need to ensure that this is right
-            if (nInd + 1 >= m_nOverlayMax)
-            {
-                m_nOverlayMax = nInd + 1;
-            }
-            //m_nOverlayMax++;
-
-            return true;
-        }
+        AfxMessageBox(_T("NOTE: Out of memory for extra file overlays"));
+        return false;
     }
+    memset(m_psOverlay[nInd], 0, sizeof(sOverlay));
+    // FIXME: may not be necessary
+    m_psOverlay[nInd]->bEn = false;
+    m_psOverlay[nInd]->nStart = 0;
+    m_psOverlay[nInd]->nLen = 0;
+
+    m_psOverlay[nInd]->nMcuX = 0;
+    m_psOverlay[nInd]->nMcuY = 0;
+    m_psOverlay[nInd]->nMcuLen = 0;
+    m_psOverlay[nInd]->nMcuLenIns = 0;
+    m_psOverlay[nInd]->nDcAdjustY = 0;
+    m_psOverlay[nInd]->nDcAdjustCb = 0;
+    m_psOverlay[nInd]->nDcAdjustCr = 0;
+
+    // FIXME: Need to ensure that this is right
+    if (nInd + 1 >= m_nOverlayMax)
+    {
+        m_nOverlayMax = nInd + 1;
+    }
+    //m_nOverlayMax++;
+
+    return true;
 }
 
 
@@ -677,10 +665,7 @@ bool CwindowBuf::OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, 
         nBegin = m_psOverlay[nOvrInd]->nStart;
         return m_psOverlay[nOvrInd]->bEn;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 // Get the number of buffer overlays allocated
@@ -766,31 +751,25 @@ inline BYTE CwindowBuf::Buf(unsigned long nOffset, bool bClean)
         // Address is within current window
         return m_pBuffer[nWinRel];
     }
-    else
+    // Address is outside of current window
+    BufLoadWindow(nOffset);
+
+    // Now we assume that the address is in range
+    // m_nBufWinStart has now been updated
+    // TODO: check this
+    nWinRel = nOffset - m_nBufWinStart;
+
+    // Now recheck the window
+    // TODO: Rewrite the following in a cleaner manner
+    if ((nWinRel >= 0) && (nWinRel < (long)m_nBufWinSize))
     {
-        // Address is outside of current window
-        BufLoadWindow(nOffset);
-
-        // Now we assume that the address is in range
-        // m_nBufWinStart has now been updated
-        // TODO: check this
-        nWinRel = nOffset - m_nBufWinStart;
-
-        // Now recheck the window
-        // TODO: Rewrite the following in a cleaner manner
-        if ((nWinRel >= 0) && (nWinRel < (long)m_nBufWinSize))
-        {
-            return m_pBuffer[nWinRel];
-        }
-        else
-        {
-            // Still bad after refreshing window, so it must be bad addr
-            m_bBufOK = false;
-            // FIXME: Need to report error somehow
-            //log->AddLine(_T("ERROR: Overread buffer - file may be truncated"),9);
-            return 0;
-        }
+        return m_pBuffer[nWinRel];
     }
+    // Still bad after refreshing window, so it must be bad addr
+    m_bBufOK = false;
+    // FIXME: Need to report error somehow
+    //log->AddLine(_T("ERROR: Overread buffer - file may be truncated"),9);
+    return 0;
 }
 
 // Replaces the direct buffer access with a managed refillable window/cache.
@@ -821,105 +800,81 @@ unsigned CwindowBuf::BufX(unsigned long nOffset, unsigned nSz, bool nByteSwap)
             {
                 return ((m_pBuffer[nWinRel + 0] << 24) + (m_pBuffer[nWinRel + 1] << 16) + (m_pBuffer[nWinRel + 2] << 8) + (m_pBuffer[nWinRel + 3]));
             }
-            else if (nSz == 2)
+            if (nSz == 2)
             {
                 return ((m_pBuffer[nWinRel + 0] << 8) + (m_pBuffer[nWinRel + 1]));
             }
-            else if (nSz == 1)
+            if (nSz == 1)
             {
                 return (m_pBuffer[nWinRel + 0]);
             }
-            else
-            {
-                AfxMessageBox(_T("ERROR: BufX() with bad size"));
-                return 0;
-            }
+            AfxMessageBox(_T("ERROR: BufX() with bad size"));
+            return 0;
         }
-        else
+        if (nSz == 4)
+        {
+            return ((m_pBuffer[nWinRel + 3] << 24) + (m_pBuffer[nWinRel + 2] << 16) + (m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+        }
+        if (nSz == 2)
+        {
+            return ((m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+        }
+        if (nSz == 1)
+        {
+            return (m_pBuffer[nWinRel + 0]);
+        }
+        AfxMessageBox(_T("ERROR: BufX() with bad size"));
+        return 0;
+    }
+    // Address is outside of current window
+    BufLoadWindow(nOffset);
+
+    // Now we assume that the address is in range
+    // m_nBufWinStart has now been updated
+    // TODO: Check this
+    nWinRel = nOffset - m_nBufWinStart;
+
+    // Now recheck the window
+    // TODO: Rewrite the following in a cleaner manner
+    if ((nWinRel >= 0) && (nWinRel + nSz < m_nBufWinSize))
+    {
+        if (!nByteSwap)
         {
             if (nSz == 4)
             {
-                return ((m_pBuffer[nWinRel + 3] << 24) + (m_pBuffer[nWinRel + 2] << 16) + (m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+                return ((m_pBuffer[nWinRel + 0] << 24) + (m_pBuffer[nWinRel + 1] << 16) + (m_pBuffer[nWinRel + 2] << 8) + (m_pBuffer[nWinRel + 3]));
             }
-            else if (nSz == 2)
+            if (nSz == 2)
             {
-                return ((m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+                return ((m_pBuffer[nWinRel + 0] << 8) + (m_pBuffer[nWinRel + 1]));
             }
-            else if (nSz == 1)
+            if (nSz == 1)
             {
                 return (m_pBuffer[nWinRel + 0]);
             }
-            else
-            {
-                AfxMessageBox(_T("ERROR: BufX() with bad size"));
-                return 0;
-            }
-        }
-    }
-    else
-    {
-        // Address is outside of current window
-        BufLoadWindow(nOffset);
-
-        // Now we assume that the address is in range
-        // m_nBufWinStart has now been updated
-        // TODO: Check this
-        nWinRel = nOffset - m_nBufWinStart;
-
-        // Now recheck the window
-        // TODO: Rewrite the following in a cleaner manner
-        if ((nWinRel >= 0) && (nWinRel + nSz < m_nBufWinSize))
-        {
-            if (!nByteSwap)
-            {
-                if (nSz == 4)
-                {
-                    return ((m_pBuffer[nWinRel + 0] << 24) + (m_pBuffer[nWinRel + 1] << 16) + (m_pBuffer[nWinRel + 2] << 8) + (m_pBuffer[nWinRel + 3]));
-                }
-                else if (nSz == 2)
-                {
-                    return ((m_pBuffer[nWinRel + 0] << 8) + (m_pBuffer[nWinRel + 1]));
-                }
-                else if (nSz == 1)
-                {
-                    return (m_pBuffer[nWinRel + 0]);
-                }
-                else
-                {
-                    AfxMessageBox(_T("ERROR: BufX() with bad size"));
-                    return 0;
-                }
-            }
-            else
-            {
-                if (nSz == 4)
-                {
-                    return ((m_pBuffer[nWinRel + 3] << 24) + (m_pBuffer[nWinRel + 2] << 16) + (m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
-                }
-                else if (nSz == 2)
-                {
-                    return ((m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
-                }
-                else if (nSz == 1)
-                {
-                    return (m_pBuffer[nWinRel + 0]);
-                }
-                else
-                {
-                    AfxMessageBox(_T("ERROR: BufX() with bad size"));
-                    return 0;
-                }
-            }
-        }
-        else
-        {
-            // Still bad after refreshing window, so it must be bad addr
-            m_bBufOK = false;
-            // FIXME: Need to report error somehow
-            //log->AddLine(_T("ERROR: Overread buffer - file may be truncated"),9);
+            AfxMessageBox(_T("ERROR: BufX() with bad size"));
             return 0;
         }
+        if (nSz == 4)
+        {
+            return ((m_pBuffer[nWinRel + 3] << 24) + (m_pBuffer[nWinRel + 2] << 16) + (m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+        }
+        if (nSz == 2)
+        {
+            return ((m_pBuffer[nWinRel + 1] << 8) + (m_pBuffer[nWinRel + 0]));
+        }
+        if (nSz == 1)
+        {
+            return (m_pBuffer[nWinRel + 0]);
+        }
+        AfxMessageBox(_T("ERROR: BufX() with bad size"));
+        return 0;
     }
+    // Still bad after refreshing window, so it must be bad addr
+    m_bBufOK = false;
+    // FIXME: Need to report error somehow
+    //log->AddLine(_T("ERROR: Overread buffer - file may be truncated"),9);
+    return 0;
 }
 
 unsigned char CwindowBuf::BufRdAdv1(unsigned long& nOffset, bool bByteSwap)
@@ -1134,8 +1089,5 @@ CString CwindowBuf::BufReadStrn(unsigned long nPosition, unsigned nLen)
         }
         return strRd;
     }
-    else
-    {
-        return _T("");
-    }
+    return _T("");
 }

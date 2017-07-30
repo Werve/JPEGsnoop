@@ -34,7 +34,7 @@ class CNoteDlg : public CDialog
     DECLARE_DYNAMIC(CNoteDlg)
 
 public:
-    CNoteDlg(CWnd* pParent = NULL); // standard constructor
+    CNoteDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CNoteDlg();
 
     // Dialog Data
@@ -44,7 +44,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 

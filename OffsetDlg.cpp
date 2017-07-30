@@ -29,7 +29,7 @@
 IMPLEMENT_DYNAMIC(COffsetDlg, CDialog)
 
 COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(COffsetDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_sOffsetVal(_T(""))
 {
     m_nBaseMode = 0; // 0=hex, 1=dec

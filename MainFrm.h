@@ -49,14 +49,14 @@ public:
 
     // Overrides
 public:
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
     // Implementation
 public:
     virtual ~CMainFrame();
 #ifdef _DEBUG
-    virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    void AssertValid() const override;
+    void Dump(CDumpContext& dc) const override;
 #endif
 
 private:
@@ -64,7 +64,7 @@ private:
 protected:
     // Generated message map functions
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+    BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) override;
     DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnSize(UINT nType, int cx, int cy);

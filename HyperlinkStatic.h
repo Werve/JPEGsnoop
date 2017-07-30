@@ -59,7 +59,7 @@ public:
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHyperlinkStatic)
 protected:
-    virtual void PreSubclassWindow();
+    void PreSubclassWindow() override;
     //}}AFX_VIRTUAL
 
     // Implementation

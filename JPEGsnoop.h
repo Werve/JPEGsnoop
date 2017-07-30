@@ -58,7 +58,7 @@ public:
 
     // Overrides
 public:
-    virtual BOOL InitInstance();
+    BOOL InitInstance() override;
 
     // Implementation
     afx_msg void OnAppAbout();
@@ -84,7 +84,7 @@ private:
     void DocImageDirty();
     void HandleAutoReprocess();
 
-    HINSTANCE LoadAppLangResourceDLL(); // MFC override
+    HINSTANCE LoadAppLangResourceDLL() override; // MFC override
 
     afx_msg void OnOptionsDhtexpand();
     afx_msg void OnOptionsMakernotes();

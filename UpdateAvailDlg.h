@@ -33,7 +33,7 @@ class CUpdateAvailDlg : public CDialog
     DECLARE_DYNAMIC(CUpdateAvailDlg)
 
 public:
-    CUpdateAvailDlg(CWnd* pParent = NULL); // standard constructor
+    CUpdateAvailDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CUpdateAvailDlg();
 
     // Dialog Data
@@ -43,7 +43,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 private:

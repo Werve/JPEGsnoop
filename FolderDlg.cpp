@@ -313,7 +313,7 @@ STDMETHODIMP_(ULONG) CFolderDialog::Release()
 
 STDMETHODIMP CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
 {
-    if (ppvRet == NULL)
+    if (ppvRet == nullptr)
         return E_INVALIDARG;
     //BFTRACE(_T("CFolderDialog(%p)::QueryInterface(%s)\n"),this,_TR(iid));
     HRESULT hr = ExternalQueryInterface(&iid, ppvRet);

@@ -96,39 +96,39 @@ void CimgDecode::Reset()
     if (m_pMcuFileMap)
     {
         delete [] m_pMcuFileMap;
-        m_pMcuFileMap = NULL;
+        m_pMcuFileMap = nullptr;
     }
 
     if (m_pBlkDcValY)
     {
         delete [] m_pBlkDcValY;
-        m_pBlkDcValY = NULL;
+        m_pBlkDcValY = nullptr;
     }
     if (m_pBlkDcValCb)
     {
         delete [] m_pBlkDcValCb;
-        m_pBlkDcValCb = NULL;
+        m_pBlkDcValCb = nullptr;
     }
     if (m_pBlkDcValCr)
     {
         delete [] m_pBlkDcValCr;
-        m_pBlkDcValCr = NULL;
+        m_pBlkDcValCr = nullptr;
     }
 
     if (m_pPixValY)
     {
         delete [] m_pPixValY;
-        m_pPixValY = NULL;
+        m_pPixValY = nullptr;
     }
     if (m_pPixValCb)
     {
         delete [] m_pPixValCb;
-        m_pPixValCb = NULL;
+        m_pPixValCb = nullptr;
     }
     if (m_pPixValCr)
     {
         delete [] m_pPixValCr;
-        m_pPixValCr = NULL;
+        m_pPixValCr = nullptr;
     }
 
     // Haven't warned about anything yet
@@ -156,7 +156,7 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
     m_pAppConfig = pApp->m_pAppConfig;
     ASSERT(m_pAppConfig);
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Begin"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Begin"));
 
     m_bVerbose = false;
 
@@ -165,7 +165,7 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
     m_pLog = pLog;
     m_pWBuf = pWBuf;
 
-    m_pStatBar = NULL;
+    m_pStatBar = nullptr;
     m_bDibTempReady = false;
     m_bPreviewIsJpeg = false;
     m_bDibHistRgbReady = false;
@@ -174,20 +174,20 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
     m_bHistEn = false;
     m_bStatClipEn = false; // UNUSED
 
-    m_pMcuFileMap = NULL;
-    m_pBlkDcValY = NULL;
-    m_pBlkDcValCb = NULL;
-    m_pBlkDcValCr = NULL;
-    m_pPixValY = NULL;
-    m_pPixValCb = NULL;
-    m_pPixValCr = NULL;
+    m_pMcuFileMap = nullptr;
+    m_pBlkDcValY = nullptr;
+    m_pBlkDcValCb = nullptr;
+    m_pBlkDcValCr = nullptr;
+    m_pPixValY = nullptr;
+    m_pPixValCb = nullptr;
+    m_pPixValCr = nullptr;
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 1"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 1"));
 
     // Reset the image decoding state
     Reset();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 2"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 2"));
 
     m_nImgSizeXPartMcu = 0;
     m_nImgSizeYPartMcu = 0;
@@ -210,34 +210,34 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
     // Set up the IDCT lookup tables
     PrecalcIdct();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 3"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 3"));
 
     GenLookupHuffMask();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 4"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 4"));
 
 
     // The following contain information that is set by
     // the JFIF Decoder. We can only reset them here during
     // the constructor and later by explicit call by JFIF Decoder.
     ResetState();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 5"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 5"));
 
     // We don't call SetPreviewMode() here because it would
     // automatically try to recalculate the view (but nothing ready yet)
     m_nPreviewMode = PREVIEW_RGB;
     SetPreviewZoom(false, false, true, PRV_ZOOM_12);
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 6"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 6"));
 
     m_bViewOverlaysMcuGrid = false;
 
     // Start off with no YCC offsets for CalcChannelPreview()
     SetPreviewYccOffset(0, 0, 0, 0, 0);
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 7"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 7"));
 
     SetPreviewMcuInsert(0, 0, 0);
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 8"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 8"));
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() End"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() End"));
 }
 
 
@@ -248,39 +248,39 @@ CimgDecode::~CimgDecode()
     if (m_pMcuFileMap)
     {
         delete [] m_pMcuFileMap;
-        m_pMcuFileMap = NULL;
+        m_pMcuFileMap = nullptr;
     }
 
     if (m_pBlkDcValY)
     {
         delete [] m_pBlkDcValY;
-        m_pBlkDcValY = NULL;
+        m_pBlkDcValY = nullptr;
     }
     if (m_pBlkDcValCb)
     {
         delete [] m_pBlkDcValCb;
-        m_pBlkDcValCb = NULL;
+        m_pBlkDcValCb = nullptr;
     }
     if (m_pBlkDcValCr)
     {
         delete [] m_pBlkDcValCr;
-        m_pBlkDcValCr = NULL;
+        m_pBlkDcValCr = nullptr;
     }
 
     if (m_pPixValY)
     {
         delete [] m_pPixValY;
-        m_pPixValY = NULL;
+        m_pPixValY = nullptr;
     }
     if (m_pPixValCb)
     {
         delete [] m_pPixValCb;
-        m_pPixValCb = NULL;
+        m_pPixValCb = nullptr;
     }
     if (m_pPixValCr)
     {
         delete [] m_pPixValCr;
-        m_pPixValCr = NULL;
+        m_pPixValCr = nullptr;
     }
 }
 
@@ -493,27 +493,24 @@ unsigned CimgDecode::GetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd)
     {
         return m_anDqtCoeff[nTblDestId][nCoeffInd];
     }
-    else
-    {
-        // Should never get here!
-        CString strTmp;
-        strTmp.Format(_T("ERROR: GetDqtEntry(nTblDestId=%u, nCoeffInd=%u) out of indexed range"),
-                      nTblDestId, nCoeffInd);
-        m_pLog->AddLineErr(strTmp);
-        if (m_pAppConfig->bInteractive)
-            AfxMessageBox(strTmp);
+    // Should never get here!
+    CString strTmp;
+    strTmp.Format(_T("ERROR: GetDqtEntry(nTblDestId=%u, nCoeffInd=%u) out of indexed range"),
+                  nTblDestId, nCoeffInd);
+    m_pLog->AddLineErr(strTmp);
+    if (m_pAppConfig->bInteractive)
+        AfxMessageBox(strTmp);
 
 #ifdef DEBUG_LOG
-        CString strDebug;
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("ImgDecode"), (LPCTSTR)strTmp);
-        OutputDebugString(strDebug);
+    CString strDebug;
+    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
+                    _T("ImgDecode"), (LPCTSTR)strTmp);
+    OutputDebugString(strDebug);
 #else
 		ASSERT(false);
 #endif
 
-        return 0;
-    }
+    return 0;
 }
 
 
@@ -876,10 +873,7 @@ bool CimgDecode::SetDhtSize(unsigned nDestId, unsigned nClass, unsigned nSize)
             AfxMessageBox(strTmp);
         return false;
     }
-    else
-    {
-        m_anDhtLookupSize[nClass][nDestId] = nSize;
-    }
+    m_anDhtLookupSize[nClass][nDestId] = nSize;
 
     return true;
 }
@@ -900,10 +894,7 @@ signed CimgDecode::HuffmanDc2Signed(unsigned nVal, unsigned nBits)
     {
         return (signed)(nVal);
     }
-    else
-    {
-        return (signed)(nVal - ((1 << nBits) - 1));
-    }
+    return (signed)(nVal - ((1 << nBits) - 1));
 }
 
 
@@ -1277,77 +1268,71 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
             // EOB (was bits_extra=0)
             return RSV_EOB;
         }
-        else if (m_nScanBitsUsed2 == 0)
+        if (m_nScanBitsUsed2 == 0)
         {
             // Zero rValue
             rVal = 0;
             return RSV_OK;
         }
+        // Normal nCode
+        nVal = ExtractBits(m_nScanBuff, m_nScanBitsUsed2);
+        rVal = HuffmanDc2Signed(nVal, m_nScanBitsUsed2);
+
+        // Now handle the different precision values
+        // Treat 12-bit like 8-bit but scale values first (ie. drop precision down to 8-bit)
+        signed nPrecisionDivider = 1;
+        if (m_nPrecision >= 8)
+        {
+            nPrecisionDivider = 1 << (m_nPrecision - 8);
+            rVal /= nPrecisionDivider;
+        }
         else
         {
-            // Normal nCode
-            nVal = ExtractBits(m_nScanBuff, m_nScanBitsUsed2);
-            rVal = HuffmanDc2Signed(nVal, m_nScanBitsUsed2);
-
-            // Now handle the different precision values
-            // Treat 12-bit like 8-bit but scale values first (ie. drop precision down to 8-bit)
-            signed nPrecisionDivider = 1;
-            if (m_nPrecision >= 8)
-            {
-                nPrecisionDivider = 1 << (m_nPrecision - 8);
-                rVal /= nPrecisionDivider;
-            }
-            else
-            {
-                // Precision value seems out of range!
-            }
-
-            ScanBuffConsume(m_nScanBitsUsed2);
-
-            // Did we overread the scan buffer?
-            if (m_nScanBuff_vacant > 32)
-            {
-                // The nCode consumed more bits than we had!
-                CString strTmp;
-                strTmp.Format(_T("*** ERROR: Overread scan segment (after bitstring)! @ Offset: %s"), (LPCTSTR)GetScanBufPos());
-                m_pLog->AddLineErr(strTmp);
-                m_bScanEnd = true;
-                m_bScanBad = true;
-                return RSV_UNDERFLOW;
-            }
-
-            return RSV_OK;
+            // Precision value seems out of range!
         }
-    }
-    else
-    {
-        // ERROR: Invalid huffman nCode!
 
-        // FIXME: We may also enter here if we are about to encounter a
-        // restart marker! Need to see if ScanBuf is terminated by
-        // restart marker; if so, then we simply flush the ScanBuf,
-        // consume the 2-byte RST marker, clear the ScanBuf terminate
-        // reason, then indicate to caller that they need to call ReadScanVal
-        // again.
+        ScanBuffConsume(m_nScanBitsUsed2);
 
-        if (m_nWarnBadScanNum < m_nScanErrMax)
+        // Did we overread the scan buffer?
+        if (m_nScanBuff_vacant > 32)
         {
+            // The nCode consumed more bits than we had!
             CString strTmp;
-            strTmp.Format(_T("*** ERROR: Can't find huffman bitstring @ %s, table %u, value [0x%08x]"), (LPCTSTR)GetScanBufPos(), nTbl, m_nScanBuff);
+            strTmp.Format(_T("*** ERROR: Overread scan segment (after bitstring)! @ Offset: %s"), (LPCTSTR)GetScanBufPos());
             m_pLog->AddLineErr(strTmp);
-
-            m_nWarnBadScanNum++;
-            if (m_nWarnBadScanNum >= m_nScanErrMax)
-            {
-                strTmp.Format(_T("    Only reported first %u instances of this message..."), m_nScanErrMax);
-                m_pLog->AddLineErr(strTmp);
-            }
+            m_bScanEnd = true;
+            m_bScanBad = true;
+            return RSV_UNDERFLOW;
         }
 
-        // TODO: What rValue and ZRL should we return?
-        m_bScanBad = true;
-        return RSV_UNDERFLOW;
+        return RSV_OK;
     }
+    // ERROR: Invalid huffman nCode!
+
+    // FIXME: We may also enter here if we are about to encounter a
+    // restart marker! Need to see if ScanBuf is terminated by
+    // restart marker; if so, then we simply flush the ScanBuf,
+    // consume the 2-byte RST marker, clear the ScanBuf terminate
+    // reason, then indicate to caller that they need to call ReadScanVal
+    // again.
+
+    if (m_nWarnBadScanNum < m_nScanErrMax)
+    {
+        CString strTmp;
+        strTmp.Format(_T("*** ERROR: Can't find huffman bitstring @ %s, table %u, value [0x%08x]"), (LPCTSTR)GetScanBufPos(), nTbl, m_nScanBuff);
+        m_pLog->AddLineErr(strTmp);
+
+        m_nWarnBadScanNum++;
+        if (m_nWarnBadScanNum >= m_nScanErrMax)
+        {
+            strTmp.Format(_T("    Only reported first %u instances of this message..."), m_nScanErrMax);
+            m_pLog->AddLineErr(strTmp);
+        }
+    }
+
+    // TODO: What rValue and ZRL should we return?
+    m_bScanBad = true;
+    return RSV_UNDERFLOW;
 
     // NOTE: Can't reach here
     // return RSV_UNDERFLOW;
@@ -3140,7 +3125,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     // -------------------------------------
     // Allocate the device-independent bitmap (DIB)
 
-    unsigned char* pDibImgTmpBits = NULL;
+    unsigned char* pDibImgTmpBits = nullptr;
     unsigned nDibImgRowBytes;
 
     // If a previous bitmap was created, deallocate it and start fresh
@@ -3230,20 +3215,17 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
         // TODO: Is more error handling required?
         return;
     }
-    else
-    {
-        // FIXME: Not sure that we can always depend on the indices to appear
-        // in this order. May need another layer of indirection to get at the
-        // frame image component index.
-        nDqtTblY = m_anDqtTblSel[DQT_DEST_Y];
-        nDqtTblCb = m_anDqtTblSel[DQT_DEST_CB];
-        nDqtTblCr = m_anDqtTblSel[DQT_DEST_CR];
+    // FIXME: Not sure that we can always depend on the indices to appear
+    // in this order. May need another layer of indirection to get at the
+    // frame image component index.
+    nDqtTblY = m_anDqtTblSel[DQT_DEST_Y];
+    nDqtTblCb = m_anDqtTblSel[DQT_DEST_CB];
+    nDqtTblCr = m_anDqtTblSel[DQT_DEST_CR];
 #ifdef DEBUG_YCCK
 		if (m_nNumSosComps==4) {
 			nDqtTblK = m_anDqtTblSel[DQT_DEST_K];
 		}
 #endif
-    }
 
     // Now check DHT tables
     bool bDhtReady = true;
@@ -3285,28 +3267,25 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
         // TODO: Is more error handling required here?
         return;
     }
-    else
-    {
-        // Define the huffman table indices that are selected for each
-        // image component index and class (AC,DC).
-        //
-        // No need to check if a table is valid here since we have
-        // previously checked to ensure that all required tables
-        // exist.
-        // NOTE: If the table has not been defined, then the index
-        // will be 0xFFFFFFFF. ReadScanVal() will trap this with ASSERT
-        // should it ever be used.
-        nDhtTblDcY = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_Y];
-        nDhtTblAcY = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_Y];
-        nDhtTblDcCb = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_CB];
-        nDhtTblAcCb = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_CB];
-        nDhtTblDcCr = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_CR];
-        nDhtTblAcCr = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_CR];
+    // Define the huffman table indices that are selected for each
+    // image component index and class (AC,DC).
+    //
+    // No need to check if a table is valid here since we have
+    // previously checked to ensure that all required tables
+    // exist.
+    // NOTE: If the table has not been defined, then the index
+    // will be 0xFFFFFFFF. ReadScanVal() will trap this with ASSERT
+    // should it ever be used.
+    nDhtTblDcY = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_Y];
+    nDhtTblAcY = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_Y];
+    nDhtTblDcCb = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_CB];
+    nDhtTblAcCb = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_CB];
+    nDhtTblDcCr = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_CR];
+    nDhtTblAcCr = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_CR];
 #ifdef DEBUG_YCCK
 		nDhtTblDcK	= m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_K];
 		nDhtTblAcK	= m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_K];
 #endif
-    }
 
     // Done checks
 
@@ -4139,7 +4118,7 @@ void CimgDecode::DrawHistogram(bool bQuiet, bool bDumpHistoY)
 
     m_rectHistBase = CRect(CPoint(0, 0), CSize(HISTO_BINS * HISTO_BIN_WIDTH, 3 * HISTO_BIN_HEIGHT_MAX));
 
-    if (pDibHistoBits != NULL)
+    if (pDibHistoBits != nullptr)
     {
         memset(pDibHistoBits, 0, 3 * HISTO_BIN_HEIGHT_MAX * nDibHistoRowBytes);
 
@@ -4201,7 +4180,7 @@ void CimgDecode::DrawHistogram(bool bQuiet, bool bDumpHistoY)
 
         m_rectHistYBase = CRect(CPoint(0, 0), CSize(SUBSET_HISTO_BINS * HISTO_BIN_WIDTH,HISTO_BIN_HEIGHT_MAX));
 
-        if (pDibHistoBits != NULL)
+        if (pDibHistoBits != nullptr)
         {
             memset(pDibHistoBits, 0,HISTO_BIN_HEIGHT_MAX * nDibHistoRowBytes);
 
@@ -5231,14 +5210,14 @@ void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY)
 //
 void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap)
 {
-    unsigned char* pDibImgTmpBits = NULL;
+    unsigned char* pDibImgTmpBits = nullptr;
 
     pDibImgTmpBits = (unsigned char*)(m_pDibTemp.GetDIBBitArray());
 
     // Ensure that the pointers are available!
     if (!pDibImgTmpBits)
     {
-        pBitmap = NULL;
+        pBitmap = nullptr;
     }
     else
     {
@@ -5259,7 +5238,7 @@ void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap)
 //
 void CimgDecode::CalcChannelPreview()
 {
-    unsigned char* pDibImgTmpBits = NULL;
+    unsigned char* pDibImgTmpBits = nullptr;
 
     pDibImgTmpBits = (unsigned char*)(m_pDibTemp.GetDIBBitArray());
 
@@ -5271,7 +5250,7 @@ void CimgDecode::CalcChannelPreview()
 
 
     // If we need to do a YCC shift, then do full recalc into tmp array
-    CalcChannelPreviewFull(NULL, pDibImgTmpBits);
+    CalcChannelPreviewFull(nullptr, pDibImgTmpBits);
 
     // Since this was a complex mod, we don't mark this channel as
     // being "done", so we will need to recalculate any time we change
@@ -5279,8 +5258,6 @@ void CimgDecode::CalcChannelPreview()
 
     // Force an update of the view to be sure
     //m_pDoc->UpdateAllViews(NULL);
-
-    return;
 }
 
 

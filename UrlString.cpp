@@ -72,7 +72,7 @@ CString CUrlString::Decode(CString csEncoded)
     for (int iPos = 0; iPos < csUnsafeEncoded.GetLength(); iPos += 3)
     {
         csCharEncoded = csUnsafeEncoded.Mid(iPos, 3);
-        csCharDecoded = (TCHAR)_tcstol(csUnsafeEncoded.Mid(iPos + 1, 2), NULL, 16);
+        csCharDecoded = (TCHAR)_tcstol(csUnsafeEncoded.Mid(iPos + 1, 2), nullptr, 16);
         csDecoded.Replace(csCharEncoded, csCharDecoded);
     }
     return csDecoded;

@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "jpegsnoop.h"
 #include "OverlayBufDlg.h"
-#include ".\overlaybufdlg.h"
+#include "./overlaybufdlg.h"
 
 #include "General.h"
 
@@ -31,12 +31,12 @@
 IMPLEMENT_DYNAMIC(COverlayBufDlg, CDialog)
 
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(COverlayBufDlg::IDD, pParent)
-      , m_sOffset(_T(""))
-      , m_sValueCurHex(_T(""))
-      , m_sValueNewHex(_T(""))
+    : CDialog(IDD, pParent)
       , m_nLen(0)
       , m_bEn(FALSE)
+      , m_sValueNewHex(_T(""))
+      , m_sOffset(_T(""))
+      , m_sValueCurHex(_T(""))
       , m_sValueCurBin(_T(""))
 {
     // FIXME: Should probably mark this as invalid
@@ -44,18 +44,18 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
     m_nOffset = 0;
 
     // Initialize callback functions to NULL
-    m_pCbBuf = NULL;
-    m_pClassCbBuf = NULL;
+    m_pCbBuf = nullptr;
+    m_pClassCbBuf = nullptr;
 }
 
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
                                bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin)
-    : CDialog(COverlayBufDlg::IDD, pParent)
-      , m_sOffset(_T(""))
-      , m_sValueCurHex(_T(""))
-      , m_sValueNewHex(_T(""))
+    : CDialog(IDD, pParent)
       , m_nLen(0)
       , m_bEn(FALSE)
+      , m_sValueNewHex(_T(""))
+      , m_sOffset(_T(""))
+      , m_sValueCurHex(_T(""))
 {
     m_bEn = bEn;
     m_nOffset = nOffset;
@@ -64,8 +64,8 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
     m_sValueNewBin = sNewBin;
 
     // Initialize callback functions to NULL
-    m_pCbBuf = NULL;
-    m_pClassCbBuf = NULL;
+    m_pCbBuf = nullptr;
+    m_pClassCbBuf = nullptr;
 
     m_bApply = false;
 
@@ -124,7 +124,7 @@ void COverlayBufDlg::OnBnClickedOvrLoad()
     }
 
     UpdateData();
-    m_nOffset = _tcstoul(m_sOffset,NULL, 16);
+    m_nOffset = _tcstoul(m_sOffset, nullptr, 16);
 
     // get the data at the file position
     for (unsigned nInd = 0; nInd < 16; nInd++)
@@ -172,7 +172,7 @@ void COverlayBufDlg::OnBnClickedOvrLoad()
 void COverlayBufDlg::OnBnClickedOk()
 {
     UpdateData();
-    m_nOffset = _tcstoul(m_sOffset,NULL, 16);
+    m_nOffset = _tcstoul(m_sOffset, nullptr, 16);
 
     m_bApply = false;
     OnOK();
@@ -181,7 +181,7 @@ void COverlayBufDlg::OnBnClickedOk()
 void COverlayBufDlg::OnBnClickedApply()
 {
     UpdateData();
-    m_nOffset = _tcstoul(m_sOffset,NULL, 16);
+    m_nOffset = _tcstoul(m_sOffset, nullptr, 16);
 
     m_bApply = true;
     OnOK();
@@ -194,7 +194,7 @@ BOOL COverlayBufDlg::OnInitDialog()
     CRect rect;
     // TODO:  Add extra initialization here
     GetWindowRect(&rect);
-    SetWindowPos(NULL, 50, 50, rect.Width(), rect.Height(), 0);
+    SetWindowPos(nullptr, 50, 50, rect.Width(), rect.Height(), 0);
 
     // Get the initial values
     OnBnClickedOvrLoad();

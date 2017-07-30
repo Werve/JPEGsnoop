@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "ExportTiffDlg.h"
-#include ".\exporttiffdlg.h"
+#include "./exporttiffdlg.h"
 
 
 // CExportTiffDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CExportTiffDlg, CDialog)
 
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CExportTiffDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_nCtlFmt(0)
       , m_sFname(_T(""))
 {

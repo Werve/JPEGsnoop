@@ -52,16 +52,16 @@ public:
 
     // Overrides
 public:
-    virtual BOOL OnNewDocument();
-    virtual void Serialize(CArchive& ar);
-    virtual CRichEditCntrItem* CreateClientItem(REOBJECT* preo) const;
+    BOOL OnNewDocument() override;
+    void Serialize(CArchive& ar) override;
+    CRichEditCntrItem* CreateClientItem(REOBJECT* preo) const override;
 
     // Implementation
 public:
     virtual ~CJPEGsnoopDoc();
 #ifdef _DEBUG
-    virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    void AssertValid() const override;
+    void Dump(CDumpContext& dc) const override;
 #endif
 
     void SetupView(CRichEditView* pView);
@@ -127,14 +127,14 @@ public:
 public:
     void DoGuiExtractEmbeddedJPEG();
 private:
-    virtual void DeleteContents();
+    void DeleteContents() override;
     void RedrawLog();
 
 public:
     // OnOpenDocument() is public for View:OnDropFiles()
-    virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+    BOOL OnOpenDocument(LPCTSTR lpszPathName) override;
 private:
-    virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+    BOOL OnSaveDocument(LPCTSTR lpszPathName) override;
     afx_msg void OnFileOffset();
     afx_msg void OnToolsDecode();
     afx_msg void OnToolsAddcameratodb();

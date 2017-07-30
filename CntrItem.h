@@ -30,7 +30,7 @@ class CJPEGsnoopCntrItem : public CRichEditCntrItem
 
     // Constructors
 public:
-    CJPEGsnoopCntrItem(REOBJECT* preo = NULL, CJPEGsnoopDoc* pContainer = NULL);
+    CJPEGsnoopCntrItem(REOBJECT* preo = nullptr, CJPEGsnoopDoc* pContainer = nullptr);
     // Note: pContainer is allowed to be NULL to enable IMPLEMENT_SERIALIZE
     //  IMPLEMENT_SERIALIZE requires the class have a constructor with
     //  zero arguments.  Normally, OLE items are constructed with a
@@ -55,7 +55,7 @@ protected:
 public:
     ~CJPEGsnoopCntrItem();
 #ifdef _DEBUG
-    virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    void AssertValid() const override;
+    void Dump(CDumpContext& dc) const override;
 #endif
 };

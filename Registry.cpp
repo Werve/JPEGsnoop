@@ -80,18 +80,15 @@ DWORD CRegDWORD::read()
     {
         int size = sizeof(m_value);
         DWORD type;
-        if (RegQueryValueEx(m_hKey, m_key, NULL, &type, (BYTE*)&m_value, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)&m_value, (LPDWORD)&size) == ERROR_SUCCESS)
         {
             ASSERT(type==REG_DWORD);
             m_read = TRUE;
             RegCloseKey(m_hKey);
             return m_value;
         }
-        else
-        {
-            RegCloseKey(m_hKey);
-            return m_defaultvalue;
-        }
+        RegCloseKey(m_hKey);
+        return m_defaultvalue;
     }
     return m_defaultvalue;
 }
@@ -100,7 +97,7 @@ void CRegDWORD::write()
 {
     ASSERT(m_key != _T(""));
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -116,10 +113,7 @@ CRegDWORD::operator DWORD()
 {
     if ((m_read) && (!m_force))
         return m_value;
-    else
-    {
-        return read();
-    }
+    return read();
 }
 
 CRegDWORD& CRegDWORD::operator =(DWORD d)
@@ -180,9 +174,9 @@ CString CRegString::read()
     {
         int size = 0;
         DWORD type;
-        RegQueryValueEx(m_hKey, m_key, NULL, &type, NULL, (LPDWORD)&size);
+        RegQueryValueEx(m_hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
         TCHAR* pStr = new TCHAR[size];
-        if (RegQueryValueEx(m_hKey, m_key, NULL, &type, (BYTE*)pStr, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)pStr, (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_value = CString(pStr);
             delete [] pStr;
@@ -191,12 +185,9 @@ CString CRegString::read()
             RegCloseKey(m_hKey);
             return m_value;
         }
-        else
-        {
-            delete [] pStr;
-            RegCloseKey(m_hKey);
-            return m_defaultvalue;
-        }
+        delete [] pStr;
+        RegCloseKey(m_hKey);
+        return m_defaultvalue;
     }
     return m_defaultvalue;
 }
@@ -205,7 +196,7 @@ void CRegString::write()
 {
     ASSERT(m_key != _T(""));
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -224,10 +215,7 @@ CRegString::operator CString()
 {
     if ((m_read) && (!m_force))
         return m_value;
-    else
-    {
-        return read();
-    }
+    return read();
 }
 
 CRegString& CRegString::operator =(CString s)
@@ -394,9 +382,9 @@ CPoint CRegPoint::read()
     {
         int size = 0;
         DWORD type;
-        RegQueryValueEx(m_hKey, m_key, NULL, &type, NULL, (LPDWORD)&size);
+        RegQueryValueEx(m_hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
         POINT* pPoint = (POINT *)new char[size];
-        if (RegQueryValueEx(m_hKey, m_key, NULL, &type, (BYTE*)pPoint, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)pPoint, (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_value = CPoint(*pPoint);
             delete [] pPoint;
@@ -405,12 +393,9 @@ CPoint CRegPoint::read()
             RegCloseKey(m_hKey);
             return m_value;
         }
-        else
-        {
-            delete [] pPoint;
-            RegCloseKey(m_hKey);
-            return m_defaultvalue;
-        }
+        delete [] pPoint;
+        RegCloseKey(m_hKey);
+        return m_defaultvalue;
     }
     return m_defaultvalue;
 }
@@ -419,7 +404,7 @@ void CRegPoint::write()
 {
     ASSERT(m_key != _T(""));
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -435,10 +420,7 @@ CRegPoint::operator CPoint()
 {
     if ((m_read) && (!m_force))
         return m_value;
-    else
-    {
-        return read();
-    }
+    return read();
 }
 
 CRegPoint& CRegPoint::operator =(CPoint s)
@@ -499,9 +481,9 @@ stdstring CRegStdString::read()
     {
         int size = 0;
         DWORD type;
-        RegQueryValueEx(m_hKey, m_key.c_str(), NULL, &type, NULL, (LPDWORD)&size);
+        RegQueryValueEx(m_hKey, m_key.c_str(), nullptr, &type, nullptr, (LPDWORD)&size);
         TCHAR* pStr = new TCHAR[size];
-        if (RegQueryValueEx(m_hKey, m_key.c_str(), NULL, &type, (BYTE*)pStr, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key.c_str(), nullptr, &type, (BYTE*)pStr, (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_value.assign(pStr);
             delete [] pStr;
@@ -509,12 +491,9 @@ stdstring CRegStdString::read()
             RegCloseKey(m_hKey);
             return m_value;
         }
-        else
-        {
-            delete [] pStr;
-            RegCloseKey(m_hKey);
-            return m_defaultvalue;
-        }
+        delete [] pStr;
+        RegCloseKey(m_hKey);
+        return m_defaultvalue;
     }
     return m_defaultvalue;
 }
@@ -522,7 +501,7 @@ stdstring CRegStdString::read()
 void CRegStdString::write()
 {
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -537,18 +516,14 @@ CRegStdString::operator LPCTSTR()
 {
     if ((m_read) && (!m_force))
         return m_value.c_str();
-    else
-        return read().c_str();
+    return read().c_str();
 }
 
 CRegStdString::operator stdstring()
 {
     if ((m_read) && (!m_force))
         return m_value;
-    else
-    {
-        return read();
-    }
+    return read();
 }
 
 CRegStdString& CRegStdString::operator =(stdstring s)
@@ -607,17 +582,14 @@ DWORD CRegStdWORD::read()
     {
         int size = sizeof(m_value);
         DWORD type;
-        if (RegQueryValueEx(m_hKey, m_key.c_str(), NULL, &type, (BYTE*)&m_value, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key.c_str(), nullptr, &type, (BYTE*)&m_value, (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_read = TRUE;
             RegCloseKey(m_hKey);
             return m_value;
         }
-        else
-        {
-            RegCloseKey(m_hKey);
-            return m_defaultvalue;
-        }
+        RegCloseKey(m_hKey);
+        return m_defaultvalue;
     }
     return m_defaultvalue;
 }
@@ -625,7 +597,7 @@ DWORD CRegStdWORD::read()
 void CRegStdWORD::write()
 {
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -640,8 +612,5 @@ CRegStdWORD::operator DWORD()
 {
     if ((m_read) && (!m_force))
         return m_value;
-    else
-    {
-        return read();
-    }
+    return read();
 }

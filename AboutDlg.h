@@ -40,13 +40,13 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     // Implementation
 protected:
     DECLARE_MESSAGE_MAP()
 public:
-    virtual BOOL OnInitDialog();
+    BOOL OnInitDialog() override;
 
     CHyperlinkStatic m_staticURL;
     CHyperlinkStatic m_staticURLdoc;

@@ -29,7 +29,7 @@
 IMPLEMENT_DYNAMIC(CNoteDlg, CDialog)
 
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CNoteDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , strMsg(_T(""))
       , bCoachOff(TRUE)
 {

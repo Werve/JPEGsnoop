@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "DbManageDlg.h"
-#include ".\dbmanagedlg.h"
+#include "./dbmanagedlg.h"
 
 
 // CDbManageDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CDbManageDlg, CDialog)
 
 CDbManageDlg::CDbManageDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CDbManageDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
 {
     m_asToInsert.SetSize(0, 10);
     m_anListBoxInd.SetSize(0, 10);

@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "ModelessDlg.h"
-#include ".\modelessdlg.h"
+#include "./modelessdlg.h"
 
 
 // CModelessDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CModelessDlg, CDialog)
 
 CModelessDlg::CModelessDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CModelessDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
 {
 }
 

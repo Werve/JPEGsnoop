@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "ExportDlg.h"
-#include ".\exportdlg.h"
+#include "./exportdlg.h"
 
 
 // CExportDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CExportDlg, CDialog)
 
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CExportDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_bOverlayEn(FALSE)
       , m_bDhtAviInsert(FALSE)
       , m_strOffsetStart(_T(""))

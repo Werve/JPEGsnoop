@@ -33,7 +33,7 @@ class CSettingsDlg : public CDialog
     DECLARE_DYNAMIC(CSettingsDlg)
 
 public:
-    CSettingsDlg(CWnd* pParent = NULL); // standard constructor
+    CSettingsDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CSettingsDlg();
 
     // Dialog Data
@@ -43,7 +43,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 private:

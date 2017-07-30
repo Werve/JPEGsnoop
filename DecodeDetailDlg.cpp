@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "DecodeDetailDlg.h"
-#include ".\decodedetaildlg.h"
+#include "./decodedetaildlg.h"
 
 
 // CDecodeDetailDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CDecodeDetailDlg, CDialog)
 
 CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CDecodeDetailDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_nMcuX(0)
       , m_nMcuY(0)
       , m_nMcuLen(0)

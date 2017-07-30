@@ -25,7 +25,7 @@
 #include "JPEGsnoopDoc.h"
 #include "CntrItem.h"
 #include "JPEGsnoopView.h"
-#include ".\jpegsnoopview.h"
+#include "./jpegsnoopview.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -131,7 +131,7 @@ void CJPEGsnoopView::OnDestroy()
     // Deactivate the item on destruction; this is important
     // when a splitter view is being used
     COleClientItem* pActiveItem = GetDocument()->GetInPlaceActiveItem(this);
-    if (pActiveItem != NULL && pActiveItem->GetActiveView() == this)
+    if (pActiveItem != nullptr && pActiveItem->GetActiveView() == this)
     {
         pActiveItem->Deactivate();
         ASSERT(GetDocument()->GetInPlaceActiveItem(this) == NULL);
@@ -169,7 +169,7 @@ void CJPEGsnoopView::OnDropFiles(HDROP hDropInfo)
     TCHAR szNextFile [MAX_PATH];
 
     // Get the # of files being dropped.
-    uNumFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0);
+    uNumFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, nullptr, 0);
 
     /*
     for ( UINT uFile = 0; uFile < uNumFiles; uFile++ )

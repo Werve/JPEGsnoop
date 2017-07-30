@@ -23,11 +23,11 @@
 
 FileTiff::FileTiff()
 {
-    m_pFileOutput = NULL;
+    m_pFileOutput = nullptr;
     m_nPtrIfdExtra = 0;
     m_nPtrImg = 0;
     m_nPos = 0;
-    m_pIfdExtraBuf = NULL;
+    m_pIfdExtraBuf = nullptr;
 }
 
 FileTiff::~FileTiff()
@@ -35,12 +35,12 @@ FileTiff::~FileTiff()
     if (m_pFileOutput)
     {
         delete m_pFileOutput;
-        m_pFileOutput = NULL;
+        m_pFileOutput = nullptr;
     }
     if (m_pIfdExtraBuf)
     {
         delete m_pIfdExtraBuf;
-        m_pIfdExtraBuf = NULL;
+        m_pIfdExtraBuf = nullptr;
     }
 }
 
@@ -476,7 +476,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
     if (m_pIfdExtraBuf)
     {
         delete m_pIfdExtraBuf;
-        m_pIfdExtraBuf = NULL;
+        m_pIfdExtraBuf = nullptr;
     }
 
 
@@ -512,7 +512,7 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
                         (LPCTSTR)sFnameOut, msg);
         AfxMessageBox(strError);
-        m_pFileOutput = NULL;
+        m_pFileOutput = nullptr;
 
         return;
     }
@@ -594,6 +594,6 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
     if (m_pFileOutput)
     {
         delete m_pFileOutput;
-        m_pFileOutput = NULL;
+        m_pFileOutput = nullptr;
     }
 }

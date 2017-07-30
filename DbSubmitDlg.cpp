@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "jpegsnoop.h"
 #include "DbSubmitDlg.h"
-#include ".\dbsubmitdlg.h"
+#include "./dbsubmitdlg.h"
 
 
 // CDbSubmitDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CDbSubmitDlg, CDialog)
 
 CDbSubmitDlg::CDbSubmitDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CDbSubmitDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_strSig(_T(""))
       , m_strExifModel(_T(""))
       , m_strExifSoftware(_T(""))

@@ -34,7 +34,7 @@ class COffsetDlg : public CDialog
     DECLARE_DYNAMIC(COffsetDlg)
 
 public:
-    COffsetDlg(CWnd* pParent = NULL); // standard constructor
+    COffsetDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~COffsetDlg();
 
     // Dialog Data
@@ -44,7 +44,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 

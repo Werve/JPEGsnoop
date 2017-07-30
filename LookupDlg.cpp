@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "jpegsnoop.h"
 #include "LookupDlg.h"
-#include ".\lookupdlg.h"
+#include "./lookupdlg.h"
 
 
 // CLookupDlg dialog
@@ -31,36 +31,36 @@
 IMPLEMENT_DYNAMIC(CLookupDlg, CDialog)
 
 CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CLookupDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_nPixX(0)
       , m_nPixY(0)
       , m_strOffset(_T(""))
-      , m_strRngX(_T(""))
-      , m_strRngY(_T(""))
       , m_nSizeX(0)
       , m_nSizeY(0)
+      , m_strRngX(_T(""))
+      , m_strRngY(_T(""))
 {
     // Initialize callback functions to NULL
-    m_pCbLookup = NULL;
-    m_pClassCbLookup = NULL;
+    m_pCbLookup = nullptr;
+    m_pClassCbLookup = nullptr;
 }
 
 CLookupDlg::CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY)
-    : CDialog(CLookupDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_nPixX(0)
       , m_nPixY(0)
       , m_strOffset(_T("Not Calculated"))
-      , m_strRngX(_T(""))
-      , m_strRngY(_T(""))
       , m_nSizeX(nSizeX)
       , m_nSizeY(nSizeY)
+      , m_strRngX(_T(""))
+      , m_strRngY(_T(""))
 {
     m_strRngX.Format(_T("(0..%u)"), m_nSizeX - 1);
     m_strRngY.Format(_T("(0..%u)"), m_nSizeY - 1);
 
     // Initialize callback functions to NULL
-    m_pCbLookup = NULL;
-    m_pClassCbLookup = NULL;
+    m_pCbLookup = nullptr;
+    m_pClassCbLookup = nullptr;
 }
 
 CLookupDlg::~CLookupDlg()

@@ -84,7 +84,7 @@ public:
     ~CFolderDialog();
 
     LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
-                                  LPCITEMIDLIST pidRoot = NULL, BOOL bFilter = FALSE);
+                                  LPCITEMIDLIST pidRoot = nullptr, BOOL bFilter = FALSE);
 
     CString GetDisplayName() { return m_sDisplayName; }
 

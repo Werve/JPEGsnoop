@@ -54,8 +54,8 @@ CHyperlinkStatic::CHyperlinkStatic()
     _strCaption = _strHyperlink = _T("");
     _bMouseInControl = _bCreateFont = _bGetCaptionSize = false;
 
-    _hHandCursor = ::LoadCursor(0, IDC_HAND);
-    _hArrowCursor = ::LoadCursor(0, IDC_ARROW);
+    _hHandCursor = ::LoadCursor(nullptr, IDC_HAND);
+    _hArrowCursor = ::LoadCursor(nullptr, IDC_ARROW);
 }
 
 CHyperlinkStatic::~CHyperlinkStatic()
@@ -91,7 +91,7 @@ void CHyperlinkStatic::OnLButtonDown(UINT nFlags, CPoint point)
     if (_bGetCaptionSize == false)
         GetCaptionSize();
     if (InCaptionRange(point))
-    ShellExecute(0, _T("open"), _strHyperlink, 0, 0, SW_SHOWNORMAL);
+    ShellExecute(nullptr, _T("open"), _strHyperlink, nullptr, nullptr, SW_SHOWNORMAL);
     CStatic::OnLButtonDown(nFlags, point);
 }
 

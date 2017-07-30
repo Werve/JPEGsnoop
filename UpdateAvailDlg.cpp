@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "UpdateAvailDlg.h"
-#include ".\updateavaildlg.h"
+#include "./updateavaildlg.h"
 
 
 // CUpdateAvailDlg dialog
@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CUpdateAvailDlg, CDialog)
 
 CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CUpdateAvailDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , strVerCur(_T(""))
       , strVerLatest(_T(""))
       , bUpdateAutoStill(FALSE)
@@ -62,5 +62,5 @@ END_MESSAGE_MAP()
 void CUpdateAvailDlg::OnBnClickedButton1()
 {
     // Open website
-    ShellExecute(0, _T("open"), IA_UPDATES_DL_PAGE, 0, 0, SW_SHOWNORMAL);
+    ShellExecute(nullptr, _T("open"), IA_UPDATES_DL_PAGE, nullptr, nullptr, SW_SHOWNORMAL);
 }

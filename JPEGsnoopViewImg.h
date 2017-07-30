@@ -44,13 +44,13 @@ protected:
 
 public:
 #ifdef _DEBUG
-    virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+    void AssertValid() const override;
+    void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
-    virtual void OnDraw(CDC* pDC); // overridden to draw this view
-    virtual void OnInitialUpdate(); // first time after construct
+    void OnDraw(CDC* pDC) override; // overridden to draw this view
+    void OnInitialUpdate() override; // first time after construct
 
     DECLARE_MESSAGE_MAP()
 

@@ -24,15 +24,15 @@
 
 CJPEGsnoopCore::CJPEGsnoopCore(void)
 {
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Begin"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Begin"));
     // Initialize processing classes
 
     // Save a local copy of the config struct pointer
     m_pAppConfig = theApp.m_pAppConfig;
 
     // Ensure the local log isn't linked to a CDocument
-    glb_pDocLog->SetDoc(NULL);
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 1"));
+    glb_pDocLog->SetDoc(nullptr);
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 1"));
 
     // Allocate the file window buffer
     m_pWBuf = new CwindowBuf();
@@ -41,7 +41,7 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for File Buffer"));
         exit(1);
     }
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 2"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 2"));
 
     // Allocate the JPEG decoder
     m_pImgDec = new CimgDecode(glb_pDocLog, m_pWBuf);
@@ -50,7 +50,7 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for Image Decoder"));
         exit(1);
     }
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 3"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 3"));
 
     m_pJfifDec = new CjfifDecode(glb_pDocLog, m_pWBuf, m_pImgDec);
     if (!m_pWBuf)
@@ -58,13 +58,13 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for JFIF Decoder"));
         exit(1);
     }
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 4"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 4"));
 
 
     // Reset all members
     Reset();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 5"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 5"));
 
     // Start in quick mode
 #ifdef QUICKLOG
@@ -74,28 +74,28 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
 #endif
 
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() End"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() End"));
 }
 
 
 CJPEGsnoopCore::~CJPEGsnoopCore(void)
 {
-    if (m_pJfifDec != NULL)
+    if (m_pJfifDec != nullptr)
     {
         delete m_pJfifDec;
-        m_pJfifDec = NULL;
+        m_pJfifDec = nullptr;
     }
 
-    if (m_pWBuf != NULL)
+    if (m_pWBuf != nullptr)
     {
         delete m_pWBuf;
-        m_pWBuf = NULL;
+        m_pWBuf = nullptr;
     }
 
-    if (m_pImgDec != NULL)
+    if (m_pImgDec != nullptr)
     {
         delete m_pImgDec;
-        m_pImgDec = NULL;
+        m_pImgDec = nullptr;
     }
 }
 
@@ -103,7 +103,7 @@ CJPEGsnoopCore::~CJPEGsnoopCore(void)
 void CJPEGsnoopCore::Reset()
 {
     // Reset all members
-    m_pFile = NULL;
+    m_pFile = nullptr;
     m_lFileSize = 0L;
     m_strPathName = _T("");
 
@@ -169,13 +169,13 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
     }
 
     // Clean up if a file is already open
-    if (m_pFile != NULL)
+    if (m_pFile != nullptr)
     {
         // Mark previous buffer as closed
         m_pWBuf->BufFileUnset();
         m_pFile->Close();
         delete m_pFile;
-        m_pFile = NULL;
+        m_pFile = nullptr;
         m_lFileSize = 0L;
     }
 
@@ -197,7 +197,7 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
         glb_pDocLog->AddLineErr(strError);
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(strError);
-        m_pFile = NULL;
+        m_pFile = nullptr;
 
         return FALSE;
     }
@@ -239,11 +239,11 @@ void CJPEGsnoopCore::AnalyzeClose()
     m_pWBuf->BufFileUnset();
 
     // Now that we've finished parsing the file, close it!
-    if (m_pFile != NULL)
+    if (m_pFile != nullptr)
     {
         m_pFile->Close();
         delete m_pFile;
-        m_pFile = NULL;
+        m_pFile = nullptr;
     }
 }
 
@@ -329,7 +329,7 @@ void CJPEGsnoopCore::AnalyzeFileDo()
 //
 BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
 {
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Begin"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Begin"));
 
     BOOL bRetVal;
 
@@ -344,22 +344,22 @@ BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
     // if an option changes.
 
     bRetVal = AnalyzeOpen();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 1"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 1"));
     if (bRetVal)
     {
         // Only now that we have successfully opened the document
         // should be mark the flag as such. This flag is used by
         // other menu items to know whether or not the file is ready.
         AnalyzeFileDo();
-        if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 2"));
+        if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 2"));
     }
     AnalyzeClose();
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 3"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 3"));
 
     // In the last part of AnalyzeClose(), we mark the file
     // as not modified, so that we don't get prompted to save.
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() End"));
+    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() End"));
 
     return bRetVal;
 }
@@ -407,7 +407,7 @@ void CJPEGsnoopCore::DoLogSave(CString strLogName)
                         (LPCTSTR)strLogName, (LPCTSTR)msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
-        pLog = NULL;
+        pLog = nullptr;
 
         return;
     }
@@ -703,10 +703,7 @@ CString CJPEGsnoopCore::GetBatchFileInfo(unsigned nFileInd)
     {
         return m_asBatchFiles.GetAt(nFileInd);
     }
-    else
-    {
-        return _T("???");
-    }
+    return _T("???");
 }
 
 // Perform AnalyzeFile() but handle any search modes first
@@ -899,12 +896,12 @@ void CJPEGsnoopCore::BuildDirPath(CString strPath)
     _tcscpy_s(lpstrDstPathOnly, nLen + 1, strPath);
     PathRemoveFileSpec(lpstrDstPathOnly);
 
-    SHCreateDirectoryEx(NULL, lpstrDstPathOnly,NULL);
+    SHCreateDirectoryEx(nullptr, lpstrDstPathOnly, nullptr);
 
     if (lpstrDstPathOnly)
     {
         delete [] lpstrDstPathOnly;
-        lpstrDstPathOnly = NULL;
+        lpstrDstPathOnly = nullptr;
     }
 }
 

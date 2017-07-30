@@ -41,7 +41,7 @@ class CDbManageDlg : public CDialog
     DECLARE_DYNAMIC(CDbManageDlg)
 
 public:
-    CDbManageDlg(CWnd* pParent = NULL); // standard constructor
+    CDbManageDlg(CWnd* pParent = nullptr); // standard constructor
     virtual ~CDbManageDlg();
 
     // Dialog Data
@@ -51,7 +51,7 @@ public:
     };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:
@@ -60,7 +60,7 @@ public:
     void GetRemainIndices(CUIntArray& anRemain);
 
 private:
-    virtual BOOL OnInitDialog();
+    BOOL OnInitDialog() override;
     afx_msg void OnBnClickedRemove();
     afx_msg void OnBnClickedRemoveall();
 

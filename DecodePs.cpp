@@ -130,7 +130,7 @@ bool CDecodePs::DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, 
         bDecOk &= PhotoshopParseLayerMaskInfo(nPos, 3, pDibTemp);
     if (bDecOk)
     {
-        unsigned char* pDibBits = NULL;
+        unsigned char* pDibBits = nullptr;
 
 #ifdef PS_IMG_DEC_EN
         if ((pDibTemp) && (m_bDisplayImage))
@@ -567,7 +567,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
         // Nothing to report, exit now
         return;
     }
-    else if (nLen <= PS_HEX_MAX_INLINE)
+    if (nLen <= PS_HEX_MAX_INLINE)
     {
         // Define prefix for row
         strPrefix.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
@@ -1324,20 +1324,17 @@ bool CDecodePs::PhotoshopParseLayerMaskInfo(unsigned long& nPos, unsigned nInden
     {
         return true;
     }
-    else
+    if (bDecOk)
+        bDecOk &= PhotoshopParseLayerInfo(nPos, nIndent, pDibTemp);
+    if (bDecOk)
+        bDecOk &= PhotoshopParseGlobalLayerMaskInfo(nPos, nIndent);
+    if (bDecOk)
     {
-        if (bDecOk)
-            bDecOk &= PhotoshopParseLayerInfo(nPos, nIndent, pDibTemp);
-        if (bDecOk)
-            bDecOk &= PhotoshopParseGlobalLayerMaskInfo(nPos, nIndent);
-        if (bDecOk)
+        //while ((bDecOk) && (nPos < nPosEnd)) {
+        //while ((bDecOk) && ((nPos+12) < nPosEnd)) {
+        while ((bDecOk) && (nPosStart + nLayerMaskLen - nPos > 12))
         {
-            //while ((bDecOk) && (nPos < nPosEnd)) {
-            //while ((bDecOk) && ((nPos+12) < nPosEnd)) {
-            while ((bDecOk) && (nPosStart + nLayerMaskLen - nPos > 12))
-            {
-                bDecOk &= PhotoshopParseAddtlLayerInfo(nPos, nIndent);
-            }
+            bDecOk &= PhotoshopParseAddtlLayerInfo(nPos, nIndent);
         }
     }
 
@@ -1403,7 +1400,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
     for (unsigned nLayerInd = 0; (bDecOk) && (nLayerInd < nLayerCount); nLayerInd++)
     {
         // Clear the channel array
-        sLayerAllInfo.psLayers[nLayerInd].pnChanLen = NULL;
+        sLayerAllInfo.psLayers[nLayerInd].pnChanLen = nullptr;
         CString strTmp;
         strTmp.Format(_T("Layer #%u"), nLayerInd);
         PhotoshopParseReportFldOffset(nIndent, strTmp, nPos);
@@ -1425,7 +1422,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
         nHeight = sLayerAllInfo.psLayers[nLayerInd].nHeight;
 
 
-        unsigned char* pDibBits = NULL;
+        unsigned char* pDibBits = nullptr;
 #ifdef PS_IMG_DEC_EN
         if ((pDibTemp) && (m_bDisplayLayer) && (nLayerInd == m_nDisplayLayerInd))
         {
@@ -1492,13 +1489,13 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
             for (unsigned nChanInd = 0; (bDecOk) && (nChanInd < nNumChans); nChanInd++)
             {
                 delete [] sLayerAllInfo.psLayers[nLayerInd].pnChanLen;
-                sLayerAllInfo.psLayers[nLayerInd].pnChanLen = NULL;
+                sLayerAllInfo.psLayers[nLayerInd].pnChanLen = nullptr;
                 delete [] sLayerAllInfo.psLayers[nLayerInd].pnChanID;
-                sLayerAllInfo.psLayers[nLayerInd].pnChanID = NULL;
+                sLayerAllInfo.psLayers[nLayerInd].pnChanID = nullptr;
             }
         }
         delete [] sLayerAllInfo.psLayers;
-        sLayerAllInfo.psLayers = NULL;
+        sLayerAllInfo.psLayers = nullptr;
     }
 
 
@@ -1756,7 +1753,7 @@ bool CDecodePs::PhotoshopParseChannelImageData(unsigned long& nPos, unsigned nIn
         if (anRowLen)
         {
             delete [] anRowLen;
-            anRowLen = NULL;
+            anRowLen = nullptr;
         }
     }
     else if (nCompressionMethod == 0)
@@ -2008,7 +2005,7 @@ bool CDecodePs::PhotoshopParseImageData(unsigned long& nPos, unsigned nIndent, t
         if (anRowLen)
         {
             delete [] anRowLen;
-            anRowLen = NULL;
+            anRowLen = nullptr;
         }
     }
     else if (nCompressionMethod == 0)
@@ -2294,7 +2291,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
 		ASSERT(false);
 #endif
 
-        return false;;
+        return false;
     }
 
     unsigned nBimId = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
@@ -2472,7 +2469,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
 
             return false;
         }
-        else if (nPos != nPosEnd + 1)
+        if (nPos != nPosEnd + 1)
         {
             // Length mismatch detected: we read too little (versus length)
             // This is generally an indication that either I haven't accurately captured the

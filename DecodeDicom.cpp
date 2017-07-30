@@ -806,7 +806,7 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
         // Nothing to report, exit now
         return;
     }
-    else if (nLen <= DC_HEX_MAX_INLINE)
+    if (nLen <= DC_HEX_MAX_INLINE)
     {
         // Define prefix for row
         strPrefix.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);

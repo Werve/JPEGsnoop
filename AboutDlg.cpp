@@ -21,7 +21,7 @@
 #include "AboutDlg.h"
 
 
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg() : CDialog(IDD)
                          , m_staticVerNum(_T(""))
 {
 }

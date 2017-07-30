@@ -17,7 +17,7 @@
 //
 
 #include "StdAfx.h"
-#include ".\snoopconfig.h"
+#include "./snoopconfig.h"
 #include "snoop.h"
 #include "Registry.h"
 
@@ -29,7 +29,7 @@ CSnoopConfig::CSnoopConfig(void)
 {
     // Debug log
     strDebugLogFname = _T(".\\JPEGsnoop-debug.log");
-    fpDebugLog = NULL;
+    fpDebugLog = nullptr;
     bDebugLogEnable = false;
 
     // Default to showing message dialogs
@@ -443,7 +443,7 @@ CString CSnoopConfig::GetDefaultDbDir()
         // Get path for each computer, non-user specific and non-roaming data.
         //if ( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA, 
         //								NULL, 0, szFilePath ) ) )
-        if (SHGetSpecialFolderPath(NULL, szFilePath, CSIDL_APPDATA, true))
+        if (SHGetSpecialFolderPath(nullptr, szFilePath, CSIDL_APPDATA, true))
         {
             // Append product-specific path.
             PathAppend(szFilePath, _T("\\JPEGsnoop"));
@@ -533,13 +533,13 @@ void CSnoopConfig::CreateDir(LPTSTR Path)
         {
             if (':' != *(p - 1))
             {
-                CreateDirectory(DirName, NULL);
+                CreateDirectory(DirName, nullptr);
             }
         }
         *q++ = *p++;
         *q = '\0';
     }
-    CreateDirectory(DirName, NULL);
+    CreateDirectory(DirName, nullptr);
 }
 
 
