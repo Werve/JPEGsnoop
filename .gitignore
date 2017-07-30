@@ -48,6 +48,8 @@ build/
 
 # Visual C++ cache files
 ipch/
+.vscode/
+.vs/
 *.aps
 *.ncb
 *.opensdf
