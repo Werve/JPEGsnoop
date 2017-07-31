@@ -16,21 +16,15 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// BatchDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "BatchDlg.h"
+#include "JPEGsnoop.h"
 #include "FolderDlg.h"
 
 
-// CBatchDlg dialog
-
-IMPLEMENT_DYNAMIC(CBatchDlg, CDialog)
-
 CBatchDlg::CBatchDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CBatchDlg::IDD, pParent)
+    : CDialog(IDD, pParent)
       , m_bProcessSubdir(FALSE)
       , m_bExtractAll(FALSE)
       , m_strDirSrc(_T(""))
@@ -51,27 +45,16 @@ void CBatchDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_DIR_DST, m_strDirDst);
 }
 
-
-BEGIN_MESSAGE_MAP(CBatchDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_DIR_SRC_BROWSE, &CBatchDlg::OnBnClickedBtnDirSrcBrowse)
-    ON_BN_CLICKED(IDC_BTN_DIR_DST_BROWSE, &CBatchDlg::OnBnClickedBtnDirDstBrowse)
-END_MESSAGE_MAP()
-
-
-// CBatchDlg message handlers
-
-
 void CBatchDlg::OnBnClickedBtnDirSrcBrowse()
 {
-    CFolderDialog myFolderDlg(NULL);
-    LPCITEMIDLIST myItemIdList;
-    CString strPath;
     // Save fields first
     UpdateData(true);
+
     // Now request new path
+    CFolderDialog myFolderDlg(nullptr);
     myFolderDlg.SetStartPath(m_strDirSrc);
-    myItemIdList = myFolderDlg.BrowseForFolder(_T("Select input image folder"), 0, 0, false);
-    strPath = myFolderDlg.GetPathName(myItemIdList);
+    LPCITEMIDLIST myItemIdList = myFolderDlg.BrowseForFolder(_T("Select input image folder"), 0, nullptr, false);
+    CString strPath = myFolderDlg.GetPathName(myItemIdList);
     if (!strPath.IsEmpty())
     {
         m_strDirSrc = strPath;
@@ -81,21 +64,26 @@ void CBatchDlg::OnBnClickedBtnDirSrcBrowse()
     }
 }
 
-
 void CBatchDlg::OnBnClickedBtnDirDstBrowse()
 {
-    CFolderDialog myFolderDlg(NULL);
-    LPCITEMIDLIST myItemIdList;
-    CString strPath;
     // Save fields first
     UpdateData(true);
+
     // Now request new path
+    CFolderDialog myFolderDlg(nullptr);
     myFolderDlg.SetStartPath(m_strDirDst);
-    myItemIdList = myFolderDlg.BrowseForFolder(_T("Select output log folder"), 0, 0, false);
-    strPath = myFolderDlg.GetPathName(myItemIdList);
+    LPCITEMIDLIST myItemIdList = myFolderDlg.BrowseForFolder(_T("Select output log folder"), 0, nullptr, false);
+    CString strPath = myFolderDlg.GetPathName(myItemIdList);
     if (!strPath.IsEmpty())
     {
         m_strDirDst = strPath;
         UpdateData(false);
     }
 }
+
+BEGIN_MESSAGE_MAP(CBatchDlg, CDialog)
+    ON_BN_CLICKED(IDC_BTN_DIR_SRC_BROWSE, OnBnClickedBtnDirSrcBrowse)
+    ON_BN_CLICKED(IDC_BTN_DIR_DST_BROWSE, OnBnClickedBtnDirDstBrowse)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CBatchDlg, CDialog)

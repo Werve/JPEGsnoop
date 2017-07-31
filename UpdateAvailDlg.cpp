@@ -16,18 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// UpdateAvailDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "UpdateAvailDlg.h"
-#include "./updateavaildlg.h"
-
-
-// CUpdateAvailDlg dialog
-
-IMPLEMENT_DYNAMIC(CUpdateAvailDlg, CDialog)
+#include "JPEGsnoop.h"
 
 CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -51,16 +43,14 @@ void CUpdateAvailDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_DATE_LATEST, strDateLatest);
 }
 
-
-BEGIN_MESSAGE_MAP(CUpdateAvailDlg, CDialog)
-    ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
-END_MESSAGE_MAP()
-
-
-// CUpdateAvailDlg message handlers
-
 void CUpdateAvailDlg::OnBnClickedButton1()
 {
     // Open website
     ShellExecute(nullptr, _T("open"), IA_UPDATES_DL_PAGE, nullptr, nullptr, SW_SHOWNORMAL);
 }
+
+BEGIN_MESSAGE_MAP(CUpdateAvailDlg, CDialog)
+    ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CUpdateAvailDlg, CDialog)

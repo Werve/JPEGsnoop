@@ -17,14 +17,11 @@
 //
 
 #include "StdAfx.h"
-#include "./doclog.h"
 
+#include "doclog.h"
 #include "JPEGsnoopDoc.h"
 
-//
-// Initialize the log
-//
-CDocLog::CDocLog(void)
+CDocLog::CDocLog()
 {
     m_pDoc = nullptr;
     m_bEn = true;
@@ -36,31 +33,30 @@ CDocLog::CDocLog(void)
 #ifdef QUICKLOG
     m_bLogQuickMode = true;
 #else
-	m_bLogQuickMode = false;
+    m_bLogQuickMode = false;
 #endif
 }
 
-CDocLog::~CDocLog(void)
+CDocLog::~CDocLog()
 {
 }
-
 
 // Enable logging
 void CDocLog::Enable()
 {
     m_bEn = true;
-};
+}
 
 // Disable logging
 void CDocLog::Disable()
 {
     m_bEn = false;
-};
+}
 
 // Enable or disable the quick log mode
 //
 // INPUT:
-// - bQuick			= If true, write to log buffer, if false, write to CDocument
+// - bQuick         = If true, write to log buffer, if false, write to CDocument
 //
 void CDocLog::SetQuickMode(bool bQuick)
 {
@@ -105,10 +101,9 @@ void CDocLog::SetDoc(CDocument* pDoc)
 // Add a basic text line to the log
 void CDocLog::AddLine(CString strTxt)
 {
-    COLORREF sCol;
     if (m_bEn)
     {
-        sCol = RGB(1, 1, 1);
+        COLORREF sCol = RGB(1, 1, 1);
         // TODO: Do I really need newline in these line outputs?
         if (m_bUseDoc)
         {
@@ -253,8 +248,6 @@ void CDocLog::AddLineGood(CString strTxt)
         }
     }
 }
-
-// ======================================================================
 
 unsigned CDocLog::AppendToLogLocal(CString strTxt, COLORREF sColor)
 {

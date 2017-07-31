@@ -21,10 +21,10 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeProject:
 //
-//		Title:		ReHash - A console-based hash calculator
-//		Author:		Dominik Reichl
-//		URL:		http://www.codeproject.com/Articles/3945/ReHash-A-console-based-hash-calculator
-//		Date:		Apr 11, 2003
+//      Title:      ReHash - A console-based hash calculator
+//      Author:     Dominik Reichl
+//      URL:        http://www.codeproject.com/Articles/3945/ReHash-A-console-based-hash-calculator
+//      Date:       Apr 11, 2003
 //
 // ====================================================================================================
 
@@ -76,10 +76,7 @@
  **********************************************************************
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "stdafx.h" //CAL! Added to avoid compile error C1010
+#include "stdafx.h"
 
 #include "MD5.h"
 
@@ -300,8 +297,6 @@ void MD5Final(MD5_CTX* mdContext)
         mdContext->digest[ii + 2] = (unsigned char)((mdContext->buf[i] >> 16) & 0xFF);
         mdContext->digest[ii + 3] = (unsigned char)((mdContext->buf[i] >> 24) & 0xFF);
 
-        //CAL! Added
-        // Make my own 32-bit digest, but use big endian.
         mdContext->digest32[i] = (((mdContext->buf[i]) & 0xFF) << 24) +
             (((mdContext->buf[i] >> 8) & 0xFF) << 16) +
             (((mdContext->buf[i] >> 16) & 0xFF) << 8) +

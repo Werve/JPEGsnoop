@@ -21,22 +21,22 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeProject:
 //
-//		Title:		Another registry class
-//		Author:		SteveKing
-//		URL:		http://www.codeproject.com/Articles/2521/Another-registry-class
-//		Date:		Apr 25, 2003
-//		License:	CPOL (Code Project Open License)
+//      Title:      Another registry class
+//      Author:     SteveKing
+//      URL:        http://www.codeproject.com/Articles/2521/Another-registry-class
+//      Date:       Apr 25, 2003
+//      License:    CPOL (Code Project Open License)
 //
 // ====================================================================================================
 
-
 #include "stdafx.h"
+
 #include "Registry.h"
 
 #ifdef _MFC_VER
-//MFC is available - also use the MFC-based classes	
+//MFC is available - also use the MFC-based classes 
 
-CRegDWORD::CRegDWORD(void)
+CRegDWORD::CRegDWORD()
 {
     m_value = 0;
     m_defaultvalue = 0;
@@ -68,9 +68,8 @@ CRegDWORD::CRegDWORD(CString key, DWORD def, BOOL force, HKEY base)
     read();
 }
 
-CRegDWORD::~CRegDWORD(void)
+CRegDWORD::~CRegDWORD()
 {
-    //write();
 }
 
 DWORD CRegDWORD::read()
@@ -128,9 +127,7 @@ CRegDWORD& CRegDWORD::operator =(DWORD d)
     return *this;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-CRegString::CRegString(void)
+CRegString::CRegString()
 {
     m_value = _T("");
     m_defaultvalue = _T("");
@@ -162,9 +159,8 @@ CRegString::CRegString(CString key, CString def, BOOL force, HKEY base)
     read();
 }
 
-CRegString::~CRegString(void)
+CRegString::~CRegString()
 {
-    //write();
 }
 
 CString CRegString::read()
@@ -203,7 +199,7 @@ void CRegString::write()
 #ifdef _UNICODE
     if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)(LPCTSTR)m_value, (m_value.GetLength() + 1) * 2) == ERROR_SUCCESS)
 #else
-	if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)(LPCTSTR)m_value, m_value.GetLength()+1)==ERROR_SUCCESS)
+    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)(LPCTSTR)m_value, m_value.GetLength()+1)==ERROR_SUCCESS)
 #endif
     {
         m_read = TRUE;
@@ -230,115 +226,7 @@ CRegString& CRegString::operator =(CString s)
     return *this;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-#if 0 // Remove CRegRect (unneeded, triggers C2440)
-CRegRect::CRegRect(void)
-{
-	m_value = CRect(0,0,0,0);
-	m_defaultvalue = CRect(0,0,0,0);
-	m_key = _T("");
-	m_base = HKEY_CURRENT_USER;
-	m_read = FALSE;
-	m_force = FALSE;
-}
-
-/**
- * Constructor.
- * @param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
- * @param def the default value used when the key does not exist or a read error occured
- * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
- * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
- */
-CRegRect::CRegRect(CString key, CRect def, BOOL force, HKEY base)
-{
-	m_value = CRect(0,0,0,0);
-	m_defaultvalue = def;
-	m_force = force;
-	m_base = base;
-	m_read = FALSE;
-	key.TrimLeft(_T("\\"));
-	m_path = key.Left(key.ReverseFind(_T('\\')));
-	m_path.TrimRight(_T("\\"));
-	m_key = key.Right(key.GetLength() - key.ReverseFind(_T('\\')));
-	m_key.Trim(_T("\\"));
-	read();
-}
-
-CRegRect::~CRegRect(void)
-{
-//write();
-}
-
-CRect	CRegRect::read()
-{
-	ASSERT(m_key != _T(""));
-	if (RegOpenKeyEx(m_base, m_path, 0, KEY_EXECUTE, &m_hKey)==ERROR_SUCCESS)
-	{
-		int size = 0;
-		DWORD type;
-		RegQueryValueEx(m_hKey, m_key, NULL, &type, NULL, (LPDWORD) &size);
-		LPRECT pRect = (LPRECT)new char[size];
-		if (RegQueryValueEx(m_hKey, m_key, NULL, &type, (BYTE*) pRect,(LPDWORD) &size)==ERROR_SUCCESS)
-		{
-			m_value = CRect(pRect);
-			delete [] pRect;
-			ASSERT(type==REG_BINARY);
-			m_read = TRUE;
-			RegCloseKey(m_hKey);
-			return m_value;
-		}
-		else
-		{
-			delete [] pRect;
-			RegCloseKey(m_hKey);
-			return m_defaultvalue;
-		}
-	}
-	return m_defaultvalue;
-}
-
-void CRegRect::write()
-{
-	ASSERT(m_key != _T(""));
-	DWORD disp;
-	if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &m_hKey, &disp)!=ERROR_SUCCESS)
-	{
-		return;
-	}
-	
-	if (RegSetValueEx(m_hKey, m_key, 0, REG_BINARY, (BYTE *)(LPRECT)m_value, sizeof(m_value))==ERROR_SUCCESS)
-	{
-		m_read = TRUE;
-	}
-	RegCloseKey(m_hKey);
-}
-
-CRegRect::operator CRect()
-{
-	if ((m_read)&&(!m_force))
-		return m_value;
-	else
-	{
-		return read();
-	}
-}
-
-CRegRect& CRegRect::operator =(CRect s)
-{
-	if ((s==m_value)&&(!m_force))
-	{
-//no write to the registry required, its the same value
-		return *this;
-	}
-	m_value = s;
-	write();
-	return *this;
-}
-#endif // Remove CRegRect
-
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-CRegPoint::CRegPoint(void)
+CRegPoint::CRegPoint()
 {
     m_value = CPoint(0, 0);
     m_defaultvalue = CPoint(0, 0);
@@ -370,9 +258,8 @@ CRegPoint::CRegPoint(CString key, CPoint def, BOOL force, HKEY base)
     read();
 }
 
-CRegPoint::~CRegPoint(void)
+CRegPoint::~CRegPoint()
 {
-    //write();
 }
 
 CPoint CRegPoint::read()
@@ -437,9 +324,7 @@ CRegPoint& CRegPoint::operator =(CPoint s)
 
 #endif
 
-/////////////////////////////////////////////////////////////////////
-
-CRegStdString::CRegStdString(void)
+CRegStdString::CRegStdString()
 {
     m_value = _T("");
     m_defaultvalue = _T("");
@@ -470,9 +355,8 @@ CRegStdString::CRegStdString(stdstring key, stdstring def, BOOL force, HKEY base
     read();
 }
 
-CRegStdString::~CRegStdString(void)
+CRegStdString::~CRegStdString()
 {
-    //write();
 }
 
 stdstring CRegStdString::read()
@@ -538,9 +422,7 @@ CRegStdString& CRegStdString::operator =(stdstring s)
     return *this;
 }
 
-/////////////////////////////////////////////////////////////////////
-
-CRegStdWORD::CRegStdWORD(void)
+CRegStdWORD::CRegStdWORD()
 {
     m_value = 0;
     m_defaultvalue = 0;
@@ -571,9 +453,8 @@ CRegStdWORD::CRegStdWORD(stdstring key, DWORD def, BOOL force, HKEY base)
     read();
 }
 
-CRegStdWORD::~CRegStdWORD(void)
+CRegStdWORD::~CRegStdWORD()
 {
-    //write();
 }
 
 DWORD CRegStdWORD::read()

@@ -16,18 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// TermsDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "TermsDlg.h"
-#include "./termsdlg.h"
-
-
-// CTermsDlg dialog
-
-IMPLEMENT_DYNAMIC(CTermsDlg, CDialog)
+#include "JPEGsnoop.h"
 
 CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -120,17 +112,8 @@ void CTermsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_UPDATE_AUTO, bUpdateAuto);
 }
 
-
-BEGIN_MESSAGE_MAP(CTermsDlg, CDialog)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
-END_MESSAGE_MAP()
-
-
-// CTermsDlg message handlers
-
 void CTermsDlg::OnBnClickedOk()
 {
-    // TODO: Add your control notification handler code here
     UpdateData(true);
     if (bEulaOk)
     {
@@ -141,3 +124,9 @@ void CTermsDlg::OnBnClickedOk()
         AfxMessageBox(_T("You need to agree to the terms or else click EXIT"));
     }
 }
+
+BEGIN_MESSAGE_MAP(CTermsDlg, CDialog)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CTermsDlg, CDialog)

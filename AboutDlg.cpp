@@ -17,9 +17,9 @@
 //
 
 #include "stdafx.h"
-#include "jpegsnoop.h"
-#include "AboutDlg.h"
 
+#include "AboutDlg.h"
+#include "snoop.h"
 
 CAboutDlg::CAboutDlg() : CDialog(IDD)
                          , m_staticVerNum(_T(""))
@@ -34,18 +34,9 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_VER_NUM, m_staticVerNum);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
-
-
-// CjpegsnoopApp message handlers
-
-
 BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-
-    // TODO:  Add extra initialization here
 
     // Dynamically change static text of version number
     CString strTmp;
@@ -56,12 +47,13 @@ BOOL CAboutDlg::OnInitDialog()
 
     UpdateData(FALSE);
 
-
     // Update the URLs
     m_staticURL.SetHyperlink(_T("http://www.impulseadventure.com/photo/"));
     strTmp.Format(_T("http://www.impulseadventure.com/photo/jpeg-snoop.html?ver=%s"),VERSION_STR);
     m_staticURLdoc.SetHyperlink(strTmp);
 
-    return TRUE; // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;
 }
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+END_MESSAGE_MAP()

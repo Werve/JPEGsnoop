@@ -16,19 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// OverlayBufDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "jpegsnoop.h"
+
 #include "OverlayBufDlg.h"
-#include "./overlaybufdlg.h"
-
+#include "jpegsnoop.h"
 #include "General.h"
-
-// COverlayBufDlg dialog
-
-IMPLEMENT_DYNAMIC(COverlayBufDlg, CDialog)
 
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -73,7 +65,6 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
     m_sOffset.Format(_T("0x%08X"), m_nOffset);
 }
 
-
 COverlayBufDlg::~COverlayBufDlg()
 {
 }
@@ -89,14 +80,6 @@ void COverlayBufDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_OVRCURBIN, m_sValueCurBin);
 }
 
-
-BEGIN_MESSAGE_MAP(COverlayBufDlg, CDialog)
-    ON_BN_CLICKED(IDC_OVR_LOAD, OnBnClickedOvrLoad)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
-    ON_BN_CLICKED(IDC_APPLY, OnBnClickedApply)
-END_MESSAGE_MAP()
-
-
 // Set callback function for Buf()
 void COverlayBufDlg::SetCbBuf(void* pClassCbBuf,
                               BYTE (*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool)
@@ -107,13 +90,8 @@ void COverlayBufDlg::SetCbBuf(void* pClassCbBuf,
     m_pCbBuf = pCbBuf;
 }
 
-
-// COverlayBufDlg message handlers
-
-
 void COverlayBufDlg::OnBnClickedOvrLoad()
 {
-    // TODO: Add your control notification handler code here
     CString strTmp;
     unsigned anCurVal[17];
 
@@ -192,13 +170,19 @@ BOOL COverlayBufDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
     CRect rect;
-    // TODO:  Add extra initialization here
     GetWindowRect(&rect);
     SetWindowPos(nullptr, 50, 50, rect.Width(), rect.Height(), 0);
 
     // Get the initial values
     OnBnClickedOvrLoad();
 
-    return TRUE; // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;
 }
+
+BEGIN_MESSAGE_MAP(COverlayBufDlg, CDialog)
+    ON_BN_CLICKED(IDC_OVR_LOAD, OnBnClickedOvrLoad)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_BN_CLICKED(IDC_APPLY, OnBnClickedApply)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(COverlayBufDlg, CDialog)

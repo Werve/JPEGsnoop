@@ -16,18 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ModelessDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "ModelessDlg.h"
-#include "./modelessdlg.h"
-
-
-// CModelessDlg dialog
-
-IMPLEMENT_DYNAMIC(CModelessDlg, CDialog)
 
 CModelessDlg::CModelessDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -43,20 +34,12 @@ void CModelessDlg::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
 }
 
+void CModelessDlg::OnCancel()
+{
+    DestroyWindow();
+}
 
 BEGIN_MESSAGE_MAP(CModelessDlg, CDialog)
 END_MESSAGE_MAP()
 
-
-// CModelessDlg message handlers
-
-
-void CModelessDlg::OnCancel()
-{
-    // NOTE: The following OnCancel() routine is apparently not supposed to be
-    // called for a modeless dialog. Instead, we are supposed to call
-    // DestroyWindow().
-
-    //CDialog::OnCancel();
-    DestroyWindow();
-}
+IMPLEMENT_DYNAMIC(CModelessDlg, CDialog)

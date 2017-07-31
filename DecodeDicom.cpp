@@ -16,18 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 #include "stdafx.h"
 
 #include "DecodeDicom.h"
-#include "snoop.h"
 #include "JPEGsnoop.h" // for m_pAppConfig get
-
 #include "WindowBuf.h"
 
 // Do we want to display extended DICOM tag info?
 //#ifdef DICOM_TAG_EXTENDED
-
 
 // Forward declarations
 struct tsDicomTag asDicomTags[];
@@ -48,6 +44,10 @@ CDecodeDicom::CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog)
     Reset();
 }
 
+CDecodeDicom::~CDecodeDicom()
+{
+}
+
 void CDecodeDicom::Reset()
 {
     m_bDicom = false;
@@ -56,15 +56,10 @@ void CDecodeDicom::Reset()
 }
 
 
-CDecodeDicom::~CDecodeDicom(void)
-{
-}
-
-
 // Provide a short-hand alias for the m_pWBuf buffer
 // INPUT:
-// - offset					File offset to read from
-// - bClean					Forcibly disables any redirection to Fake DHT table
+// - offset                 File offset to read from
+// - bClean                 Forcibly disables any redirection to Fake DHT table
 //
 // POST:
 // - m_pLog
@@ -328,15 +323,15 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
 
 #ifdef DICOM_TAG_EXTENDED
     // Extended tag info
-	if (bTagIsOffsetHdr) {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [OffsetHdr] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	} else if (bTagIsJpeg) {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [JPEG] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	} else {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	}
+    if (bTagIsOffsetHdr) {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [OffsetHdr] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    } else if (bTagIsJpeg) {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [JPEG] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    } else {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    }
 #else
-    // Simple tag info	
+    // Simple tag info  
     strTag.Format(_T("%s"), (LPCTSTR)strTagName);
 #endif
 
@@ -365,215 +360,215 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
 #if 0
 bool CDecodeDicom::DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg)
 {
-	unsigned	nVR = 0;
-	CString		strError;
-	unsigned	nTagGroup;
-	unsigned	nTagElement;
-	CString		strTagName = _T("");
+    unsigned    nVR = 0;
+    CString     strError;
+    unsigned    nTagGroup;
+    unsigned    nTagElement;
+    CString     strTagName = _T("");
 
 // Assign defaults
-	strTag = _T("");
-	strVR = _T("");
-	nLen = 0;
-	nOffset = 0;
+    strTag = _T("");
+    strVR = _T("");
+    nLen = 0;
+    nOffset = 0;
 
 // Find the tag
-	nTagGroup = m_pWBuf->BufX(nPos+0,2,true);
-	nTagElement = m_pWBuf->BufX(nPos+2,2,true);
+    nTagGroup = m_pWBuf->BufX(nPos+0,2,true);
+    nTagElement = m_pWBuf->BufX(nPos+2,2,true);
 
-	bool		bFoundTag;
-	unsigned	nFldInd = 0;
-	bFoundTag = FindTag(nTagGroup,nTagElement,nFldInd);
+    bool        bFoundTag;
+    unsigned    nFldInd = 0;
+    bFoundTag = FindTag(nTagGroup,nTagElement,nFldInd);
 
-	if (!bFoundTag) {
+    if (!bFoundTag) {
 // Check for group length entry
 // FIXME:
 // Reference: Part 5, Section 7.2
-		if (nTagElement == 0x0000) {
-			strTagName.Format(_T("Group Length (Group=%04X)"),nTagGroup);
-		} else {
-			strError.Format(_T("ERROR: Unknown Tag ID (%04X,%04X) @ 0x%08X"),nTagGroup,nTagElement,nPos);
-			m_pLog->AddLineErr(strError);
-			strTagName.Format(_T("??? (%04X,%04X)"),nTagGroup,nTagElement);
-		}
-	} else {
-		strTagName = asDicomTags[nFldInd].strTagName;
-	}
+        if (nTagElement == 0x0000) {
+            strTagName.Format(_T("Group Length (Group=%04X)"),nTagGroup);
+        } else {
+            strError.Format(_T("ERROR: Unknown Tag ID (%04X,%04X) @ 0x%08X"),nTagGroup,nTagElement,nPos);
+            m_pLog->AddLineErr(strError);
+            strTagName.Format(_T("??? (%04X,%04X)"),nTagGroup,nTagElement);
+        }
+    } else {
+        strTagName = asDicomTags[nFldInd].strTagName;
+    }
 
 
 // Check for zeros in place of VR. This might hint at implicit VR
 // FIXME
-	if (m_pWBuf->BufX(nPos+4,2,true) == 0) {
-		unsigned nBad=1;
-	}
-	strVR = m_pWBuf->BufReadStrn(nPos+4,2);
-	nVR = m_pWBuf->BufX(nPos+4,2,false);
-	
+    if (m_pWBuf->BufX(nPos+4,2,true) == 0) {
+        unsigned nBad=1;
+    }
+    strVR = m_pWBuf->BufReadStrn(nPos+4,2);
+    nVR = m_pWBuf->BufX(nPos+4,2,false);
+    
 
 // Value Representation (VR)
 // Reference: Part 5, Section 6.2
-	bool	bVrExplicit = false;
-	bool	bVrLen4B = false;
+    bool    bVrExplicit = false;
+    bool    bVrLen4B = false;
 
-	switch (nVR) {
+    switch (nVR) {
 
 // Ref: Part 5, Section 7.1.2 "Data Element Structure with Explicit VR"
-	case 'AE':
-	case 'AS':
-	case 'AT':
-	case 'CS':
-	case 'DA':
-	case 'DS':
-	case 'DT':
-	case 'FL':
-	case 'FD':
-	case 'IS':
-	case 'LO':
-	case 'LT':
+    case 'AE':
+    case 'AS':
+    case 'AT':
+    case 'CS':
+    case 'DA':
+    case 'DS':
+    case 'DT':
+    case 'FL':
+    case 'FD':
+    case 'IS':
+    case 'LO':
+    case 'LT':
 //case 'OB':
 //case 'OF':
 //case 'OW':
-	case 'PN':
-	case 'SH':
-	case 'SL':
+    case 'PN':
+    case 'SH':
+    case 'SL':
 //case 'SQ':
-	case 'SS':
-	case 'ST':
-	case 'TM':
-	case 'UI':
-	case 'UL':
+    case 'SS':
+    case 'ST':
+    case 'TM':
+    case 'UI':
+    case 'UL':
 //case 'UN':
-	case 'US':
+    case 'US':
 //case 'UT':
-		bVrExplicit = true;
-		bVrLen4B = false;
-		break;
+        bVrExplicit = true;
+        bVrLen4B = false;
+        break;
 
 // Definition of VRs that have 4B length
 // Reference (informal): http://cran.r-project.org/web/packages/oro.dicom/vignettes/dicom.pdf
 // Ref: Part 5, Section 7.1.2 "Data Element Structure with Explicit VR"
-	case 'OB':
-	case 'OF':
-	case 'OW':
-	case 'SQ':
-	case 'UN':
-		bVrExplicit = true;
-		bVrLen4B = true;
-		break;
+    case 'OB':
+    case 'OF':
+    case 'OW':
+    case 'SQ':
+    case 'UN':
+        bVrExplicit = true;
+        bVrLen4B = true;
+        break;
 
 // FIXME:
 // Ref: Part 5, Section 7.1.2 "Data Element Structure with Explicit VR"
-	case 'UT':
-		bVrExplicit = true;
-		bVrLen4B = true;
-		break;
+    case 'UT':
+        bVrExplicit = true;
+        bVrLen4B = true;
+        break;
 
-	default:
+    default:
 // FIXME:
 // I have seen some documentation from others that say if VR is not
 // known then it is implicit VR. However, this doesn't seem
 // accurate to me since some implicit VRs could have length values
 // that just happen to alias with a known VR code above!
-		bVrExplicit = false;
-		bVrLen4B = true; //FIXME
-		break;
-	}
+        bVrExplicit = false;
+        bVrLen4B = true; //FIXME
+        break;
+    }
 
 // Force some known implicit VRs to be handled this way
-	if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE000)) { bVrExplicit = false; bVrLen4B = true; }
-	if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE00D)) { bVrExplicit = false; bVrLen4B = true; }
-	if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE0DD)) { bVrExplicit = false; bVrLen4B = true; }
+    if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE000)) { bVrExplicit = false; bVrLen4B = true; }
+    if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE00D)) { bVrExplicit = false; bVrLen4B = true; }
+    if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE0DD)) { bVrExplicit = false; bVrLen4B = true; }
 
 
-	if (bVrExplicit) {
-		if (!bVrLen4B) {
+    if (bVrExplicit) {
+        if (!bVrLen4B) {
 // 2B length
-			nLen = m_pWBuf->BufX(nPos+6,2,true);
-			nOffset = 8;
-		} else {
+            nLen = m_pWBuf->BufX(nPos+6,2,true);
+            nOffset = 8;
+        } else {
 // 4B length
 // - Skip over 2B field (should be 0)
-			nLen = m_pWBuf->BufX(nPos+6,2,true);
-			ASSERT(nLen == 0);
-			nLen = m_pWBuf->BufX(nPos+8,4,true);
-			nOffset = 12;
-		}
-	} else {
+            nLen = m_pWBuf->BufX(nPos+6,2,true);
+            ASSERT(nLen == 0);
+            nLen = m_pWBuf->BufX(nPos+8,4,true);
+            nOffset = 12;
+        }
+    } else {
 // Implicit VR
-		strVR = _T("??");
+        strVR = _T("??");
 // 4B length
-		nLen = m_pWBuf->BufX(nPos+4,4,true);
-		nOffset = 8;
-	}
+        nLen = m_pWBuf->BufX(nPos+4,4,true);
+        nOffset = 8;
+    }
 
 
 // Handle Items & Sequences (Image Fragment?)
-	bool	bTagIsJpeg = false;
-	bool	bTagIsOffsetHdr = false;
-	if (!m_bJpegEncap) {
+    bool    bTagIsJpeg = false;
+    bool    bTagIsOffsetHdr = false;
+    if (!m_bJpegEncap) {
 // Not in a delimited sequence
 // FIXME: Handle special case of sequence of fragments with offset table (7FE0,0010)
 // Ref: Part 7, Section A.4, Table A.4-1
-		if ((nTagGroup == 0x7FE0) && (nTagElement == 0x0010)) {
+        if ((nTagGroup == 0x7FE0) && (nTagElement == 0x0010)) {
 // Start of Pixel Data
-			if (nLen == 0xFFFFFFFF) {
+            if (nLen == 0xFFFFFFFF) {
 // Undefined length. So expect encapsulated data with delimiter
 // Expect we aren't already in encapsulated mode
-				ASSERT(m_bJpegEncap == false);
+                ASSERT(m_bJpegEncap == false);
 // Indicate we are now starting an encapsulation
-				m_bJpegEncap = true;
+                m_bJpegEncap = true;
 // Next tag should be offset header
-				m_bJpegEncapOffsetNext = true;
-			} else {
+                m_bJpegEncapOffsetNext = true;
+            } else {
 // FIXME: handle native type
-				ASSERT(false);
-			}
-		}
-	} else {
+                ASSERT(false);
+            }
+        }
+    } else {
 // We are in a sequence
-		if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE000)) {
+        if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE000)) {
 // Is this an offset header?
-			if (m_bJpegEncapOffsetNext) {
-				ASSERT(nTagGroup == 0xFFFE);
-				ASSERT(nTagElement == 0xE000);
+            if (m_bJpegEncapOffsetNext) {
+                ASSERT(nTagGroup == 0xFFFE);
+                ASSERT(nTagElement == 0xE000);
 // Clear next flag since we've handled it
-				m_bJpegEncapOffsetNext = false;
+                m_bJpegEncapOffsetNext = false;
 // This is an offset header
-				bTagIsOffsetHdr = true;
-			} else {
+                bTagIsOffsetHdr = true;
+            } else {
 // Not an offset header, so process it as embedded JPEG
-				bTagIsJpeg = true;
-			}
-		} else if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE0DD)) {
+                bTagIsJpeg = true;
+            }
+        } else if ((nTagGroup == 0xFFFE) && (nTagElement == 0xE0DD)) {
 // Sequence delimiter
-			m_bJpegEncap = false;
-		}
-	}
+            m_bJpegEncap = false;
+        }
+    }
 
 
 
 #ifdef DICOM_TAG_EXTENDED
 // Extended tag info
-	if (bTagIsOffsetHdr) {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [OffsetHdr] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	} else if (bTagIsJpeg) {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [JPEG] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	} else {
-		strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
-	}
+    if (bTagIsOffsetHdr) {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [OffsetHdr] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    } else if (bTagIsJpeg) {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X [JPEG] %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    } else {
+        strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
+    }
 #else
-// Simple tag info	
-	strTag.Format(_T("%s"),strTagName);
+// Simple tag info  
+    strTag.Format(_T("%s"),strTagName);
 #endif
 
-	if (bTagIsJpeg) {
-		nPosJpeg = nPos+8;
-	} else {
+    if (bTagIsJpeg) {
+        nPosJpeg = nPos+8;
+    } else {
 // Indicate not a JPEG tag
-		nPosJpeg = 0;
-	}
+        nPosJpeg = 0;
+    }
 
-	return true;
+    return true;
 }
 #endif
 
@@ -619,7 +614,7 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
         bDone = true;
     }
 
-    //bool			bFoundJpeg = false;
+    //bool          bFoundJpeg = false;
     unsigned long nPosJpegFound = 0;
     tsTagDetail sTagDetail;
     while (!bDone)
@@ -705,10 +700,8 @@ CString CDecodeDicom::ParseIndent(unsigned nIndent)
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodeDicom::ReportFldStr(unsigned nIndent, CString strField, CString strVal)
 {
-    CString strIndent;
     CString strLine;
-
-    strIndent = ParseIndent(nIndent);
+    CString strIndent = ParseIndent(nIndent);
     strLine.Format(_T("%s%-50s = \"%s\""), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal);
     m_pLog->AddLine(strLine);
 }
@@ -717,10 +710,8 @@ void CDecodeDicom::ReportFldStr(unsigned nIndent, CString strField, CString strV
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodeDicom::ReportFldStrEnc(unsigned nIndent, CString strField, CString strVal, CString strEncVal)
 {
-    CString strIndent;
+    CString strIndent = ParseIndent(nIndent);
     CString strLine;
-
-    strIndent = ParseIndent(nIndent);
     strLine.Format(_T("%s%-50s = %s \"%s\""), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strEncVal, (LPCTSTR)strVal);
     m_pLog->AddLine(strLine);
 }
@@ -728,10 +719,10 @@ void CDecodeDicom::ReportFldStrEnc(unsigned nIndent, CString strField, CString s
 // Locate a field ID in the constant Meta Tag array
 // 
 // INPUT:
-// - nTagGroup				= Meta Tag (High)
-// - nTagElement				= Meta Tag (Low)
+// - nTagGroup              = Meta Tag (High)
+// - nTagElement                = Meta Tag (Low)
 // OUTPUT:
-// - nFldInd			= Index into asDicomTags[] array
+// - nFldInd            = Index into asDicomTags[] array
 // RETURN:
 // - Returns true if ID was found in array
 // NOTE:
@@ -780,10 +771,10 @@ bool CDecodeDicom::FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& n
 // - Also report the ASCII representation alongside the hex dump
 //
 // INPUT:
-// - nIndent		= Current indent level for reporting
-// - strField		= Field name
-// - nPosStart		= Field byte array file position start
-// - nLen			= Field byte array length
+// - nIndent        = Current indent level for reporting
+// - strField       = Field name
+// - nPosStart      = Field byte array file position start
+// - nLen           = Field byte array length
 //
 void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned long nPosStart, unsigned nLen)
 {
@@ -792,8 +783,6 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
     CString strPrefix;
     CString strByteHex;
     CString strByteAsc;
-    CString strValHex;
-    CString strValAsc;
     CString strLine;
 
     strIndent = ParseIndent(nIndent);
@@ -815,11 +804,11 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
     {
 #if 0
         // Print out header row
-		strLine.Format(_T("%s%-50s ="),(LPCTSTR)strIndent,(LPCTSTR)strField);
-		m_pLog->AddLine(strLine);
+        strLine.Format(_T("%s%-50s ="),(LPCTSTR)strIndent,(LPCTSTR)strField);
+        m_pLog->AddLine(strLine);
         // Define prefix for next row
         //strPrefix.Format(_T("%s"),(LPCTSTR)strIndent);
-		strPrefix.Format(_T("%s%-50s   "),(LPCTSTR)strIndent,_T(""));
+        strPrefix.Format(_T("%s%-50s   "),(LPCTSTR)strIndent,_T(""));
 #else
         // Define prefix for row
         //FIXME: Only report field on first row
@@ -827,15 +816,13 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
 #endif
     }
 
-
     // Build up the hex string
     // Limit to DC_HEX_TOTAL bytes
     unsigned nRowOffset = 0;
     bool bDone = false;
-    unsigned nLenClip;
-    nLenClip = min(nLen,DC_HEX_TOTAL);
-    strValHex = _T("");
-    strValAsc = _T("");
+    unsigned nLenClip = min(nLen,DC_HEX_TOTAL);
+    CString strValHex = _T("");
+    CString strValAsc = _T("");
     while (!bDone)
     {
         // Have we reached the end of the data we wish to display?
@@ -898,16 +885,13 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodeDicom::ReportFldEnum(unsigned nIndent, CString strField, unsigned nTagGroup, unsigned nTagElement, CString strVal)
 {
-    CString strIndent;
     CString strDesc;
-    CString strLine;
-    bool bFound;
+    CString strIndent = ParseIndent(nIndent);
 
-    strIndent = ParseIndent(nIndent);
-
-    bFound = LookupEnum(nTagGroup, nTagElement, strVal, strDesc);
+    bool bFound = LookupEnum(nTagGroup, nTagElement, strVal, strDesc);
     if (bFound)
     {
+        CString strLine;
         strLine.Format(_T("%s%-50s = %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strDesc);
         m_pLog->AddLine(strLine);
     }
@@ -947,7 +931,3 @@ bool CDecodeDicom::LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString 
     }
     return bFound;
 }
-
-// ===============================================================================
-// CONSTANTS
-// ===============================================================================

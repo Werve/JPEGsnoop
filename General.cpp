@@ -18,18 +18,13 @@
 
 #include "StdAfx.h"
 
-// ---------------------------------------
-// Global functions
-// ---------------------------------------
-
 
 CString Dec2Bin(unsigned nVal, unsigned nLen, bool bSpace)
 {
-    unsigned nBit;
     CString strBin = _T("");
     for (int nInd = nLen - 1; nInd >= 0; nInd--)
     {
-        nBit = (nVal & (1 << nInd)) >> nInd;
+        unsigned nBit = (nVal & (1 << nInd)) >> nInd;
         strBin += (nBit == 1) ? _T("1") : _T("0");
         if (((nInd % 8) == 0) && (nInd != 0))
         {
@@ -46,17 +41,15 @@ CString Dec2Bin(unsigned nVal, unsigned nLen, bool bSpace)
 // before write-out of 16b values to disk
 unsigned short Swap16(unsigned short nVal)
 {
-    BYTE nValHi, nValLo;
-    nValHi = static_cast<BYTE>((nVal & 0xFF00) >> 8);
-    nValLo = static_cast<BYTE>((nVal & 0x00FF));
+    BYTE nValHi = static_cast<BYTE>((nVal & 0xFF00) >> 8);
+    BYTE nValLo = static_cast<BYTE>((nVal & 0x00FF));
     return (nValLo << 8) + nValHi;
 }
 
 // Simple helper routine to test whether an indexed bit is set
 bool TestBit(unsigned nVal, unsigned nBit)
 {
-    unsigned nTmp;
-    nTmp = (nVal & (1 << nBit));
+    unsigned nTmp = (nVal & (1 << nBit));
     if (nTmp != 0)
     {
         return true;
@@ -70,11 +63,10 @@ bool TestBit(unsigned nVal, unsigned nBit)
 CString Uint2Chars(unsigned nVal)
 {
     CString strTmp;
-    char c3, c2, c1, c0;
-    c3 = char((nVal & 0xFF000000) >> 24);
-    c2 = char((nVal & 0x00FF0000) >> 16);
-    c1 = char((nVal & 0x0000FF00) >> 8);
-    c0 = char(nVal & 0x000000FF);
+    char c3 = char((nVal & 0xFF000000) >> 24);
+    char c2 = char((nVal & 0x00FF0000) >> 16);
+    char c1 = char((nVal & 0x0000FF00) >> 8);
+    char c0 = char(nVal & 0x000000FF);
     c3 = (c3 == 0) ? '.' : c3;
     c2 = (c2 == 0) ? '.' : c2;
     c1 = (c1 == 0) ? '.' : c1;
@@ -89,74 +81,13 @@ CString Uint2DotByte(unsigned nVal)
 {
     CString strTmp;
     strTmp.Format(_T("'%u.%u.%u.%u' (0x%08X)"),
-                  ((nVal & 0xFF000000) >> 24),
-                  ((nVal & 0x00FF0000) >> 16),
-                  ((nVal & 0x0000FF00) >> 8),
-                  (nVal & 0x000000FF),
+                  (nVal & 0xFF000000) >> 24,
+                  (nVal & 0x00FF0000) >> 16,
+                  (nVal & 0x0000FF00) >> 8,
+                  nVal & 0x000000FF,
                   nVal);
     return strTmp;
 }
-
-/*
-// Convert a byte array into a unicode CString
-// - Clips to MAX_UNICODE_STRLEN
-//
-// INPUT:
-// - pBuf				= Byte array containing encoded unicode string
-// - nBufLen			= Number of unicode characters (16b) to read
-// RETURN:
-// - CString containing unicode characters
-//
-#define MAX_UNICODE_STRLEN	255
-CString ByteStr2Unicode(BYTE* pBuf, unsigned nBufLen)
-{
-	CString		strUni;
-	BYTE		anStrBuf[(MAX_UNICODE_STRLEN+1)*2];
-	wchar_t		acStrBuf[(MAX_UNICODE_STRLEN+1)];
-
-	// Copy bytes into local buffer to ensure it is truncated and
-	// properly terminated
-	unsigned	nStrPos = 0;
-	BYTE		nByte0,nByte1;
-	bool		bDone = false;
-	while (!bDone) {
-		if (nStrPos>nBufLen) {
-			// Exceeded the indicated string length
-			bDone = true;
-		} else if (nStrPos>MAX_UNICODE_STRLEN) {
-			// Exceeded our maximum string conversion length
-			bDone = true;
-		} else {
-			// Fetch the next two bytes
-			nByte0 = pBuf[(nStrPos*2)+0];
-			nByte1 = pBuf[(nStrPos*2)+1];
-			// Check in case we see terminator
-			if ((nByte0==0) && (nByte1==0)) {
-				// Don't copy over it now as we always pad with terminator after
-				bDone = true;
-			}
-		}
-		// If we haven't found a reason to stop, copy over the bytes
-		if (!bDone) {
-			anStrBuf[(nStrPos*2)+0] = nByte0;
-			anStrBuf[(nStrPos*2)+1] = nByte1;
-			// Increment index
-			nStrPos++;
-		}
-	}
-	// Now ensure we are terminated properly by enforcing terminator
-	anStrBuf[(nStrPos*2)+0] = 0;
-	anStrBuf[(nStrPos*2)+1] = 0;
-
-	// Copy into unicode string
-	// - This routine requires it to be terminated first!
-	lstrcpyW(acStrBuf,(LPCWSTR)anStrBuf);
-
-	// Finally copy back into CString
-	strUni = acStrBuf;
-	return strUni;
-}
-*/
 
 bool Str2Uint32(CString strVal, unsigned nBase, unsigned& nVal)
 {
@@ -201,22 +132,18 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
 
     bool bRet = false;
     char chAsc;
-    PBYTE pBufBase;
-    LPSTR pBufAsc;
 
-    pBufBase = pBuf + nOffsetBytes;
-    pBufAsc = (LPSTR)pBufBase;
+    PBYTE pBufBase = pBuf + nOffsetBytes;
+    LPSTR pBufAsc = (LPSTR)pBufBase;
 
 #ifdef UNICODE
 
     CW2A pszNonUnicode(strIn);
 
-#endif	// UNICODE
+#endif  // UNICODE
 
-
-    unsigned nStrLen;
     unsigned nChInd;
-    nStrLen = strIn.GetLength();
+    unsigned nStrLen = strIn.GetLength();
     for (nChInd = 0; (nChInd < nStrLen) && (nOffsetBytes < nMaxBytes); nChInd++)
     {
 #ifdef UNICODE
@@ -230,7 +157,7 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
 #else
         // Since we have compiled for non-Unicode, the CString character fetch
         // will be single byte char
-		chAsc = strIn.GetAt(nChInd);
+        chAsc = strIn.GetAt(nChInd);
 #endif
         pBufAsc[nChInd] = chAsc;
 
@@ -255,11 +182,6 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
     // or false otherwise
     return bRet;
 }
-
-
-// ---------------------------------------
-// Global constants
-// ---------------------------------------
 
 // ZigZag DQT coefficient reordering matrix as defined by the ITU T.81 standard.
 extern const unsigned glb_anZigZag[64] =

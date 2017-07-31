@@ -15,57 +15,27 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 // ====================================================================================================
 // SOURCE CODE ACKNOWLEDGEMENT
 // ====================================================================================================
 // The following code is based on an example CFolderDialog class that appears in MSDN:
 //
-//		Title:		CFolderDialog (C++ at Work: Counting MDI Children, Browsing for Folders)
-//		Authors:	Paul DiLascia
-//		URL:		http://msdn.microsoft.com/en-us/magazine/cc163789.aspx
-//		Date:		Jun 2005
+//      Title:      CFolderDialog (C++ at Work: Counting MDI Children, Browsing for Folders)
+//      Authors:    Paul DiLascia
+//      URL:        http://msdn.microsoft.com/en-us/magazine/cc163789.aspx
+//      Date:       Jun 2005
 // ====================================================================================================
 
-
-//////////////////////////////////////////////////////////////////
-// MSDN Magazine -- June 2005
-// If this code works, it was written by Paul DiLascia.
-// If not, I don't know who wrote it.
-// Compiles with Visual Studio .NET 2003 (V7.1) on Windows XP. Tab size=3.
-//
 #include "stdafx.h"
+
 #include "FolderDlg.h"
 #include <shlwapi.h>
 
 // You must link shlwapi.lib for StrRetToBuf
 #pragma comment(lib, "shlwapi.lib")
 
-//CAL! Commented out the following to avoid issues with DEBUG_INTERFACE_NAME
-#if 0 //CAL!
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-BOOL CFolderDialog::bTRACE=0; // controls tracing
-
-//////////////////
-// For deugging: names of interfaces easier to read than GUIDs!
-//
-DEBUG_BEGIN_INTERFACE_NAMES()
-	DEBUG_INTERFACE_NAME(IFolderFilterSite)
-	DEBUG_INTERFACE_NAME(IFolderFilter)
-DEBUG_END_INTERFACE_NAMES();
-
-#endif
-
 IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget);
 
-//////////////////
-// ctor: initialize most stuff to NULL
-//
 CFolderDialog::CFolderDialog(CWnd* pWnd)
 {
     pWnd; // Unreferenced param
@@ -75,19 +45,15 @@ CFolderDialog::CFolderDialog(CWnd* pWnd)
     //     is a temporary workaround so that I can call
     //     CFolderDialog() from the JPEGsnoopDoc class.
 
-    //CAL!	ASSERT(pWnd);
+    //CAL!  ASSERT(pWnd);
     memset(&m_brinfo, 0, sizeof(m_brinfo));
-    //CAL!	m_brinfo.hwndOwner=pWnd->m_hWnd;		 // use parent window
+    //CAL!  m_brinfo.hwndOwner=pWnd->m_hWnd;         // use parent window
     m_bFilter = FALSE; // default: no filtering
     SHGetDesktopFolder(&m_shfRoot); // get root IShellFolder
 
-    //CAL! Add support for start path
     m_strStartPath = "";
 }
 
-//////////////////
-// dtor: detach browser window before it's destroyed!
-//
 CFolderDialog::~CFolderDialog()
 {
 }
@@ -101,7 +67,6 @@ CFolderDialog::~CFolderDialog()
 LPCITEMIDLIST CFolderDialog::BrowseForFolder(LPCTSTR title, UINT flags,
                                              LPCITEMIDLIST root, BOOL bFilter)
 {
-    //BFTRACE(_T("CFolderDialog::BrowseForFolder\n"));
     TCHAR* buf = m_sDisplayName.GetBuffer(MAX_PATH);
     m_brinfo.pidlRoot = root;
     m_brinfo.pszDisplayName = buf;
@@ -219,12 +184,8 @@ int CFolderDialog::OnMessage(UINT msg, LPARAM lp)
     return 0;
 }
 
-/////////////////
-// Browser window initialized.
-//
 void CFolderDialog::OnInitialized()
 {
-    //BFTRACE(_T("CFolderDialog::OnInitialized\n"));
 }
 
 /////////////////
@@ -251,7 +212,7 @@ void CFolderDialog::OnSelChanged(LPCITEMIDLIST pidl)
 {
     pidl; // Unrefernced param
     //BFTRACE(_T("CFolderDialog::OnSelChanged: %s\n"),
-    //	GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
+    //  GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
 }
 
 //////////////////
@@ -276,13 +237,10 @@ HRESULT CFolderDialog::OnGetEnumFlags(
     pidlFolder; // Unreferenced param
     pgrfFlags; // Unreferenced param
     //BFTRACE(_T("CFolderDialog::OnGetEnumFlags(%p): %s\n"),
-    //	psf, GetPathName(pidlFolder));
+    //  psf, GetPathName(pidlFolder));
     return S_OK;
 }
 
-//////////////////
-// Used for custom filtering. You must override to filter items.
-//
 HRESULT CFolderDialog::OnShouldShow(
     IShellFolder* psf, // This folder's IShellFolder
     LPCITEMIDLIST pidlFolder, // PIDL for folder containing item
@@ -291,23 +249,16 @@ HRESULT CFolderDialog::OnShouldShow(
     psf; // Unreferenced param
     pidlFolder; // Unreferenced param
     pidlItem; // Unreferenced param
-    //BFTRACE(_T("CFolderDialog::OnShouldShow(%p): %s: %s\n"), psf,
-    //	GetDisplayNameOf(psf,pidlFolder,SHGDN_NORMAL),
-    //	GetDisplayNameOf(psf,pidlItem,SHGDN_NORMAL));
     return S_OK;
 }
 
-//////////////// Standard MFC IUnknown -- nested classes call these ////////////////
-
 STDMETHODIMP_(ULONG) CFolderDialog::AddRef()
 {
-    //BFTRACE(_T("CFolderDialog(%p)::AddRef\n"),this);
     return ExternalAddRef();
 }
 
 STDMETHODIMP_(ULONG) CFolderDialog::Release()
 {
-    //BFTRACE(_T("CFolderDialog(%p)::Release\n"), this);
     return ExternalRelease();
 }
 
@@ -315,19 +266,8 @@ STDMETHODIMP CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
 {
     if (ppvRet == nullptr)
         return E_INVALIDARG;
-    //BFTRACE(_T("CFolderDialog(%p)::QueryInterface(%s)\n"),this,_TR(iid));
-    HRESULT hr = ExternalQueryInterface(&iid, ppvRet);
-    //BFTRACE(_T(">CFolderDialog::QueryInterface returns %s, *ppv=%p\n"),_TR(hr),*ppvRet);
-    return hr;
+    return ExternalQueryInterface(&iid, ppvRet);
 }
-
-//////////////////////////////// IFolderFilter ////////////////////////////////
-//
-// Implementation passes control to parent class CFolderDialog (pThis)
-//
-BEGIN_INTERFACE_MAP(CFolderDialog, CCmdTarget)
-    INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
-END_INTERFACE_MAP()
 
 STDMETHODIMP_(ULONG) CFolderDialog::XFolderFilter::AddRef()
 {
@@ -362,3 +302,7 @@ STDMETHODIMP CFolderDialog::XFolderFilter::ShouldShow(IShellFolder* psf,
     METHOD_PROLOGUE(CFolderDialog, FolderFilter);
     return pThis->OnShouldShow(psf, pidlFolder, pidlItem);
 }
+
+BEGIN_INTERFACE_MAP(CFolderDialog, CCmdTarget)
+    INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
+END_INTERFACE_MAP()

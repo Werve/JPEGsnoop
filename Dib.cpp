@@ -21,14 +21,15 @@
 // ====================================================================================================
 // The following code was loosely based on an example CDIB class that appears in the following book:
 //
-//		Title:		Visual C++ 6 Unleashed
-//		Authors:	Mickey Williams and David Bennett
-//		Publisher:	Sams (July 24, 2000)
-//		ISBN-10:	0672312417
-//		ISBN-13:	978-0672312410
+//      Title:      Visual C++ 6 Unleashed
+//      Authors:    Mickey Williams and David Bennett
+//      Publisher:  Sams (July 24, 2000)
+//      ISBN-10:    0672312417
+//      ISBN-13:    978-0672312410
 // ====================================================================================================
 
 #include "stdafx.h"
+
 #include "dib.h"
 
 
@@ -63,7 +64,6 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
         1 * sizeof(RGBQUAD) +
         ((dwWidth * dwHeight) * sizeof(RGBQUAD)) +
         4;
-
 
     m_pDIB = (LPBITMAPINFO)new BYTE[dwSize];
     if (!m_pDIB) return false;

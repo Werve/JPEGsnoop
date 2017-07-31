@@ -16,19 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// LookupDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "jpegsnoop.h"
+
 #include "LookupDlg.h"
-#include "./lookupdlg.h"
-
-
-// CLookupDlg dialog
-
-
-IMPLEMENT_DYNAMIC(CLookupDlg, CDialog)
+#include "jpegsnoop.h"
 
 CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -77,12 +68,6 @@ void CLookupDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_RNGY, m_strRngY);
 }
 
-
-BEGIN_MESSAGE_MAP(CLookupDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_CALC, OnBnClickedBtnCalc)
-END_MESSAGE_MAP()
-
-
 // Set callback function for Buf()
 void CLookupDlg::SetCbLookup(void* pClassCbLookup,
                              void (*pCbLookup)(void* pClassCbLookup, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit)
@@ -92,8 +77,6 @@ void CLookupDlg::SetCbLookup(void* pClassCbLookup,
     m_pClassCbLookup = pClassCbLookup;
     m_pCbLookup = pCbLookup;
 }
-
-// CLookupDlg message handlers
 
 void CLookupDlg::OnBnClickedBtnCalc()
 {
@@ -121,3 +104,9 @@ void CLookupDlg::OnBnClickedBtnCalc()
         }
     }
 }
+
+BEGIN_MESSAGE_MAP(CLookupDlg, CDialog)
+    ON_BN_CLICKED(IDC_BTN_CALC, OnBnClickedBtnCalc)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CLookupDlg, CDialog)

@@ -17,14 +17,12 @@
 //
 
 #include "stdafx.h"
+
 #include "DbSigs.h"
-#include "General.h"
-
 #include "snoop.h"
-
 #include "Signatures.inl"
 
-#define	MAX_BUF_SET_FILE	131072
+#define MAX_BUF_SET_FILE    131072
 
 
 // TODO:
@@ -53,12 +51,9 @@
 //
 CDbSigs::CDbSigs()
 {
-    // Count the built-in database
-    bool bDone;
-
     m_bFirstRun = false;
 
-    bDone = false;
+    bool bDone = false;
     m_nSigListNum = 0;
     while (!bDone)
     {
@@ -285,7 +280,7 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
 #else
             // Since we have compiled for non-Unicode, the CString character fetch
             // will be single byte char
-			chAsc = strIn.GetAt(nChInd);
+            chAsc = strIn.GetAt(nChInd);
 #endif
             pBufAsc[nChInd] = chAsc;
         }
@@ -389,7 +384,7 @@ void CDbSigs::DatabaseExtraLoad()
     CString strVer;
     CString strSec;
 
-    //bool		bErr = false;
+    //bool      bErr = false;
     bool bDone = false;
     BOOL bRet;
 
@@ -643,7 +638,7 @@ void CDbSigs::DatabaseExtraStore()
 {
     CFile* pOutFile = nullptr;
     PBYTE pBuf = nullptr;
-    //unsigned	nBufLenBytes = 0;
+    //unsigned  nBufLenBytes = 0;
     unsigned nBufOffset = 0;
 
     bool bModeUni = true; // Save in Unicode format
@@ -687,13 +682,10 @@ void CDbSigs::DatabaseExtraStore()
     CString strLine;
     CString strParam;
     CString strVal;
-    //bool		bErr = false;
-    //bool		bDone = false;
-    BOOL bRet;
 
     unsigned nMaxBufBytes = MAX_BUF_SET_FILE;
 
-    bRet = BufWriteStr(pBuf,_T("JPEGsnoop"), nMaxBufBytes, bModeUni, nBufOffset);
+    BOOL bRet = BufWriteStr(pBuf,_T("JPEGsnoop"), nMaxBufBytes, bModeUni, nBufOffset);
     bRet = BufWriteStr(pBuf,_T(DB_VER_STR), nMaxBufBytes, bModeUni, nBufOffset);
     bRet = BufWriteStr(pBuf,_T("*DB*"), nMaxBufBytes, bModeUni, nBufOffset);
 
@@ -910,13 +902,11 @@ bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry)
 
 void CDbSigs::SetEntryValid(unsigned nInd, bool bValid)
 {
-    // TODO: Bounds check
     ASSERT(nInd < m_nSigListExtraNum);
     m_sSigListExtra[nInd].bValid = bValid;
 }
 
-
-unsigned CDbSigs::GetIjgNum()
+unsigned CDbSigs::GetIjgNum() const
 {
     return m_nSwIjgListNum;
 }
@@ -931,7 +921,6 @@ void CDbSigs::SetDbDir(CString strDbDir)
 {
     m_strDbDir = strDbDir;
 }
-
 
 // Search exceptions for Make/Model in list of ones that don't have Makernotes
 bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
@@ -971,11 +960,8 @@ bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
                 {
                     // Need to check model as well
                     // Since we may like to do a substring match, support wildcards
-
-                    // FnInd position of "*" if it exists in DB entry
-                    LPTSTR pWildcard;
                     unsigned nCompareLen;
-                    pWildcard = _tcschr(m_sExcMmNoMkrList[nInd].strXModel, '*');
+                    LPTSTR pWildcard = _tcschr(m_sExcMmNoMkrList[nInd].strXModel, '*');
                     if (pWildcard != nullptr)
                     {
                         // Wildcard present

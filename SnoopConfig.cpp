@@ -17,15 +17,12 @@
 //
 
 #include "StdAfx.h"
-#include "./snoopconfig.h"
+
+#include "snoopconfig.h"
 #include "snoop.h"
 #include "Registry.h"
 
-//#include <shlobj.h>    // for SHGetFolderPath
-
-
-// Define the defaults for the application configuration
-CSnoopConfig::CSnoopConfig(void)
+CSnoopConfig::CSnoopConfig()
 {
     // Debug log
     strDebugLogFname = _T(".\\JPEGsnoop-debug.log");
@@ -56,7 +53,6 @@ CSnoopConfig::CSnoopConfig(void)
 
     nPosStart = 0;
 
-    // --------------------------------
     // Registry settings
     bDirty = false; // Have the registry options been dirtied?
     bEulaAccepted = false;
@@ -99,9 +95,6 @@ CSnoopConfig::CSnoopConfig(void)
     // Reset the current filename
     strCurFname = _T("");
 
-    // --------------------------------
-
-
     // Determine operating system
     // Particularly for: WinHTTP functions
     OSVERSIONINFO osvi;
@@ -116,21 +109,11 @@ CSnoopConfig::CSnoopConfig(void)
     bIsWindowsXPorLater =
     ((osvi.dwMajorVersion > 5) ||
         ((osvi.dwMajorVersion == 5) && (osvi.dwMinorVersion >= 1)));
-
-    /*
-    // Debug code to output the version info
-    CString strTmp;
-    strTmp.Format(_T("OS Version: Platform=[%u] VerMajor=[%u] VerMinor=[%u] (>=NT:%s >=XP:%s)"),
-        osvi.dwPlatformId,osvi.dwMajorVersion,osvi.dwMinorVersion,
-        (bIsWindowsNTorLater)?"Y":"N",(bIsWindowsXPorLater)?"Y":"N");
-    AfxMessageBox(strTmp);
-    */
 }
 
-CSnoopConfig::~CSnoopConfig(void)
+CSnoopConfig::~CSnoopConfig()
 {
 }
-
 
 // This is generally called after app initializes and registry
 // has just been loaded.
@@ -151,16 +134,10 @@ void CSnoopConfig::Dirty(bool mode)
 // Fetch all configuration values from the registry
 void CSnoopConfig::RegistryLoad()
 {
-    CString strKeyPath;
-    CString strField;
-    CString strKeyFull;
+    CString strKeyPath = REG_KEY_PATH;
 
-    strKeyPath = REG_KEY_PATH;
-
-    /////////////
-
-    strField = _T("General\\UserDbPath");
-    strKeyFull = strKeyPath + strField;
+    CString strField = _T("General\\UserDbPath");
+    CString strKeyFull = strKeyPath + strField;
     CRegString regUserDbPath(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
@@ -176,12 +153,8 @@ void CSnoopConfig::RegistryLoad()
         strDbDir = regUserDbPath;
     }
 
-
-    //////////////////
-
-    CString strCurDate;
     CTime tmeToday = CTime::GetCurrentTime();
-    strCurDate = tmeToday.Format(_T("%Y%m%d"));
+    CString strCurDate = tmeToday.Format(_T("%Y%m%d"));
 
     strField = _T("General\\UpdateLastChk");
     strKeyFull = strKeyPath + strField;
@@ -200,12 +173,10 @@ void CSnoopConfig::RegistryLoad()
         strUpdateLastChk = regUpdateLastChk;
     }
 
-    //////////////////
-
-    //	RegistryLoadStr( _T("General\\UserDbPath"),     "???", strDbDir);
+    //  RegistryLoadStr( _T("General\\UserDbPath"),     "???", strDbDir);
     RegistryLoadBool(_T("General\\UpdateAuto"), 999, bUpdateAuto);
     RegistryLoadUint(_T("General\\UpdateAutoDays"), 999, nUpdateAutoDays);
-    //	RegistryLoadStr( _T("General\\UpdateLastChk"),  "???", strUpdateLastChk);
+    //  RegistryLoadStr( _T("General\\UpdateLastChk"),  "???", strUpdateLastChk);
     RegistryLoadBool(_T("General\\EulaAccepted"), 999, bEulaAccepted);
     RegistryLoadBool(_T("General\\ReprocessAuto"), 999, bReprocessAuto);
     RegistryLoadBool(_T("General\\SigSearch"), 999, bSigSearch);
@@ -216,7 +187,7 @@ void CSnoopConfig::RegistryLoad()
     RegistryLoadBool(_T("General\\DumpDHTExpand"), 999, bOutputDHTexpand);
     RegistryLoadBool(_T("General\\DecMaker"), 999, bDecodeMaker);
     RegistryLoadBool(_T("General\\DumpHistoY"), 999, bDumpHistoY);
-    //	RegistryLoadBool(_T("General\\DecScanClip"),    999,   bStatClipEn);
+    //  RegistryLoadBool(_T("General\\DecScanClip"),    999,   bStatClipEn);
     RegistryLoadBool(_T("General\\DecScanHisto"), 999, bHistoEn);
 
     RegistryLoadBool(_T("General\\DbSubmitNet"), 999, bDbSubmitNet);
@@ -288,8 +259,8 @@ void CSnoopConfig::RegistryStore()
 // Load a string from the registry
 //
 // INPUT:
-// - strKey				Registry key to read
-// - strDefault			Default value (in case the key doesn't exist)
+// - strKey             Registry key to read
+// - strDefault         Default value (in case the key doesn't exist)
 //
 // OUTPUT:
 // - String value from the registry key (or strDefault if not defined)
@@ -315,8 +286,8 @@ void CSnoopConfig::RegistryLoadStr(CString strKey, CString strDefault, CString& 
 // Load a boolean from the registry
 //
 // INPUT:
-// - strKey				Registry key to read
-// - nDefault			Default value (in case the key doesn't exist)
+// - strKey             Registry key to read
+// - nDefault           Default value (in case the key doesn't exist)
 //
 // OUTPUT:
 // - Boolean value from the registry key (or nDefault if not defined)
@@ -342,8 +313,8 @@ void CSnoopConfig::RegistryLoadBool(CString strKey, unsigned nDefault, bool& bSe
 // Load an UINT32 from the registry
 //
 // INPUT:
-// - strKey				Registry key to read
-// - nDefault			Default value (in case the key doesn't exist)
+// - strKey             Registry key to read
+// - nDefault           Default value (in case the key doesn't exist)
 //
 // OUTPUT:
 // - UINT32 value from the registry key (or nDefault if not defined)
@@ -369,8 +340,8 @@ void CSnoopConfig::RegistryLoadUint(CString strKey, unsigned nDefault, unsigned&
 // Store an UINT32 to the registry
 //
 // INPUT:
-// - strKey				Registry key to write
-// - nSetting			Value to store at registry key
+// - strKey             Registry key to write
+// - nSetting           Value to store at registry key
 //
 void CSnoopConfig::RegistryStoreUint(CString strKey, unsigned nSetting)
 {
@@ -385,8 +356,8 @@ void CSnoopConfig::RegistryStoreUint(CString strKey, unsigned nSetting)
 // Store a boolean to the registry
 //
 // INPUT:
-// - strKey				Registry key to write
-// - bSetting			Value to store at registry key
+// - strKey             Registry key to write
+// - bSetting           Value to store at registry key
 //
 void CSnoopConfig::RegistryStoreBool(CString strKey, bool bSetting)
 {
@@ -396,8 +367,8 @@ void CSnoopConfig::RegistryStoreBool(CString strKey, bool bSetting)
 // Store a string to the registry
 //
 // INPUT:
-// - strKey				Registry key to write
-// - strSetting			Value to store at registry key
+// - strKey             Registry key to write
+// - strSetting         Value to store at registry key
 //
 void CSnoopConfig::RegistryStoreStr(CString strKey, CString strSetting)
 {
@@ -442,7 +413,7 @@ CString CSnoopConfig::GetDefaultDbDir()
     {
         // Get path for each computer, non-user specific and non-roaming data.
         //if ( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA, 
-        //								NULL, 0, szFilePath ) ) )
+        //                              NULL, 0, szFilePath ) ) )
         if (SHGetSpecialFolderPath(nullptr, szFilePath, CSIDL_APPDATA, true))
         {
             // Append product-specific path.
@@ -553,70 +524,70 @@ bool CSnoopConfig::DebugLogCreate()
 {
 #ifdef DEBUG_LOG_OUT
 
-	if (strDebugLogFname == _T("")) {
-		return false;
-	}
+    if (strDebugLogFname == _T("")) {
+        return false;
+    }
 
     // Detect control keys
     // - VK_CONTROL = Control key
     // - VK_SHIFT   = Shift
     // - VK_MENU    = Alt?
-	if (GetAsyncKeyState(VK_CONTROL)) {
-		AfxMessageBox(_T("Debug Log Enabled"));
-		bDebugLogEnable = true;
-	} else {
-		return true;
-	}
+    if (GetAsyncKeyState(VK_CONTROL)) {
+        AfxMessageBox(_T("Debug Log Enabled"));
+        bDebugLogEnable = true;
+    } else {
+        return true;
+    }
 
-	ASSERT(fpDebugLog == NULL);
+    ASSERT(fpDebugLog == NULL);
 
-	try
-	{
+    try
+    {
     // Open specified file
-		fpDebugLog = new CStdioFile(strDebugLogFname, CFile::modeCreate| CFile::modeWrite | CFile::typeText | CFile::shareDenyNone);
-	}
-	catch (CFileException* e)
-	{
-		TCHAR msg[MAX_BUF_EX_ERR_MSG];
-		CString strError;
-		e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
-		e->Delete();
-		strError.Format(_T("ERROR: Couldn't open debug log file for write [%s]: [%s]"),
-			(LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
-		AfxMessageBox(strError);
-		fpDebugLog = NULL;
+        fpDebugLog = new CStdioFile(strDebugLogFname, CFile::modeCreate| CFile::modeWrite | CFile::typeText | CFile::shareDenyNone);
+    }
+    catch (CFileException* e)
+    {
+        TCHAR msg[MAX_BUF_EX_ERR_MSG];
+        CString strError;
+        e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
+        e->Delete();
+        strError.Format(_T("ERROR: Couldn't open debug log file for write [%s]: [%s]"),
+            (LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
+        AfxMessageBox(strError);
+        fpDebugLog = NULL;
 
-		return false;
-	}
+        return false;
+    }
 
-	CString		strLine;
-	strLine.Format(_T("JPEGsnoop version [%s]\r\n"),VERSION_STR);
-	fpDebugLog->WriteString(strLine);
-	fpDebugLog->WriteString(_T("-----\r\n"));
+    CString     strLine;
+    strLine.Format(_T("JPEGsnoop version [%s]\r\n"),VERSION_STR);
+    fpDebugLog->WriteString(strLine);
+    fpDebugLog->WriteString(_T("-----\r\n"));
 
     // Close the file
-	if (fpDebugLog) {
-		fpDebugLog->Close();
-		delete fpDebugLog;
-		fpDebugLog = NULL;
-	}
+    if (fpDebugLog) {
+        fpDebugLog->Close();
+        delete fpDebugLog;
+        fpDebugLog = NULL;
+    }
 
     // Extra code to record OS version
-	OSVERSIONINFO osvi;
+    OSVERSIONINFO osvi;
     ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
     osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
     GetVersionEx(&osvi);
-	strLine.Format(_T("OS: PlatformId = %u"),osvi.dwPlatformId);
-	if (DEBUG_EN) DebugLogAdd(strLine);
-	strLine.Format(_T("OS: MajorVersion = %u"),osvi.dwMajorVersion);
-	if (DEBUG_EN) DebugLogAdd(strLine);
-	strLine.Format(_T("OS: MinorVersion = %u"),osvi.dwMinorVersion);
-	if (DEBUG_EN) DebugLogAdd(strLine);
-	strLine.Format(_T("OS: BuildNumber = %u"),osvi.dwBuildNumber);
-	if (DEBUG_EN) DebugLogAdd(strLine);
-	strLine.Format(_T("OS: OSVersionInfoSize = %u"),osvi.dwOSVersionInfoSize);
-	if (DEBUG_EN) DebugLogAdd(strLine);
-	if (DEBUG_EN) DebugLogAdd(_T("\n"));
+    strLine.Format(_T("OS: PlatformId = %u"),osvi.dwPlatformId);
+    if (DEBUG_EN) DebugLogAdd(strLine);
+    strLine.Format(_T("OS: MajorVersion = %u"),osvi.dwMajorVersion);
+    if (DEBUG_EN) DebugLogAdd(strLine);
+    strLine.Format(_T("OS: MinorVersion = %u"),osvi.dwMinorVersion);
+    if (DEBUG_EN) DebugLogAdd(strLine);
+    strLine.Format(_T("OS: BuildNumber = %u"),osvi.dwBuildNumber);
+    if (DEBUG_EN) DebugLogAdd(strLine);
+    strLine.Format(_T("OS: OSVersionInfoSize = %u"),osvi.dwOSVersionInfoSize);
+    if (DEBUG_EN) DebugLogAdd(strLine);
+    if (DEBUG_EN) DebugLogAdd(_T("\n"));
 
 #endif
     return true;
@@ -633,47 +604,47 @@ bool CSnoopConfig::DebugLogAdd(CString strText)
 {
 #ifdef DEBUG_LOG_OUT
 
-	if (!bDebugLogEnable) {
-		return true;
-	}
+    if (!bDebugLogEnable) {
+        return true;
+    }
 
-	if (strDebugLogFname == _T("")) {
-		return false;
-	}
+    if (strDebugLogFname == _T("")) {
+        return false;
+    }
 
-	ASSERT(fpDebugLog == NULL);
+    ASSERT(fpDebugLog == NULL);
 
-	try
-	{
+    try
+    {
     // Open specified file but append
-		fpDebugLog = new CStdioFile(strDebugLogFname, CFile::modeCreate| CFile::modeWrite | CFile::typeText | CFile::shareDenyNone |
-			CFile::modeNoTruncate);
-	}
-	catch (CFileException* e)
-	{
-		TCHAR msg[MAX_BUF_EX_ERR_MSG];
-		CString strError;
-		e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
-		e->Delete();
-		strError.Format(_T("ERROR: Couldn't open debug log file for append [%s]: [%s]"),
-			(LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
-		AfxMessageBox(strError);
-		fpDebugLog = NULL;
+        fpDebugLog = new CStdioFile(strDebugLogFname, CFile::modeCreate| CFile::modeWrite | CFile::typeText | CFile::shareDenyNone |
+            CFile::modeNoTruncate);
+    }
+    catch (CFileException* e)
+    {
+        TCHAR msg[MAX_BUF_EX_ERR_MSG];
+        CString strError;
+        e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
+        e->Delete();
+        strError.Format(_T("ERROR: Couldn't open debug log file for append [%s]: [%s]"),
+            (LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
+        AfxMessageBox(strError);
+        fpDebugLog = NULL;
 
-		return false;
-	}
+        return false;
+    }
 
     // Now seek to the end of the file
-	fpDebugLog->SeekToEnd();
+    fpDebugLog->SeekToEnd();
 
-	CString		strLine;
+    CString     strLine;
 
     // Get current time
     /*
-        time_t		sTime;
-        struct tm	sNow;
-        unsigned	nTmYear,nTmMon,nTmDay;
-        unsigned	nTmHour,nTmMin,nTmSec;
+        time_t      sTime;
+        struct tm   sNow;
+        unsigned    nTmYear,nTmMon,nTmDay;
+        unsigned    nTmHour,nTmMin,nTmSec;
         localtime_s(&sNow,&sTime);
         nTmYear = sNow.tm_year + 1900;
         nTmMon = sNow.tm_mon + 1;
@@ -686,15 +657,15 @@ bool CSnoopConfig::DebugLogAdd(CString strText)
         // Generate log line
         //strLine.Format(_T("[%4u/%2u/%2u %2u:%2u:%2u] %s\r\n"),nTmYear,nTmMon,nTmDay,nTmHour,nTmMin,nTmSec,strText);
     */
-	strLine.Format(_T("%s\n"),strText);
-	fpDebugLog->WriteString(strLine);
+    strLine.Format(_T("%s\n"),strText);
+    fpDebugLog->WriteString(strLine);
 
     // Close the file
-	if (fpDebugLog) {
-		fpDebugLog->Close();
-		delete fpDebugLog;
-		fpDebugLog = NULL;
-	}
+    if (fpDebugLog) {
+        fpDebugLog->Close();
+        delete fpDebugLog;
+        fpDebugLog = NULL;
+    }
 
 #endif
     return true;

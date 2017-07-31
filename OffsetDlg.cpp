@@ -16,18 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// dlg_offset.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "OffsetDlg.h"
 #include "General.h"
-
-
-// COffsetDlg dialog
-
-IMPLEMENT_DYNAMIC(COffsetDlg, CDialog)
 
 COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -40,7 +32,6 @@ COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
 COffsetDlg::~COffsetDlg()
 {
 }
-
 
 // Set the initial file offset
 void COffsetDlg::SetOffset(unsigned nPos)
@@ -55,24 +46,12 @@ unsigned COffsetDlg::GetOffset()
     return m_nOffsetVal;
 }
 
-
 void COffsetDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
     DDX_Text(pDX, IDC_OFFSETVAL, m_sOffsetVal);
     DDX_Radio(pDX, IDC_BASEH, m_nRadioBaseMode);
 }
-
-
-BEGIN_MESSAGE_MAP(COffsetDlg, CDialog)
-    ON_BN_CLICKED(IDC_BASEH, OnBnClickedBaseh)
-    ON_BN_CLICKED(IDC_BASED, OnBnClickedBased)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
-END_MESSAGE_MAP()
-
-
-// COffsetDlg message handlers
-
 
 // Convert internal offset number to dialog string
 void COffsetDlg::OffsetNum2Str()
@@ -104,7 +83,6 @@ bool COffsetDlg::OffsetStr2Num()
 {
     CString strVal;
 
-
     if (m_nBaseMode == 0)
     {
         // Hex
@@ -132,7 +110,6 @@ bool COffsetDlg::OffsetStr2Num()
 void COffsetDlg::OnBnClickedBaseh()
 {
     CString strVal;
-    bool bOk;
 
     UpdateData(true);
     if (m_nBaseMode == 0)
@@ -142,7 +119,7 @@ void COffsetDlg::OnBnClickedBaseh()
     else
     {
         // If it was decimal before, convert it!
-        bOk = OffsetStr2Num();
+        bool bOk = OffsetStr2Num();
         m_nBaseMode = 0;
         if (!bOk)
         {
@@ -163,7 +140,6 @@ void COffsetDlg::OnBnClickedBaseh()
 void COffsetDlg::OnBnClickedBased()
 {
     CString strVal;
-    bool bOk;
 
     UpdateData(true);
     if (m_nBaseMode == 1)
@@ -173,7 +149,7 @@ void COffsetDlg::OnBnClickedBased()
     else
     {
         // If it was hex before, convert it!
-        bOk = OffsetStr2Num();
+        bool bOk = OffsetStr2Num();
         m_nBaseMode = 1;
         if (!bOk)
         {
@@ -201,3 +177,11 @@ void COffsetDlg::OnBnClickedOk()
         OnOK();
     }
 }
+
+BEGIN_MESSAGE_MAP(COffsetDlg, CDialog)
+    ON_BN_CLICKED(IDC_BASEH, OnBnClickedBaseh)
+    ON_BN_CLICKED(IDC_BASED, OnBnClickedBased)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(COffsetDlg, CDialog)

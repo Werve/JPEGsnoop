@@ -16,36 +16,15 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// JPEGsnoopView.cpp : implementation of the CJPEGsnoopView class
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
 
-#include "JPEGsnoopDoc.h"
-#include "CntrItem.h"
 #include "JPEGsnoopView.h"
-#include "./jpegsnoopview.h"
+#include "JPEGsnoop.h"
+#include "JPEGsnoopDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
-// CJPEGsnoopView
-
-IMPLEMENT_DYNCREATE(CJPEGsnoopView, CRichEditView)
-
-BEGIN_MESSAGE_MAP(CJPEGsnoopView, CRichEditView)
-    ON_WM_DESTROY()
-    // Standard printing commands
-    ON_COMMAND(ID_FILE_PRINT, CRichEditView::OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_DIRECT, CRichEditView::OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_PREVIEW, CRichEditView::OnFilePrintPreview)
-    ON_WM_DROPFILES()
-END_MESSAGE_MAP()
-
-// CJPEGsnoopView construction/destruction
 
 CJPEGsnoopView::CJPEGsnoopView()
 {
@@ -57,10 +36,6 @@ CJPEGsnoopView::~CJPEGsnoopView()
 
 BOOL CJPEGsnoopView::PreCreateWindow(CREATESTRUCT& cs)
 {
-    // TODO: Modify the Window class or styles here by modifying
-    //  the CREATESTRUCT cs
-
-
     return CRichEditView::PreCreateWindow(cs);
 }
 
@@ -86,15 +61,7 @@ void CJPEGsnoopView::OnInitialUpdate()
 
     GetRichEditCtrl().SetReadOnly(true);
 
-    // The following is a nice idea, but it isn't sufficent as it
-    // doesn't actually handle the URL click message
-    //GetRichEditCtrl().SetAutoURLDetect(true);
-
-    //const COLORREF CLOUDBLUE = RGB(128, 184, 223);
-    //const COLORREF WHITE = RGB(255, 255, 255);
     const COLORREF BLACK = RGB(1, 1, 1);
-    //const COLORREF DKGRAY = RGB(128, 128, 128);
-    //const COLORREF PURPLE = RGB(255, 0, 255);
 
     // Set the default character formatting
     CHARFORMAT cf;
@@ -116,15 +83,11 @@ void CJPEGsnoopView::OnInitialUpdate()
     GetDocument()->SetupView((CRichEditView*)this);
 }
 
-
-// CJPEGsnoopView printing
-
 BOOL CJPEGsnoopView::OnPreparePrinting(CPrintInfo* pInfo)
 {
     // default preparation
     return DoPreparePrinting(pInfo);
 }
-
 
 void CJPEGsnoopView::OnDestroy()
 {
@@ -138,9 +101,6 @@ void CJPEGsnoopView::OnDestroy()
     }
     CRichEditView::OnDestroy();
 }
-
-
-// CJPEGsnoopView diagnostics
 
 #ifdef _DEBUG
 void CJPEGsnoopView::AssertValid() const
@@ -160,29 +120,12 @@ CJPEGsnoopDoc* CJPEGsnoopView::GetDocument() const // non-debug version is inlin
 }
 #endif //_DEBUG
 
-
-// CJPEGsnoopView message handlers
-
 void CJPEGsnoopView::OnDropFiles(HDROP hDropInfo)
 {
-    UINT uNumFiles;
     TCHAR szNextFile [MAX_PATH];
 
     // Get the # of files being dropped.
-    uNumFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, nullptr, 0);
-
-    /*
-    for ( UINT uFile = 0; uFile < uNumFiles; uFile++ )
-    {
-        // Get the next filename from the HDROP info.
-        if ( DragQueryFile ( hDropInfo, uFile, szNextFile, MAX_PATH ) > 0 )
-        {
-            // ***
-            // Do whatever you want with the filename in szNextFile.
-            // ***
-        }
-    }
-    */
+    UINT uNumFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF, nullptr, 0);
 
     // FIXME: For now, only support a single file but later may
     // consider somehow allowing multiple files to be processed?
@@ -196,8 +139,14 @@ void CJPEGsnoopView::OnDropFiles(HDROP hDropInfo)
 
     // Free up memory.
     DragFinish(hDropInfo);
-
-
-    // Don't want to call built-in functionality!
-    //CRichEditView::OnDropFiles(hDropInfo);
 }
+
+BEGIN_MESSAGE_MAP(CJPEGsnoopView, CRichEditView)
+    ON_WM_DESTROY()
+    ON_COMMAND(ID_FILE_PRINT, CRichEditView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_DIRECT, CRichEditView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_PREVIEW, CRichEditView::OnFilePrintPreview)
+    ON_WM_DROPFILES()
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNCREATE(CJPEGsnoopView, CRichEditView)

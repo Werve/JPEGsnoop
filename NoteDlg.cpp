@@ -16,17 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// NoteDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "NoteDlg.h"
-
-
-// CNoteDlg dialog
-
-IMPLEMENT_DYNAMIC(CNoteDlg, CDialog)
 
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -46,9 +38,7 @@ void CNoteDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_COACH_OFF, bCoachOff);
 }
 
-
 BEGIN_MESSAGE_MAP(CNoteDlg, CDialog)
 END_MESSAGE_MAP()
 
-
-// CNoteDlg message handlers
+IMPLEMENT_DYNAMIC(CNoteDlg, CDialog)

@@ -16,15 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// JPEGsnoopDoc.cpp : implementation of the CJPEGsnoopDoc class
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
 
+#include "JPEGsnoop.h"
 #include "JPEGsnoopDoc.h"
 #include "CntrItem.h"
-
 #include "OffsetDlg.h"
 #include "DbSubmitDlg.h"
 #include "NoteDlg.h"
@@ -33,82 +29,21 @@
 #include "ExportDlg.h"
 #include "DecodeDetailDlg.h"
 #include "ExportTiffDlg.h"
-
-//#include "OperationDlg.h"
-
 #include "General.h"
-
 #include "FileTiff.h"
 #include "FolderDlg.h"
 #include "BatchDlg.h"
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
-// CJPEGsnoopDoc
-
-IMPLEMENT_DYNCREATE(CJPEGsnoopDoc, CRichEditDoc)
-
-BEGIN_MESSAGE_MAP(CJPEGsnoopDoc, CRichEditDoc)
-    // Enable default OLE container implementation
-    ON_COMMAND(ID_OLE_EDIT_LINKS, CRichEditDoc::OnEditLinks)
-    ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, CRichEditDoc::OnUpdateEditLinksMenu)
-    ON_UPDATE_COMMAND_UI_RANGE(ID_OLE_VERB_FIRST, ID_OLE_VERB_LAST, CRichEditDoc::OnUpdateObjectVerbMenu)
-
-    ON_COMMAND(ID_FILE_SAVE_AS, OnFileSaveAs)
-    //ON_COMMAND(ID_FILE_OPENIMAGE, OnFileOpenimage)
-    ON_COMMAND(ID_FILE_OFFSET, OnFileOffset)
-    ON_COMMAND(ID_FILE_REPROCESS, OnFileReprocess)
-    ON_COMMAND(ID_TOOLS_ADDCAMERATODB, OnToolsAddcameratodb)
-    ON_COMMAND(ID_TOOLS_SEARCHFORWARD, OnToolsSearchforward)
-    ON_COMMAND(ID_TOOLS_SEARCHREVERSE, OnToolsSearchreverse)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_ADDCAMERATODB, OnUpdateToolsAddcameratodb)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_SEARCHFORWARD, OnUpdateToolsSearchforward)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_SEARCHREVERSE, OnUpdateToolsSearchreverse)
-
-    ON_COMMAND_RANGE(ID_PREVIEW_RGB,ID_PREVIEW_CR,OnPreviewRng)
-    ON_UPDATE_COMMAND_UI_RANGE(ID_PREVIEW_RGB,ID_PREVIEW_CR,OnUpdatePreviewRng)
-
-    ON_COMMAND_RANGE(ID_IMAGEZOOM_ZOOMIN,ID_IMAGEZOOM_800,OnZoomRng)
-    ON_UPDATE_COMMAND_UI_RANGE(ID_IMAGEZOOM_ZOOMIN,ID_IMAGEZOOM_800,OnUpdateZoomRng)
-
-
-    ON_COMMAND(ID_TOOLS_SEARCHEXECUTABLEFORDQT, OnToolsSearchexecutablefordqt)
-    ON_UPDATE_COMMAND_UI(ID_FILE_REPROCESS, OnUpdateFileReprocess)
-    ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_AS, OnUpdateFileSaveAs)
-    ON_COMMAND(ID_TOOLS_EXTRACTEMBEDDEDJPEG, OnToolsExtractembeddedjpeg)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_EXTRACTEMBEDDEDJPEG, OnUpdateToolsExtractembeddedjpeg)
-    ON_COMMAND(ID_TOOLS_FILEOVERLAY, OnToolsFileoverlay)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_FILEOVERLAY, OnUpdateToolsFileoverlay)
-    ON_COMMAND(ID_TOOLS_LOOKUPMCUOFFSET, OnToolsLookupmcuoffset)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_LOOKUPMCUOFFSET, OnUpdateToolsLookupmcuoffset)
-    ON_COMMAND(ID_OVERLAYS_MCUGRID, OnOverlaysMcugrid)
-    ON_UPDATE_COMMAND_UI(ID_OVERLAYS_MCUGRID, OnUpdateOverlaysMcugrid)
-
-
-    ON_UPDATE_COMMAND_UI(ID_INDICATOR_YCC, OnUpdateIndicatorYcc)
-    ON_UPDATE_COMMAND_UI(ID_INDICATOR_MCU, OnUpdateIndicatorMcu)
-    ON_UPDATE_COMMAND_UI(ID_INDICATOR_FILEPOS, OnUpdateIndicatorFilePos)
-    ON_COMMAND(ID_SCANSEGMENT_DETAILEDDECODE, OnScansegmentDetaileddecode)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DETAILEDDECODE, OnUpdateScansegmentDetaileddecode)
-    ON_COMMAND(ID_TOOLS_EXPORTTIFF, OnToolsExporttiff)
-    ON_UPDATE_COMMAND_UI(ID_TOOLS_EXPORTTIFF, OnUpdateToolsExporttiff)
-END_MESSAGE_MAP()
-
-
-// CJPEGsnoopDoc construction/destruction
-
-// Constructor allocates dynamic structures and resets state
 CJPEGsnoopDoc::CJPEGsnoopDoc()
     : m_pView(NULL)
 {
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
     ASSERT(pApp);
     m_pAppConfig = pApp->m_pAppConfig;
     ASSERT(m_pAppConfig);
@@ -2356,3 +2291,42 @@ float CJPEGsnoopDoc::I_GetPreviewZoom()
 {
     return m_pCore->I_GetPreviewZoom();
 }
+
+IMPLEMENT_DYNCREATE(CJPEGsnoopDoc, CRichEditDoc)
+
+BEGIN_MESSAGE_MAP(CJPEGsnoopDoc, CRichEditDoc)
+    ON_COMMAND(ID_OLE_EDIT_LINKS, CRichEditDoc::OnEditLinks)
+    ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, CRichEditDoc::OnUpdateEditLinksMenu)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_OLE_VERB_FIRST, ID_OLE_VERB_LAST, CRichEditDoc::OnUpdateObjectVerbMenu)
+    ON_COMMAND(ID_FILE_SAVE_AS, OnFileSaveAs)
+    ON_COMMAND(ID_FILE_OFFSET, OnFileOffset)
+    ON_COMMAND(ID_FILE_REPROCESS, OnFileReprocess)
+    ON_COMMAND(ID_TOOLS_ADDCAMERATODB, OnToolsAddcameratodb)
+    ON_COMMAND(ID_TOOLS_SEARCHFORWARD, OnToolsSearchforward)
+    ON_COMMAND(ID_TOOLS_SEARCHREVERSE, OnToolsSearchreverse)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_ADDCAMERATODB, OnUpdateToolsAddcameratodb)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_SEARCHFORWARD, OnUpdateToolsSearchforward)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_SEARCHREVERSE, OnUpdateToolsSearchreverse)
+    ON_COMMAND_RANGE(ID_PREVIEW_RGB, ID_PREVIEW_CR, OnPreviewRng)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_PREVIEW_RGB, ID_PREVIEW_CR, OnUpdatePreviewRng)
+    ON_COMMAND_RANGE(ID_IMAGEZOOM_ZOOMIN, ID_IMAGEZOOM_800, OnZoomRng)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_IMAGEZOOM_ZOOMIN, ID_IMAGEZOOM_800, OnUpdateZoomRng)
+    ON_COMMAND(ID_TOOLS_SEARCHEXECUTABLEFORDQT, OnToolsSearchexecutablefordqt)
+    ON_UPDATE_COMMAND_UI(ID_FILE_REPROCESS, OnUpdateFileReprocess)
+    ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_AS, OnUpdateFileSaveAs)
+    ON_COMMAND(ID_TOOLS_EXTRACTEMBEDDEDJPEG, OnToolsExtractembeddedjpeg)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_EXTRACTEMBEDDEDJPEG, OnUpdateToolsExtractembeddedjpeg)
+    ON_COMMAND(ID_TOOLS_FILEOVERLAY, OnToolsFileoverlay)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_FILEOVERLAY, OnUpdateToolsFileoverlay)
+    ON_COMMAND(ID_TOOLS_LOOKUPMCUOFFSET, OnToolsLookupmcuoffset)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_LOOKUPMCUOFFSET, OnUpdateToolsLookupmcuoffset)
+    ON_COMMAND(ID_OVERLAYS_MCUGRID, OnOverlaysMcugrid)
+    ON_UPDATE_COMMAND_UI(ID_OVERLAYS_MCUGRID, OnUpdateOverlaysMcugrid)
+    ON_UPDATE_COMMAND_UI(ID_INDICATOR_YCC, OnUpdateIndicatorYcc)
+    ON_UPDATE_COMMAND_UI(ID_INDICATOR_MCU, OnUpdateIndicatorMcu)
+    ON_UPDATE_COMMAND_UI(ID_INDICATOR_FILEPOS, OnUpdateIndicatorFilePos)
+    ON_COMMAND(ID_SCANSEGMENT_DETAILEDDECODE, OnScansegmentDetaileddecode)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DETAILEDDECODE, OnUpdateScansegmentDetaileddecode)
+    ON_COMMAND(ID_TOOLS_EXPORTTIFF, OnToolsExporttiff)
+    ON_UPDATE_COMMAND_UI(ID_TOOLS_EXPORTTIFF, OnUpdateToolsExporttiff)
+END_MESSAGE_MAP()

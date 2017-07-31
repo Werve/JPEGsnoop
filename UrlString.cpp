@@ -21,23 +21,17 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeGuru:
 //
-//		Title:		CUrlString: A very simple MFC class to Encode and Decode an url string
-//		Author:		Stephane Erhardt
-//		URL:		http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c4029/URL-Encoding.htm (comments)
-//		Date:		Mar 03, 2006
+//      Title:      CUrlString: A very simple MFC class to Encode and Decode an url string
+//      Author:     Stephane Erhardt
+//      URL:        http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c4029/URL-Encoding.htm (comments)
+//      Date:       Mar 03, 2006
 //
 // ====================================================================================================
 
-
-/*****************************************************************************
-Module :     UrlString.cpp
-Notices:     Written 2006 by Stephane Erhardt
-Description: CPP URL Encoder/Decoder
-*****************************************************************************/
 #include "stdafx.h"
+
 #include "UrlString.h"
 
-/*****************************************************************************/
 CUrlString::CUrlString()
 {
     m_csUnsafe = _T("%=\"<>\\^[]`+$,@:;/!#?&'");
@@ -47,7 +41,6 @@ CUrlString::CUrlString()
         m_csUnsafe += (char)iChar;
 }
 
-/*****************************************************************************/
 CString CUrlString::Encode(CString csDecoded)
 {
     CString csCharEncoded, csCharDecoded;
@@ -62,16 +55,15 @@ CString CUrlString::Encode(CString csDecoded)
     return csEncoded;
 }
 
-/*****************************************************************************/
 CString CUrlString::Decode(CString csEncoded)
 {
     CString csUnsafeEncoded = Encode(m_csUnsafe);
     CString csDecoded = csEncoded;
-    CString csCharEncoded, csCharDecoded;
+    CString csCharDecoded;
 
     for (int iPos = 0; iPos < csUnsafeEncoded.GetLength(); iPos += 3)
     {
-        csCharEncoded = csUnsafeEncoded.Mid(iPos, 3);
+        CString csCharEncoded = csUnsafeEncoded.Mid(iPos, 3);
         csCharDecoded = (TCHAR)_tcstol(csUnsafeEncoded.Mid(iPos + 1, 2), nullptr, 16);
         csDecoded.Replace(csCharEncoded, csCharDecoded);
     }

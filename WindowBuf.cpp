@@ -20,15 +20,6 @@
 
 #include "WindowBuf.h"
 
-// Reset the main state
-//
-void CwindowBuf::Reset()
-{
-    // File handling
-    m_bBufOK = false; // Initialize the buffer to not loaded yet
-    m_pBufFile = nullptr; // No file open yet
-}
-
 // Constructor for WindowBuf class
 // - Allocates storage for the buffer
 // - Resets state
@@ -76,6 +67,13 @@ CwindowBuf::~CwindowBuf()
             m_psOverlay[nInd] = nullptr;
         }
     }
+}
+
+void CwindowBuf::Reset()
+{
+    // File handling
+    m_bBufOK = false; // Initialize the buffer to not loaded yet
+    m_pBufFile = nullptr; // No file open yet
 }
 
 // Accessor for m_bBufOk
@@ -138,16 +136,16 @@ void CwindowBuf::BufFileUnset()
 // - Update progress in lengthy searches
 //
 // INPUT:
-// - nStartPos			Starting byte offset for search
-// - nSearchVal			Value to search for (up to 32-bit unsigned)
-// - nSearchLen			Maximum number of bytes to search
-// - bDirFwd			TRUE for forward, FALSE for backwards
+// - nStartPos          Starting byte offset for search
+// - nSearchVal         Value to search for (up to 32-bit unsigned)
+// - nSearchLen         Maximum number of bytes to search
+// - bDirFwd            TRUE for forward, FALSE for backwards
 //
 // PRE:
 // - m_nPosEof
 //
 // OUTPUT:
-// - nFoundPos			Byte offset in buffer for start of search match
+// - nFoundPos          Byte offset in buffer for start of search match
 //
 // RETURN:
 // - Success in finding the value
@@ -249,17 +247,17 @@ void CwindowBuf::SetStatusBar(CStatusBar* pStatBar)
 // - Update progress in lengthy searches
 //
 // INPUT:
-// - nStartPos			Starting byte offset for search
-// - anSearchVal		Byte array to search for
-// - nSearchLen			Maximum number of bytes to search
-// - bDirFwd			TRUE for forward, FALSE for backwards
+// - nStartPos          Starting byte offset for search
+// - anSearchVal        Byte array to search for
+// - nSearchLen         Maximum number of bytes to search
+// - bDirFwd            TRUE for forward, FALSE for backwards
 //
 // PRE:
 // - m_nPosEof
 // - m_pStatBar
 //
 // OUTPUT:
-// - nFoundPos			Byte offset in buffer for start of search match
+// - nFoundPos          Byte offset in buffer for start of search match
 //
 // RETURN:
 // - Success in finding the value
@@ -275,7 +273,7 @@ bool CwindowBuf::BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned
     unsigned long nCurPosOffset;
 
     unsigned long nMatchStartPos = 0;
-    //bool			bMatchStart = false;
+    //bool          bMatchStart = false;
     bool bMatchOn = false;
     CString strStatus;
     time_t tmLast = clock();
@@ -377,7 +375,7 @@ bool CwindowBuf::BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned
 // - The cache prior to the address facilitates reverse search performance
 //
 // INPUT:
-// - nPosition				File offset to ensure is available in new window
+// - nPosition              File offset to ensure is available in new window
 // PRE:
 // - m_pBufFile
 // - m_nPosEof
@@ -463,7 +461,7 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
 // - TODO: Replace with vector
 //
 // INPUT:
-// - nInd		Overlay index to allocate
+// - nInd       Overlay index to allocate
 //
 // POST:
 // - m_psOverlay[] 
@@ -544,17 +542,17 @@ void CwindowBuf::ReportOverlays(CDocLog* pLog)
 // Define the content of an overlay
 //
 // INPUT:
-// - nOvrInd			The overlay index to update/replace
-// - pOverlay			The byte array that defines the overlay content
-// - nLen				Byte length of the overlay
-// - nBegin				Starting byte offset for the overlay
-// - nMcuX				Additional info for this overlay
-// - nMcuY				Additional info for this overlay
-// - nMcuLen			Additional info for this overlay
-// - nMcuLenIns			Additional info for this overlay
-// - nAdjY				Additional info for this overlay
-// - nAdjCb				Additional info for this overlay
-// - nAdjCr				Additional info for this overlay
+// - nOvrInd            The overlay index to update/replace
+// - pOverlay           The byte array that defines the overlay content
+// - nLen               Byte length of the overlay
+// - nBegin             Starting byte offset for the overlay
+// - nMcuX              Additional info for this overlay
+// - nMcuY              Additional info for this overlay
+// - nMcuLen            Additional info for this overlay
+// - nMcuLenIns         Additional info for this overlay
+// - nAdjY              Additional info for this overlay
+// - nAdjCb             Additional info for this overlay
+// - nAdjCr             Additional info for this overlay
 //
 bool CwindowBuf::OverlayInstall(unsigned nOvrInd, BYTE* pOverlay, unsigned nLen, unsigned nBegin,
                                 unsigned nMcuX, unsigned nMcuY, unsigned nMcuLen, unsigned nMcuLenIns,
@@ -646,12 +644,12 @@ void CwindowBuf::OverlayRemoveAll()
 // Fetch the indexed buffer overlay
 //
 // INPUT:
-// - nOvrInd		The overlay index
+// - nOvrInd        The overlay index
 //
 // OUTPUT:
-// - pOverlay		A pointer to the indexed buffer
-// - nLen			Length of the overlay string
-// - nBegin			Starting file offset for the overlay
+// - pOverlay       A pointer to the indexed buffer
+// - nLen           Length of the overlay string
+// - nBegin         Starting file offset for the overlay
 //
 // RETURN:
 // - Success if overlay index was allocated and enabled
@@ -680,8 +678,8 @@ unsigned CwindowBuf::OverlayGetNum()
 // - Support for overlays (optional)
 //
 // INPUT:
-// - nOffset			File offset to fetch from (via cache)
-// - bClean				Flag that indicates if overlays can be used
+// - nOffset            File offset to fetch from (via cache)
+// - bClean             Flag that indicates if overlays can be used
 //                      If set to FALSE, then content from overlays that span
 //                      the offset address will be returned instead of the file content
 //
@@ -777,20 +775,18 @@ inline BYTE CwindowBuf::Buf(unsigned long nOffset, bool bClean)
 // - No support for overlays
 //
 // INPUT:
-// - nOffset			File offset to fetch from (via cache)
-// - nSz				Size of word to fetch (1,2,4)
-// - nByteSwap			Flag to indicate if UINT16 or UINT32 should be byte-swapped
+// - nOffset            File offset to fetch from (via cache)
+// - nSz                Size of word to fetch (1,2,4)
+// - nByteSwap          Flag to indicate if UINT16 or UINT32 should be byte-swapped
 //
 // RETURN:
 // - 1/2/4 unsigned bytes from the desired address
 //
 unsigned CwindowBuf::BufX(unsigned long nOffset, unsigned nSz, bool nByteSwap)
 {
-    long nWinRel;
-
     ASSERT(m_pBufFile);
 
-    nWinRel = nOffset - m_nBufWinStart;
+    long nWinRel = nOffset - m_nBufWinStart;
     if ((nWinRel >= 0) && (nWinRel + nSz < m_nBufWinSize))
     {
         // Address is within current window
@@ -879,16 +875,14 @@ unsigned CwindowBuf::BufX(unsigned long nOffset, unsigned nSz, bool nByteSwap)
 
 unsigned char CwindowBuf::BufRdAdv1(unsigned long& nOffset, bool bByteSwap)
 {
-    unsigned char nRet;
-    nRet = static_cast<unsigned char>(BufX(nOffset, 1, bByteSwap));
+    unsigned char nRet = static_cast<unsigned char>(BufX(nOffset, 1, bByteSwap));
     nOffset += 1;
     return nRet;
 }
 
 unsigned short CwindowBuf::BufRdAdv2(unsigned long& nOffset, bool bByteSwap)
 {
-    unsigned short nRet;
-    nRet = static_cast<unsigned short>(BufX(nOffset, 2, bByteSwap));
+    unsigned short nRet = static_cast<unsigned short>(BufX(nOffset, 2, bByteSwap));
     nOffset += 2;
     return nRet;
 }
@@ -909,7 +903,7 @@ unsigned CwindowBuf::BufRdAdv4(unsigned long& nOffset, bool bByteSwap)
 //   of exceeding the maximum length of MAX_BUF_READ_STR
 //
 // INPUT:
-// - nPosition			File offset to start string fetch
+// - nPosition          File offset to start string fetch
 //
 // RETURN:
 // - String fetched from file
@@ -919,13 +913,12 @@ CString CwindowBuf::BufReadStr(unsigned long nPosition)
     // Try to read a NULL-terminated string from file offset "nPosition"
     // up to a maximum of MAX_BUF_READ_STR bytes. Result is max length MAX_BUF_READ_STR
     CString strRd = _T("");
-    unsigned char cRd;
     bool bDone = false;
     unsigned nIndex = 0;
 
     while (!bDone)
     {
-        cRd = Buf(nPosition + nIndex);
+        unsigned char cRd = Buf(nPosition + nIndex);
         // Only add if printable
         if (isprint(cRd))
         {
@@ -954,7 +947,7 @@ CString CwindowBuf::BufReadStr(unsigned long nPosition)
 // - Reference: BUG: #1112
 //
 // INPUT:
-// - nPosition			File offset to start string fetch
+// - nPosition          File offset to start string fetch
 //
 // RETURN:
 // - String fetched from file
@@ -976,11 +969,11 @@ CString CwindowBuf::BufReadUniStr(unsigned long nPosition)
         // FIXME: No, we can't check for this as it will cause
         // _tcslen() call in the calling function to get the wrong
         // length as it isn't null-terminated. Skip for now.
-        //		if (isprint(cRd)) {
-        //			strRd += cRd;
-        //		} else {
-        //			strRd += _T(".");
-        //		}
+        //      if (isprint(cRd)) {
+        //          strRd += cRd;
+        //      } else {
+        //          strRd += _T(".");
+        //      }
         strRd += cRd;
 
         nIndex += 2;
@@ -996,9 +989,8 @@ CString CwindowBuf::BufReadUniStr(unsigned long nPosition)
     return strRd;
 }
 
-
 // Wrapper for ByteStr2Unicode that uses local Window Buffer
-#define MAX_UNICODE_STRLEN	255
+#define MAX_UNICODE_STRLEN  255
 
 CString CwindowBuf::BufReadUniStr2(unsigned long nPos, unsigned nBufLen)
 {
@@ -1052,15 +1044,14 @@ CString CwindowBuf::BufReadUniStr2(unsigned long nPos, unsigned nBufLen)
     return strVal;
 }
 
-
 // Read a string from the buffer/cache at the indicated file offset.
 // - Does not affect the current file pointer nPosition
 // - String length is limited by encountering either the NULL character
 //   of exceeding the maximum length parameter
 //
 // INPUT:
-// - nPosition			File offset to start string fetch
-// - nLen				Maximum number of bytes to fetch
+// - nPosition          File offset to start string fetch
+// - nLen               Maximum number of bytes to fetch
 //
 // RETURN:
 // - String fetched from file
@@ -1070,14 +1061,13 @@ CString CwindowBuf::BufReadStrn(unsigned long nPosition, unsigned nLen)
     // Try to read a fixed-length string from file offset "nPosition"
     // up to a maximum of "nLen" bytes. Result is length "nLen"
     CString strRd = _T("");
-    unsigned char cRd;
     bool bDone = false;
 
     if (nLen > 0)
     {
         for (unsigned nInd = 0; ((!bDone) && (nInd < nLen)); nInd++)
         {
-            cRd = Buf(nPosition + nInd);
+            unsigned char cRd = Buf(nPosition + nInd);
             if (isprint(cRd))
             {
                 strRd += cRd;

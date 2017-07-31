@@ -20,8 +20,6 @@
 
 #include "ImgDecode.h"
 #include "snoop.h"
-#include <math.h>
-
 #include "JPEGsnoop.h"
 #include "General.h"
 
@@ -150,19 +148,17 @@ void CimgDecode::Reset()
 // - This constructor is called only once by Document class
 CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
 {
+    ASSERT(pLog);
+    ASSERT(pWBuf);
+
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
     m_pAppConfig = pApp->m_pAppConfig;
     ASSERT(m_pAppConfig);
 
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Begin"));
-
     m_bVerbose = false;
 
-    ASSERT(pLog);
-    ASSERT(pWBuf);
     m_pLog = pLog;
     m_pWBuf = pWBuf;
 
@@ -183,12 +179,8 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
     m_pPixValCb = nullptr;
     m_pPixValCr = nullptr;
 
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 1"));
-
     // Reset the image decoding state
     Reset();
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 2"));
 
     m_nImgSizeXPartMcu = 0;
     m_nImgSizeYPartMcu = 0;
@@ -207,43 +199,29 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
 
     m_bDecodeScanAc = true;
 
-
     // Set up the IDCT lookup tables
     PrecalcIdct();
 
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 3"));
-
     GenLookupHuffMask();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 4"));
-
 
     // The following contain information that is set by
     // the JFIF Decoder. We can only reset them here during
     // the constructor and later by explicit call by JFIF Decoder.
     ResetState();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 5"));
 
     // We don't call SetPreviewMode() here because it would
     // automatically try to recalculate the view (but nothing ready yet)
     m_nPreviewMode = PREVIEW_RGB;
     SetPreviewZoom(false, false, true, PRV_ZOOM_12);
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 6"));
 
     m_bViewOverlaysMcuGrid = false;
 
     // Start off with no YCC offsets for CalcChannelPreview()
     SetPreviewYccOffset(0, 0, 0, 0, 0);
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 7"));
 
     SetPreviewMcuInsert(0, 0, 0);
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() Checkpoint 8"));
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CimgDecode::CimgDecode() End"));
 }
 
-
-// Destructor for Image Decode class
-// - Deallocate any image-related dynamic storage
 CimgDecode::~CimgDecode()
 {
     if (m_pMcuFileMap)
@@ -322,7 +300,7 @@ void CimgDecode::ResetState()
 // Save a copy of the status bar control
 //
 // INPUT:
-// - pStatBar			= Pointer to status bar
+// - pStatBar           = Pointer to status bar
 // POST:
 // - m_pStatBar
 //
@@ -335,7 +313,7 @@ void CimgDecode::SetStatusBar(CStatusBar* pStatBar)
 // Update the status bar text
 //
 // INPUT:
-// - str				= New text to display on status bar
+// - str                = New text to display on status bar
 // PRE:
 // - m_pStatBar
 //
@@ -432,10 +410,10 @@ void CimgDecode::ResetDhtLookup()
 // Configure an entry in a quantization table
 //
 // INPUT:
-// - nSet			= Quant table dest ID (from DQT:Tq)
-// - nInd			= Coeff index (normal order)
-// - nIndzz			= Coeff index (zigzag order)
-// - nCoeff			= Coeff value
+// - nSet           = Quant table dest ID (from DQT:Tq)
+// - nInd           = Coeff index (normal order)
+// - nIndzz         = Coeff index (zigzag order)
+// - nCoeff         = Coeff value
 // POST:
 // - m_anDqtCoeff[]
 // - m_anDqtCoeffZz[]
@@ -467,7 +445,7 @@ bool CimgDecode::SetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd, unsigned n
                         _T("ImgDecode"), (LPCTSTR)strTmp);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
 
         if (m_pAppConfig->bInteractive)
@@ -481,8 +459,8 @@ bool CimgDecode::SetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd, unsigned n
 // Fetch a DQT table entry
 //
 // INPUT:
-// - nTblDestId				= DQT Table Destination ID
-// - nCoeffInd				= Coefficient index in 8x8 matrix
+// - nTblDestId             = DQT Table Destination ID
+// - nCoeffInd              = Coefficient index in 8x8 matrix
 // PRE:
 // - m_anDqtCoeff[][]
 // RETURN:
@@ -508,7 +486,7 @@ unsigned CimgDecode::GetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd)
                     _T("ImgDecode"), (LPCTSTR)strTmp);
     OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
 
     return 0;
@@ -518,8 +496,8 @@ unsigned CimgDecode::GetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd)
 // Set a DQT table for a frame image component identifier
 //
 // INPUT:
-// - nCompInd			= Component index. Based on m_nSofNumComps_Nf-1 (ie. 0..254)
-// - nTbl				= DQT Table number. Based on SOF:Tqi (ie. 0..3)
+// - nCompInd           = Component index. Based on m_nSofNumComps_Nf-1 (ie. 0..254)
+// - nTbl               = DQT Table number. Based on SOF:Tqi (ie. 0..3)
 // POST:
 // - m_anDqtTblSel[]
 // RETURN:
@@ -553,9 +531,9 @@ bool CimgDecode::SetDqtTables(unsigned nCompId, unsigned nTbl)
 //   m_anDhtTblSel[1][1,2,3] for AC
 //
 // INPUT:
-// - nCompInd			= Component index (1-based). Range 1..4
-// - nTblDc				= DHT table index for DC elements of component
-// - nTblAc				= DHT table index for AC elements of component
+// - nCompInd           = Component index (1-based). Range 1..4
+// - nTblDc             = DHT table index for DC elements of component
+// - nTblAc             = DHT table index for AC elements of component
 // POST:
 // - m_anDhtTblSel[][]
 // RETURN:
@@ -587,7 +565,7 @@ bool CimgDecode::SetDhtTables(unsigned nCompInd, unsigned nTblDc, unsigned nTblA
 // Get the precision field
 //
 // INPUT:
-// - nPrecision			= DCT sample precision (typically 8 or 12)
+// - nPrecision         = DCT sample precision (typically 8 or 12)
 // POST:
 // - m_nPrecision
 //
@@ -600,12 +578,12 @@ void CimgDecode::SetPrecision(unsigned nPrecision)
 // Set the general image details for the image decoder
 //
 // INPUT:
-// - nDimX				= Image dimension (X)
-// - nDimY				= Image dimension (Y)
-// - nCompsSOF			= Number of components in Frame
-// - nCompsSOS			= Number of components in Scan
-// - bRstEn				= Restart markers present?
-// - nRstInterval		= Restart marker interval
+// - nDimX              = Image dimension (X)
+// - nDimY              = Image dimension (Y)
+// - nCompsSOF          = Number of components in Frame
+// - nCompsSOS          = Number of components in Scan
+// - bRstEn             = Restart markers present?
+// - nRstInterval       = Restart marker interval
 // POST:
 // - m_bImgDetailsSet
 // - m_nDimX
@@ -637,9 +615,9 @@ void CimgDecode::ResetImageContent()
 // Set the sampling factor for an image component
 //
 // INPUT:
-// - nCompInd			= Component index from Nf (ie. 1..255)
-// - nSampFactH			= Sampling factor in horizontal direction
-// - nSampFactV			= Sampling factor in vertical direction
+// - nCompInd           = Component index from Nf (ie. 1..255)
+// - nSampFactH         = Sampling factor in horizontal direction
+// - nSampFactV         = Sampling factor in vertical direction
 // POST:
 // - m_anSofSampFactH[]
 // - m_anSofSampFactV[]
@@ -657,7 +635,7 @@ void CimgDecode::SetSofSampFactors(unsigned nCompInd, unsigned nSampFactH, unsig
 // Update the preview mode (affects channel display)
 //
 // INPUT:
-// - nMode				= Mode used in channel display (eg. NONE, RGB, YCC)
+// - nMode              = Mode used in channel display (eg. NONE, RGB, YCC)
 //                        See PREVIEW_* constants
 //
 void CimgDecode::SetPreviewMode(unsigned nMode)
@@ -671,11 +649,11 @@ void CimgDecode::SetPreviewMode(unsigned nMode)
 // Update any level shifts for the preview display
 //
 // INPUT:
-// - nMcuX				= MCU index in X direction
-// - nMcuY				= MCU index in Y direction
-// - nY					= DC shift in Y component
-// - nCb				= DC shift in Cb component
-// - nCr				= DC shift in Cr component
+// - nMcuX              = MCU index in X direction
+// - nMcuY              = MCU index in Y direction
+// - nY                 = DC shift in Y component
+// - nCb                = DC shift in Cb component
+// - nCr                = DC shift in Cr component
 //
 void CimgDecode::SetPreviewYccOffset(unsigned nMcuX, unsigned nMcuY, int nY, int nCb, int nCr)
 {
@@ -691,11 +669,11 @@ void CimgDecode::SetPreviewYccOffset(unsigned nMcuX, unsigned nMcuY, int nY, int
 // Fetch the current level shift setting for the preview display
 //
 // OUTPUT:
-// - nMcuX				= MCU index in X direction
-// - nMcuY				= MCU index in Y direction
-// - nY					= DC shift in Y component
-// - nCb				= DC shift in Cb component
-// - nCr				= DC shift in Cr component
+// - nMcuX              = MCU index in X direction
+// - nMcuY              = MCU index in Y direction
+// - nY                 = DC shift in Y component
+// - nCb                = DC shift in Cb component
+// - nCr                = DC shift in Cr component
 //
 void CimgDecode::GetPreviewYccOffset(unsigned& nMcuX, unsigned& nMcuY, int& nY, int& nCb, int& nCr)
 {
@@ -730,8 +708,8 @@ void CimgDecode::GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned&
 // Fetch the coordinate of the top-left corner of the preview image
 //
 // OUTPUT:
-// - nX				= X coordinate of top-left corner
-// - nY				= Y coordinate of top-left corner
+// - nX             = X coordinate of top-left corner
+// - nY             = Y coordinate of top-left corner
 //
 void CimgDecode::GetPreviewPos(unsigned& nX, unsigned& nY)
 {
@@ -742,8 +720,8 @@ void CimgDecode::GetPreviewPos(unsigned& nX, unsigned& nY)
 // Fetch the dimensions of the preview image
 //
 // OUTPUT:
-// - nX				= X dimension of image
-// - nY				= Y dimension of iamge
+// - nX             = X dimension of image
+// - nY             = Y dimension of iamge
 //
 void CimgDecode::GetPreviewSize(unsigned& nX, unsigned& nY)
 {
@@ -755,13 +733,13 @@ void CimgDecode::GetPreviewSize(unsigned& nX, unsigned& nY)
 // - Configures the fast lookup table for short code bitstrings
 //
 // INPUT:
-// - nDestId			= DHT destination table ID (0..3)
-// - nClass				= Select between DC and AC tables (0=DC, 1=AC)
-// - nInd				= Index into table
-// - nLen				= Huffman code length
-// - nBits				= Huffman code bitstring (left justified)
-// - nMask				= Huffman code bit mask (left justified)
-// - nCode				= Huffman code value
+// - nDestId            = DHT destination table ID (0..3)
+// - nClass             = Select between DC and AC tables (0=DC, 1=AC)
+// - nInd               = Index into table
+// - nLen               = Huffman code length
+// - nBits              = Huffman code bitstring (left justified)
+// - nMask              = Huffman code bit mask (left justified)
+// - nCode              = Huffman code value
 // POST:
 // - m_anDhtLookup_bitlen[][][]
 // - m_anDhtLookup_bits[][][]
@@ -789,7 +767,7 @@ bool CimgDecode::SetDhtEntry(unsigned nDestId, unsigned nClass, unsigned nInd, u
                         _T("ImgDecode"), (LPCTSTR)strTmp);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
         return false;
     }
@@ -856,9 +834,9 @@ bool CimgDecode::SetDhtEntry(unsigned nDestId, unsigned nClass, unsigned nInd, u
 // Assign the size of the DHT table
 //
 // INPUT:
-// - nDestId			= Destination DHT table ID (From DHT:Th, range 0..3)
-// - nClass				= Select between DC and AC tables (0=DC, 1=AC) (From DHT:Tc, range 0..1)
-// - nSize				= Number of entries in the DHT table
+// - nDestId            = Destination DHT table ID (From DHT:Th, range 0..3)
+// - nClass             = Select between DC and AC tables (0=DC, 1=AC) (From DHT:Tc, range 0..1)
+// - nSize              = Number of entries in the DHT table
 // POST:
 // - m_anDhtLookupSize[][]
 // RETURN:
@@ -884,8 +862,8 @@ bool CimgDecode::SetDhtSize(unsigned nDestId, unsigned nClass, unsigned nSize)
 // - Convert according to ITU-T.81 Table 5
 //
 // INPUT:
-// - nVal				= Huffman DC value (left justified)
-// - nBits				= Bitstring length of value
+// - nVal               = Huffman DC value (left justified)
+// - nBits              = Bitstring length of value
 // RETURN:
 // - Signed integer representing Huffman DC value
 //
@@ -919,8 +897,8 @@ void CimgDecode::GenLookupHuffMask()
 // Extract a specified number of bits from a 32-bit holding register
 //
 // INPUT:
-// - nWord				= The 32-bit holding register
-// - nBits				= Number of bits (leftmost) to extract from the holding register
+// - nWord              = The 32-bit holding register
+// - nBits              = Number of bits (leftmost) to extract from the holding register
 // PRE:
 // - m_anHuffMaskLookup[]
 // RETURN:
@@ -941,7 +919,7 @@ inline unsigned CimgDecode::ExtractBits(unsigned nWord, unsigned nBits)
 // - And then realign file position pointers
 //
 // INPUT:
-// - nNumBits				= Number of left-most bits to consume
+// - nNumBits               = Number of left-most bits to consume
 // POST:
 // - m_nScanBuff
 // - m_nScanBuff_vacant
@@ -993,8 +971,8 @@ inline void CimgDecode::ScanBuffConsume(unsigned nNumBits)
 // - Extra bits are added to right side of existing bitstring
 //
 // INPUT:
-// - nNewByte			= 8-bit byte to add to buffer
-// - nPtr				= UNUSED
+// - nNewByte           = 8-bit byte to add to buffer
+// - nPtr               = UNUSED
 // PRE:
 // - m_nScanBuff
 // - m_nScanBuff_vacant
@@ -1024,9 +1002,9 @@ inline void CimgDecode::ScanBuffAdd(unsigned nNewByte, unsigned nPtr)
 // Augment the current scan buffer with another byte (but mark as error)
 //
 // INPUT:
-// - nNewByte			= 8-bit byte to add to buffer
-// - nPtr				= UNUSED
-// - nErr				= Error code to associate with this buffer byte
+// - nNewByte           = 8-bit byte to add to buffer
+// - nPtr               = UNUSED
+// - nErr               = Error code to associate with this buffer byte
 // POST:
 // - m_anScanBuffPtr_err[]
 //
@@ -1070,8 +1048,8 @@ void CimgDecode::ScanErrorsEnable()
 //   is almost empty when we reach the end of a scan segment)
 //
 // INPUT:
-// - nClass					= DHT Table class (0..1)
-// - nTbl					= DHT Destination ID (0..3)
+// - nClass                 = DHT Table class (0..1)
+// - nTbl                   = DHT Destination ID (0..3)
 // PRE:
 // - Assume that dht_lookup_size[nTbl] != 0 (already checked)
 // - m_bRestartRead
@@ -1092,8 +1070,8 @@ void CimgDecode::ScanErrorsEnable()
 // - m_nWarnBadScanNum
 // - m_anDhtHisto[][][]
 // OUTPUT:
-// - rZrl				= Zero run amount (if any)
-// - rVal				= Coefficient value
+// - rZrl               = Zero run amount (if any)
+// - rVal               = Coefficient value
 // RETURN:
 // - Status from attempting to decode the current value
 //
@@ -1617,8 +1595,8 @@ unsigned CimgDecode::BuffAddByte()
 
         // Optionally stop immediately upon a bad marker
 #ifdef SCAN_BAD_MARKER_STOP
-		m_bScanEnd = true;
-		return 1;
+        m_bScanEnd = true;
+        return 1;
 #else
         // Add byte to m_nScanBuff & record file position
         ScanBuffAddErr(nBuf0, m_nScanBuffPtr, SCANBUF_BADMARK);
@@ -1652,10 +1630,10 @@ unsigned CimgDecode::BuffAddByte()
 // - Perform the IDCT to create spatial domain 
 //
 // INPUT:
-// - nTblDhtDc					= DHT table ID for DC component
-// - nTblDhtAc					= DHT talbe ID for AC component
-// - nMcuX						= UNUSED
-// - nMcuY						= UNUSED
+// - nTblDhtDc                  = DHT table ID for DC component
+// - nTblDhtAc                  = DHT talbe ID for AC component
+// - nMcuX                      = UNUSED
+// - nMcuY                      = UNUSED
 // RETURN:
 // - Indicate if the decode was successful
 // POST:
@@ -1679,7 +1657,7 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
     teRsvRet eRsvRet; // Return value from ReadScanVal()
 
     unsigned nNumCoeffs = 0;
-    //unsigned nDctMax = 0;			// Maximum DCT coefficient to use for IDCT
+    //unsigned nDctMax = 0;         // Maximum DCT coefficient to use for IDCT
     unsigned nSavedBufPos = 0;
     unsigned nSavedBufErr = SCANBUF_OK;
     unsigned nSavedBufAlign = 0;
@@ -1699,10 +1677,10 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
         nSavedBufAlign = m_nScanBuffPtr_align;
 
         // ReadScanVal return values:
-        // - RSV_OK			OK
-        // - RSV_EOB		End of block
-        // - RSV_UNDERFLOW	Ran out of data in buffer
-        // - RSV_RST_TERM	No huffman code found, but restart marker seen
+        // - RSV_OK         OK
+        // - RSV_EOB        End of block
+        // - RSV_UNDERFLOW  Ran out of data in buffer
+        // - RSV_RST_TERM   No huffman code found, but restart marker seen
         // Assume nTblDht just points to DC tables, adjust for AC
         // e.g. nTblDht = 0,2,4
         eRsvRet = ReadScanVal(bDC ? 0 : 1, bDC ? nTblDhtDc : nTblDhtAc, nZrl, nVal);
@@ -1895,23 +1873,23 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
     // PERFORMANCE:
     //   Example file: canon_1dsmk2_
     //
-    //   0:06	Turn off m_bDecodeScanAc (so no array memset, etc.)
+    //   0:06   Turn off m_bDecodeScanAc (so no array memset, etc.)
     //   0:10   m_bDecodeScanAc=true, but DecodeIdctCalc() skipped
-    //   0:26	m_bDecodeScanAc=true and DecodeIdctCalcFixedpt()
-    //   0:27	m_bDecodeScanAc=true and DecodeIdctCalcFloat()
+    //   0:26   m_bDecodeScanAc=true and DecodeIdctCalcFixedpt()
+    //   0:27   m_bDecodeScanAc=true and DecodeIdctCalcFloat()
 
     if (m_bDecodeScanAc)
     {
 #ifdef IDCT_FIXEDPT
-		DecodeIdctCalcFixedpt();
+        DecodeIdctCalcFixedpt();
 #else
 
         // TODO: Select appropriate conversion routine based on performance
-        //		DecodeIdctCalcFloat(nDctMax);
-        //		DecodeIdctCalcFloat(nNumCoeffs);
-        //		DecodeIdctCalcFloat(m_nDctCoefMax);
+        //      DecodeIdctCalcFloat(nDctMax);
+        //      DecodeIdctCalcFloat(nNumCoeffs);
+        //      DecodeIdctCalcFloat(m_nDctCoefMax);
         DecodeIdctCalcFloat(64);
-        //		DecodeIdctCalcFloat(32);
+        //      DecodeIdctCalcFloat(32);
 
 #endif
     }
@@ -1926,10 +1904,10 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
 // - Same as DecodeScanComp() but adds reporting of variable length codes (VLC)
 //
 // INPUT:
-// - nTblDhtDc					= DHT table ID for DC component
-// - nTblDhtAc					= DHT talbe ID for AC component
-// - nMcuX						= Current MCU X coordinate (for reporting only)
-// - nMcuY						= Current MCU Y coordinate (for reporting only)
+// - nTblDhtDc                  = DHT table ID for DC component
+// - nTblDhtAc                  = DHT talbe ID for AC component
+// - nMcuX                      = Current MCU X coordinate (for reporting only)
+// - nMcuY                      = Current MCU Y coordinate (for reporting only)
 // RETURN:
 // - Indicate if the decode was successful
 // POST:
@@ -1997,7 +1975,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
         nSavedBufAlign = m_nScanBuffPtr_align;
 
         // Return values:
-        //	0 - OK
+        //  0 - OK
         //  1 - EOB
         //  2 - Overread error
         //  3 - No huffman code found, but restart marker seen
@@ -2187,9 +2165,9 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
 
     // Now calc the IDCT matrix
 #ifdef IDCT_FIXEDPT
-	DecodeIdctCalcFixedpt();
+    DecodeIdctCalcFixedpt();
 #else
-    //	DecodeIdctCalcFloat(nNumCoeffs);
+    //  DecodeIdctCalcFloat(nNumCoeffs);
     DecodeIdctCalcFloat(64);
 #endif
 
@@ -2253,13 +2231,13 @@ void CimgDecode::ReportDctMatrix()
 // Overlay 0x4215 = 7FFF0000 len=4
 //
 // INPUT:
-// - nVlcPos				=
-// - nVlcAlign				=
-// - nZrl					=
-// - nVal					=
-// - nCoeffStart			=
-// - nCoeffEnd				=
-// - specialStr				=
+// - nVlcPos                =
+// - nVlcAlign              =
+// - nZrl                   =
+// - nVal                   =
+// - nCoeffStart            =
+// - nCoeffEnd              =
+// - specialStr             =
 //
 void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
                            unsigned nZrl, int nVal,
@@ -2374,10 +2352,10 @@ void CimgDecode::DecodeIdctClear()
 // - Reversing the quantization is done using m_anDqtCoeffZz[][]
 //
 // INPUT:
-// - nDqtTbl				=
-// - num_coeffs				=
-// - zrl					=
-// - val					=
+// - nDqtTbl                =
+// - num_coeffs             =
+// - zrl                    =
+// - val                    =
 // PRE:
 // - glb_anZigZag[]
 // - m_anDqtCoeffZz[][]
@@ -2418,7 +2396,7 @@ void CimgDecode::DecodeIdctSet(unsigned nDqtTbl, unsigned num_coeffs, unsigned z
         // FIXME: The following doesn't seem to work when we later
         // restrict DecodeIdctCalc() to only m_nDctCoefMax coefs!
 
-        //		if ( (nDctInd > m_nDctCoefMax) && (abs(nValUnquant) >= IDCT_COEF_THRESH) ) {
+        //      if ( (nDctInd > m_nDctCoefMax) && (abs(nValUnquant) >= IDCT_COEF_THRESH) ) {
         if (nDctInd > m_nDctCoefMax)
         {
             m_nDctCoefMax = nDctInd;
@@ -2487,7 +2465,7 @@ void CimgDecode::PrecalcIdct()
 // Cu, Cv = 1 else
 //
 // INPUT:
-// - nCoefMax				= Maximum number of coefficients to calculate
+// - nCoefMax               = Maximum number of coefficients to calculate
 // PRE:
 // - m_afIdctLookup[][]
 // - m_anDctBlock[]
@@ -2551,8 +2529,8 @@ void CimgDecode::DecodeIdctCalcFixedpt()
 // Clear the entire pixel image arrays for all three components (YCC)
 //
 // INPUT:
-// - nWidth					= Current allocated image width
-// - nHeight				= Current allocated image height
+// - nWidth                 = Current allocated image width
+// - nHeight                = Current allocated image height
 // POST:
 // - m_pPixValY
 // - m_pPixValCb 
@@ -2584,12 +2562,12 @@ void CimgDecode::ClrFullRes(unsigned nWidth, unsigned nHeight)
 // - Replication of pixels according to Chroma Subsampling (sampling factors)
 //
 // INPUT:
-// - nMcuX					=
-// - nMcuY					=
-// - nComp					= Component index (1,2,3)
-// - nCssXInd				=
-// - nCssYInd				=
-// - nDcOffset				=
+// - nMcuX                  =
+// - nMcuY                  =
+// - nComp                  = Component index (1,2,3)
+// - nCssXInd               =
+// - nCssYInd               =
+// - nDcOffset              =
 // PRE:
 // - DecodeIdctCalc() already called on Lum AC, and Lum DC already done
 //
@@ -2613,7 +2591,7 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
                         _T("ImgDecode"), (LPCTSTR)strTmp);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
         return;
     }
@@ -2641,16 +2619,16 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
             // Fetch the pixel value from the IDCT 8x8 block
             // and perform DC level shift
 #ifdef IDCT_FIXEDPT
-			nVal = m_anIdctBlock[nYX];
+            nVal = m_anIdctBlock[nYX];
             // TODO: Why do I need AC value x8 multiplier?
-			nVal = (nVal*8) + nDcOffset;
+            nVal = (nVal*8) + nDcOffset;
 #else
             fVal = m_afIdctBlock[nYX];
             // TODO: Why do I need AC value x8 multiplier?
             nVal = ((short int)(fVal * 8) + nDcOffset);
 #endif
 
-            // NOTE: These range checks were already done in DecodeScanImg()	
+            // NOTE: These range checks were already done in DecodeScanImg()    
             ASSERT(nCssXInd<MAX_SAMP_FACT_H);
             ASSERT(nCssYInd<MAX_SAMP_FACT_V);
             ASSERT(nY<BLK_SZ_Y);
@@ -2715,8 +2693,8 @@ CString CimgDecode::GetScanBufPos()
 // Generate a file position string that also indicates bit alignment
 //
 // INPUT:
-// - pos			= File position (byte)
-// - align			= File position (bit)
+// - pos            = File position (byte)
+// - align          = File position (bit)
 // RETURN:
 // - Formatted string
 //
@@ -2731,11 +2709,11 @@ CString CimgDecode::GetScanBufPos(unsigned pos, unsigned align)
 // Test the scan error flag and, if set, report out the position
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - nCssIndH			= Chroma subsampling (horizontal)
-// - nCssIndV			= Chroma subsampling (vertical)
-// - nComp				= Image component
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - nCssIndH           = Chroma subsampling (horizontal)
+// - nCssIndV           = Chroma subsampling (vertical)
+// - nComp              = Image component
 //
 void CimgDecode::CheckScanErrors(unsigned nMcuX, unsigned nMcuY, unsigned nCssIndH, unsigned nCssIndV, unsigned nComp)
 {
@@ -2799,16 +2777,16 @@ void CimgDecode::CheckScanErrors(unsigned nMcuX, unsigned nMcuY, unsigned nCssIn
 // Report the cumulative DC value
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - nVal				= DC value
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - nVal               = DC value
 //
 void CimgDecode::PrintDcCumVal(unsigned nMcuX, unsigned nMcuY, int nVal)
 {
     nMcuX; // Unreferenced param
     nMcuY; // Unreferenced param
     CString strTmp;
-    //	strTmp.Format(_T("  MCU [%4u,%4u] DC Cumulative Val = [%5d]"),nMcuX,nMcuY,nVal);
+    //  strTmp.Format(_T("  MCU [%4u,%4u] DC Cumulative Val = [%5d]"),nMcuX,nMcuY,nVal);
     strTmp.Format(_T("                 Cumulative DC Val=[%5d]"), nVal);
     m_pLog->AddLine(strTmp);
 }
@@ -2852,9 +2830,9 @@ void CimgDecode::SetImageDimensions(unsigned nWidth, unsigned nHeight)
 // - Call SetFullRes() to transfer IDCT output to YCC Pixel Map
 //
 // INPUT:
-// - nStart					= File position at start of scan
-// - bDisplay				= Generate a preview image?
-// - bQuiet					= Disable output of certain messages during decode?
+// - nStart                 = File position at start of scan
+// - bDisplay               = Generate a preview image?
+// - bQuiet                 = Disable output of certain messages during decode?
 //
 void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 {
@@ -2940,7 +2918,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     //   [ 0 1 ] [ 4 5 ]
     //   [ 2 3 ] [ 6 7 ]
     // - The sequence for decode should be:
-    //   [ 0 ] [ 1 ] [ 2 ] [ 3 ] [ 4 ] ...	
+    //   [ 0 ] [ 1 ] [ 2 ] [ 3 ] [ 4 ] ...  
     // - Which is equivalent to the non-subsampled ordering (ie. 0x11)
     // - Apply a correction for such images to remove the sampling factor
     if (m_nNumSosComps == 1)
@@ -3203,7 +3181,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     unsigned nDqtTblCr = 0;
     unsigned nDqtTblCb = 0;
 #ifdef DEBUG_YCCK
-	unsigned	nDqtTblK =0;
+    unsigned    nDqtTblK =0;
 #endif
     bool bDqtReady = true;
     for (unsigned ind = 1; ind <= m_nNumSosComps; ind++)
@@ -3223,9 +3201,9 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     nDqtTblCb = m_anDqtTblSel[DQT_DEST_CB];
     nDqtTblCr = m_anDqtTblSel[DQT_DEST_CR];
 #ifdef DEBUG_YCCK
-		if (m_nNumSosComps==4) {
-			nDqtTblK = m_anDqtTblSel[DQT_DEST_K];
-		}
+        if (m_nNumSosComps==4) {
+            nDqtTblK = m_anDqtTblSel[DQT_DEST_K];
+        }
 #endif
 
     // Now check DHT tables
@@ -3233,7 +3211,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     unsigned nDhtTblDcY, nDhtTblDcCb, nDhtTblDcCr;
     unsigned nDhtTblAcY, nDhtTblAcCb, nDhtTblAcCr;
 #ifdef DEBUG_YCCK
-	unsigned nDhtTblDcK,nDhtTblAcK;
+    unsigned nDhtTblDcK,nDhtTblAcK;
 #endif
     for (unsigned nClass = DHT_CLASS_DC; nClass <= DHT_CLASS_AC; nClass++)
     {
@@ -3284,8 +3262,8 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     nDhtTblDcCr = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_CR];
     nDhtTblAcCr = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_CR];
 #ifdef DEBUG_YCCK
-		nDhtTblDcK	= m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_K];
-		nDhtTblAcK	= m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_K];
+        nDhtTblDcK  = m_anDhtTblSel[DHT_CLASS_DC][COMP_IND_YCC_K];
+        nDhtTblAcK  = m_anDhtTblSel[DHT_CLASS_AC][COMP_IND_YCC_K];
 #endif
 
     // Done checks
@@ -3463,7 +3441,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 
                     if (bVlcDump)
                     {
-                        //						PrintDcCumVal(nMcuX,nMcuY,m_nDcLum);
+                        //                      PrintDcCumVal(nMcuX,nMcuY,m_nDcLum);
                     }
 
                     // Now take a snapshot of the current cumulative DC value
@@ -3486,25 +3464,25 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                     // FIXME
                     // Temporarily experiment with trying to handle multiple scans
                     // by converting sampling factor of luminance scan back to 1x1
-					unsigned nNewMcuX,nNewMcuY,nNewCssX,nNewCssY;
-					if (nCssIndV == 0) {
-						if (nMcuX < m_nMcuXMax/2) {
-							nNewMcuX = nMcuX;
-							nNewMcuY = nMcuY;
-							nNewCssY = 0;
-						} else {
-							nNewMcuX = nMcuX - (m_nMcuXMax/2);
-							nNewMcuY = nMcuY;
-							nNewCssY = 1;
-						}
-						nNewCssX = nCssIndH;
-						SetFullRes(nNewMcuX,nNewMcuY,SCAN_COMP_Y,nNewCssX,nNewCssY,m_nDcLum);
-					} else {
-						nNewMcuX = (nMcuX / 2) + 1;
-						nNewMcuY = (nMcuY / 2);
-						nNewCssX = nCssIndH;
-						nNewCssY = nMcuY % 2;
-					}
+                    unsigned nNewMcuX,nNewMcuY,nNewCssX,nNewCssY;
+                    if (nCssIndV == 0) {
+                        if (nMcuX < m_nMcuXMax/2) {
+                            nNewMcuX = nMcuX;
+                            nNewMcuY = nMcuY;
+                            nNewCssY = 0;
+                        } else {
+                            nNewMcuX = nMcuX - (m_nMcuXMax/2);
+                            nNewMcuY = nMcuY;
+                            nNewCssY = 1;
+                        }
+                        nNewCssX = nCssIndH;
+                        SetFullRes(nNewMcuX,nNewMcuY,SCAN_COMP_Y,nNewCssX,nNewCssY,m_nDcLum);
+                    } else {
+                        nNewMcuX = (nMcuX / 2) + 1;
+                        nNewMcuY = (nMcuY / 2);
+                        nNewCssX = nCssIndH;
+                        nNewCssY = nMcuY % 2;
+                    }
 #endif
 
                     // ---------------
@@ -3592,87 +3570,87 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                 }
             }
 #ifdef DEBUG_YCCK
-			else if (m_nNumSosComps == NUM_CHAN_YCCK) {
+            else if (m_nNumSosComps == NUM_CHAN_YCCK) {
 
             // --------------------------------------------------------------
-				nComp = SCAN_COMP_CB;
+                nComp = SCAN_COMP_CB;
 
             // Chrominance Cb
-				for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
-					for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
+                for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
+                    for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
 
-						if (!bVlcDump) {
-							bDscRet = DecodeScanComp(nDhtTblDcCb,nDhtTblAcCb,nDqtTblCb,nMcuX,nMcuY);// Chr Cb DC+AC
-						} else {
-							bDscRet = DecodeScanCompPrint(nDhtTblDcCb,nDhtTblAcCb,nDqtTblCb,nMcuX,nMcuY);// Chr Cb DC+AC
-						}
-						if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
-						if (!bDscRet && bDieOnFirstErr) return;
+                        if (!bVlcDump) {
+                            bDscRet = DecodeScanComp(nDhtTblDcCb,nDhtTblAcCb,nDqtTblCb,nMcuX,nMcuY);// Chr Cb DC+AC
+                        } else {
+                            bDscRet = DecodeScanCompPrint(nDhtTblDcCb,nDhtTblAcCb,nDqtTblCb,nMcuX,nMcuY);// Chr Cb DC+AC
+                        }
+                        if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
+                        if (!bDscRet && bDieOnFirstErr) return;
 
-						m_nDcChrCb += m_anDctBlock[DCT_COEFF_DC];
+                        m_nDcChrCb += m_anDctBlock[DCT_COEFF_DC];
 
 
-						if (bVlcDump) {
+                        if (bVlcDump) {
             //PrintDcCumVal(nMcuX,nMcuY,m_nDcChrCb);
-						}
+                        }
 
             // Now take a snapshot of the current cumulative DC value
-						m_anDcChrCbCss[nCssIndV*MAX_SAMP_FACT_H+nCssIndH] = m_nDcChrCb;
+                        m_anDcChrCbCss[nCssIndV*MAX_SAMP_FACT_H+nCssIndH] = m_nDcChrCb;
 
             // Store fullres value
-						if (bDisplay)
-							SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrCb);
+                        if (bDisplay)
+                            SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrCb);
 
-					}
-				}
+                    }
+                }
 
             // --------------------------------------------------------------
-				nComp = SCAN_COMP_CR;
+                nComp = SCAN_COMP_CR;
 
             // Chrominance Cr
-				for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
-					for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
-						if (!bVlcDump) {
-							bDscRet = DecodeScanComp(nDhtTblDcCr,nDhtTblAcCr,nDqtTblCr,nMcuX,nMcuY);// Chr Cr DC+AC
-						} else {
-							bDscRet = DecodeScanCompPrint(nDhtTblDcCr,nDhtTblAcCr,nDqtTblCr,nMcuX,nMcuY);// Chr Cr DC+AC
-						}
-						if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
-						if (!bDscRet && bDieOnFirstErr) return;
+                for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
+                    for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
+                        if (!bVlcDump) {
+                            bDscRet = DecodeScanComp(nDhtTblDcCr,nDhtTblAcCr,nDqtTblCr,nMcuX,nMcuY);// Chr Cr DC+AC
+                        } else {
+                            bDscRet = DecodeScanCompPrint(nDhtTblDcCr,nDhtTblAcCr,nDqtTblCr,nMcuX,nMcuY);// Chr Cr DC+AC
+                        }
+                        if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
+                        if (!bDscRet && bDieOnFirstErr) return;
 
-						m_nDcChrCr += m_anDctBlock[DCT_COEFF_DC];
+                        m_nDcChrCr += m_anDctBlock[DCT_COEFF_DC];
 
 
 
-						if (bVlcDump) {
+                        if (bVlcDump) {
             //PrintDcCumVal(nMcuX,nMcuY,m_nDcChrCr);
-						}
+                        }
 
             // Now take a snapshot of the current cumulative DC value
-						m_anDcChrCrCss[nCssIndV*MAX_SAMP_FACT_H+nCssIndH] = m_nDcChrCr;
+                        m_anDcChrCrCss[nCssIndV*MAX_SAMP_FACT_H+nCssIndH] = m_nDcChrCr;
 
             // Store fullres value
-						if (bDisplay)
-							SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrCr);
+                        if (bDisplay)
+                            SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrCr);
 
-					}
-				}
+                    }
+                }
 
             // --------------------------------------------------------------
             // IGNORED
-				nComp = SCAN_COMP_K;
+                nComp = SCAN_COMP_K;
 
             // Black K
-				for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
-					for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
+                for (nCssIndV=0;nCssIndV<m_anSampPerMcuV[nComp];nCssIndV++) {
+                    for (nCssIndH=0;nCssIndH<m_anSampPerMcuH[nComp];nCssIndH++) {
 
-						if (!bVlcDump) {
-							bDscRet = DecodeScanComp(nDhtTblDcK,nDhtTblAcK,nDqtTblK,nMcuX,nMcuY);// K DC+AC
-						} else {
-							bDscRet = DecodeScanCompPrint(nDhtTblDcK,nDhtTblAcK,nDqtTblK,nMcuX,nMcuY);// K DC+AC
-						}
-						if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
-						if (!bDscRet && bDieOnFirstErr) return;
+                        if (!bVlcDump) {
+                            bDscRet = DecodeScanComp(nDhtTblDcK,nDhtTblAcK,nDqtTblK,nMcuX,nMcuY);// K DC+AC
+                        } else {
+                            bDscRet = DecodeScanCompPrint(nDhtTblDcK,nDhtTblAcK,nDqtTblK,nMcuX,nMcuY);// K DC+AC
+                        }
+                        if (m_nScanCurErr) CheckScanErrors(nMcuX,nMcuY,nCssIndH,nCssIndV,nComp);
+                        if (!bDscRet && bDieOnFirstErr) return;
 
             /*
                                     m_nDcChrK += m_anDctBlock[DCT_COEFF_DC];
@@ -3690,11 +3668,11 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                                         SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrK);
             */
 
-					}
-				}
+                    }
+                }
 
 
-			}
+            }
 #endif
 
             // --------------------------------------------------------------------
@@ -3739,7 +3717,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                                         _T("ImgDecode"), (LPCTSTR)strTmp);
                         OutputDebugString(strDebug);
 #else
-					ASSERT(false);
+                    ASSERT(false);
 #endif
                     }
                     else
@@ -3770,7 +3748,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                                             _T("ImgDecode"), (LPCTSTR)strTmp);
                             OutputDebugString(strDebug);
 #else
-							ASSERT(false);
+                            ASSERT(false);
 #endif
                         }
                         else
@@ -3799,7 +3777,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                                             _T("ImgDecode"), (LPCTSTR)strTmp);
                             OutputDebugString(strDebug);
 #else
-							ASSERT(false);
+                            ASSERT(false);
 #endif
                         }
                         else
@@ -4074,8 +4052,8 @@ void CimgDecode::ReportHistogramY()
 // Draw the histograms (RGB and/or Y)
 //
 // INPUT:
-// - bQuiet					= Calculate stats without reporting to log?
-// - bDumpHistoY			= Generate the Y histogram?
+// - bQuiet                 = Calculate stats without reporting to log?
+// - bDumpHistoY            = Generate the Y histogram?
 // PRE:
 // - m_sHisto
 //
@@ -4234,8 +4212,8 @@ void CimgDecode::DrawHistogram(bool bQuiet, bool bDumpHistoY)
 // after any restart markers)
 //
 // INPUT:
-// - nFilePos					= File position at start of scan
-// - bRestart					= Is this a reset due to RSTn marker?
+// - nFilePos                   = File position at start of scan
+// - bRestart                   = Is this a reset due to RSTn marker?
 // PRE:
 // - m_nRestartInterval
 // POST:
@@ -4297,9 +4275,9 @@ void CimgDecode::DecodeRestartScanBuf(unsigned nFilePos, bool bRestart)
 // Color conversion from YCC to RGB
 //
 // INPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 // OUTPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 //
 void CimgDecode::ConvertYCCtoRGBFastFloat(PixelCc& sPix)
 {
@@ -4358,9 +4336,9 @@ void CimgDecode::ConvertYCCtoRGBFastFloat(PixelCc& sPix)
 // Color conversion from YCC to RGB
 //
 // INPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 // OUTPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 //
 void CimgDecode::ConvertYCCtoRGBFastFixed(PixelCc& sPix)
 {
@@ -4429,11 +4407,11 @@ void CimgDecode::ConvertYCCtoRGBFastFixed(PixelCc& sPix)
 // - CC: y/cb/cr -> r/g/b
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - sPix				= Structure for color conversion
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - sPix               = Structure for color conversion
 // OUTPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 // POST:
 // - m_sHisto
 // - m_anHistoYFull[]
@@ -4545,11 +4523,11 @@ void CimgDecode::ConvertYCCtoRGB(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
 //   have been clipped into the valid region
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - sPix				= Structure for color conversion
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - sPix               = Structure for color conversion
 // OUTPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 // POST:
 // - m_sHisto
 //
@@ -4715,11 +4693,11 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
 // - Converts from Preclip RGB to Final RGB
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - sPix				= Structure for color conversion
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - sPix               = Structure for color conversion
 // OUTPUT:
-// - sPix				= Structure for color conversion
+// - sPix               = Structure for color conversion
 // POST:
 // - m_sHisto
 //
@@ -4851,14 +4829,14 @@ void CimgDecode::CapRgbRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
 //   because we need to have access to all of the channel components at once to do this.
 //
 // INPUT:
-// - pRectView				= UNUSED. Intended to limit updates to visible region
+// - pRectView              = UNUSED. Intended to limit updates to visible region
 //                            (Range of real image that is visibile / cropped)
 // PRE:
 // - m_pPixValY[]
 // - m_pPixValCb[]
 // - m_pPixValCr[]
 // OUTPUT:
-// - pTmp					= RGB pixel map (32-bit per pixel, [0x00,R,G,B])
+// - pTmp                   = RGB pixel map (32-bit per pixel, [0x00,R,G,B])
 //
 void CimgDecode::CalcChannelPreviewFull(CRect* pRectView, unsigned char* pTmp)
 {
@@ -5080,10 +5058,10 @@ void CimgDecode::CalcChannelPreviewFull(CRect* pRectView, unsigned char* pTmp)
 // Extract the specified channel
 //
 // INPUT:
-// - nMode					= Channel(s) to extract from
-// - sSrc					= Color representations (YCC & RGB) for pixel
+// - nMode                  = Channel(s) to extract from
+// - sSrc                   = Color representations (YCC & RGB) for pixel
 // OUTPUT:
-// - sDst					= Resulting RGB output after filtering
+// - sDst                   = Resulting RGB output after filtering
 //
 void CimgDecode::ChannelExtract(unsigned nMode, PixelCc& sSrc, PixelCc& sDst)
 {
@@ -5146,10 +5124,10 @@ void CimgDecode::ChannelExtract(unsigned nMode, PixelCc& sSrc, PixelCc& sDst)
 // Fetch the detailed decode settings (VLC)
 //
 // OUTPUT:
-// - bDetail			= Enable for detailed scan VLC reporting
-// - nX					= Start of detailed scan decode MCU X coordinate
-// - nY					= Start of detailed scan decode MCU Y coordinate
-// - nLen				= Number of MCUs to parse in detailed scan decode
+// - bDetail            = Enable for detailed scan VLC reporting
+// - nX                 = Start of detailed scan decode MCU X coordinate
+// - nY                 = Start of detailed scan decode MCU Y coordinate
+// - nLen               = Number of MCUs to parse in detailed scan decode
 //
 void CimgDecode::GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigned& nLen)
 {
@@ -5162,10 +5140,10 @@ void CimgDecode::GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigne
 // Set the detailed scan decode settings (VLC)
 //
 // INPUT:
-// - bDetail			= Enable for detailed scan VLC reporting
-// - nX					= Start of detailed scan decode MCU X coordinate
-// - nY					= Start of detailed scan decode MCU Y coordinate
-// - nLen				= Number of MCUs to parse in detailed scan decode
+// - bDetail            = Enable for detailed scan VLC reporting
+// - nX                 = Start of detailed scan decode MCU X coordinate
+// - nY                 = Start of detailed scan decode MCU Y coordinate
+// - nLen               = Number of MCUs to parse in detailed scan decode
 //
 void CimgDecode::SetDetailVlc(bool bDetail, unsigned nX, unsigned nY, unsigned nLen)
 {
@@ -5178,9 +5156,9 @@ void CimgDecode::SetDetailVlc(bool bDetail, unsigned nX, unsigned nY, unsigned n
 // Fetch the pointers for the pixel map
 //
 // OUTPUT:
-// - pMayY				= Pointer to pixel map for Y component
-// - pMapCb				= Pointer to pixel map for Cb component
-// - pMapCr				= Pointer to pixel map for Cr component
+// - pMayY              = Pointer to pixel map for Y component
+// - pMapCb             = Pointer to pixel map for Cb component
+// - pMapCr             = Pointer to pixel map for Cr component
 //
 void CimgDecode::GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr)
 {
@@ -5195,8 +5173,8 @@ void CimgDecode::GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr)
 // Get image pixel dimensions rounded up to nearest MCU
 //
 // OUTPUT:
-// - nX					= X dimension of preview image
-// - nY					= Y dimension of preview image
+// - nX                 = X dimension of preview image
+// - nY                 = Y dimension of preview image
 //
 void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY)
 {
@@ -5207,7 +5185,7 @@ void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY)
 // Get the bitmap pointer
 //
 // OUTPUT:
-// - pBitmap			= Bitmap (DIB) of preview
+// - pBitmap            = Bitmap (DIB) of preview
 //
 void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap)
 {
@@ -5265,11 +5243,11 @@ void CimgDecode::CalcChannelPreview()
 // Determine the file position from a pixel coordinate
 //
 // INPUT:
-// - nPixX					= Pixel coordinate (x)
-// - nPixY					= Pixel coordinate (y)
+// - nPixX                  = Pixel coordinate (x)
+// - nPixY                  = Pixel coordinate (y)
 // OUTPUT:
-// - nByte					= File offset (byte)
-// - nBit					= File offset (bit)
+// - nByte                  = File offset (byte)
+// - nBit                   = File offset (bit)
 //
 void CimgDecode::LookupFilePosPix(unsigned nPixX, unsigned nPixY, unsigned& nByte, unsigned& nBit)
 {
@@ -5284,11 +5262,11 @@ void CimgDecode::LookupFilePosPix(unsigned nPixX, unsigned nPixY, unsigned& nByt
 // Determine the file position from a MCU coordinate
 //
 // INPUT:
-// - nMcuX					= MCU coordinate (x)
-// - nMcuY					= MCU coordinate (y)
+// - nMcuX                  = MCU coordinate (x)
+// - nMcuY                  = MCU coordinate (y)
 // OUTPUT:
-// - nByte					= File offset (byte)
-// - nBit					= File offset (bit)
+// - nByte                  = File offset (byte)
+// - nBit                   = File offset (bit)
 //
 void CimgDecode::LookupFilePosMcu(unsigned nMcuX, unsigned nMcuY, unsigned& nByte, unsigned& nBit)
 {
@@ -5300,12 +5278,12 @@ void CimgDecode::LookupFilePosMcu(unsigned nMcuX, unsigned nMcuY, unsigned& nByt
 // Determine the YCC DC value of a specified block
 //
 // INPUT:
-// - nBlkX					= 8x8 block coordinate (x)
-// - nBlkY					= 8x8 block coordinate (y)
+// - nBlkX                  = 8x8 block coordinate (x)
+// - nBlkY                  = 8x8 block coordinate (y)
 // OUTPUT:
-// - nY						= Y channel value
-// - nCb					= Cb channel value
-// - nCr					= Cr channel value
+// - nY                     = Y channel value
+// - nCb                    = Cb channel value
+// - nCr                    = Cr channel value
 //
 void CimgDecode::LookupBlkYCC(unsigned nBlkX, unsigned nBlkY, int& nY, int& nCb, int& nCr)
 {
@@ -5325,7 +5303,7 @@ void CimgDecode::LookupBlkYCC(unsigned nBlkX, unsigned nBlkY, int& nY, int& nCb,
 // Convert pixel coordinate to MCU coordinate
 //
 // INPUT:
-// - ptPix					= Pixel coordinate
+// - ptPix                  = Pixel coordinate
 // RETURN:
 // - MCU coordinate
 //
@@ -5340,7 +5318,7 @@ CPoint CimgDecode::PixelToMcu(CPoint ptPix)
 // Convert pixel coordinate to block coordinate
 //
 // INPUT:
-// - ptPix					= Pixel coordinate
+// - ptPix                  = Pixel coordinate
 // RETURN:
 // - 8x8 block coordinate
 //
@@ -5355,7 +5333,7 @@ CPoint CimgDecode::PixelToBlk(CPoint ptPix)
 // Return the linear MCU offset from an MCU X,Y coord
 //
 // INPUT:
-// - ptMcu					= MCU coordinate
+// - ptMcu                  = MCU coordinate
 // PRE:
 // - m_nMcuXMax
 // RETURN:
@@ -5372,8 +5350,8 @@ unsigned CimgDecode::McuXyToLinear(CPoint ptMcu)
 // - Essentially a fixed-point notation
 //
 // INPUT:
-// - nByte				= File byte position
-// - nBit				= File bit position
+// - nByte              = File byte position
+// - nBit               = File bit position
 // RETURN:
 // - Fixed-point file offset (29b for bytes, 3b for bits)
 //
@@ -5391,10 +5369,10 @@ unsigned CimgDecode::PackFileOffset(unsigned nByte, unsigned nBit)
 // Convert from file offset notation to bytes and bits
 //
 // INPUT:
-// - nPacked			= Fixed-point file offset (29b for bytes, 3b for bits)
+// - nPacked            = Fixed-point file offset (29b for bytes, 3b for bits)
 // OUTPUT:
-// - nByte				= File byte position
-// - nBit				= File bit position
+// - nByte              = File byte position
+// - nBit               = File bit position
 //
 void CimgDecode::UnpackFileOffset(unsigned nPacked, unsigned& nByte, unsigned& nBit)
 {
@@ -5416,7 +5394,7 @@ unsigned CimgDecode::GetMarkerCount()
 // Fetch an indexed block marker
 //
 // INPUT:
-// - nInd					= Index into marker block array
+// - nInd                   = Index into marker block array
 // RETURN:
 // - Point (8x8 block) from marker array
 //
@@ -5439,8 +5417,8 @@ CPoint CimgDecode::GetMarkerBlk(unsigned nInd)
 // - Also report out the YCC DC value for the block
 //
 // INPUT:
-// - nBlkX					= 8x8 block X coordinate
-// - nBlkY					= 8x8 block Y coordinate
+// - nBlkX                  = 8x8 block X coordinate
+// - nBlkY                  = 8x8 block Y coordinate
 // POST:
 // - m_nMarkersBlkNum
 // - m_aptMarkersBlk[]
@@ -5522,10 +5500,10 @@ float CimgDecode::GetPreviewZoom()
 //   or an increment/decrement operation
 //
 // INPUT:
-// - bInc				= Flag to increment the zoom level
-// - bDec				= Flag to decrement the zoom level
-// - bSet				= Flag to set the zoom level
-// - nVal				= Zoom level for "set" operation
+// - bInc               = Flag to increment the zoom level
+// - bDec               = Flag to decrement the zoom level
+// - bSet               = Flag to set the zoom level
+// - nVal               = Zoom level for "set" operation
 // POST:
 // - m_nZoomMode
 //
@@ -5581,12 +5559,12 @@ void CimgDecode::SetPreviewZoom(bool bInc, bool bDec, bool bSet, unsigned nVal)
 // - Draws any MCU overlays / grid
 //
 // INPUT:
-// - pDC					= The device context pointer
-// - rectClient				= From GetClientRect()
-// - ptScrolledPos			= From GetScrollPosition()
-// - pFont					= Pointer to the font used for title/lables
+// - pDC                    = The device context pointer
+// - rectClient             = From GetClientRect()
+// - ptScrolledPos          = From GetScrollPosition()
+// - pFont                  = Pointer to the font used for title/lables
 // OUTPUT:
-// - szNewScrollSize		= New dimension used for SetScrollSizes()
+// - szNewScrollSize        = New dimension used for SetScrollSizes()
 //
 void CimgDecode::ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos,
                             CFont* pFont, CSize& szNewScrollSize)
@@ -5918,11 +5896,11 @@ void CimgDecode::ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos,
     // If no image has been drawn, indicate to user why!
     if (!bImgDrawn)
     {
-        //ScrollRect.top = m_nPageHeight;	// FIXME:?
+        //ScrollRect.top = m_nPageHeight;   // FIXME:?
 
         // Print label
         //nHeight = pDC->DrawText(_T("Image Decode disabled. Enable with [Options->Decode Scan Image]"), -1,&ScrollRect,
-        //	DT_TOP | DT_NOPREFIX | DT_SINGLELINE);
+        //  DT_TOP | DT_NOPREFIX | DT_SINGLELINE);
     }
 
     // Restore the original font
@@ -5937,7 +5915,7 @@ void CimgDecode::ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos,
 // Draw an overlay that shows the MCU grid
 //
 // INPUT:
-// - pDC			= The device context pointer
+// - pDC            = The device context pointer
 //
 void CimgDecode::ViewMcuOverlay(CDC* pDC)
 {
@@ -5972,7 +5950,7 @@ void CimgDecode::ViewMcuOverlay(CDC* pDC)
 // Draw an overlay that highlights the marked MCUs
 //
 // INPUT:
-// - pDC			= The device context pointer
+// - pDC            = The device context pointer
 //
 void CimgDecode::ViewMcuMarkedOverlay(CDC* pDC)
 {
@@ -6008,9 +5986,9 @@ void CimgDecode::ViewMcuMarkedOverlay(CDC* pDC)
 // Draw an overlay for the indexed block
 //
 // INPUT:
-// - pDC			= The device context pointer
-// - nBlkX			= 8x8 block X coordinate
-// - nBlkY			= 8x8 block Y coordinate
+// - pDC            = The device context pointer
+// - nBlkX          = 8x8 block X coordinate
+// - nBlkY          = 8x8 block Y coordinate
 //
 void CimgDecode::ViewMarkerOverlay(CDC* pDC, unsigned nBlkX, unsigned nBlkY)
 {
@@ -6059,9 +6037,9 @@ void CimgDecode::SetPreviewOverlayMcuGridToggle()
 // - UNUSED
 //
 // INPUT:
-// - nMcuX				= MCU x coordinate
-// - nMcuY				= MCU y coordinate
-// - nMcuLen			= Number of MCUs to report
+// - nMcuX              = MCU x coordinate
+// - nMcuY              = MCU y coordinate
+// - nMcuLen            = Number of MCUs to report
 //
 void CimgDecode::ReportDcRun(unsigned nMcuX, unsigned nMcuY, unsigned nMcuLen)
 {
@@ -6082,7 +6060,7 @@ void CimgDecode::ReportDcRun(unsigned nMcuX, unsigned nMcuY, unsigned nMcuLen)
 // Update the YCC status text
 //
 // INPUT:
-// - strText			= Status text to display
+// - strText            = Status text to display
 //
 void CimgDecode::SetStatusYccText(CString strText)
 {
@@ -6102,7 +6080,7 @@ CString CimgDecode::GetStatusYccText()
 // Update the MCU status text
 //
 // INPUT:
-// - strText				= MCU indicator text
+// - strText                = MCU indicator text
 //
 void CimgDecode::SetStatusMcuText(CString strText)
 {
@@ -6122,7 +6100,7 @@ CString CimgDecode::GetStatusMcuText()
 // Update the file position text
 //
 // INPUT:
-// - strText				= File position text
+// - strText                = File position text
 //
 void CimgDecode::SetStatusFilePosText(CString strText)
 {

@@ -43,7 +43,7 @@ public:
 
     void InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig);
     void PopulateList();
-    void GetRemainIndices(CUIntArray& anRemain);
+    void GetRemainIndices(CUIntArray& anRemain) const;
 
     // Dialog Data
     enum

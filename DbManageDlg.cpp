@@ -16,18 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// DbManageDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "DbManageDlg.h"
-#include "./dbmanagedlg.h"
-
-
-// CDbManageDlg dialog
-
-IMPLEMENT_DYNAMIC(CDbManageDlg, CDialog)
 
 CDbManageDlg::CDbManageDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -56,28 +47,15 @@ BOOL CDbManageDlg::OnInitDialog()
     lpiTabs[2] = 300;
     m_ctlListBox.SetTabStops(3, lpiTabs);
 
-    // TODO:  Add extra initialization here
     // Transfer the pending list of 
     PopulateList();
 
-    return TRUE; // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;
 }
 
-
-BEGIN_MESSAGE_MAP(CDbManageDlg, CDialog)
-    ON_BN_CLICKED(IDC_REMOVE, OnBnClickedRemove)
-    ON_BN_CLICKED(IDC_REMOVEALL, OnBnClickedRemoveall)
-END_MESSAGE_MAP()
-
-
-// CDbManageDlg message handlers
-
 // Prepare a custom signature entry for addition into the dialog listbox
-void CDbManageDlg::InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig)
+void CDbManageDlg::InsertEntry(unsigned /*ind*/, CString strMake, CString strModel, CString strQual, CString strSig)
 {
-    ind; // Unreferenced param
-
     CString strTmp;
     strTmp.Format(_T("Make: [%s]\tModel: [%s]\tQual: [%s]"), (LPCTSTR)strMake, (LPCTSTR)strModel, (LPCTSTR)strQual);
     m_asToInsert.Add(strTmp);
@@ -86,18 +64,15 @@ void CDbManageDlg::InsertEntry(unsigned ind, CString strMake, CString strModel, 
 // Copy entries from insert array to the listbox and record their position
 void CDbManageDlg::PopulateList()
 {
-    CString strTmp;
-
     // Reset the current entry index list
     m_anListBoxInd.RemoveAll();
 
     // Now copy entries over
     int nEntriesOrigMax = m_asToInsert.GetCount();
-    int nListPos;
     for (int nInd = 0; nInd < nEntriesOrigMax; nInd++)
     {
-        strTmp = m_asToInsert.GetAt(nInd);
-        nListPos = m_ctlListBox.AddString(strTmp);
+        CString strTmp = m_asToInsert.GetAt(nInd);
+        int nListPos = m_ctlListBox.AddString(strTmp);
 
         // Save the original index for each listbox row
         m_anListBoxInd.Add(nInd);
@@ -112,12 +87,10 @@ void CDbManageDlg::PopulateList()
     }
 }
 
-
 // Remove an entry from the signature list
 void CDbManageDlg::OnBnClickedRemove()
 {
-    int nPos;
-    nPos = m_ctlListBox.GetCurSel();
+    int nPos = m_ctlListBox.GetCurSel();
 
     // Check for case where no line is selected!
     if (nPos != -1)
@@ -126,7 +99,6 @@ void CDbManageDlg::OnBnClickedRemove()
         m_anListBoxInd.RemoveAt(nPos);
     }
 }
-
 
 // Remove all entries from the signature list
 void CDbManageDlg::OnBnClickedRemoveall()
@@ -140,14 +112,19 @@ void CDbManageDlg::OnBnClickedRemoveall()
 // Note that this may be called after DoModal() so we
 // can no longer query the listbox via GetItemData(),
 // for example.
-void CDbManageDlg::GetRemainIndices(CUIntArray& anRemain)
+void CDbManageDlg::GetRemainIndices(CUIntArray& anRemain) const
 {
-    unsigned nNumEntries;
-    unsigned nEntryInd;
-    nNumEntries = m_anListBoxInd.GetCount();
+    unsigned nNumEntries = m_anListBoxInd.GetCount();
     for (unsigned nInd = 0; nInd < nNumEntries; nInd++)
     {
-        nEntryInd = m_anListBoxInd.GetAt(nInd);
+        unsigned nEntryInd = m_anListBoxInd.GetAt(nInd);
         anRemain.Add(nEntryInd);
     }
 }
+
+BEGIN_MESSAGE_MAP(CDbManageDlg, CDialog)
+    ON_BN_CLICKED(IDC_REMOVE, OnBnClickedRemove)
+    ON_BN_CLICKED(IDC_REMOVEALL, OnBnClickedRemoveall)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CDbManageDlg, CDialog)

@@ -16,22 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// SettingsDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
-#include "SettingsDlg.h"
-#include "./settingsdlg.h"
 
-#include "FolderDlg.h"
+#include "SettingsDlg.h"
 #include "JPEGsnoop.h"
 #include "SnoopConfig.h"
-
-
-// CSettingsDlg dialog
-
-IMPLEMENT_DYNAMIC(CSettingsDlg, CDialog)
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -60,22 +49,9 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_RPTERRMAX_SCANDECODE, m_nRptErrMaxScanDecode);
 }
 
-
-BEGIN_MESSAGE_MAP(CSettingsDlg, CDialog)
-    ON_BN_CLICKED(IDC_DB_DIR_BROWSE, OnBnClickedDbDirBrowse)
-    ON_BN_CLICKED(IDC_DB_DIR_DEFAULT, OnBnClickedDbDirDefault)
-    ON_BN_CLICKED(IDC_COACH_RESET, OnBnClickedCoachReset)
-END_MESSAGE_MAP()
-
-
-// CSettingsDlg message handlers
-
 void CSettingsDlg::OnBnClickedDbDirBrowse()
 {
-    // TODO: Add your control notification handler code here
-
-    CString strDir;
-    strDir = SelectFolder(_T("Please select folder for User Database"));
+    CString strDir = SelectFolder(_T("Please select folder for User Database"));
     if (strDir == _T(""))
     {
         // User cancelled
@@ -132,12 +108,11 @@ LPITEMIDLIST CSettingsDlg::ConvertPathToLpItemIdList(const char* pszPath)
     OLECHAR olePath[MAX_PATH];
     ULONG* pchEaten = nullptr;
     ULONG dwAttributes = 0;
-    HRESULT hr;
 
     if (SUCCEEDED(SHGetDesktopFolder(&pDesktopFolder)))
     {
         MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pszPath, -1, olePath, MAX_PATH);
-        hr = pDesktopFolder->ParseDisplayName(nullptr, nullptr, olePath, pchEaten, &pidl, &dwAttributes);
+        pDesktopFolder->ParseDisplayName(nullptr, nullptr, olePath, pchEaten, &pidl, &dwAttributes);
         pDesktopFolder->Release();
     }
     return pidl;
@@ -157,3 +132,11 @@ void CSettingsDlg::OnBnClickedCoachReset()
     pApp = (CJPEGsnoopApp*)AfxGetApp();
     pApp->m_pAppConfig->CoachReset();
 }
+
+BEGIN_MESSAGE_MAP(CSettingsDlg, CDialog)
+    ON_BN_CLICKED(IDC_DB_DIR_BROWSE, OnBnClickedDbDirBrowse)
+    ON_BN_CLICKED(IDC_DB_DIR_DEFAULT, OnBnClickedDbDirDefault)
+    ON_BN_CLICKED(IDC_COACH_RESET, OnBnClickedCoachReset)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CSettingsDlg, CDialog)

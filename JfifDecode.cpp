@@ -16,28 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 #include "stdafx.h"
 
 #include "JfifDecode.h"
 #include "snoop.h"
 #include "JPEGsnoop.h" // for m_pAppConfig get
-
 #include "WindowBuf.h"
-
 #include "Md5.h"
-
-#include "afxinet.h"
-
-#include "windows.h"
 #include "UrlString.h"
 #include "DbSigs.h"
-
 #include "General.h"
 
-
 // Maximum number of component values to extract into array for display
-#define MAX_anValues	64
+#define MAX_anValues    64
 
 
 // Clear out internal members
@@ -142,9 +133,9 @@ void CjfifDecode::Reset()
 // Loads up the signature database.
 //
 // INPUT:
-// - pLog			Ptr to log file class
-// - pWBuf			Ptr to Window Buf class
-// - pImgDec		Ptr to Image Decoder class
+// - pLog           Ptr to log file class
+// - pWBuf          Ptr to Window Buf class
+// - pImgDec        Ptr to Image Decoder class
 //
 // PRE:
 // - Requires that CDocLog, CwindowBuf and CimgDecode classes
@@ -152,17 +143,15 @@ void CjfifDecode::Reset()
 //
 CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
 {
-    // Ideally this would be passed by constructor, but simply access
-    // directly for now.
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
-    m_pAppConfig = pApp->m_pAppConfig;
-    ASSERT(m_pAppConfig);
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Begin"));
-
     ASSERT(pLog);
     ASSERT(pWBuf);
     ASSERT(pImgDec);
+
+    // Ideally this would be passed by constructor, but simply access
+    // directly for now.
+    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
+    m_pAppConfig = pApp->m_pAppConfig;
+    ASSERT(m_pAppConfig);
 
     // Need to zero out the private members
     m_bOutputDB = false; // mySQL output for web
@@ -174,7 +163,6 @@ CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
 
     // Generate lookup tables for Huffman codes
     GenLookupHuffMask();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 1"));
 
     // Window status bar is not ready yet, wait for call to SetStatusBar()
     m_pStatBar = nullptr;
@@ -186,11 +174,9 @@ CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
 
     // Reset decoding state
     Reset();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 2"));
 
     // Load the local database (if it exists)
     theApp.m_pDbSigs->DatabaseExtraLoad();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 3"));
 
     // Allocate the Photoshop decoder
     m_pPsDec = new CDecodePs(pWBuf, pLog);
@@ -199,19 +185,16 @@ CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
         ASSERT(false);
         return;
     }
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 4"));
 
 #ifdef SUPPORT_DICOM
     // Allocate the DICOM decoder
-	m_pDecDicom = new CDecodeDicom(pWBuf,pLog);
-	if (!m_pDecDicom) {
-		ASSERT(false);
-		return;
-	}
-	if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 5"));
+    m_pDecDicom = new CDecodeDicom(pWBuf,pLog);
+    if (!m_pDecDicom) {
+        ASSERT(false);
+        return;
+    }
+    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 5"));
 #endif
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() End"));
 }
 
 // Destructor
@@ -226,10 +209,10 @@ CjfifDecode::~CjfifDecode()
 
 #ifdef SUPPORT_DICOM
     // Free the DICOM decoder
-	if (m_pDecDicom) {
-		delete m_pDecDicom;
-		m_pDecDicom = NULL;
-	}
+    if (m_pDecDicom) {
+        delete m_pDecDicom;
+        m_pDecDicom = NULL;
+    }
 #endif
 }
 
@@ -238,7 +221,7 @@ CjfifDecode::~CjfifDecode()
 // the time of the CjfifDecode class constructor call.
 //
 // INPUT:
-// - pStatBar			Ptr to status bar
+// - pStatBar           Ptr to status bar
 //
 // POST:
 // - m_pStatBar
@@ -381,7 +364,7 @@ unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd)
                     _T("JfifDecode"), (LPCTSTR)strTmp);
     OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
     return 0;
 }
@@ -389,8 +372,8 @@ unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd)
 // Fetch the DQT ordering index (with optional zigzag sequence)
 //
 // INPUT:
-// - nInd			Coefficient index
-// - bZigZag		Use zig-zag ordering
+// - nInd           Coefficient index
+// - bZigZag        Use zig-zag ordering
 //
 // RETURN:
 // - Sequence index
@@ -413,7 +396,7 @@ unsigned CjfifDecode::GetDqtZigZagIndex(unsigned nInd, bool bZigZag)
                     _T("JfifDecode"), (LPCTSTR)strTmp);
     OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
     return 0;
 }
@@ -445,8 +428,8 @@ void CjfifDecode::ClearDQT()
 // Set the DQT matrix element
 //
 // INPUT:
-// - dqt0[]				Matrix array for table 0
-// - dqt1[]				Matrix array for table 1
+// - dqt0[]             Matrix array for table 0
+// - dqt1[]             Matrix array for table 1
 //
 // POST:
 // - m_anImgDqtTbl[][]
@@ -497,12 +480,12 @@ void CjfifDecode::GenLookupHuffMask()
 // faking out the DHT (eg. for MotionJPEG files).
 //
 // PRE:
-// - m_bBufFakeDHT			Flag to include Fake DHT table
-// - m_abMJPGDHTSeg[]		DHT table used if m_bBufFakeDHT=true
+// - m_bBufFakeDHT          Flag to include Fake DHT table
+// - m_abMJPGDHTSeg[]       DHT table used if m_bBufFakeDHT=true
 //
 // INPUT:
-// - nOffset				File offset to read from
-// - bClean					Forcibly disables any redirection to Fake DHT table
+// - nOffset                File offset to read from
+// - bClean                 Forcibly disables any redirection to Fake DHT table
 //
 // POST:
 // - m_pLog
@@ -524,10 +507,10 @@ BYTE CjfifDecode::Buf(unsigned long nOffset, bool bClean = false)
 // Write out a line to the log buffer if we are in verbose mode
 //
 // PRE:
-// - m_bVerbose				Verbose mode
+// - m_bVerbose             Verbose mode
 //
 // INPUT:
-// - strLine				String to output
+// - strLine                String to output
 //
 // OUTPUT:
 // - none
@@ -550,16 +533,16 @@ void CjfifDecode::DbgAddLine(LPCTSTR strLine)
 // either endian byte-swap mode
 //
 // PRE:
-// - m_nImgExifEndian		Byte swap mode (0=little, 1=big)
+// - m_nImgExifEndian       Byte swap mode (0=little, 1=big)
 //
 // INPUT:
-// - nVal					Input UINT32
+// - nVal                   Input UINT32
 //
 // OUTPUT:
-// - nByte0					Byte #1
-// - nByte1					Byte #2
-// - nByte2					Byte #3
-// - nByte3					Byte #4
+// - nByte0                 Byte #1
+// - nByte1                 Byte #2
+// - nByte2                 Byte #3
+// - nByte3                 Byte #4
 //
 // RETURN:
 // - none
@@ -588,13 +571,13 @@ void CjfifDecode::UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1,
 // endian byte-swapping support
 //
 // PRE:
-// - m_nImgExifEndian		Byte swap mode (0=little, 1=big)
+// - m_nImgExifEndian       Byte swap mode (0=little, 1=big)
 //
 // INPUT:
-// - nByte0						Byte #1
-// - nByte1						Byte #2
-// - nByte2						Byte #3
-// - nByte3						Byte #4
+// - nByte0                     Byte #1
+// - nByte1                     Byte #2
+// - nByte2                     Byte #3
+// - nByte3                     Byte #4
 //
 // RETURN:
 // - UINT32
@@ -620,11 +603,11 @@ unsigned CjfifDecode::ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte
 // endian byte-swapping support
 //
 // PRE:
-// - m_nImgExifEndian		Byte swap mode (0=little, 1=big)
+// - m_nImgExifEndian       Byte swap mode (0=little, 1=big)
 //
 // INPUT:
-// - nByte0						Byte #1
-// - nByte1						Byte #2
+// - nByte0                     Byte #1
+// - nByte1                     Byte #2
 //
 // RETURN:
 // - UINT16
@@ -893,14 +876,14 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
 // Perform decode of EXIF IFD tags including MakerNote tags
 //
 // PRE:
-// - m_strImgExifMake	Used for MakerNote decode
+// - m_strImgExifMake   Used for MakerNote decode
 //
 // INPUT:
-// - strSect			IFD section
-// - nTag				Tag code value
+// - strSect            IFD section
+// - nTag               Tag code value
 //
 // OUTPUT:
-// - bUnknown			Was the tag unknown?
+// - bUnknown           Was the tag unknown?
 //
 // RETURN:
 // - Formatted string
@@ -1816,8 +1799,8 @@ bool CjfifDecode::DecodeMakerSubType()
 // Byte swap as required
 //
 // INPUT:
-// - pos		Buffer position
-// - val		Floating point value
+// - pos        Buffer position
+// - val        Floating point value
 //
 // RETURN:
 // - Was the conversion successful?
@@ -1844,7 +1827,7 @@ bool CjfifDecode::DecodeValRational(unsigned nPos, float& nVal)
 // fraction string. Byte swap as required
 //
 // INPUT:
-// - pos		Buffer position
+// - pos        Buffer position
 //
 // RETURN:
 // - Formatted string
@@ -1862,13 +1845,13 @@ CString CjfifDecode::DecodeValFraction(unsigned nPos)
 // Convert multiple coordinates into a formatted GPS string
 //
 // INPUT:
-// - nCount		Number of coordinates (1,2,3)
-// - fCoord1	Coordinate #1
-// - fCoord2	Coordinate #2
-// - fCoord3	Coordinate #3
+// - nCount     Number of coordinates (1,2,3)
+// - fCoord1    Coordinate #1
+// - fCoord2    Coordinate #2
+// - fCoord3    Coordinate #3
 //
 // OUTPUT:
-// - strCoord	The formatted GPS string
+// - strCoord   The formatted GPS string
 //
 // RETURN:
 // - Was the conversion successful?
@@ -1905,10 +1888,10 @@ bool CjfifDecode::PrintValGPS(unsigned nCount, float fCoord1, float fCoord2, flo
 // Read in 3 rational values from the buffer and output as a formatted GPS string
 //
 // INPUT:
-// - pos		Buffer position
+// - pos        Buffer position
 //
 // OUTPUT:
-// - strCoord	The formatted GPS string
+// - strCoord   The formatted GPS string
 //
 // RETURN:
 // - Was the conversion successful?
@@ -1948,7 +1931,7 @@ bool CjfifDecode::DecodeValGPS(unsigned nPos, CString& strCoord)
 // Read a UINT16 from the buffer, byte swap as required
 //
 // INPUT:
-// - nPos		Buffer position
+// - nPos       Buffer position
 //
 // RETURN:
 // - UINT16 from buffer
@@ -1961,7 +1944,7 @@ unsigned CjfifDecode::ReadSwap2(unsigned nPos)
 // Read a UINT32 from the buffer, byte swap as required
 //
 // INPUT:
-// - nPos		Buffer position
+// - nPos       Buffer position
 //
 // RETURN:
 // - UINT32 from buffer
@@ -1974,7 +1957,7 @@ unsigned CjfifDecode::ReadSwap4(unsigned nPos)
 // Read a UINT32 from the buffer, force as big endian
 //
 // INPUT:
-// - nPos		Buffer position
+// - nPos       Buffer position
 //
 // RETURN:
 // - UINT32 from buffer
@@ -1988,10 +1971,10 @@ unsigned CjfifDecode::ReadBe4(unsigned nPos)
 // Print hex from array of unsigned char
 //
 // INPUT:
-// - anBytes	Array of unsigned chars
-// - nCount		Indicates the number of array entries originally specified
-//				but the printing routine limits it to the maximum array depth
-//				allocated (MAX_anValues) and add an ellipsis "..."
+// - anBytes    Array of unsigned chars
+// - nCount     Indicates the number of array entries originally specified
+//              but the printing routine limits it to the maximum array depth
+//              allocated (MAX_anValues) and add an ellipsis "..."
 // RETURN:
 // - A formatted string
 //
@@ -2041,11 +2024,11 @@ CString CjfifDecode::PrintAsHexUC(unsigned char* anBytes, unsigned nCount)
 // Print hex from array of unsigned bytes
 //
 // INPUT:
-// - anBytes	Array is passed as UINT32* even though it only
-//				represents a byte per entry
-// - nCount		Indicates the number of array entries originally specified
-//				but the printing routine limits it to the maximum array depth
-//				allocated (MAX_anValues) and add an ellipsis "..."
+// - anBytes    Array is passed as UINT32* even though it only
+//              represents a byte per entry
+// - nCount     Indicates the number of array entries originally specified
+//              but the printing routine limits it to the maximum array depth
+//              allocated (MAX_anValues) and add an ellipsis "..."
 //
 // RETURN:
 // - A formatted string
@@ -2092,10 +2075,10 @@ CString CjfifDecode::PrintAsHex8(unsigned* anBytes, unsigned nCount)
 // Print hex from array of unsigned words
 //
 // INPUT:
-// - anWords		Array of UINT32 is passed
-// - nCount			Indicates the number of array entries originally specified
-//					but the printing routine limits it to the maximum array depth
-//					allocated (MAX_anValues) and add an ellipsis "..."
+// - anWords        Array of UINT32 is passed
+// - nCount         Indicates the number of array entries originally specified
+//                  but the printing routine limits it to the maximum array depth
+//                  allocated (MAX_anValues) and add an ellipsis "..."
 //
 // RETURN:
 // - A formatted string
@@ -2140,9 +2123,9 @@ CString CjfifDecode::PrintAsHex32(unsigned* anWords, unsigned nCount)
 // This is used for the main EXIF IFDs as well as MakerNotes
 //
 // INPUT:
-// - ifdStr				The IFD section that we are processing
+// - ifdStr             The IFD section that we are processing
 // - pos_exif_start
-// - start_ifd_ptr		
+// - start_ifd_ptr      
 //
 // PRE:
 // - m_strImgExifMake
@@ -2151,8 +2134,8 @@ CString CjfifDecode::PrintAsHex32(unsigned* anWords, unsigned nCount)
 // - m_nImgExifMakerPtr
 //
 // RETURN:
-// - 0					Decoding OK
-// - 2					Decoding failure
+// - 0                  Decoding OK
+// - 2                  Decoding failure
 //
 // POST:
 // - m_nPos
@@ -3618,7 +3601,7 @@ unsigned CjfifDecode::DecodeApp13Ps()
     CString strBimName;
     bool bDone = false;
 
-    //unsigned		nVal = 0x8000;
+    //unsigned      nVal = 0x8000;
 
     CString strVal;
     CString strByte;
@@ -4237,7 +4220,7 @@ void CjfifDecode::DecodeDHT(bool bInject)
             strTmp.Format(_T("ERROR: Invalid DHT Class (%u). Aborting DHT Load."), nDhtClass_Tc);
             m_pLog->AddLineErr(strTmp);
             m_nPos = nPosEnd;
-            //m_bStateAbort = true;	// Stop decoding
+            //m_bStateAbort = true; // Stop decoding
             break;
         }
         if (nDhtHuffTblId_Th >= MAX_DHT_DEST_ID)
@@ -4245,7 +4228,7 @@ void CjfifDecode::DecodeDHT(bool bInject)
             strTmp.Format(_T("ERROR: Invalid DHT Dest ID (%u). Aborting DHT Load."), nDhtHuffTblId_Th);
             m_pLog->AddLineErr(strTmp);
             m_nPos = nPosEnd;
-            //m_bStateAbort = true;	// Stop decoding
+            //m_bStateAbort = true; // Stop decoding
             break;
         }
 
@@ -4503,18 +4486,18 @@ bool CjfifDecode::ExpectMarkerEnd(unsigned long nMarkerStart, unsigned nMarkerLe
 // - An optional override value is provided for the resume case
 //
 // INPUT:
-// - nVal			Input value (unsigned 32-bit)
-// - nMin			Minimum allowed value
-// - nMax			Maximum allowed value
-// - strName		Name of the field
-// - bOverride		Should we override the value upon out-of-range?
-// - nOverrideVal	Value to override if bOverride and out-of-range
+// - nVal           Input value (unsigned 32-bit)
+// - nMin           Minimum allowed value
+// - nMax           Maximum allowed value
+// - strName        Name of the field
+// - bOverride      Should we override the value upon out-of-range?
+// - nOverrideVal   Value to override if bOverride and out-of-range
 //
 // PRE:
 // - m_pAppConfig
 //
 // OUTPUT:
-// - nVal			Output value (including any override)
+// - nVal           Output value (including any override)
 //
 bool CjfifDecode::ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal)
 {
@@ -5004,20 +4987,20 @@ unsigned CjfifDecode::DecodeMarker()
 
         // TODO: Disabled for now
 #if 0
-		unsigned ptr_base;
+        unsigned ptr_base;
 
-		if (m_bVerbose)
-		{
-			if (m_nImgExifMakerPtr != 0)
-			{
+        if (m_bVerbose)
+        {
+            if (m_nImgExifMakerPtr != 0)
+            {
         // FIXME: Seems that nPosExifStart is not initialized in VERBOSE mode
-				ptr_base = nPosExifStart+m_nImgExifMakerPtr;
+                ptr_base = nPosExifStart+m_nImgExifMakerPtr;
 
-				m_pLog->AddLine(_T("Exif Maker IFD DUMP"));
-				strFull.Format(_T("  MarkerOffset @ 0x%08X"),ptr_base);
-				m_pLog->AddLine(strFull);
-			}
-		}
+                m_pLog->AddLine(_T("Exif Maker IFD DUMP"));
+                strFull.Format(_T("  MarkerOffset @ 0x%08X"),ptr_base);
+                m_pLog->AddLine(strFull);
+            }
+        }
 #endif
 
         // End of dump out makernote area
@@ -5291,7 +5274,7 @@ unsigned CjfifDecode::DecodeMarker()
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Lq
         nPosEnd = m_nPos + nLength;
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Table length <Lq> = %u"),nLength); 
+        //XXX       strTmp.Format(_T("  Table length <Lq> = %u"),nLength); 
         strTmp.Format(_T("  Table length = %u"), nLength);
         m_pLog->AddLine(strTmp);
 
@@ -5332,57 +5315,57 @@ unsigned CjfifDecode::DecodeMarker()
 #else
             // Decode with additional DQT extension (ITU-T-JPEG-Plus-Proposal_R3.doc)
 
-			if ((nDqtPrecision_Pq & 0xE) == 0) {
+            if ((nDqtPrecision_Pq & 0xE) == 0) {
             // Per ITU-T.81 Standard
-				if (nDqtPrecision_Pq == 0) {
-					strDqtPrecision = _T("8 bits");
-				} else if (nDqtPrecision_Pq == 1) {
-					strDqtPrecision = _T("16 bits");
-				}
-				strTmp.Format(_T("  Precision=%s"),strDqtPrecision);
-				m_pLog->AddLine(strTmp);
-			} else {
+                if (nDqtPrecision_Pq == 0) {
+                    strDqtPrecision = _T("8 bits");
+                } else if (nDqtPrecision_Pq == 1) {
+                    strDqtPrecision = _T("16 bits");
+                }
+                strTmp.Format(_T("  Precision=%s"),strDqtPrecision);
+                m_pLog->AddLine(strTmp);
+            } else {
             // Non-standard
             // JPEG-Plus-Proposal-R3:
             // - Alternative sub-block-wise sequence
-				strTmp.Format(_T("  Non-Standard DQT Extension detected"));
-				m_pLog->AddLineWarn(strTmp);
+                strTmp.Format(_T("  Non-Standard DQT Extension detected"));
+                m_pLog->AddLineWarn(strTmp);
 
             // FIXME: Should prevent attempt to decode until this is implemented
 
-				if (nDqtPrecision_Pq == 0) {
-					strDqtPrecision = _T("8 bits");
-				} else if (nDqtPrecision_Pq == 1) {
-					strDqtPrecision = _T("16 bits");
-				}
-				strTmp.Format(_T("  Precision=%s"),strDqtPrecision);
-				m_pLog->AddLine(strTmp);
+                if (nDqtPrecision_Pq == 0) {
+                    strDqtPrecision = _T("8 bits");
+                } else if (nDqtPrecision_Pq == 1) {
+                    strDqtPrecision = _T("16 bits");
+                }
+                strTmp.Format(_T("  Precision=%s"),strDqtPrecision);
+                m_pLog->AddLine(strTmp);
 
-				if ((nDqtPrecision_Pq & 0x2) == 0) {
-					strDqtZigZagOrder = _T("Diagonal zig-zag coeff scan seqeunce");
-				} else if ((nDqtPrecision_Pq & 0x2) == 1) {
-					strDqtZigZagOrder = _T("Alternate coeff scan seqeunce");
-				}
-				strTmp.Format(_T("  Coeff Scan Sequence=%s"),strDqtZigZagOrder);
-				m_pLog->AddLine(strTmp);
+                if ((nDqtPrecision_Pq & 0x2) == 0) {
+                    strDqtZigZagOrder = _T("Diagonal zig-zag coeff scan seqeunce");
+                } else if ((nDqtPrecision_Pq & 0x2) == 1) {
+                    strDqtZigZagOrder = _T("Alternate coeff scan seqeunce");
+                }
+                strTmp.Format(_T("  Coeff Scan Sequence=%s"),strDqtZigZagOrder);
+                m_pLog->AddLine(strTmp);
 
-				if ((nDqtPrecision_Pq & 0x4) == 1) {
-					strTmp.Format(_T("  Custom coeff scan sequence"));
-					m_pLog->AddLine(strTmp);
+                if ((nDqtPrecision_Pq & 0x4) == 1) {
+                    strTmp.Format(_T("  Custom coeff scan sequence"));
+                    m_pLog->AddLine(strTmp);
             // Now expect sequence of 64 coefficient entries
-					CString strSequence = _T("");
-					for (unsigned nInd=0;nInd<64;nInd++) {
-						nTmpVal = Buf(m_nPos++);
-						strTmp.Format(_T("%u"),nTmpVal);
-						strSequence += strTmp;
-						if (nInd!=63) {
-							strSequence += _T(", ");
-						}
-					}
-					strTmp.Format(_T("  Custom sequence = [ %s ]"),strSequence);
-					m_pLog->AddLine(strTmp);
-				}
-			}
+                    CString strSequence = _T("");
+                    for (unsigned nInd=0;nInd<64;nInd++) {
+                        nTmpVal = Buf(m_nPos++);
+                        strTmp.Format(_T("%u"),nTmpVal);
+                        strSequence += strTmp;
+                        if (nInd!=63) {
+                            strSequence += _T(", ");
+                        }
+                    }
+                    strTmp.Format(_T("  Custom sequence = [ %s ]"),strSequence);
+                    m_pLog->AddLine(strTmp);
+                }
+            }
 #endif
 
             strTmp.Format(_T("  Destination ID=%u"), nDqtQuantDestId_Tq);
@@ -5572,7 +5555,7 @@ unsigned CjfifDecode::DecodeMarker()
     case JFIF_DAC: // DAC (Arithmetic Coding)
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // La
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Arithmetic coding header length <La> = %u"),nLength);
+        //XXX       strTmp.Format(_T("  Arithmetic coding header length <La> = %u"),nLength);
         strTmp.Format(_T("  Arithmetic coding header length = %u"), nLength);
         m_pLog->AddLine(strTmp);
         unsigned nDAC_n;
@@ -5584,15 +5567,15 @@ unsigned CjfifDecode::DecodeMarker()
             nTmpVal = Buf(m_nPos++); // Tc,Tb
             nDAC_Tc = (nTmpVal & 0xF0) >> 4;
             nDAC_Tb = (nTmpVal & 0x0F);
-            //XXX			strTmp.Format(_T("  #%02u: Table class <Tc>                  = %u"),nInd+1,nDAC_Tc);
+            //XXX           strTmp.Format(_T("  #%02u: Table class <Tc>                  = %u"),nInd+1,nDAC_Tc);
             strTmp.Format(_T("  #%02u: Table class                  = %u"), nInd + 1, nDAC_Tc);
             m_pLog->AddLine(strTmp);
-            //XXX			strTmp.Format(_T("  #%02u: Table destination identifier <Tb> = %u"),nInd+1,nDAC_Tb);
+            //XXX           strTmp.Format(_T("  #%02u: Table destination identifier <Tb> = %u"),nInd+1,nDAC_Tb);
             strTmp.Format(_T("  #%02u: Table destination identifier = %u"), nInd + 1, nDAC_Tb);
             m_pLog->AddLine(strTmp);
 
             nDAC_Cs = Buf(m_nPos++); // Cs
-            //XXX			strTmp.Format(_T("  #%02u: Conditioning table value <Cs>     = %u"),nInd+1,nDAC_Cs);
+            //XXX           strTmp.Format(_T("  #%02u: Conditioning table value <Cs>     = %u"),nInd+1,nDAC_Cs);
             strTmp.Format(_T("  #%02u: Conditioning table value     = %u"), nInd + 1, nDAC_Cs);
             m_pLog->AddLine(strTmp);
 
@@ -5620,13 +5603,13 @@ unsigned CjfifDecode::DecodeMarker()
     case JFIF_DNL: // DNL (Define number of lines)
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Ld
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Header length <Ld> = %u"),nLength);
+        //XXX       strTmp.Format(_T("  Header length <Ld> = %u"),nLength);
         strTmp.Format(_T("  Header length = %u"), nLength);
         m_pLog->AddLine(strTmp);
 
         nTmpVal = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // NL
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Number of lines <NL> = %u"),nTmpVal);
+        //XXX       strTmp.Format(_T("  Number of lines <NL> = %u"),nTmpVal);
         strTmp.Format(_T("  Number of lines = %u"), nTmpVal);
         m_pLog->AddLine(strTmp);
 
@@ -5639,7 +5622,7 @@ unsigned CjfifDecode::DecodeMarker()
     case JFIF_EXP:
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Le
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Header length <Le> = %u"),nLength);
+        //XXX       strTmp.Format(_T("  Header length <Le> = %u"),nLength);
         strTmp.Format(_T("  Header length = %u"), nLength);
         m_pLog->AddLine(strTmp);
 
@@ -5648,10 +5631,10 @@ unsigned CjfifDecode::DecodeMarker()
         nEXP_Eh = (nTmpVal & 0xF0) >> 4;
         nEXP_Ev = (nTmpVal & 0x0F);
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Expand horizontally <Eh> = %u"),nEXP_Eh);
+        //XXX       strTmp.Format(_T("  Expand horizontally <Eh> = %u"),nEXP_Eh);
         strTmp.Format(_T("  Expand horizontally = %u"), nEXP_Eh);
         m_pLog->AddLine(strTmp);
-        //XXX		strTmp.Format(_T("  Expand vertically <Ev>   = %u"),nEXP_Ev);
+        //XXX       strTmp.Format(_T("  Expand vertically <Ev>   = %u"),nEXP_Ev);
         strTmp.Format(_T("  Expand vertically   = %u"), nEXP_Ev);
         m_pLog->AddLine(strTmp);
 
@@ -5699,26 +5682,26 @@ unsigned CjfifDecode::DecodeMarker()
 
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Lf
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Frame header length <Lf> = %u"),nLength);
+        //XXX       strTmp.Format(_T("  Frame header length <Lf> = %u"),nLength);
         strTmp.Format(_T("  Frame header length = %u"), nLength);
         m_pLog->AddLine(strTmp);
 
         m_nSofPrecision_P = Buf(m_nPos++); // P
-        //XXX		strTmp.Format(_T("  Precision <P> = %u"),m_nSofPrecision_P);
+        //XXX       strTmp.Format(_T("  Precision <P> = %u"),m_nSofPrecision_P);
         strTmp.Format(_T("  Precision = %u"), m_nSofPrecision_P);
         m_pLog->AddLine(strTmp);
         if (!ValidateValue(m_nSofPrecision_P, 2, 16,_T("Precision <P>"), true, 8)) return DECMARK_ERR;
 
         m_nSofNumLines_Y = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Y
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Number of Lines <Y> = %u"),m_nSofNumLines_Y);
+        //XXX       strTmp.Format(_T("  Number of Lines <Y> = %u"),m_nSofNumLines_Y);
         strTmp.Format(_T("  Number of Lines = %u"), m_nSofNumLines_Y);
         m_pLog->AddLine(strTmp);
         if (!ValidateValue(m_nSofNumLines_Y, 0, 65535,_T("Number of Lines <Y>"), true, 0)) return DECMARK_ERR;
 
         m_nSofSampsPerLine_X = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // X
         m_nPos += 2;
-        //XXX		strTmp.Format(_T("  Samples per Line <X> = %u"),m_nSofSampsPerLine_X);
+        //XXX       strTmp.Format(_T("  Samples per Line <X> = %u"),m_nSofSampsPerLine_X);
         strTmp.Format(_T("  Samples per Line = %u"), m_nSofSampsPerLine_X);
         m_pLog->AddLine(strTmp);
         if (!ValidateValue(m_nSofSampsPerLine_X, 1, 65535,_T("Samples per Line <X>"), true, 1)) return DECMARK_ERR;
@@ -5736,7 +5719,7 @@ unsigned CjfifDecode::DecodeMarker()
         m_pLog->AddLine(strTmp);
 
         m_nSofNumComps_Nf = Buf(m_nPos++); // Nf, range 1..255
-        //XXX		strTmp.Format(_T("  Number of Img components <Nf> = %u"),m_nSofNumComps_Nf);
+        //XXX       strTmp.Format(_T("  Number of Img components <Nf> = %u"),m_nSofNumComps_Nf);
         strTmp.Format(_T("  Number of Img components = %u"), m_nSofNumComps_Nf);
         m_pLog->AddLine(strTmp);
         if (!ValidateValue(m_nSofNumComps_Nf, 1, 255,_T("Number of Img components <Nf>"), true, 1)) return DECMARK_ERR;
@@ -5808,7 +5791,7 @@ unsigned CjfifDecode::DecodeMarker()
             }
 
             strFull.Format(_T("    Component[%u]: "), nCompInd); // Note i in Ci is 1-based
-            //XXX			strTmp.Format(_T("ID=0x%02X, Samp Fac <Hi,Vi>=0x%02X (Subsamp %u x %u), Quant Tbl Sel <Tqi>=0x%02X"),
+            //XXX           strTmp.Format(_T("ID=0x%02X, Samp Fac <Hi,Vi>=0x%02X (Subsamp %u x %u), Quant Tbl Sel <Tqi>=0x%02X"),
             strTmp.Format(_T("ID=0x%02X, Samp Fac=0x%02X (Subsamp %s x %s), Quant Tbl Sel=0x%02X"),
                           nCompIdent, anSofSampFact[nCompIdent],
                           (LPCTSTR)strSubsampH, (LPCTSTR)strSubsampV,
@@ -6017,7 +6000,7 @@ unsigned CjfifDecode::DecodeMarker()
         m_pLog->AddLine(strTmp);
 
         m_nSosNumCompScan_Ns = Buf(m_nPos++); // Ns, range 1..4
-        //XXX		strTmp.Format(_T("  Number of image components <Ns> = %u"),m_nSosNumCompScan_Ns);
+        //XXX       strTmp.Format(_T("  Number of image components <Ns> = %u"),m_nSosNumCompScan_Ns);
         strTmp.Format(_T("  Number of img components = %u"), m_nSosNumCompScan_Ns);
         m_pLog->AddLine(strTmp);
 
@@ -6079,7 +6062,7 @@ unsigned CjfifDecode::DecodeMarker()
         // following line uncommented), then I get an error at the end of the
         // pass 2 decode (indicating that EOI marker not seen, and expecting
         // marker).
-        //		if (m_pAppConfig->bOutputScanDump) {
+        //      if (m_pAppConfig->bOutputScanDump) {
 
         // --- PASS 1 ---
         bool bSkipDone;
@@ -6168,7 +6151,7 @@ unsigned CjfifDecode::DecodeMarker()
         }
         m_pLog->AddLine(strFull);
 
-        //		}
+        //      }
 
         // --- PASS 2 ---
         // If the option is set, start parsing!
@@ -7481,7 +7464,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     if (bQuiet) { m_pLog->Enable(); }
 
 #ifdef BATCH_DO_DBSUBMIT_ALL
-	bDbReqAddAuto = true;
+    bDbReqAddAuto = true;
 #endif
 
     // Return a value that indicates whether or not we should add this
@@ -7682,10 +7665,10 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 
 
 #ifdef DEBUG_SIG
-		if (m_pAppConfig->bInteractive) {
-			AfxMessageBox(strFormDataPre);
-			AfxMessageBox(strFormData);
-		}
+        if (m_pAppConfig->bInteractive) {
+            AfxMessageBox(strFormDataPre);
+            AfxMessageBox(strFormData);
+        }
 #endif
 
 #ifdef WWW_WININET
@@ -7737,58 +7720,58 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 
 #ifdef WWW_WINHTTP
 
-		CInternetSession		sSession;
-		CHttpConnection*		pConnection;
-		CHttpFile*				pFile;
-		BOOL					bResult;
-		DWORD					dwRet;
+        CInternetSession        sSession;
+        CHttpConnection*        pConnection;
+        CHttpFile*              pFile;
+        BOOL                    bResult;
+        DWORD                   dwRet;
 
         // *** NOTE: Will not work on Windows 95/98!
         // This section is avoided in early OSes otherwise we get an Illegal Op
-		try {		
-			pConnection = sSession.GetHttpConnection(submit_host);
-			ASSERT (pConnection);
-			pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST,_T(submit_page));
-			ASSERT (pFile);
-			bResult = pFile->SendRequest(
-				strHeaders,(LPVOID)(LPCTSTR)strFormData, strFormData.GetLength());
-			ASSERT (bResult != 0);
-			pFile->QueryInfoStatusCode(dwRet);
-			ASSERT (dwRet == HTTP_STATUS_OK);
+        try {       
+            pConnection = sSession.GetHttpConnection(submit_host);
+            ASSERT (pConnection);
+            pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST,_T(submit_page));
+            ASSERT (pFile);
+            bResult = pFile->SendRequest(
+                strHeaders,(LPVOID)(LPCTSTR)strFormData, strFormData.GetLength());
+            ASSERT (bResult != 0);
+            pFile->QueryInfoStatusCode(dwRet);
+            ASSERT (dwRet == HTTP_STATUS_OK);
 
         // Clean up!
-			if (pFile) {
-				pFile->Close();
-				delete pFile;
-				pFile = NULL;
-			}
-			if (pConnection) {
-				pConnection->Close();
-				delete pConnection;
-				pConnection = NULL;
-			}
-			sSession.Close();
+            if (pFile) {
+                pFile->Close();
+                delete pFile;
+                pFile = NULL;
+            }
+            if (pConnection) {
+                pConnection->Close();
+                delete pConnection;
+                pConnection = NULL;
+            }
+            sSession.Close();
 
-		}
+        }
 
-		catch (CInternetException* pEx) 
-		{
+        catch (CInternetException* pEx) 
+        {
         // catch any exceptions from WinINet      
-			TCHAR szErr[MAX_BUF_EX_ERR_MSG];
-			szErr[0] = '\0';
-			if(!pEx->GetErrorMessage(szErr, MAX_BUF_EX_ERR_MSG))
-				_tcscpy(szErr,_T("Unknown error"));
-			TRACE("Submit Failed! - %s",szErr);   
-			if (m_pAppConfig->bInteractive)
-				AfxMessageBox(szErr);
-			pEx->Delete();
-			if(pFile)
-				delete pFile;
-			if(pConnection)
-				delete pConnection;
-			session.Close(); 
-			return;
-		}
+            TCHAR szErr[MAX_BUF_EX_ERR_MSG];
+            szErr[0] = '\0';
+            if(!pEx->GetErrorMessage(szErr, MAX_BUF_EX_ERR_MSG))
+                _tcscpy(szErr,_T("Unknown error"));
+            TRACE("Submit Failed! - %s",szErr);   
+            if (m_pAppConfig->bInteractive)
+                AfxMessageBox(szErr);
+            pEx->Delete();
+            if(pFile)
+                delete pFile;
+            if(pConnection)
+                delete pConnection;
+            session.Close(); 
+            return;
+        }
 #endif
     }
 }
@@ -8460,10 +8443,10 @@ bool CjfifDecode::DecodeAvi()
 // Processing starts at the file offset m_pAppConfig->nPosStart
 //
 // INPUT:
-// - inFile						= Input file pointer
+// - inFile                     = Input file pointer
 //
 // PRE:
-// - m_pAppConfig->nPosStart	= Starting file offset for decode
+// - m_pAppConfig->nPosStart    = Starting file offset for decode
 //
 void CjfifDecode::ProcessFile(CFile* inFile)
 {
@@ -8558,9 +8541,9 @@ void CjfifDecode::ProcessFile(CFile* inFile)
     }
 #else
     // Don't attempt to display Photoshop image data
-	if (m_pPsDec->DecodePsd(nStartPos,NULL,nWidth,nHeight)) {
-		return;
-	}
+    if (m_pPsDec->DecodePsd(nStartPos,NULL,nWidth,nHeight)) {
+        return;
+    }
 #endif
 
 
@@ -8571,23 +8554,23 @@ void CjfifDecode::ProcessFile(CFile* inFile)
     // Test for DICOM
     // - Detect header
     // - start from beginning of file
-	bool			bDicom = false;
-	unsigned long	nPosJpeg = 0;		// File offset to embedded JPEG in DICOM
-	bDicom = m_pDecDicom->DecodeDicom(0,m_nPosFileEnd,nPosJpeg);
-	if (bDicom) {
+    bool            bDicom = false;
+    unsigned long   nPosJpeg = 0;       // File offset to embedded JPEG in DICOM
+    bDicom = m_pDecDicom->DecodeDicom(0,m_nPosFileEnd,nPosJpeg);
+    if (bDicom) {
     // Adjust start of JPEG decoding if we are currently without an offset
-		if (nStartPos == 0) {
-			m_pAppConfig->nPosStart = nPosJpeg;
+        if (nStartPos == 0) {
+            m_pAppConfig->nPosStart = nPosJpeg;
 
-			nStartPos = m_pAppConfig->nPosStart;
-			m_nPos = nStartPos;
-			m_nPosEmbedStart = nStartPos;	// Save the embedded file start position
+            nStartPos = m_pAppConfig->nPosStart;
+            m_nPos = nStartPos;
+            m_nPosEmbedStart = nStartPos;   // Save the embedded file start position
 
-			strTmp.Format(_T("Adjusting Start Offset to: 0x%08X"),nStartPos);
-			m_pLog->AddLine(strTmp);
-			m_pLog->AddLine(_T(""));
-		}
-	}
+            strTmp.Format(_T("Adjusting Start Offset to: 0x%08X"),nStartPos);
+            m_pLog->AddLine(strTmp);
+            m_pLog->AddLine(_T(""));
+        }
+    }
 #endif
 
 

@@ -16,38 +16,23 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// CntrItem.cpp : implementation of the CJPEGsnoopCntrItem class
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
 
-#include "JPEGsnoopDoc.h"
-#include "JPEGsnoopView.h"
 #include "CntrItem.h"
+#include "JPEGsnoopDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
-// CJPEGsnoopCntrItem implementation
-
-IMPLEMENT_SERIAL(CJPEGsnoopCntrItem, CRichEditCntrItem, 0)
-
 CJPEGsnoopCntrItem::CJPEGsnoopCntrItem(REOBJECT* preo, CJPEGsnoopDoc* pContainer)
     : CRichEditCntrItem(preo, pContainer)
 {
-    // TODO: add one-time construction code here
 }
 
 CJPEGsnoopCntrItem::~CJPEGsnoopCntrItem()
 {
-    // TODO: add cleanup code here
 }
-
-
-// CJPEGsnoopCntrItem diagnostics
 
 #ifdef _DEBUG
 void CJPEGsnoopCntrItem::AssertValid() const
@@ -60,3 +45,5 @@ void CJPEGsnoopCntrItem::Dump(CDumpContext& dc) const
     CRichEditCntrItem::Dump(dc);
 }
 #endif
+
+IMPLEMENT_SERIAL(CJPEGsnoopCntrItem, CRichEditCntrItem, 0)

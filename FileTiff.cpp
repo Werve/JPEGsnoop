@@ -91,7 +91,6 @@ void FileTiff::WriteIfdExtraBuf16(unsigned short nVal)
     m_nIfdExtraLen += 2;
 }
 
-
 void FileTiff::WriteVal32(unsigned int nVal)
 {
     if (!m_bPreCalc)
@@ -127,12 +126,9 @@ void FileTiff::WriteIfdExtraBuf32(unsigned int nVal)
     m_nIfdExtraLen += 4;
 }
 
-
 void FileTiff::WriteIfdEntrySingle(unsigned short nTag, unsigned short nType, unsigned nValOffset)
 {
-    unsigned nNum;
-
-    nNum = 1;
+    unsigned nNum = 1;
     WriteVal16(nTag);
     WriteVal16(nType);
     WriteVal32(nNum);
@@ -209,9 +205,8 @@ void FileTiff::WriteIfdEntryMult(unsigned short nTag, unsigned short nType, unsi
 {
     // Calculate total length so we can determine if the
     // values fit inside a DWORD
-    unsigned nTotalLen;
     bool bInExtra = false;
-    nTotalLen = nNumVals * GetTypeLen(nType);
+    unsigned int nTotalLen = nNumVals * GetTypeLen(nType);
     if (nTotalLen > 4) { bInExtra = true; }
 
     WriteVal16(nTag);
@@ -225,18 +220,12 @@ void FileTiff::WriteIfdEntryMult(unsigned short nTag, unsigned short nType, unsi
     // Increment the number of IFD entries
     m_nNumIfd++;
 
-
     // Now start writing to IfdExtraBuf
-    unsigned nVal;
-    BYTE nVal1;
-    unsigned short nVal2;
-
-
     for (unsigned nInd = 0; nInd < nNumVals; nInd++)
     {
-        nVal = nVals[nInd];
-        nVal1 = static_cast<BYTE>(nVal & 0xFF);
-        nVal2 = static_cast<unsigned short>(nVal & 0xFFFF);
+        unsigned nVal = nVals[nInd];
+        BYTE nVal1 = static_cast<BYTE>(nVal & 0xFF);
+        unsigned short nVal2 = static_cast<unsigned short>(nVal & 0xFFFF);
         switch (nType)
         {
         case TIFF_TYPE_BYTE:
@@ -308,24 +297,16 @@ void FileTiff::WriteIfdEntryMult(unsigned short nTag, unsigned short nType, unsi
     }
 }
 
-
 void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bMode16b)
 {
     ASSERT(m_pFileOutput);
 
     unsigned anVals[16];
 
-    bool bPreCalcSaved;
-
-    unsigned short nFinalNumIfd;
-    unsigned nFinalIfdExtraLen;
-    unsigned nFinalPtrIfdStart;
-    unsigned nFinalPtrIfdExtra;
     unsigned nFinalPtrIfdEnd;
 
-
     // Save the PreCalc mode
-    bPreCalcSaved = m_bPreCalc;
+    bool bPreCalcSaved = m_bPreCalc;
 
     // Save the position of the start of IFD
 
@@ -334,11 +315,11 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
 
     ASSERT(m_pIfdExtraBuf==NULL);
 
-    nFinalNumIfd = 0;
-    nFinalPtrIfdStart = m_nPos;
-    nFinalPtrIfdExtra = 0;
+    unsigned short nFinalNumIfd = 0;
+    unsigned nFinalPtrIfdStart = m_nPos;
+    unsigned nFinalPtrIfdExtra = 0;
     nFinalPtrIfdEnd = 0;
-    nFinalIfdExtraLen = 0;
+    unsigned nFinalIfdExtraLen = 0;
 
     for (unsigned nPass = 0; nPass < 2; nPass++)
     {
@@ -390,7 +371,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
         WriteIfdEntryMult(TIFF_TAG_Y_RESOLUTION,TIFF_TYPE_RATIONAL, 2, anVals);
         WriteIfdEntrySingle(TIFF_TAG_PLANAR_CONFIG,TIFF_TYPE_SHORT, 1);
         WriteIfdEntrySingle(TIFF_TAG_RESOLUTION_UNIT,TIFF_TYPE_SHORT, 2); // Inches
-
 
         if (bModeYcc)
         {
@@ -468,7 +448,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
             }
         }
 
-
         nFinalPtrIfdEnd = m_nPos;
         m_nPtrImg = nFinalPtrIfdEnd;
     }
@@ -480,7 +459,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
         m_pIfdExtraBuf = nullptr;
     }
 
-
     // Restore the PreCalc mode
     m_bPreCalc = bPreCalcSaved;
 }
@@ -488,14 +466,10 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
 
 void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* pBitmap, unsigned nSizeX, unsigned nSizeY)
 {
-    unsigned char* pBitmap8;
-    unsigned short* pBitmap16;
-
-    pBitmap8 = reinterpret_cast<unsigned char *>(pBitmap);
-    pBitmap16 = reinterpret_cast<unsigned short *>(pBitmap);
-
-
     ASSERT(sFnameOut != _T(""));
+
+    unsigned char * pBitmap8 = reinterpret_cast<unsigned char *>(pBitmap);
+    unsigned short * pBitmap16 = reinterpret_cast<unsigned short *>(pBitmap);
 
     try
     {
@@ -518,8 +492,6 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
         return;
     }
 
-    unsigned nIfdPtr;
-
     m_bPreCalc = false;
     m_nPos = 0;
 
@@ -530,15 +502,14 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
     WriteVal32(0x4D4D002A);
 
     // IFD Directory Ptr, place at start of file
-    nIfdPtr = 8;
+    unsigned nIfdPtr = 8;
     WriteVal32(nIfdPtr);
 
     // IFD
     WriteIfd(nSizeX, nSizeY, bModeYcc, bMode16b);
 
     // Skip to start of image
-    unsigned nPad;
-    nPad = m_nPtrImg - m_nPos;
+    unsigned nPad = m_nPtrImg - m_nPos;
     for (unsigned nInd = 0; nInd < nPad; nInd++)
     {
         WriteVal8(0x00);
@@ -561,7 +532,6 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
             m_nPos += nSizeX * nSizeY * 3 * 2;
         }
     }
-
 
     // If no image was loaded, then output a placeholder gradient image
     if (!pBitmap)
@@ -586,9 +556,7 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
         }
     }
 
-
     m_pFileOutput->Close();
-
 
     // Clean up
     // Don't really need to delete m_pFileOutput

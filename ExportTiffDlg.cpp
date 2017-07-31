@@ -20,14 +20,8 @@
 //
 
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "ExportTiffDlg.h"
-#include "./exporttiffdlg.h"
-
-
-// CExportTiffDlg dialog
-
-IMPLEMENT_DYNAMIC(CExportTiffDlg, CDialog)
 
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -47,21 +41,17 @@ void CExportTiffDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_FNAME, m_sFname);
 }
 
-
-BEGIN_MESSAGE_MAP(CExportTiffDlg, CDialog)
-END_MESSAGE_MAP()
-
-
-// CExportTiffDlg message handlers
-
 BOOL CExportTiffDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    // TODO:  Add extra initialization here
     m_nCtlFmt = 0;
     UpdateData(false);
 
-    return TRUE; // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;
 }
+
+BEGIN_MESSAGE_MAP(CExportTiffDlg, CDialog)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CExportTiffDlg, CDialog)

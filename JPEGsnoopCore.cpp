@@ -17,14 +17,12 @@
 //
 
 #include "stdafx.h"
-#include "JPEGsnoopCore.h"
 
-// For glb_pDocLog
+#include "JPEGsnoopCore.h"
 #include "JPEGsnoop.h"
 
-CJPEGsnoopCore::CJPEGsnoopCore(void)
+CJPEGsnoopCore::CJPEGsnoopCore()
 {
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Begin"));
     // Initialize processing classes
 
     // Save a local copy of the config struct pointer
@@ -32,7 +30,6 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
 
     // Ensure the local log isn't linked to a CDocument
     glb_pDocLog->SetDoc(nullptr);
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 1"));
 
     // Allocate the file window buffer
     m_pWBuf = new CwindowBuf();
@@ -41,7 +38,6 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for File Buffer"));
         exit(1);
     }
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 2"));
 
     // Allocate the JPEG decoder
     m_pImgDec = new CimgDecode(glb_pDocLog, m_pWBuf);
@@ -50,7 +46,6 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for Image Decoder"));
         exit(1);
     }
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 3"));
 
     m_pJfifDec = new CjfifDecode(glb_pDocLog, m_pWBuf, m_pImgDec);
     if (!m_pWBuf)
@@ -58,27 +53,20 @@ CJPEGsnoopCore::CJPEGsnoopCore(void)
         AfxMessageBox(_T("ERROR: Not enough memory for JFIF Decoder"));
         exit(1);
     }
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 4"));
-
 
     // Reset all members
     Reset();
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() Checkpoint 5"));
 
     // Start in quick mode
 #ifdef QUICKLOG
     glb_pDocLog->SetQuickMode(true);
 #else
-	glb_pDocLog->SetQuickMode(false);
+    glb_pDocLog->SetQuickMode(false);
 #endif
-
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopCore::CJPEGsnoopCore() End"));
 }
 
 
-CJPEGsnoopCore::~CJPEGsnoopCore(void)
+CJPEGsnoopCore::~CJPEGsnoopCore()
 {
     if (m_pJfifDec != nullptr)
     {
@@ -147,7 +135,7 @@ BOOL CJPEGsnoopCore::IsAnalyzed()
 // - Close / cleanup if another file was already open
 //
 // INPUT:
-// - strFname		= File to open
+// - strFname       = File to open
 //
 // POST:
 // - m_pFile
@@ -201,7 +189,6 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
 
         return FALSE;
     }
-
 
     // Set the file size variable
     m_lFileSize = m_pFile->GetLength();
@@ -261,7 +248,7 @@ void CJPEGsnoopCore::AnalyzeClose()
 // - m_pJfifDec
 // - m_pImgDec
 // - m_lFileSize
-// - m_pAppConfig->nPosStart	= Starting file offset for decode
+// - m_pAppConfig->nPosStart    = Starting file offset for decode
 //
 // POST:
 // - m_bFileAnalyzed
@@ -294,7 +281,6 @@ void CJPEGsnoopCore::AnalyzeFileDo()
     glb_pDocLog->AddLine(strTmp);
     glb_pDocLog->AddLine(_T(""));
 
-
     // Perform the actual decoding
     if (m_lFileSize > 0xFFFFFFFFULL)
     {
@@ -319,20 +305,16 @@ void CJPEGsnoopCore::AnalyzeFileDo()
 // - Close file
 //
 // INPUT:
-// - strFname		= File to analyze
+// - strFname       = File to analyze
 //
 // PRE:
-// - m_pAppConfig->nPosStart	= Starting file offset for decode
+// - m_pAppConfig->nPosStart    = Starting file offset for decode
 //
 // RETURN:
 // - Status from opening file
 //
 BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
 {
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Begin"));
-
-    BOOL bRetVal;
-
     // Save the input filename
     // This filename is used later to confirm that output filename doesn't
     // match input filename when we save the log
@@ -343,24 +325,18 @@ BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
     // so that we can quickly recalculate the log file again
     // if an option changes.
 
-    bRetVal = AnalyzeOpen();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 1"));
+    BOOL bRetVal = AnalyzeOpen();
     if (bRetVal)
     {
         // Only now that we have successfully opened the document
         // should be mark the flag as such. This flag is used by
         // other menu items to know whether or not the file is ready.
         AnalyzeFileDo();
-        if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 2"));
     }
     AnalyzeClose();
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() Checkpoint 3"));
 
     // In the last part of AnalyzeClose(), we mark the file
     // as not modified, so that we don't get prompted to save.
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::AnalyzeFile() End"));
-
     return bRetVal;
 }
 
@@ -453,7 +429,7 @@ void CJPEGsnoopCore::DoLogSave(CString strLogName)
 // Generate a list of files for a batch processing operation
 //
 // POST:
-// - m_asBatchFiles		= Contains list of full file paths
+// - m_asBatchFiles     = Contains list of full file paths
 //
 void CJPEGsnoopCore::GenBatchFileList(CString strDirSrc, CString strDirDst, bool bRecSubdir, bool bExtractAll)
 {
@@ -485,11 +461,11 @@ void CJPEGsnoopCore::GenBatchFileList(CString strDirSrc, CString strDirDst, bool
 // Used in batch file processing mode
 //
 // INPUT:
-// - strSrcRootName		Starting path for input files
-// - strDstRootName		Starting path for output files
-// - strPathName			Path (below strSrcRootName) and filename for current input file
-// - bSubdirs			Flag to descend into all sub-directories
-// - bExtractAll		Flag to extract all JPEG from file
+// - strSrcRootName     Starting path for input files
+// - strDstRootName     Starting path for output files
+// - strPathName            Path (below strSrcRootName) and filename for current input file
+// - bSubdirs           Flag to descend into all sub-directories
+// - bExtractAll        Flag to extract all JPEG from file
 //
 void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString strDstRootName, CString strPathName, bool bSubdirs, bool bExtractAll)
 {
@@ -519,7 +495,7 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
     {
         bWorking = finder.FindNextFile();
 
-        // skip	. and .. files;	otherwise, we'd
+        // skip . and .. files; otherwise, we'd
         // recur infinitely!
 
         if (finder.IsDots())
@@ -539,7 +515,7 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
             strSubPath.Format(_T("%s\\%s"), (LPCTSTR)strPathName, (LPCTSTR)strDirName);
         }
 
-        // if it's a directory,	recursively	search it
+        // if it's a directory, recursively search it
         if (finder.IsDirectory())
         {
             if (bSubdirs)
@@ -549,10 +525,10 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
         }
         else
         {
-            // GetFilePath() includes both the path	& filename
-            // when	called on a	file entry,	so there is	no need
-            // to specifically call	GetFileName()
-            //		 CString strFname =	finder.GetFileName();
+            // GetFilePath() includes both the path & filename
+            // when called on a file entry, so there is no need
+            // to specifically call GetFileName()
+            //       CString strFname = finder.GetFileName();
 
             // Now perform final filtering check on file
             // and add to batch file list
@@ -568,14 +544,14 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
 // process GenBatchFileListRecurse().
 //
 // INPUT:
-// - strSrcRootName		Starting path for input files
-// - strDstRootName		Starting path for output files
-// - strPathName		Path (below szSrcRootName) and filename for current input file
-// - bExtractAll		Flag to extract all JPEG from file
+// - strSrcRootName     Starting path for input files
+// - strDstRootName     Starting path for output files
+// - strPathName        Path (below szSrcRootName) and filename for current input file
+// - bExtractAll        Flag to extract all JPEG from file
 //
 void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strDstRootName, CString strPathName, bool bExtractAll)
 {
-    //bool		bDoSubmit = false;
+    //bool      bDoSubmit = false;
     unsigned nInd;
 
     CString strFnameSrc;
@@ -608,13 +584,13 @@ void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strD
     strFnameExt.MakeLower();
     // -----------
 #else
-	unsigned	nLen = strFnameSrc.GetLength();
-	LPTSTR lpstrSrcFullpath = new TCHAR[nLen+1];
-	_tcscpy_s(lpstrSrcFullpath,nLen+1,strFnameSrc);
+    unsigned    nLen = strFnameSrc.GetLength();
+    LPTSTR lpstrSrcFullpath = new TCHAR[nLen+1];
+    _tcscpy_s(lpstrSrcFullpath,nLen+1,strFnameSrc);
 
-	LPTSTR	lpstrSrcFnameAndExt = NULL;
-	lpstrSrcFnameAndExt = PathFindFileName(lpstrSrcFullpath);
-	...
+    LPTSTR  lpstrSrcFnameAndExt = NULL;
+    lpstrSrcFnameAndExt = PathFindFileName(lpstrSrcFullpath);
+    ...
 #endif
 
     // Only process files that have an extension that implies JPEG
@@ -786,9 +762,9 @@ BOOL CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
 // Process a file in the batch file list
 //
 // INPUT:
-// - nFileInd			= Index into batch file list
-// - bWriteLog			= Write out log file after processing file?
-// - bExtractAll		= Perform extract-all on this file?
+// - nFileInd           = Index into batch file list
+// - bWriteLog          = Write out log file after processing file?
+// - bExtractAll        = Perform extract-all on this file?
 //
 void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool bExtractAll)
 {
@@ -866,13 +842,13 @@ void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool 
 
 
     // Now submit entry to database!
-#if 0	// Not supported currently
+#if 0   // Not supported currently
 #ifdef BATCH_DO_DBSUBMIT
-	bDoSubmit = m_pJfifDec->CompareSignature(true);
-	if (bDoSubmit) {
+    bDoSubmit = m_pJfifDec->CompareSignature(true);
+    if (bDoSubmit) {
     // FIXME: Check function param values. Might be outdated
-		m_pJfifDec->PrepareSendSubmit(m_pJfifDec->m_strImgQualExif,m_pJfifDec->m_eDbReqSuggest,_T(""),_T("BATCH"));
-	}
+        m_pJfifDec->PrepareSendSubmit(m_pJfifDec->m_strImgQualExif,m_pJfifDec->m_eDbReqSuggest,_T(""),_T("BATCH"));
+    }
 #endif
 #endif
 }
@@ -914,18 +890,18 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEGCmdLine()
 // If so, default to DHT AVI insert mode
 // NOTE: Calling GetAviMode() requires that the CDocument JFIF decoder
 //       instance has processed the file.
-	bool	bIsAvi,bIsMjpeg;
-	m_pJfifDec->GetAviMode(bIsAvi,bIsMjpeg);
-	dlgExport.m_bDhtAviInsert = bIsMjpeg;
+    bool    bIsAvi,bIsMjpeg;
+    m_pJfifDec->GetAviMode(bIsAvi,bIsMjpeg);
+    dlgExport.m_bDhtAviInsert = bIsMjpeg;
 
-	bExtractAllEn = true;
-	bForceSoi = false;
-	bForceEoi = false;
-	bIgnoreEoi = false;
-	bOverlayEn = false;
-	bDhtAviInsert = bInsDhtAvi;
+    bExtractAllEn = true;
+    bForceSoi = false;
+    bForceEoi = false;
+    bIgnoreEoi = false;
+    bOverlayEn = false;
+    bDhtAviInsert = bInsDhtAvi;
 
-	DoExtractEmbeddedJPEG1(..);
+    DoExtractEmbeddedJPEG1(..);
 }
 #endif
 

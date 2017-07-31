@@ -28,38 +28,21 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CMainFrame
-
-IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
-
-BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
-    ON_WM_CREATE()
-END_MESSAGE_MAP()
-
 static UINT indicators[] =
 {
     ID_SEPARATOR, // status line indicator
     ID_INDICATOR_MCU,
     ID_INDICATOR_FILEPOS,
     ID_INDICATOR_YCC, // Added YCC Value
-    //ID_INDICATOR_CAPS,
-    //ID_INDICATOR_NUM,
-    //ID_INDICATOR_SCRL,
 };
-
-
-// CMainFrame construction/destruction
 
 CMainFrame::CMainFrame()
 {
-    // TODO: add member initialization code here
 }
 
 CMainFrame::~CMainFrame()
 {
 }
-
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -81,11 +64,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         TRACE0("Failed to create status bar\n");
         return -1; // fail to create
     }
-    // TODO: Delete these three lines if you don't want the toolbar to be dockable
     m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
     EnableDocking(CBRS_ALIGN_ANY);
     DockControlBar(&m_wndToolBar);
-
 
     return 0;
 }
@@ -94,12 +75,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
     if (!CFrameWnd::PreCreateWindow(cs))
         return FALSE;
-    // TODO: Modify the Window class or styles here by modifying
-    //  the CREATESTRUCT cs
 
     return TRUE;
 }
-
 
 // FindMenuItem() will find a menu item string from the specified
 // popup menu and returns its position (0-based) in the specified 
@@ -121,9 +99,6 @@ int CMainFrame::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
     return -1;
 }
 
-
-// CMainFrame diagnostics
-
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
@@ -136,9 +111,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 }
 
 #endif //_DEBUG
-
-
-// CMainFrame message handlers
 
 //CAL! Following code was added to support split windows
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
@@ -176,7 +148,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
     m_bInitSplitter = TRUE;
 
-
     //return TRUE instead of the parent method since that would
     //not show our window
     //return CFrameWnd::OnCreateClient(lpcs, pContext);
@@ -187,8 +158,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 void CMainFrame::OnSize(UINT nType, int cx, int cy)
 {
     CFrameWnd::OnSize(nType, cx, cy);
-
-    // TODO: Add your message handler code here
 
     CRect cr;
     GetWindowRect(&cr);
@@ -221,4 +190,8 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
     }
 }
 
-// *********** END ************
+BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
+    ON_WM_CREATE()
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)

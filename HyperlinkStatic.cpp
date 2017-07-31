@@ -16,24 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 // ====================================================================================================
 // SOURCE CODE ACKNOWLEDGEMENT
 // ====================================================================================================
 // The following code is derived from the following project on CodeGuru:
 //
-//		Title:		HyperlinkStatic
-//		Author:		Franz Wong
-//		URL:		http://www.codeguru.com/cpp/controls/staticctrl/article.php/c5801
-//		Date:		Jan 14, 2003
+//      Title:      HyperlinkStatic
+//      Author:     Franz Wong
+//      URL:        http://www.codeguru.com/cpp/controls/staticctrl/article.php/c5801
+//      Date:       Jan 14, 2003
 //
 // ====================================================================================================
 
-
-// HyperlinkStatic.cpp : implementation file
-//
-
 #include "stdafx.h"
+
 #include "HyperlinkStatic.h"
 
 #ifdef _DEBUG
@@ -45,9 +41,6 @@ static char THIS_FILE[] = __FILE__;
 //CAL! Added the following as otherwise we need
 //     to set WINVER >= 0x0500
 #define IDC_HAND MAKEINTRESOURCE(32649)
-
-/////////////////////////////////////////////////////////////////////////////
-// CHyperlinkStatic
 
 CHyperlinkStatic::CHyperlinkStatic()
 {
@@ -61,19 +54,6 @@ CHyperlinkStatic::CHyperlinkStatic()
 CHyperlinkStatic::~CHyperlinkStatic()
 {
 }
-
-BEGIN_MESSAGE_MAP(CHyperlinkStatic, CStatic)
-    //{{AFX_MSG_MAP(CHyperlinkStatic)
-    ON_WM_LBUTTONDOWN()
-    ON_WM_PAINT()
-    ON_WM_DESTROY()
-    ON_WM_MOUSEMOVE()
-    //}}AFX_MSG_MAP
-    ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// CHyperlinkStatic message handlers
 
 void CHyperlinkStatic::SetHyperlink(CString strHyperlink)
 {
@@ -176,10 +156,18 @@ void CHyperlinkStatic::GetCaptionSize()
     }
 }
 
-bool CHyperlinkStatic::InCaptionRange(CPoint& point)
+bool CHyperlinkStatic::InCaptionRange(CPoint& point) const
 {
     if (_bGetCaptionSize == false)
         return false;
     return ((point.x >= 0) && (point.x < _sizeCaption.cx) &&
         (point.y >= 0) && (point.y < _sizeCaption.cy));
 }
+
+BEGIN_MESSAGE_MAP(CHyperlinkStatic, CStatic)
+    ON_WM_LBUTTONDOWN()
+    ON_WM_PAINT()
+    ON_WM_DESTROY()
+    ON_WM_MOUSEMOVE()
+    ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+END_MESSAGE_MAP()

@@ -50,7 +50,7 @@ protected:
 private:
     void CreateFont();
     void GetCaptionSize();
-    bool InCaptionRange(CPoint& point);
+    bool InCaptionRange(CPoint& point) const;
 
     CString _strCaption, _strHyperlink;
     CFont _fontCaption;

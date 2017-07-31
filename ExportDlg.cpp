@@ -16,18 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ExportDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "ExportDlg.h"
-#include "./exportdlg.h"
-
-
-// CExportDlg dialog
-
-IMPLEMENT_DYNAMIC(CExportDlg, CDialog)
+#include "JPEGsnoop.h"
 
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -57,6 +49,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_EXT_ALL, m_bExtractAllEn);
 }
 
-
 BEGIN_MESSAGE_MAP(CExportDlg, CDialog)
 END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CExportDlg, CDialog)

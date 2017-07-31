@@ -16,18 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// DecodeDetailDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
+
 #include "DecodeDetailDlg.h"
-#include "./decodedetaildlg.h"
-
-
-// CDecodeDetailDlg dialog
-
-IMPLEMENT_DYNAMIC(CDecodeDetailDlg, CDialog)
+#include "JPEGsnoop.h"
 
 CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -58,14 +50,6 @@ void CDecodeDetailDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_CHECK1, m_bEn);
 }
 
-
-BEGIN_MESSAGE_MAP(CDecodeDetailDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoad)
-END_MESSAGE_MAP()
-
-
-// CDecodeDetailDlg message handlers
-
 void CDecodeDetailDlg::OnBnClickedBtnLoad()
 {
     m_nMcuX = m_nLoadMcuX;
@@ -74,3 +58,9 @@ void CDecodeDetailDlg::OnBnClickedBtnLoad()
     m_bEn = true;
     UpdateData(false);
 }
+
+BEGIN_MESSAGE_MAP(CDecodeDetailDlg, CDialog)
+    ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoad)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CDecodeDetailDlg, CDialog)

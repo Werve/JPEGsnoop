@@ -53,3 +53,4 @@
 #include <afxdtctl.h>       // MFC support for Internet Explorer 4 Common Controls
 #include <afxcmn.h>         // MFC support for Windows Common Controls
 #include <afxrich.h>        // MFC rich edit classes
+#include <afxinet.h>

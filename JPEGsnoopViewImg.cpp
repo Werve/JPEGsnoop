@@ -16,29 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// JPEGsnoopViewImg.cpp : implementation file
-//
-
 #include "stdafx.h"
+
+#include "JPEGsnoopViewImg.h"
 #include "JPEGsnoop.h"
 #include "JPEGsnoopDoc.h"
-#include "JPEGsnoopViewImg.h"
-
-
-// CJPEGsnoopViewImg
-
-IMPLEMENT_DYNCREATE(CJPEGsnoopViewImg, CScrollView)
 
 CJPEGsnoopViewImg::CJPEGsnoopViewImg()
 {
-    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //CAL!
-
     CWindowDC dc(NULL);
 
     // Create main log font
     memset(&m_logfont, 0, sizeof(m_logfont));
     m_nPointSize = 120;
-    //_tcscpy(m_logfont.lfFaceName,_T("Courier New"));
     _tcscpy_s(m_logfont.lfFaceName,_T("Arial"));
 
     m_logfont.lfHeight = ::MulDiv(m_nPointSize,
@@ -57,17 +47,6 @@ CJPEGsnoopViewImg::~CJPEGsnoopViewImg()
     }
 }
 
-
-BEGIN_MESSAGE_MAP(CJPEGsnoopViewImg, CScrollView)
-    ON_WM_LBUTTONDOWN()
-    ON_WM_LBUTTONUP()
-    ON_WM_RBUTTONUP()
-    ON_WM_MOUSEWHEEL()
-    ON_WM_MOUSEMOVE()
-    ON_WM_ERASEBKGND()
-END_MESSAGE_MAP()
-
-
 CJPEGsnoopCore* CJPEGsnoopViewImg::GetCore()
 {
     CJPEGsnoopDoc* pDoc = (CJPEGsnoopDoc*)GetDocument();
@@ -80,9 +59,6 @@ CJPEGsnoopCore* CJPEGsnoopViewImg::GetCore()
     return pCore;
 }
 
-
-// CJPEGsnoopViewImg drawing
-
 void CJPEGsnoopViewImg::OnInitialUpdate()
 {
     CScrollView::OnInitialUpdate();
@@ -90,13 +66,11 @@ void CJPEGsnoopViewImg::OnInitialUpdate()
     CJPEGsnoopDoc* pDoc = (CJPEGsnoopDoc*)GetDocument();
     ASSERT_VALID(pDoc);
 
-
-    CSize sizeTotal(0, 0);
+    CSize sizeTotal;
     sizeTotal.cx = 500; // FIXME:
     sizeTotal.cy = 200; // FIXME:
     SetScrollSizes(MM_TEXT, sizeTotal);
 }
-
 
 void CJPEGsnoopViewImg::OnDraw(CDC* pDC)
 {
@@ -120,8 +94,6 @@ void CJPEGsnoopViewImg::OnDraw(CDC* pDC)
     SetScrollSizes(MM_TEXT, szNewScrollSize);
 }
 
-// CJPEGsnoopViewImg diagnostics
-
 #ifdef _DEBUG
 void CJPEGsnoopViewImg::AssertValid() const
 {
@@ -134,10 +106,6 @@ void CJPEGsnoopViewImg::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
-// CJPEGsnoopViewImg message handlers
-
-
 // FIXME: Migrate into ImgDec!
 bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
 {
@@ -146,8 +114,6 @@ bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
     float fZoom;
     unsigned nImgPosX;
     unsigned nImgPosY;
-    unsigned nPixX; // 8x8 block number (not MCU unless CSS=1x1)
-    unsigned nPixY;
 
     CJPEGsnoopCore* pCore = GetCore();
 
@@ -169,7 +135,7 @@ bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
 
     // Is the preview even displayed?
     //if (!GetImgDec()->m_bDibTempReady) {
-    //	return false;
+    //  return false;
     //}
     // FIXME
 
@@ -180,8 +146,8 @@ bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
         ((pix_y >= 0) && ((unsigned)pix_y < nPreviewSzY)))
     {
         // Undo zoom
-        nPixX = (unsigned)(pix_x / fZoom);
-        nPixY = (unsigned)(pix_y / fZoom);
+        unsigned nPixX = (unsigned)(pix_x / fZoom);
+        unsigned nPixY = (unsigned)(pix_y / fZoom);
 
         ptPix.x = nPixX;
         ptPix.y = nPixY;
@@ -214,13 +180,10 @@ void CJPEGsnoopViewImg::SetScrollCenter(float fZoomOld, float fZoomNew)
     ScrollToPosition(ScrolledPos);
 }
 
-
 int CJPEGsnoopViewImg::MeasureFontHeight(CFont* pFont, CDC* pDC)
 {
     // how tall is the identified font in the identified DC?
-
-    CFont* pOldFont;
-    pOldFont = pDC->SelectObject(pFont);
+    CFont * pOldFont = pDC->SelectObject(pFont);
 
     CRect rectDummy;
     CString strRender = _T("1234567890ABCDEF- abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ[]");
@@ -231,13 +194,8 @@ int CJPEGsnoopViewImg::MeasureFontHeight(CFont* pFont, CDC* pDC)
     return nHeight;
 }
 
-
 void CJPEGsnoopViewImg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO: Add your message handler code here and/or call default
-
-    //AfxMessageBox(_T("LButtonDown!"));
-
     CScrollView::OnLButtonDown(nFlags, point);
 }
 
@@ -246,7 +204,6 @@ void CJPEGsnoopViewImg::OnLButtonUp(UINT nFlags, CPoint point)
     CString strTmp;
     CPoint ptPix;
     CPoint ptMcu;
-    CPoint ptBlk;
 
     // Need to ensure that the Preview image was based on a JPEG with
     // MCU/Block map info
@@ -254,10 +211,8 @@ void CJPEGsnoopViewImg::OnLButtonUp(UINT nFlags, CPoint point)
     if ((GetCore()->I_IsPreviewReady() && InPreviewArea(point, ptPix)))
     {
         // Set the marker
-        ptBlk = GetCore()->I_PixelToBlk(ptPix);
+        CPoint ptBlk = GetCore()->I_PixelToBlk(ptPix);
         GetCore()->I_SetMarkerBlk(ptBlk.x, ptBlk.y);
-
-        //Invalidate();
     }
     else
     {
@@ -273,10 +228,8 @@ void CJPEGsnoopViewImg::OnRButtonUp(UINT nFlags, CPoint point)
     CScrollView::OnLButtonUp(nFlags, point);
 }
 
-
 BOOL CJPEGsnoopViewImg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-    // TODO: Add your message handler code here and/or call default
     CPoint ScrolledPos = GetScrollPosition();
     ScrolledPos.Offset(0, -zDelta);
     ScrollToPosition(ScrolledPos);
@@ -308,12 +261,6 @@ void CJPEGsnoopViewImg::OnMouseMove(UINT nFlags, CPoint point)
         ptBlk = GetCore()->I_PixelToBlk(ptPix);
         GetCore()->I_LookupBlkYCC(ptBlk.x, ptBlk.y, nY1, nCb1, nCr1);
 
-        /*
-                strTmp.Format(_T("MCU [%04u,%04u] File: 0x%08X:%u\tYCC=[%05d,%05d,%05d]"),
-                    ptMcu.x,ptMcu.y,nByte,nBit,
-                    nY1,nCb1,nCr1);
-                GetCore()->I_SetStatusText(strTmp);
-        */
         strTmp.Format(_T("MCU [%04u,%04u]"), ptMcu.x, ptMcu.y);
         GetCore()->I_SetStatusMcuText(strTmp);
 
@@ -325,7 +272,7 @@ void CJPEGsnoopViewImg::OnMouseMove(UINT nFlags, CPoint point)
     }
     else
     {
-        //		GetCore()->I_SetStatusText(_T(""));
+        //      GetCore()->I_SetStatusText(_T(""));
         GetCore()->I_SetStatusMcuText(_T(""));
         GetCore()->I_SetStatusFilePosText(_T(""));
         GetCore()->I_SetStatusYccText(_T(""));
@@ -344,3 +291,14 @@ BOOL CJPEGsnoopViewImg::OnEraseBkgnd(CDC* pDC)
 
     return CScrollView::OnEraseBkgnd(pDC);
 }
+
+BEGIN_MESSAGE_MAP(CJPEGsnoopViewImg, CScrollView)
+    ON_WM_LBUTTONDOWN()
+    ON_WM_LBUTTONUP()
+    ON_WM_RBUTTONUP()
+    ON_WM_MOUSEWHEEL()
+    ON_WM_MOUSEMOVE()
+    ON_WM_ERASEBKGND()
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNCREATE(CJPEGsnoopViewImg, CScrollView)

@@ -16,13 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 #include "stdafx.h"
 
 #include "DecodePs.h"
 #include "snoop.h"
 #include "JPEGsnoop.h" // for m_pAppConfig get
-
 #include "WindowBuf.h"
 
 
@@ -46,11 +44,14 @@ CDecodePs::CDecodePs(CwindowBuf* pWBuf, CDocLog* pLog)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
     m_pAppConfig = pApp->m_pAppConfig;
 
     Reset();
+}
+
+CDecodePs::~CDecodePs()
+{
 }
 
 void CDecodePs::Reset()
@@ -61,16 +62,10 @@ void CDecodePs::Reset()
     m_bAbort = false;
 }
 
-
-CDecodePs::~CDecodePs(void)
-{
-}
-
-
 // Provide a short-hand alias for the m_pWBuf buffer
 // INPUT:
-// - offset					File offset to read from
-// - bClean					Forcibly disables any redirection to Fake DHT table
+// - offset                 File offset to read from
+// - bClean                 Forcibly disables any redirection to Fake DHT table
 //
 // POST:
 // - m_pLog
@@ -92,12 +87,9 @@ bool CDecodePs::DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, 
 
     m_bPsd = false;
 
-    CString strSig;
-    unsigned nVer;
-
-    strSig = m_pWBuf->BufReadStrn(nPos, 4);
+    CString strSig = m_pWBuf->BufReadStrn(nPos, 4);
     nPos += 4;
-    nVer = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
+    unsigned nVer = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
     if ((strSig == _T("8BPS")) && (nVer == 1))
     {
         m_bPsd = true;
@@ -173,9 +165,9 @@ bool CDecodePs::DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, 
 // Locate a field ID in the constant 8BIM / Image Resource array
 // 
 // INPUT:
-// - nBimId				= Image Resource ID (16-bit unsigned)
+// - nBimId             = Image Resource ID (16-bit unsigned)
 // OUTPUT:
-// - nFldInd			= Index into asBimRecords[] array
+// - nFldInd            = Index into asBimRecords[] array
 // RETURN:
 // - Returns true if ID was found in array
 // NOTE:
@@ -264,9 +256,9 @@ bool CDecodePs::LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& n
 // Generate the custom-formatted string representing the IPTC field name and value
 //
 // INPUT:
-// - eIptcType				= Enumeration representing the IPTC field type
-// - nFldCnt				= The number of elements in this field to report
-// - nPos					= The starting file offset for this field
+// - eIptcType              = Enumeration representing the IPTC field type
+// - nFldCnt                = The number of elements in this field to report
+// - nPos                   = The starting file offset for this field
 // RETURN:
 // - The IPTC formattted string
 // NOTE:
@@ -274,7 +266,7 @@ bool CDecodePs::LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& n
 //
 CString CDecodePs::DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos)
 {
-    //unsigned	nFldInd = 0;
+    //unsigned  nFldInd = 0;
     unsigned nInd;
     unsigned nVal;
     CString strField = _T("");
@@ -319,7 +311,7 @@ CString CDecodePs::DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsig
 
 // Decode the IPTC metadata segment
 // INPUT:
-//	nLen	: Length of the 8BIM:IPTC resource data
+//  nLen    : Length of the 8BIM:IPTC resource data
 void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
 {
     CString strIndent;
@@ -330,7 +322,6 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
     CString strByte;
     unsigned long nPosStart;
     bool bDone;
-    unsigned nTagMarker, nRecordNumber, nDataSetNumber, nDataFieldCnt;
 
     strIndent = PhotoshopParseIndent(nIndent);
     nPosStart = nPos;
@@ -342,10 +333,10 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
     }
     while (!bDone)
     {
-        nTagMarker = Buf(nPos + 0);
-        nRecordNumber = Buf(nPos + 1);
-        nDataSetNumber = Buf(nPos + 2);
-        nDataFieldCnt = Buf(nPos + 3) * 256 + Buf(nPos + 4);
+        unsigned nTagMarker = Buf(nPos + 0);
+        unsigned nRecordNumber = Buf(nPos + 1);
+        unsigned nDataSetNumber = Buf(nPos + 2);
+        unsigned nDataFieldCnt = Buf(nPos + 3) * 256 + Buf(nPos + 4);
         nPos += 5;
 
         if (nTagMarker == 0x1C)
@@ -418,9 +409,8 @@ CString CDecodePs::PhotoshopParseIndent(unsigned nIndent)
 // - Otherwise it is defined length string (no terminator required)
 CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos)
 {
-    unsigned nStrLen;
     CString strVal = _T("");
-    nStrLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+    unsigned nStrLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     if (nStrLen != 0)
     {
         strVal = m_pWBuf->BufReadStrn(nPos, nStrLen);
@@ -541,15 +531,13 @@ void CDecodePs::PhotoshopParseReportFldBool(unsigned nIndent, CString strField, 
 // - Also report the ASCII representation alongside the hex dump
 //
 // INPUT:
-// - nIndent		= Current indent level for reporting
-// - strField		= Field name
-// - nPosStart		= Field byte array file position start
-// - nLen			= Field byte array length
+// - nIndent        = Current indent level for reporting
+// - strField       = Field name
+// - nPosStart      = Field byte array file position start
+// - nLen           = Field byte array length
 //
 void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, unsigned long nPosStart, unsigned nLen)
 {
-    CString strIndent;
-    unsigned nByte;
     CString strPrefix;
     CString strByteHex;
     CString strByteAsc;
@@ -557,7 +545,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
     CString strValAsc;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
+    CString strIndent = PhotoshopParseIndent(nIndent);
 
     if (nLen == 0)
     {
@@ -607,7 +595,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
             {
                 if ((nRowOffset + nInd) < nLenClip)
                 {
-                    nByte = m_pWBuf->Buf(nPosStart + nRowOffset + nInd);
+                    unsigned nByte = m_pWBuf->Buf(nPosStart + nRowOffset + nInd);
                     strByteHex.Format(_T("%02X "), nByte);
                     // Only display printable characters
                     if (isprint(nByte))
@@ -649,20 +637,17 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
 
 CString CDecodePs::PhotoshopDispHexWord(unsigned nVal)
 {
-    CString strValHex;
-    CString strValAsc;
-    unsigned nByte;
     CString strByteHex;
     CString strByteAsc;
     CString strLine;
 
     // Reset the cumulative hex/ascii value strings
-    strValHex = _T("");
-    strValAsc = _T("");
+    CString strValHex = _T("");
+    CString strValAsc = _T("");
     // Build the hex/ascii value strings
     for (unsigned nInd = 0; nInd <= 3; nInd++)
     {
-        nByte = (nVal & 0xFF000000) >> 24;
+        unsigned nByte = (nVal & 0xFF000000) >> 24;
         nVal <<= 8;
 
         strByteHex.Format(_T("%02X "), nByte);
@@ -882,10 +867,10 @@ void CDecodePs::PhotoshopParseThumbnailResource(unsigned long& nPos, unsigned nI
 
 // Parse the Photoshop IRB Version Info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseVersionInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -909,10 +894,10 @@ void CDecodePs::PhotoshopParseVersionInfo(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Print Scale
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParsePrintScale(unsigned long& nPos, unsigned nIndent)
 {
@@ -931,49 +916,46 @@ void CDecodePs::PhotoshopParsePrintScale(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Global Angle
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseGlobalAngle(unsigned long& nPos, unsigned nIndent)
 {
-    unsigned nVal;
     CString strVal;
 
-    nVal = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+    unsigned nVal = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     PhotoshopParseReportFldNum(nIndent,_T("Global Angle"), nVal,_T("degrees"));
 }
 
 // Parse the Photoshop IRB Global Altitude
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseGlobalAltitude(unsigned long& nPos, unsigned nIndent)
 {
-    unsigned nVal;
     CString strVal;
 
-    nVal = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+    unsigned nVal = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     PhotoshopParseReportFldNum(nIndent,_T("Global Altitude"), nVal,_T(""));
 }
 
 // Parse the Photoshop IRB Print Flags
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParsePrintFlags(unsigned long& nPos, unsigned nIndent)
 {
-    unsigned nVal;
     CString strVal;
 
-    nVal = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
+    unsigned nVal = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
     PhotoshopParseReportFldBool(nIndent,_T("Labels"), nVal);
     nVal = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
     PhotoshopParseReportFldBool(nIndent,_T("Crop marks"), nVal);
@@ -995,10 +977,10 @@ void CDecodePs::PhotoshopParsePrintFlags(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Print Flags Information
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParsePrintFlagsInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -1019,10 +1001,10 @@ void CDecodePs::PhotoshopParsePrintFlagsInfo(unsigned long& nPos, unsigned nInde
 
 // Parse the Photoshop IRB Copyright Flag
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseCopyrightFlag(unsigned long& nPos, unsigned nIndent)
 {
@@ -1035,10 +1017,10 @@ void CDecodePs::PhotoshopParseCopyrightFlag(unsigned long& nPos, unsigned nInden
 
 // Parse the Photoshop IRB Aspect Ratio
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParsePixelAspectRatio(unsigned long& nPos, unsigned nIndent)
 {
@@ -1054,10 +1036,10 @@ void CDecodePs::PhotoshopParsePixelAspectRatio(unsigned long& nPos, unsigned nIn
 
 // Parse the Photoshop IRB Document-Specific Seed
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseDocSpecificSeed(unsigned long& nPos, unsigned nIndent)
 {
@@ -1070,10 +1052,10 @@ void CDecodePs::PhotoshopParseDocSpecificSeed(unsigned long& nPos, unsigned nInd
 
 // Parse the Photoshop IRB Grid and Guides
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseGridGuides(unsigned long& nPos, unsigned nIndent)
 {
@@ -1107,10 +1089,10 @@ void CDecodePs::PhotoshopParseGridGuides(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Resolution Info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseResolutionInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -1133,10 +1115,10 @@ void CDecodePs::PhotoshopParseResolutionInfo(unsigned long& nPos, unsigned nInde
 
 // Parse the Photoshop IRB Layer State Info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseLayerStateInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -1149,11 +1131,11 @@ void CDecodePs::PhotoshopParseLayerStateInfo(unsigned long& nPos, unsigned nInde
 
 // Parse the Photoshop IRB Layer Group Info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
-// - nLen		= Length of IRB entry (to determine number of layers)
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
+// - nLen       = Length of IRB entry (to determine number of layers)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseLayerGroupInfo(unsigned long& nPos, unsigned nIndent, unsigned nLen)
 {
@@ -1180,11 +1162,11 @@ void CDecodePs::PhotoshopParseLayerGroupInfo(unsigned long& nPos, unsigned nInde
 
 // Parse the Photoshop IRB Layer Groups Enabled
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
-// - nLen		= Length of IRB entry (to determine number of layers)
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
+// - nLen       = Length of IRB entry (to determine number of layers)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseLayerGroupEnabled(unsigned long& nPos, unsigned nIndent, unsigned nLen)
 {
@@ -1210,10 +1192,10 @@ void CDecodePs::PhotoshopParseLayerGroupEnabled(unsigned long& nPos, unsigned nI
 
 // Parse the Photoshop IRB Layer Select IDs
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseLayerSelectId(unsigned long& nPos, unsigned nIndent)
 {
@@ -1232,10 +1214,10 @@ void CDecodePs::PhotoshopParseLayerSelectId(unsigned long& nPos, unsigned nInden
 
 // Parse the Photoshop IRB File Header
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseFileHeader(unsigned long& nPos, unsigned nIndent, tsImageInfo* psImageInfo)
 {
@@ -1275,10 +1257,10 @@ void CDecodePs::PhotoshopParseFileHeader(unsigned long& nPos, unsigned nIndent, 
 
 // Parse the Photoshop IRB Color Mode Section (from File Header)
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseColorModeSection(unsigned long& nPos, unsigned nIndent)
 {
@@ -1302,11 +1284,11 @@ void CDecodePs::PhotoshopParseColorModeSection(unsigned long& nPos, unsigned nIn
 
 // Parse the Photoshop IRB Layer and Mask Info Section (from File Header)
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // - pDibTemp   = DIB for image display
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseLayerMaskInfo(unsigned long& nPos, unsigned nIndent, CDIB* pDibTemp)
 {
@@ -1349,11 +1331,11 @@ bool CDecodePs::PhotoshopParseLayerMaskInfo(unsigned long& nPos, unsigned nInden
 
 // Parse the Photoshop IRB Layer Info Section
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // - pDibTemp   = DIB for image display
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, CDIB* pDibTemp)
 {
@@ -1505,10 +1487,10 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
 
 // Parse the Photoshop IRB Layer Record
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseLayerRecord(unsigned long& nPos, unsigned nIndent, tsLayerInfo* pLayerInfo)
 {
@@ -1598,10 +1580,10 @@ bool CDecodePs::PhotoshopParseLayerRecord(unsigned long& nPos, unsigned nIndent,
 
 // Parse the Photoshop IRB Layer Mask
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseLayerMask(unsigned long& nPos, unsigned nIndent)
 {
@@ -1674,10 +1656,10 @@ bool CDecodePs::PhotoshopParseLayerMask(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Layer blending ranges data
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseLayerBlendingRanges(unsigned long& nPos, unsigned nIndent)
 {
@@ -1708,12 +1690,12 @@ bool CDecodePs::PhotoshopParseLayerBlendingRanges(unsigned long& nPos, unsigned 
 
 // Parse the Photoshop IRB Channel image data
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // - nChan      = Channel being parsed (used for DIB mapping)
 // - pDibTemp = DIB for rendering (NULL if disabled)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseChannelImageData(unsigned long& nPos, unsigned nIndent, unsigned nWidth, unsigned nHeight, unsigned nChan, unsigned char* pDibBits)
 {
@@ -1938,10 +1920,10 @@ bool CDecodePs::PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsi
 
 // Parse the Photoshop IRB Layer and Mask Info Section (from File Header)
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 // NOTE:
 // - Image decoding (into DIB) is enabled if pDibBits is not NULL
@@ -2041,10 +2023,10 @@ bool CDecodePs::PhotoshopParseImageData(unsigned long& nPos, unsigned nIndent, t
 
 // Parse the Photoshop IRB Global layer mask info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseGlobalLayerMaskInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -2077,10 +2059,10 @@ bool CDecodePs::PhotoshopParseGlobalLayerMaskInfo(unsigned long& nPos, unsigned 
 
 // Parse the Photoshop IRB Additional layer info
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseAddtlLayerInfo(unsigned long& nPos, unsigned nIndent)
 {
@@ -2106,7 +2088,7 @@ bool CDecodePs::PhotoshopParseAddtlLayerInfo(unsigned long& nPos, unsigned nInde
                         _T("PsDecode"), (LPCTSTR)strError);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
         bDecOk = false;
         return false;
@@ -2217,10 +2199,10 @@ bool CDecodePs::PhotoshopParseAddtlLayerInfo(unsigned long& nPos, unsigned nInde
 // - Iteratively works through the individual Image Resource Blocks (IRB)
 //
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseImageResourcesSection(unsigned long& nPos, unsigned nIndent)
 {
@@ -2251,25 +2233,25 @@ bool CDecodePs::PhotoshopParseImageResourcesSection(unsigned long& nPos, unsigne
 // - Decode the 8BIM ID and invoke the appropriate IRB parsing handler
 //
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned nIndent)
 {
     CString strVal;
-    //bool		bDecOk = true;
+    //bool      bDecOk = true;
 
     //PhotoshopParseReportNote(nIndent,_T("Image Resource Block:"));
     //nIndent++;
 
     //
-    // - Signature	(4B)						"8BIM"
-    // - NameLen	(2B)						Generally 0
-    // - Name		(NameLen Bytes, min 1 Byte)	Usually empty (NULL)
-    // - BimLen		(4B)						Length of 8BIM data
-    // - Data		(1..BimLen)					Field data
+    // - Signature  (4B)                        "8BIM"
+    // - NameLen    (2B)                        Generally 0
+    // - Name       (NameLen Bytes, min 1 Byte) Usually empty (NULL)
+    // - BimLen     (4B)                        Length of 8BIM data
+    // - Data       (1..BimLen)                 Field data
     //
 
     CString strSig = m_pWBuf->BufReadStrn(nPos, 4);
@@ -2288,7 +2270,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
                         _T("PsDecode"), (LPCTSTR)strError);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
 
         return false;
@@ -2458,7 +2440,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
                             _T("PsDecode"), (LPCTSTR)strTmp);
             OutputDebugString(strDebug);
 #else
-			ASSERT(false);
+            ASSERT(false);
 #endif
 
             // TODO: Add interactive error message here
@@ -2502,16 +2484,15 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
 
 // Parse the Photoshop IRB Slice Header
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
-// - nPosEnd	= File position at end of block (last byte address)
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
+// - nPosEnd    = File position at end of block (last byte address)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseSliceHeader(unsigned long& nPos, unsigned nIndent, unsigned long nPosEnd)
 {
     unsigned nVal;
-    CString strVal;
     unsigned nPosOffset;
 
     PhotoshopParseReportNote(nIndent,_T("Slice Header:"));
@@ -2530,7 +2511,7 @@ void CDecodePs::PhotoshopParseSliceHeader(unsigned long& nPos, unsigned nIndent,
         PhotoshopParseReportFldNum(nIndent,_T("Bound Rect (bottom)"), nVal,_T(""));
         nVal = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
         PhotoshopParseReportFldNum(nIndent,_T("Bound Rect (right)"), nVal,_T(""));
-        strVal = PhotoshopParseGetBimLStrUni(nPos, nPosOffset);
+        CString strVal = PhotoshopParseGetBimLStrUni(nPos, nPosOffset);
         nPos += nPosOffset;
         PhotoshopParseReportFldStr(nIndent,_T("Name of group of slices"), strVal);
         unsigned nNumSlices = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
@@ -2559,11 +2540,11 @@ void CDecodePs::PhotoshopParseSliceHeader(unsigned long& nPos, unsigned nIndent,
 
 // Parse the Photoshop IRB Slice Resource
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
-// - nPosEnd	= File position at end of block (last byte address)
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
+// - nPosEnd    = File position at end of block (last byte address)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 // NOTE:
 // - The nPosEnd is supplied as this resource block depends on some
 //   conditional field parsing that is "as length allows"
@@ -2654,11 +2635,11 @@ void CDecodePs::PhotoshopParseSliceResource(unsigned long& nPos, unsigned nInden
 
 // Parse the Photoshop IRB JPEG Quality
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
-// - nPosEnd	= File position at end of block (last byte address)
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
+// - nPosEnd    = File position at end of block (last byte address)
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 // NOTE:
 // - This IRB is private, so reverse-engineered and may not be per spec
 //
@@ -2666,13 +2647,11 @@ void CDecodePs::PhotoshopParseJpegQuality(unsigned long& nPos, unsigned nIndent,
 {
     nPosEnd; // Unreferenced param
 
-    unsigned nVal;
     CString strVal;
-    unsigned nSaveFormat;
 
     // Save As Quality
     // Index 0: Quality level
-    nVal = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
+    unsigned nVal = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
     switch (nVal)
     {
     case 0xFFFD: m_nQualitySaveAs = 1;
@@ -2712,7 +2691,7 @@ void CDecodePs::PhotoshopParseJpegQuality(unsigned long& nPos, unsigned nIndent,
     //   to this IRB?
 
     // Index 1: Format
-    nSaveFormat = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
+    unsigned nSaveFormat = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
     switch (nSaveFormat)
     {
     case 0x0000: strVal = _T("Standard");
@@ -2750,10 +2729,10 @@ void CDecodePs::PhotoshopParseJpegQuality(unsigned long& nPos, unsigned nIndent,
 // Decode the OSType field and invoke the appropriate IRB parsing handler
 //
 // INPUT:
-// - nPos		= File position at start of block
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of block
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the block
+// - nPos       = File position after reading the block
 //
 void CDecodePs::PhotoshopParseHandleOsType(CString strOsType, unsigned long& nPos, unsigned nIndent)
 {
@@ -2823,27 +2802,26 @@ void CDecodePs::PhotoshopParseHandleOsType(CString strOsType, unsigned long& nPo
                         _T("PsDecode"), (LPCTSTR)strError);
         OutputDebugString(strDebug);
 #else
-		ASSERT(false);
+        ASSERT(false);
 #endif
     }
 }
 
 // Parse the Photoshop IRB OSType Descriptor
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 //
 void CDecodePs::PhotoshopParseDescriptor(unsigned long& nPos, unsigned nIndent)
 {
-    CString strVal;
     unsigned nPosOffset;
 
     PhotoshopParseReportNote(nIndent,_T("Descriptor:"));
     nIndent++;
 
-    strVal = PhotoshopParseGetBimLStrUni(nPos, nPosOffset);
+    CString strVal = PhotoshopParseGetBimLStrUni(nPos, nPosOffset);
     nPos += nPosOffset;
     PhotoshopParseReportFldStr(nIndent,_T("Name from classID"), strVal);
 
@@ -2877,10 +2855,10 @@ void CDecodePs::PhotoshopParseDescriptor(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB OSType List
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 //
 void CDecodePs::PhotoshopParseList(unsigned long& nPos, unsigned nIndent)
 {
@@ -2911,10 +2889,10 @@ void CDecodePs::PhotoshopParseList(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB OSType Integer
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 //
 void CDecodePs::PhotoshopParseInteger(unsigned long& nPos, unsigned nIndent)
 {
@@ -2927,10 +2905,10 @@ void CDecodePs::PhotoshopParseInteger(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB OSType Boolean
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 //
 void CDecodePs::PhotoshopParseBool(unsigned long& nPos, unsigned nIndent)
 {
@@ -2943,10 +2921,10 @@ void CDecodePs::PhotoshopParseBool(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB OSType Enumerated type
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 //
 void CDecodePs::PhotoshopParseEnum(unsigned long& nPos, unsigned nIndent)
 {
@@ -2962,10 +2940,10 @@ void CDecodePs::PhotoshopParseEnum(unsigned long& nPos, unsigned nIndent)
 
 // Parse the Photoshop IRB Unicode String
 // INPUT:
-// - nPos		= File position at start of entry
-// - nIndent	= Indent level for formatted output
+// - nPos       = File position at start of entry
+// - nIndent    = Indent level for formatted output
 // OUTPUT:
-// - nPos		= File position after reading the entry
+// - nPos       = File position after reading the entry
 // NOTE:
 // - The string is in Photoshop Unicode format (length first)
 //

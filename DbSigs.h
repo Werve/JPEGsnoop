@@ -106,7 +106,7 @@ public:
     bool LookupExcMmNoMkr(CString strMake, CString strModel);
     bool LookupExcMmIsEdit(CString strMake, CString strModel);
 
-    unsigned GetIjgNum();
+    unsigned GetIjgNum() const;
     LPTSTR GetIjgEntry(unsigned nInd);
 
     void SetDbDir(CString strDbDir);

@@ -16,18 +16,9 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// DbSubmitDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "jpegsnoop.h"
+
 #include "DbSubmitDlg.h"
-#include "./dbsubmitdlg.h"
-
-
-// CDbSubmitDlg dialog
-
-IMPLEMENT_DYNAMIC(CDbSubmitDlg, CDialog)
 
 CDbSubmitDlg::CDbSubmitDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
@@ -59,14 +50,6 @@ void CDbSubmitDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_NOTES, m_strNotes);
 }
 
-
-BEGIN_MESSAGE_MAP(CDbSubmitDlg, CDialog)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
-END_MESSAGE_MAP()
-
-
-// CDbSubmitDlg message handlers
-
 void CDbSubmitDlg::OnBnClickedOk()
 {
     UpdateData(TRUE);
@@ -95,6 +78,11 @@ void CDbSubmitDlg::OnBnClickedOk()
         }
     }
 
-    // TODO: Add your control notification handler code here
     OnOK();
 }
+
+BEGIN_MESSAGE_MAP(CDbSubmitDlg, CDialog)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CDbSubmitDlg, CDialog)
