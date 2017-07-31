@@ -16,13 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - This module performs all of the main decoding and processing functions
-// - It contains the major context (m_pWBuf, m_pImgDec, m_pJfifDec)
-//
-// ==========================================================================
-
 #pragma once
 
 #include "JfifDecode.h"
@@ -30,12 +23,13 @@
 #include "WindowBuf.h"
 #include "SnoopConfig.h"
 
-
+// This module performs all of the main decoding and processing functions
+// It contains the major context (m_pWBuf, m_pImgDec, m_pJfifDec)
 class CJPEGsnoopCore
 {
 public:
-    CJPEGsnoopCore(void);
-    ~CJPEGsnoopCore(void);
+    CJPEGsnoopCore();
+    ~CJPEGsnoopCore();
 
     void Reset();
 
@@ -60,7 +54,6 @@ public:
     void DoExtractEmbeddedJPEG(CString strInputFname, CString strOutputFname,
                                bool bOverlayEn, bool bForceSoi, bool bForceEoi, bool bIgnoreEoi, bool bExtractAllEn, bool bDhtAviInsert,
                                CString strOutPath);
-
 
     // Accessor wrappers for CjfifDecode
     void J_GetAviMode(bool& bIsAvi, bool& bIsMjpeg);
@@ -131,13 +124,9 @@ public:
     bool B_OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, unsigned& nBegin);
 
 private:
-
     // Batch processing
     void GenBatchFileListRecurse(CString strSrcRootName, CString strDstRootName, CString strPathName, bool bSubdirs, bool bExtractAll);
     void GenBatchFileListSingle(CString strSrcRootName, CString strDstRootName, CString strPathName, bool bExtractAll);
-
-
-private:
 
     // Config
     CSnoopConfig* m_pAppConfig; // Pointer to application config
@@ -145,7 +134,6 @@ private:
     // Input JPEG file
     CFile* m_pFile;
     ULONGLONG m_lFileSize;
-
 
     CString m_strPathName;
     BOOL m_bFileAnalyzed; // Have we opened and analyzed a file?
@@ -155,7 +143,6 @@ private:
     CjfifDecode* m_pJfifDec;
     CimgDecode* m_pImgDec;
     CwindowBuf* m_pWBuf;
-
 
     // Batch processing
     CStringArray m_asBatchFiles;

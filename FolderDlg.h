@@ -21,10 +21,10 @@
 // ====================================================================================================
 // The following code is based on an example CFolderDialog class that appears in MSDN:
 //
-//		Title:		CFolderDialog (C++ at Work: Counting MDI Children, Browsing for Folders)
-//		Authors:	Paul DiLascia
-//		URL:		http://msdn.microsoft.com/en-us/magazine/cc163789.aspx
-//		Date:		Jun 2005
+//      Title:      CFolderDialog (C++ at Work: Counting MDI Children, Browsing for Folders)
+//      Authors:    Paul DiLascia
+//      URL:        http://msdn.microsoft.com/en-us/magazine/cc163789.aspx
+//      Date:       Jun 2005
 // ====================================================================================================
 
 
@@ -35,16 +35,15 @@
 // Compiles with Visual Studio .NET 2003 (V7.1) on Windows XP. Tab size=3.
 //
 #pragma once
-//#include "debug.h" // debugging tools
 
 //////////////////
 // BRTRACEFN is like TRACEFN but only does anything if
 // CFolderDialog::bTRACE is on. See Debug.h.
 //
 #ifdef _DEBUG
-#define BFTRACE															\
-	if (CFolderDialog::bTRACE)										\
-		TRACE
+#define BFTRACE                                                         \
+    if (CFolderDialog::bTRACE)                                      \
+        TRACE
 #else
 #define BFTRACE
 #endif
@@ -54,23 +53,23 @@
 // and call BrowseForFolder, which returns a PIDL. You can call GetPathName
 // to get the path name from the PIDL. For example:
 //
-//		CFolderDialog dlg(this);
-//		LPCITEMIDLIST pidl = dlg.BrowseForFolder(...);
-//		CString path = dlg.GetPathName(pidl);
+//      CFolderDialog dlg(this);
+//      LPCITEMIDLIST pidl = dlg.BrowseForFolder(...);
+//      CString path = dlg.GetPathName(pidl);
 //
-//	You can also derive your own class from CFolderDialog to override virtual
-//	message handler functions like OnInitialized and OnSelChanged to do stuff
-//	when various things happen. This replaces the callback mechanism for
-//	SHBrowseForFolder. You call various wrapper functions from your hanlers to
-//	send messages to the browser window. For example:
+//  You can also derive your own class from CFolderDialog to override virtual
+//  message handler functions like OnInitialized and OnSelChanged to do stuff
+//  when various things happen. This replaces the callback mechanism for
+//  SHBrowseForFolder. You call various wrapper functions from your hanlers to
+//  send messages to the browser window. For example:
 //
-//		int CMyFolderDialog::OnInitialized()
-//		{
-//			CFolderDialog::OnInitialized();
-//			SetStatusText(_T("Nice day, isn't it?"));
-//			SetOKText(L"Choose Me!");
-//			return 0;
-//		}
+//      int CMyFolderDialog::OnInitialized()
+//      {
+//          CFolderDialog::OnInitialized();
+//          SetStatusText(_T("Nice day, isn't it?"));
+//          SetOKText(L"Choose Me!");
+//          return 0;
+//      }
 //
 // You can set CFolderDialog::bTRACE=TRUE to turn on debugging TRACE
 // diagnostics to help you understand what's going on.
@@ -80,13 +79,16 @@ class CFolderDialog : public CWnd
 public:
     static BOOL bTRACE; // controls tracing
 
-    CFolderDialog(CWnd* pWnd);
+    explicit CFolderDialog(CWnd* pWnd);
     ~CFolderDialog();
 
     LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
                                   LPCITEMIDLIST pidRoot = nullptr, BOOL bFilter = FALSE);
 
-    CString GetDisplayName() { return m_sDisplayName; }
+    CString GetDisplayName() const
+    {
+        return m_sDisplayName;
+    }
 
     // helpers
     static CString GetPathName(LPCITEMIDLIST pidl);
@@ -94,8 +96,6 @@ public:
     static void FreePIDL(LPCITEMIDLIST pidl);
 
     void SetStartPath(CString strPath); //CAL!
-private:
-    CString m_strStartPath; //CAL!
 
 protected:
     BROWSEINFO m_brinfo; // internal structure for SHBrowseForFolder
@@ -135,18 +135,18 @@ protected:
         SendMessage(BFFM_SETSELECTION,TRUE, (LPARAM)lpText);
     }
 
-    void SetSelection(LPCITEMIDLIST pidl)
+    void SetSelection(LPCITEMIDLIST pidl) const
     {
         SendMessage(BFFM_SETSELECTION,FALSE, (LPARAM)pidl);
     }
 
     // Expand item from string or PIDL
-    void SetExpanded(LPCWSTR lpText)
+    void SetExpanded(LPCWSTR lpText) const
     {
         SendMessage(BFFM_SETEXPANDED,TRUE, (LPARAM)lpText);
     }
 
-    void SetExpanded(LPCITEMIDLIST pidl)
+    void SetExpanded(LPCITEMIDLIST pidl) const
     {
         SendMessage(BFFM_SETEXPANDED,FALSE, (LPARAM)pidl);
     }
@@ -183,6 +183,9 @@ protected:
                               LPCITEMIDLIST pidlFolder,
                               LPCITEMIDLIST pidlItem);
     END_INTERFACE_PART(FolderFilter)
+
+private:
+    CString m_strStartPath; //CAL!
 
     DECLARE_DYNAMIC(CFolderDialog)
 };

@@ -29,20 +29,21 @@
 //   the master list to be trimmed down (ie. entries removed).
 // ==========================================================================
 
-
 #pragma once
+
 #include "afxwin.h"
-
-
-// CDbManageDlg dialog
+#include "Resource.h"
 
 class CDbManageDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CDbManageDlg)
 
 public:
-    CDbManageDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CDbManageDlg(CWnd* pParent = nullptr);
     virtual ~CDbManageDlg();
+
+    void InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig);
+    void PopulateList();
+    void GetRemainIndices(CUIntArray& anRemain);
 
     // Dialog Data
     enum
@@ -51,22 +52,18 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-public:
-    void InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig);
-    void PopulateList();
-    void GetRemainIndices(CUIntArray& anRemain);
+    void DoDataExchange(CDataExchange* pDX) override;
 
 private:
     BOOL OnInitDialog() override;
     afx_msg void OnBnClickedRemove();
     afx_msg void OnBnClickedRemoveall();
 
-private:
     CListBox m_ctlListBox; // Listbox representing custom signatures
     CStringArray m_asToInsert; // Entries to be added to Listbox via PopulateList()
 
     CUIntArray m_anListBoxInd; // Index of entries currently in listBox  (e.g 1,2,4,7,15)
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CDbManageDlg)
 };

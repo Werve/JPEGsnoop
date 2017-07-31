@@ -16,19 +16,10 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - This module parses the Photoshop PSD and 8BIM segments (APP13)
-// - No rendering is done
-//
-// ==========================================================================
-
 #pragma once
 
 #include "WindowBuf.h"
-#include "snoop.h"
 #include "SnoopConfig.h"
-
 #include "Dib.h"
 
 //
@@ -117,12 +108,12 @@ struct tsBimEnum
 };
 
 // Byte Swap enable for Photoshop decoding
-#define PS_BSWAP	false
+#define PS_BSWAP    false
 
 // Define the 8BIM/IRB hex output display characteristics
-#define PS_HEX_MAX_INLINE	16		// Threshold for displaying hex in-line with field name
-#define PS_HEX_MAX_ROW		16		// Maximum number of bytes to report per line
-#define PS_HEX_TOTAL		128		// Total number of bytes to report before clipping
+#define PS_HEX_MAX_INLINE   16      // Threshold for displaying hex in-line with field name
+#define PS_HEX_MAX_ROW      16      // Maximum number of bytes to report per line
+#define PS_HEX_TOTAL        128     // Total number of bytes to report before clipping
 
 // Define the maximum length Unicode string to display
 #define PS_MAX_UNICODE_STRLEN 256
@@ -153,6 +144,7 @@ struct tsImageInfo
     unsigned nDepthBpp;
 };
 
+// - This module parses the Photoshop PSD and 8BIM segments (APP13)
 class CDecodePs
 {
 public:

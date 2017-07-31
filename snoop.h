@@ -22,9 +22,7 @@
 //
 // ==========================================================================
 
-
 #pragma once
-
 
 // Program Version / Release Number
 // - Format: "X.Y.Z"          - (full public release)
@@ -43,7 +41,7 @@
 
 // Enable debug log?
 //#define DEBUG_LOG_OUT
-#define DEBUG_EN		0
+#define DEBUG_EN        0
 
 //#define DEBUG_YCCK
 
@@ -68,7 +66,7 @@
 //#define WWW_WINHTTP
 
 // The following DEFINEs are used in debugging and local batch operations
-//#define DEBUG_SIG				// Print debugging info for signature generation
+//#define DEBUG_SIG             // Print debugging info for signature generation
 //#define BATCH_DO_DBSUBMIT
 //#define BATCH_DO_DBSUBMIT_ALL
 
@@ -79,21 +77,21 @@
 // - The URLs that are used to indicate new release availability are also
 //   provided here. These pages have specific formatting that JPEGsnoop
 //   parses to identify if a newer version is available.
-#define IA_HOST				_T("www.impulseadventure.com")
-#define IA_DB_SUBMIT_PAGE	_T("/photo/jpeg-snoop-submit.php")
-#define IA_UPDATES_CHK_PAGE	_T("/photo/jpeg-snoop.html")
-#define IA_UPDATES_DL_PAGE	_T("http://www.impulseadventure.com/photo/jpeg-snoop.html#download")
+#define IA_HOST             _T("www.impulseadventure.com")
+#define IA_DB_SUBMIT_PAGE   _T("/photo/jpeg-snoop-submit.php")
+#define IA_UPDATES_CHK_PAGE _T("/photo/jpeg-snoop.html")
+#define IA_UPDATES_DL_PAGE  _T("http://www.impulseadventure.com/photo/jpeg-snoop.html#download")
 
 // Registry settings
-#define REG_KEY_PATH		_T("Software\\ImpulseAdventure\\JPEGsnoop\\")
-#define REG_COMPANY_NAME	_T("ImpulseAdventure")
-#define REG_SW_NAME			_T("JPEGsnoop")
+#define REG_KEY_PATH        _T("Software\\ImpulseAdventure\\JPEGsnoop\\")
+#define REG_COMPANY_NAME    _T("ImpulseAdventure")
+#define REG_SW_NAME         _T("JPEGsnoop")
 
 // Extra logging for debugging
 #define DEBUG_LOG
 
 // For errors (eg. in exceptions), define message buffer length
-#define	MAX_BUF_EX_ERR_MSG	512
+#define MAX_BUF_EX_ERR_MSG  512
 
 // Preview Modes
 enum tePreviewMode
@@ -182,9 +180,9 @@ enum teOffsetMode
 // Define a few coach messages
 
 #define COACH_REPROCESS_AUTO _T("You have changed a processing option. To see these changes, ")\
-	_T("you need to Reprocess the file or enable [Auto Reprocessing] in Configuration.")
+    _T("you need to Reprocess the file or enable [Auto Reprocessing] in Configuration.")
 
 #define COACH_DECODE_IDCT_DC _T("Currently only decoding low-res view (DC-only). Full-resolution image decode ")\
-	_T("can be enabled in [Options->Scan Segment->Full IDCT], but it is slower.")
+    _T("can be enabled in [Options->Scan Segment->Full IDCT], but it is slower.")
 #define COACH_DECODE_IDCT_AC _T("Currently decoding high-res view (AC+DC), which can be slow. For faster ")\
-	_T("operation, low-resolution image decode can be enabled in [Options->Scan Segment->No IDCT].")
+    _T("operation, low-resolution image decode can be enabled in [Options->Scan Segment->No IDCT].")

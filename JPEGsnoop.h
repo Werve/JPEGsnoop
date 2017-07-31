@@ -16,34 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Main application code entry-point
-//
-// ==========================================================================
-
-
-// JPEGsnoop.h : main header file for the JPEGsnoop application
-//
 #pragma once
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
-#include "resource.h"       // main symbols
-
-#include "snoop.h"
 #include "JPEGsnoopDoc.h"
 #include "SnoopConfig.h"
-
-#include "afxwinappex.h"	//xxx
-
 #include "JPEGsnoopCore.h"
+#include "afxwinappex.h"    //xxx
 
-// CJPEGsnoopApp:
-// See JPEGsnoop.cpp for the implementation of this class
-//
+class CDbSigs;
 
 // Define global variable for application log
 extern CDocLog* glb_pDocLog;
@@ -55,15 +35,13 @@ public:
     CJPEGsnoopApp();
     ~CJPEGsnoopApp();
 
-
-    // Overrides
-public:
     BOOL InitInstance() override;
 
-    // Implementation
-    afx_msg void OnAppAbout();
+    // Main config options
+    CSnoopConfig* m_pAppConfig;
 
-    DECLARE_MESSAGE_MAP()
+    // Needs to be accessed by JfifDec
+    CDbSigs* m_pDbSigs;
 
 private:
     void MyOnFileOpen();
@@ -84,8 +62,9 @@ private:
     void DocImageDirty();
     void HandleAutoReprocess();
 
-    HINSTANCE LoadAppLangResourceDLL() override; // MFC override
+    HINSTANCE LoadAppLangResourceDLL() override;
 
+    afx_msg void OnAppAbout();
     afx_msg void OnOptionsDhtexpand();
     afx_msg void OnOptionsMakernotes();
     afx_msg void OnOptionsScandump();
@@ -118,20 +97,12 @@ private:
     afx_msg void OnOptionsHideuknownexiftags();
     afx_msg void OnUpdateOptionsHideuknownexiftags(CCmdUI* pCmdUI);
     afx_msg void OnFileBatchprocess();
-
-public:
-    // Main config options
-    CSnoopConfig* m_pAppConfig;
-
-    // Needs to be accessed by JfifDec
-    CDbSigs* m_pDbSigs;
-
-private:
-    bool m_bFatal; // Fatal error occurred (e.g. mem alloc)
-
-public:
     afx_msg void OnOptionsRelaxedparsing();
     afx_msg void OnUpdateOptionsRelaxedparsing(CCmdUI* pCmdUI);
+
+    bool m_bFatal; // Fatal error occurred (e.g. mem alloc)
+
+    DECLARE_MESSAGE_MAP()
 };
 
 extern CJPEGsnoopApp theApp;

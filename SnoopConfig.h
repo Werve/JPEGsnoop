@@ -16,23 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
+#pragma once
+
+#include "snoop.h"	// For DEBUG_LOG_OUT
+
 // CLASS DESCRIPTION:
 // - Application configuration structures
 // - Registry management
 // - Note that the majority of this class is defined with public members
-//
-// ==========================================================================
-
-#include "snoop.h"	// For DEBUG_LOG_OUT
-
-#pragma once
-
 class CSnoopConfig
 {
 public:
-    CSnoopConfig(void);
-    ~CSnoopConfig(void);
+    CSnoopConfig();
+    ~CSnoopConfig();
 
     void UseDefaults();
 
@@ -51,18 +47,10 @@ public:
 
     CString GetDefaultDbDir(); // Public use by CSettingsDlg
 
-public:
     // Debug Log
     // - Used if DEBUG_LOG_OUT
     bool DebugLogCreate();
     bool DebugLogAdd(CString strText);
-
-private:
-    CString GetExeDir();
-    void CreateDir(LPTSTR Path);
-
-
-public:
 
     // Interactive mode: shows message dialog box alerts
     // In non-interactive mode we suppress most alert dialogs but still
@@ -140,4 +128,8 @@ public:
     bool bDebugLogEnable;
     CString strDebugLogFname;
     CStdioFile* fpDebugLog;
+
+private:
+    CString GetExeDir();
+    void CreateDir(LPTSTR Path);
 };

@@ -16,15 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box for Batch image processing
-//
-// ==========================================================================
-
-
 #pragma once
-
 
 // FIXME:
 // For some reason, the IDD_BATCHDLG constant reports C2065 "undeclared identifier"
@@ -32,15 +24,17 @@
 #include "Resource.h"
 
 
-// CBatchDlg dialog
-
+// Dialog box for Batch image processing
 class CBatchDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CBatchDlg)
-
 public:
-    CBatchDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CBatchDlg(CWnd* pParent = nullptr);
     virtual ~CBatchDlg();
+
+    BOOL m_bProcessSubdir;
+    BOOL m_bExtractAll;
+    CString m_strDirSrc;
+    CString m_strDirDst;
 
     // Dialog Data
     enum
@@ -49,15 +43,10 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-public:
+    void DoDataExchange(CDataExchange* pDX) override;
     afx_msg void OnBnClickedBtnDirSrcBrowse();
     afx_msg void OnBnClickedBtnDirDstBrowse();
 
-    BOOL m_bProcessSubdir;
-    BOOL m_bExtractAll;
-    CString m_strDirSrc;
-    CString m_strDirDst;
+    DECLARE_DYNAMIC(CBatchDlg)
+    DECLARE_MESSAGE_MAP()
 };

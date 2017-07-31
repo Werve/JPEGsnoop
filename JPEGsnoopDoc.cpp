@@ -39,6 +39,8 @@
 #include "General.h"
 
 #include "FileTiff.h"
+#include "FolderDlg.h"
+#include "BatchDlg.h"
 
 
 #ifdef _DEBUG

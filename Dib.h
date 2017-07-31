@@ -21,11 +21,11 @@
 // ====================================================================================================
 // The following code was loosely based on an example CDIB class that appears in the following book:
 //
-//		Title:		Visual C++ 6 Unleashed
-//		Authors:	Mickey Williams and David Bennett
-//		Publisher:	Sams (July 24, 2000)
-//		ISBN-10:	0672312417
-//		ISBN-13:	978-0672312410
+//      Title:      Visual C++ 6 Unleashed
+//      Authors:    Mickey Williams and David Bennett
+//      Publisher:  Sams (July 24, 2000)
+//      ISBN-10:    0672312417
+//      ISBN-13:    978-0672312410
 // ====================================================================================================
 
 #pragma once
@@ -47,7 +47,6 @@ public:
     bool CopyDIBsmall(CDC* pDestDC, int x, int y, float scale = 1);
     bool CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float scale);
 
-public:
     CBitmap m_bmBitmap;
 
 private:

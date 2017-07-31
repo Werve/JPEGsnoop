@@ -26,7 +26,6 @@
 //
 // ==========================================================================
 
-
 #pragma once
 
 #include "DocLog.h"
@@ -35,16 +34,16 @@
 // have allocated MAX_BUF bytes up front. I might change this
 // later. We don't want the window size to be too large as it
 // could have an impact on performance.
-#define MAX_BUF				262144L
-#define MAX_BUF_WINDOW		131072L
-#define MAX_BUF_WINDOW_REV	16384L //1024L
+#define MAX_BUF             262144L
+#define MAX_BUF_WINDOW      131072L
+#define MAX_BUF_WINDOW_REV  16384L //1024L
 
-#define NUM_OVERLAYS		500
-#define MAX_OVERLAY			500		// 500 bytes
+#define NUM_OVERLAYS        500
+#define MAX_OVERLAY         500     // 500 bytes
 
-#define NUM_HOLES			10
+#define NUM_HOLES           10
 
-#define	MAX_BUF_READ_STR	255	// Max number of bytes to fetch in BufReadStr()
+#define MAX_BUF_READ_STR    255 // Max number of bytes to fetch in BufReadStr()
 
 typedef struct
 {
@@ -69,7 +68,6 @@ public:
     CwindowBuf();
     ~CwindowBuf();
 
-public:
     void SetStatusBar(CStatusBar* pStatBar);
 
     void BufLoadWindow(unsigned long nPosition);
@@ -81,7 +79,6 @@ public:
     unsigned char BufRdAdv1(unsigned long& nOffset, bool bByteSwap);
     unsigned short BufRdAdv2(unsigned long& nOffset, bool bByteSwap);
     unsigned BufRdAdv4(unsigned long& nOffset, bool bByteSwap);
-
 
     CString BufReadStr(unsigned long nPosition);
     CString BufReadUniStr(unsigned long nPosition);
@@ -109,8 +106,6 @@ public:
 private:
     void Reset();
 
-
-private:
     BYTE* m_pBuffer;
     CFile* m_pBufFile;
     unsigned long m_nBufWinSize;

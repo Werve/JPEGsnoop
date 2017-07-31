@@ -26,7 +26,6 @@
 #pragma once
 
 #include "WindowBuf.h"
-#include "snoop.h"
 #include "SnoopConfig.h"
 
 
@@ -106,12 +105,12 @@ struct tsTagDetail
 
 
 // Byte Swap enable for DICOM decoding
-#define DC_BSWAP	true
+#define DC_BSWAP    true
 
 // Define the DICOM hex output display characteristics
-#define DC_HEX_MAX_INLINE	16		// Threshold for displaying hex in-line with field name
-#define DC_HEX_MAX_ROW		16		// Maximum number of bytes to report per line
-#define DC_HEX_TOTAL		128		// Total number of bytes to report before clipping
+#define DC_HEX_MAX_INLINE   16      // Threshold for displaying hex in-line with field name
+#define DC_HEX_MAX_ROW      16      // Maximum number of bytes to report per line
+#define DC_HEX_TOTAL        128     // Total number of bytes to report before clipping
 
 // Define the maximum length Unicode string to display
 #define DC_MAX_UNICODE_STRLEN 256
@@ -121,12 +120,12 @@ class CDecodeDicom
 {
 public:
     CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog);
-    ~CDecodeDicom(void);
+    ~CDecodeDicom();
 
     void Reset();
 
     bool DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, unsigned long& nPosJpeg);
-    //bool			DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg);
+    //bool          DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg);
     bool GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail);
     bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
 
@@ -139,6 +138,10 @@ public:
     void ReportFldEnum(unsigned nIndent, CString strField, unsigned nTagGroup, unsigned nTagElement, CString strVal);
     bool LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString strVal, CString& strDesc);
 
+    bool m_bDicom;
+    bool m_bJpegEncap;
+    bool m_bJpegEncapOffsetNext;
+
 private:
     // Configuration
     CSnoopConfig* m_pAppConfig;
@@ -146,9 +149,4 @@ private:
     // General classes required for decoding
     CwindowBuf* m_pWBuf;
     CDocLog* m_pLog;
-
-public:
-    bool m_bDicom;
-    bool m_bJpegEncap;
-    bool m_bJpegEncapOffsetNext;
 };

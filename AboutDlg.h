@@ -16,17 +16,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box providing basic about & version info
-//
-// ==========================================================================
-
 #pragma once
+
 #include "afxwin.h"
 #include "HyperlinkStatic.h"
-
-// CAboutDlg dialog used for App About
+#include "Resource.h"
 
 class CAboutDlg : public CDialog
 {
@@ -40,15 +34,13 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    // Implementation
-protected:
-    DECLARE_MESSAGE_MAP()
-public:
+    void DoDataExchange(CDataExchange* pDX) override;
     BOOL OnInitDialog() override;
 
+private:
     CHyperlinkStatic m_staticURL;
     CHyperlinkStatic m_staticURLdoc;
     CString m_staticVerNum;
+
+    DECLARE_MESSAGE_MAP()
 };

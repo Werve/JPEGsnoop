@@ -16,25 +16,22 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box for the application settings
-//
-// ==========================================================================
-
-
 #pragma once
+#include "Resource.h"
 
-
-// CSettingsDlg dialog
-
+// Dialog box for the application settings
 class CSettingsDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CSettingsDlg)
-
 public:
-    CSettingsDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CSettingsDlg(CWnd* pParent = nullptr);
     virtual ~CSettingsDlg();
+
+    CString m_strDbDir;
+    BOOL m_bUpdateAuto;
+    UINT m_nUpdateChkDays;
+    BOOL m_bReprocessAuto;
+    BOOL m_bDbSubmitNet;
+    UINT m_nRptErrMaxScanDecode;
 
     // Dialog Data
     enum
@@ -43,21 +40,15 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
-    DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnBnClickedDbDirBrowse();
-    CString SelectFolder(const CString& strMessage);
-    LPITEMIDLIST ConvertPathToLpItemIdList(const char* pszPath);
     afx_msg void OnBnClickedDbDirDefault();
     afx_msg void OnBnClickedCoachReset();
+    CString SelectFolder(const CString& strMessage);
+    LPITEMIDLIST ConvertPathToLpItemIdList(const char* pszPath);
 
-public:
-    CString m_strDbDir;
-    BOOL m_bUpdateAuto;
-    UINT m_nUpdateChkDays;
-    BOOL m_bReprocessAuto;
-    BOOL m_bDbSubmitNet;
-    UINT m_nRptErrMaxScanDecode;
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CSettingsDlg)
 };

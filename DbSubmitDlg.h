@@ -16,26 +16,26 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box that enables user to submit a new signature to the database
-//
-// ==========================================================================
-
-
 #pragma once
+
 #include "afxwin.h"
+#include "Resource.h"
 
-
-// CDbSubmitDlg dialog
-
+// Dialog box that enables user to submit a new signature to the database
 class CDbSubmitDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CDbSubmitDlg)
-
 public:
-    CDbSubmitDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CDbSubmitDlg(CWnd* pParent = nullptr);
     virtual ~CDbSubmitDlg();
+
+    CString m_strSig;
+    CString m_strQual;
+    CString m_strUserSoftware;
+    CString m_strExifModel;
+    CString m_strExifSoftware;
+    CString m_strExifMake;
+    int m_nSource;
+    CString m_strNotes;
 
     // Dialog Data
     enum
@@ -44,18 +44,9 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
+    afx_msg void OnBnClickedOk();
 
     DECLARE_MESSAGE_MAP()
-public:
-    CString m_strSig;
-    CString m_strExifModel;
-    CString m_strExifSoftware;
-    CString m_strExifMake;
-    CString m_strQual;
-    CString m_strUserSoftware;
-    int m_nSource;
-    CString m_strNotes;
-
-    afx_msg void OnBnClickedOk();
+    DECLARE_DYNAMIC(CDbSubmitDlg)
 };

@@ -16,23 +16,15 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box used to look up a file offset from a pixel coordinate
-//
-// ==========================================================================
-
-
 #pragma once
 
-// CLookupDlg dialog
+#include "Resource.h"
 
+// Dialog box used to look up a file offset from a pixel coordinate
 class CLookupDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CLookupDlg)
-
 public:
-    CLookupDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CLookupDlg(CWnd* pParent = nullptr);
     CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
     virtual ~CLookupDlg();
 
@@ -42,24 +34,20 @@ public:
         IDD = IDD_LOOKUP
     };
 
+    // Callback function for LookupFilePosPix()
+    void SetCbLookup(void* pClassCbLookup,
+        void(*pCbLookup)(void* pClassCbBuf, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit));
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
-    DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnBnClickedBtnCalc();
 
-public:
-    // Callback function for LookupFilePosPix()
-    void SetCbLookup(void* pClassCbLookup,
-                     void (*pCbLookup)(void* pClassCbBuf, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit));
-private:
     // References to callback function for LookupFilePosPix()
     void* m_pClassCbLookup;
     void (*m_pCbLookup)(void* pClassCbLookup, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit);
 
-private:
     UINT m_nPixX;
     UINT m_nPixY;
     CString m_strOffset;
@@ -70,4 +58,7 @@ private:
 
     CString m_strRngX;
     CString m_strRngY;
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CLookupDlg)
 };

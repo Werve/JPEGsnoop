@@ -16,26 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box providing options for exporting to TIFF
-//
-// ==========================================================================
-
-
 #pragma once
+
 #include "afxwin.h"
+#include "Resource.h"
 
-
-// CExportTiffDlg dialog
-
+// Dialog box providing options for exporting to TIFF
 class CExportTiffDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CExportTiffDlg)
-
 public:
-    CExportTiffDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CExportTiffDlg(CWnd* pParent = nullptr);
     virtual ~CExportTiffDlg();
+
+    int m_nCtlFmt;
+    CString m_sFname;
 
     // Dialog Data
     enum
@@ -44,12 +38,9 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    BOOL OnInitDialog() override;
+    void DoDataExchange(CDataExchange* pDX) override;
 
     DECLARE_MESSAGE_MAP()
-public:
-    BOOL OnInitDialog() override;
-
-    int m_nCtlFmt;
-    CString m_sFname;
+    DECLARE_DYNAMIC(CExportTiffDlg)
 };

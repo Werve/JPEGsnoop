@@ -16,25 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box alerting user of new application updates available
-//
-// ==========================================================================
-
-
 #pragma once
+#include "Resource.h"
 
-
-// CUpdateAvailDlg dialog
-
+// - Dialog box alerting user of new application updates available
 class CUpdateAvailDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CUpdateAvailDlg)
-
 public:
-    CUpdateAvailDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CUpdateAvailDlg(CWnd* pParent = nullptr);
     virtual ~CUpdateAvailDlg();
+
+    CString strVerCur;
+    CString strVerLatest;
+    BOOL bUpdateAutoStill;
+    CString strDateLatest;
 
     // Dialog Data
     enum
@@ -43,15 +38,9 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-private:
+    void DoDataExchange(CDataExchange* pDX) override;
     afx_msg void OnBnClickedButton1();
 
-public:
-    CString strVerCur;
-    CString strVerLatest;
-    BOOL bUpdateAutoStill;
-    CString strDateLatest;
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CUpdateAvailDlg)
 };

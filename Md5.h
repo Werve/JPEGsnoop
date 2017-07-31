@@ -21,10 +21,10 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeProject:
 //
-//		Title:		ReHash - A console-based hash calculator
-//		Author:		Dominik Reichl
-//		URL:		http://www.codeproject.com/Articles/3945/ReHash-A-console-based-hash-calculator
-//		Date:		Apr 11, 2003
+//      Title:      ReHash - A console-based hash calculator
+//      Author:     Dominik Reichl
+//      URL:        http://www.codeproject.com/Articles/3945/ReHash-A-console-based-hash-calculator
+//      Date:       Apr 11, 2003
 //
 // ====================================================================================================
 
@@ -79,8 +79,7 @@
  **********************************************************************
  */
 
-#ifndef ___MD5_H___
-#define ___MD5_H___
+#pragma once
 
 /* Typedef a 32 bit type */
 #ifndef UINT4
@@ -94,8 +93,7 @@ typedef struct
     UINT4 buf[4]; /* Scratch buffer */
     unsigned char in[64]; /* Input buffer */
     unsigned char digest[16]; /* Actual digest after MD5Final call */
-
-    unsigned int digest32[4]; //CAL! Added
+    unsigned int digest32[4]; 
 } MD5_CTX;
 
 static void MD5_Transform(UINT4* buf, UINT4* in);
@@ -103,5 +101,3 @@ static void MD5_Transform(UINT4* buf, UINT4* in);
 void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber = 0);
 void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen);
 void MD5Final(MD5_CTX* mdContext);
-
-#endif /* ___MD5_H___ included */

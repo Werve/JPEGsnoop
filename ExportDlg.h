@@ -16,25 +16,23 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box providing options for exporting to JPEG
-//
-// ==========================================================================
-
-
 #pragma once
+#include "Resource.h"
 
-
-// CExportDlg dialog
-
+// Dialog box providing options for exporting to JPEG
 class CExportDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CExportDlg)
-
 public:
-    CExportDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CExportDlg(CWnd* pParent = nullptr);
     virtual ~CExportDlg();
+
+    BOOL m_bOverlayEn;
+    BOOL m_bDhtAviInsert;
+    CString m_strOffsetStart;
+    BOOL m_bForceEoi;
+    BOOL m_bIgnoreEoi;
+    BOOL m_bForceSoi;
+    BOOL m_bExtractAllEn;
 
     // Dialog Data
     enum
@@ -46,12 +44,5 @@ protected:
     void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
-public:
-    BOOL m_bOverlayEn;
-    BOOL m_bDhtAviInsert;
-    CString m_strOffsetStart;
-    BOOL m_bForceEoi;
-    BOOL m_bIgnoreEoi;
-    BOOL m_bForceSoi;
-    BOOL m_bExtractAllEn;
+    DECLARE_DYNAMIC(CExportDlg)
 };

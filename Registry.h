@@ -21,11 +21,11 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeProject:
 //
-//		Title:		Another registry class
-//		Author:		SteveKing
-//		URL:		http://www.codeproject.com/Articles/2521/Another-registry-class
-//		Date:		Apr 25, 2003
-//		License:	CPOL (Code Project Open License)
+//      Title:      Another registry class
+//      Author:     SteveKing
+//      URL:        http://www.codeproject.com/Articles/2521/Another-registry-class
+//      Date:       Apr 25, 2003
+//      License:    CPOL (Code Project Open License)
 //
 // ====================================================================================================
 
@@ -112,9 +112,9 @@ public: //members
  * value of 100 is used when accessing the variable.
  * now the variable can be used like any other DWORD variable:
  * \code
- * regvalue = 200;						//stores the value 200 in the registry
- * int temp = regvalue + 300;			//temp has value 500 now
- * regvalue += 300;						//now the registry has the value 500 too
+ * regvalue = 200;                      //stores the value 200 in the registry
+ * int temp = regvalue + 300;           //temp has value 500 now
+ * regvalue += 300;                     //now the registry has the value 500 too
  * \endcode
  * to avoid too much access to the registry the value is cached inside the object.
  * once the value is read, no more read accesses to the registry will be made.
@@ -214,8 +214,8 @@ protected:
  * value of "default" is used when accessing the variable.
  * now the variable can be used like any other CString variable:
  * \code
- * regvalue = "some string";			//stores the value "some string" in the registry
- * CString temp = regvalue + "!!";		//temp has value "some string!!" now
+ * regvalue = "some string";            //stores the value "some string" in the registry
+ * CString temp = regvalue + "!!";      //temp has value "some string!!" now
  * \endcode
  * to use the normal methods of the CString class, just typecast the CRegString to a CString
  * and do whatever you want with the string:
@@ -312,7 +312,7 @@ protected:
  * value of 100,100,200,200 is used when accessing the variable.
  * now the variable can be used like any other CRect variable:
  * \code
- * regvalue = CRect(40,20,300,500);				//stores the value in the registry
+ * regvalue = CRect(40,20,300,500);             //stores the value in the registry
  * CRect temp = regvalue + CPoint(1,1);
  * temp |= CSize(5,5);
  * \endcode
@@ -366,7 +366,7 @@ protected:
 class CRegRect : public CRegBase
 {
 public:
-	CRegRect();
+    CRegRect();
 /**
  * Constructor.
  * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -374,33 +374,33 @@ public:
  * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
  * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
-	CRegRect(CString key, CRect def = CRect(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-	~CRegRect(void);
-	
-	CRect read();						///< reads the value from the registry
-	void	write();					///< writes the value to the registry
-	
-	operator CRect();
-	operator LPCRECT() { return (LPCRECT)(CRect)*this; }
-	operator LPRECT() { return (LPRECT)(CRect)*this; }
-	CRegRect& operator=(CRect r);
-	CRegRect& operator+=(POINT r) { return *this = (CRect)*this + r;}
-	CRegRect& operator+=(SIZE r) { return *this = (CRect)*this + r;}
-	CRegRect& operator+=(LPCRECT  r) { return *this = (CRect)*this + r;}
-	CRegRect& operator-=(POINT r) { return *this = (CRect)*this - r;}
-	CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
-	CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
-	
-	CRegRect& operator&=(CRect r) { return *this = r & *this;}
-	CRegRect& operator|=(CRect r) { return *this = r | *this;}
-	
-	
+    CRegRect(CString key, CRect def = CRect(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    ~CRegRect(void);
+    
+    CRect read();                       ///< reads the value from the registry
+    void    write();                    ///< writes the value to the registry
+    
+    operator CRect();
+    operator LPCRECT() { return (LPCRECT)(CRect)*this; }
+    operator LPRECT() { return (LPRECT)(CRect)*this; }
+    CRegRect& operator=(CRect r);
+    CRegRect& operator+=(POINT r) { return *this = (CRect)*this + r;}
+    CRegRect& operator+=(SIZE r) { return *this = (CRect)*this + r;}
+    CRegRect& operator+=(LPCRECT  r) { return *this = (CRect)*this + r;}
+    CRegRect& operator-=(POINT r) { return *this = (CRect)*this - r;}
+    CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
+    CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
+    
+    CRegRect& operator&=(CRect r) { return *this = r & *this;}
+    CRegRect& operator|=(CRect r) { return *this = r | *this;}
+    
+    
 protected:
 
-	CRect	m_value;					///< the cached value of the registry
-	CRect	m_defaultvalue;				///< the default value to use
-	BOOL	m_read;						///< indicates if the value has already been read from the registry
-	BOOL	m_force;					///< indicates if no cache should be used, i.e. always read and write directly from registry
+    CRect   m_value;                    ///< the cached value of the registry
+    CRect   m_defaultvalue;             ///< the default value to use
+    BOOL    m_read;                     ///< indicates if the value has already been read from the registry
+    BOOL    m_force;                    ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 #endif // Remove CRegRect
 
@@ -423,7 +423,7 @@ protected:
  * value of 100,100 is used when accessing the variable.
  * now the variable can be used like any other CPoint variable:
  * \code
- * regvalue = CPoint(40,20);					//stores the value in the registry
+ * regvalue = CPoint(40,20);                    //stores the value in the registry
  * CPoint temp = regvalue + CPoint(1,1);
  * temp += CSize(5,5);
  * \endcode
@@ -643,9 +643,9 @@ protected:
  * value of 100 is used when accessing the variable.
  * now the variable can be used like any other DWORD variable:
  * \code
- * regvalue = 200;						//stores the value 200 in the registry
- * int temp = regvalue + 300;			//temp has value 500 now
- * regvalue += 300;						//now the registry has the value 500 too
+ * regvalue = 200;                      //stores the value 200 in the registry
+ * int temp = regvalue + 300;           //temp has value 500 now
+ * regvalue += 300;                     //now the registry has the value 500 too
  * \endcode
  * to avoid too much access to the registry the value is cached inside the object.
  * once the value is read, no more read accesses to the registry will be made.

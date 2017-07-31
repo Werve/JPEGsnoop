@@ -16,65 +16,37 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - JPEGsnoop main frame window
-// - Splitter window
-// - Status bar
-//
-// ==========================================================================
-
-
-// MainFrm.h : interface of the CMainFrame class
-//
-
-
 #pragma once
 
-#include "JPEGsnoopView.h"
-#include "JPEGsnoopViewImg.h"
-
-
+// JPEGsnoop main frame window
+// - Splitter window
+// - Status bar
 class CMainFrame : public CFrameWnd
 {
-protected: // create from serialization only
-    CMainFrame();
-    DECLARE_DYNCREATE(CMainFrame)
-
-    // Attributes
-public:
-
-    // Operations
-public:
-
-    // Overrides
-public:
-    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-
-    // Implementation
 public:
     virtual ~CMainFrame();
+
 #ifdef _DEBUG
     void AssertValid() const override;
     void Dump(CDumpContext& dc) const override;
 #endif
 
-private:
-    int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
 protected:
-    // Generated message map functions
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    // create from serialization only
+    CMainFrame();
     BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) override;
-    DECLARE_MESSAGE_MAP()
-private:
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
 private:
-    // Splitter
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+
     CSplitterWnd m_mainSplitter;
     BOOL m_bInitSplitter;
-
-protected: // control bar embedded members
     CStatusBar m_wndStatusBar;
     CToolBar m_wndToolBar;
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNCREATE(CMainFrame)
 };

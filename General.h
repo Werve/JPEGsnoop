@@ -16,8 +16,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef _GENERAL_H_
-#define _GENERAL_H_
+#pragma once
 
 // General Global Functions
 CString Dec2Bin(unsigned nVal, unsigned nLen, bool bSpace = true);
@@ -25,7 +24,6 @@ unsigned short Swap16(unsigned short nVal);
 CString Uint2Chars(unsigned nVal);
 CString Uint2DotByte(unsigned nVal);
 bool TestBit(unsigned nVal, unsigned nBit);
-//CString			ByteStr2Unicode(BYTE* pBuf, unsigned nBufLen);
 bool Str2Uint32(CString strVal, unsigned nBase, unsigned& nVal);
 
 bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffsetBytes);
@@ -37,5 +35,3 @@ extern const unsigned glb_anUnZigZag[64];
 extern const unsigned glb_anQuantRotate[64];
 extern const unsigned glb_anStdQuantLum[64];
 extern const unsigned glb_anStdQuantChr[64];
-
-#endif

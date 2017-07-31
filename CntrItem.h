@@ -16,9 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// CntrItem.h : interface of the CJPEGsnoopCntrItem class
-//
-
 #pragma once
 
 class CJPEGsnoopDoc;
@@ -26,18 +23,14 @@ class CJPEGsnoopView;
 
 class CJPEGsnoopCntrItem : public CRichEditCntrItem
 {
-    DECLARE_SERIAL(CJPEGsnoopCntrItem)
-
-    // Constructors
 public:
-    CJPEGsnoopCntrItem(REOBJECT* preo = nullptr, CJPEGsnoopDoc* pContainer = nullptr);
+    explicit CJPEGsnoopCntrItem(REOBJECT* preo = nullptr, CJPEGsnoopDoc* pContainer = nullptr);
     // Note: pContainer is allowed to be NULL to enable IMPLEMENT_SERIALIZE
     //  IMPLEMENT_SERIALIZE requires the class have a constructor with
     //  zero arguments.  Normally, OLE items are constructed with a
     //  non-NULL document pointer
+    ~CJPEGsnoopCntrItem();
 
-    // Attributes
-public:
     CJPEGsnoopDoc* GetDocument()
     {
         return reinterpret_cast<CJPEGsnoopDoc*>(CRichEditCntrItem::GetDocument());
@@ -48,14 +41,10 @@ public:
         return reinterpret_cast<CJPEGsnoopView*>(CRichEditCntrItem::GetActiveView());
     }
 
-public:
-protected:
-
-    // Implementation
-public:
-    ~CJPEGsnoopCntrItem();
 #ifdef _DEBUG
     void AssertValid() const override;
     void Dump(CDumpContext& dc) const override;
 #endif
+
+    DECLARE_SERIAL(CJPEGsnoopCntrItem)
 };

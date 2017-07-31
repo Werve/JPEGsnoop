@@ -16,32 +16,15 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - JPEGsnoop SDI View class for the main image preview window
-// - Handles user mouse-click events to mark MCUs
-// - Tracks mouse position to provide continuous read-out in the status bar
-//
-// ==========================================================================
-
-
 #pragma once
 
 #include "JPEGsnoopDoc.h"
-#include "Dib.h"
-#include "snoop.h"
 
-// CJPEGsnoopViewImg view
-
-
+// JPEGsnoop SDI View class for the main image preview window
+// Handles user mouse-click events to mark MCUs
+// Tracks mouse position to provide continuous read-out in the status bar
 class CJPEGsnoopViewImg : public CScrollView
 {
-    DECLARE_DYNCREATE(CJPEGsnoopViewImg)
-
-protected:
-    CJPEGsnoopViewImg(); // protected constructor used by dynamic creation
-    virtual ~CJPEGsnoopViewImg();
-
 public:
 #ifdef _DEBUG
     void AssertValid() const override;
@@ -49,10 +32,10 @@ public:
 #endif
 
 protected:
+    CJPEGsnoopViewImg(); // protected constructor used by dynamic creation
+    virtual ~CJPEGsnoopViewImg();
     void OnDraw(CDC* pDC) override; // overridden to draw this view
     void OnInitialUpdate() override; // first time after construct
-
-    DECLARE_MESSAGE_MAP()
 
 private:
     CJPEGsnoopCore* GetCore();
@@ -67,8 +50,10 @@ private:
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
-private:
     CFont* m_pFont;
     LOGFONT m_logfont;
     int m_nPointSize;
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNCREATE(CJPEGsnoopViewImg)
 };

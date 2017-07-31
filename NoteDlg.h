@@ -25,6 +25,7 @@
 
 
 #pragma once
+#include "Resource.h"
 
 
 // CNoteDlg dialog

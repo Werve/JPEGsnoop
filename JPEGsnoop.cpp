@@ -16,22 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// JPEGsnoop is written in Microsoft Visual C++ using MFC
-
-// JPEGsnoop.cpp : Defines the class behaviors for the application.
-//
-
 #include "stdafx.h"
-#include "MainFrm.h"
 
 #include "JPEGsnoop.h"
+#include "MainFrm.h"
 #include "JPEGsnoopDoc.h"
 #include "JPEGsnoopView.h"
-
 #include "snoop.h"
-
 #include "SnoopConfig.h"
-
 #include "AboutDlg.h"
 #include "DbSubmitDlg.h"
 #include "SettingsDlg.h"
@@ -41,9 +33,9 @@
 #include "ModelessDlg.h"
 #include "NoteDlg.h"
 #include "HyperlinkStatic.h"
-
-#include "afxinet.h"			// For internet
-#include "io.h"					// For _open_osfhandle
+#include "DbSigs.h"
+#include "afxinet.h"            // For internet
+#include "io.h"                 // For _open_osfhandle
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -656,7 +648,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     // already covered above
     if (m_pAppConfig->bGuiMode == false)
     {
-        //bool	bCmdLineRet = false;
+        //bool  bCmdLineRet = false;
         DoCmdLineCore();
         return false;
     }
@@ -872,7 +864,7 @@ void CJPEGsnoopApp::CmdLineMessage(CString strMsg)
 //   to the website to download the latest version manually.
 //
 // INPUT:
-// - bForceNow			= Do we ignore day timer and force a check now?
+// - bForceNow          = Do we ignore day timer and force a check now?
 //
 void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
 {
@@ -1262,7 +1254,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
         // Instead, it looks like I can simply pass in the full path (GetPathName()) and everything
         // works fine!
 
-        //		OpenDocumentFile(strFileName);
+        //      OpenDocumentFile(strFileName);
         OpenDocumentFile(strPathName); // Added
 
         // if returns NULL, the user has already been alerted

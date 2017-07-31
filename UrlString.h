@@ -21,34 +21,28 @@
 // ====================================================================================================
 // The following code is derived from the following project on CodeGuru:
 //
-//		Title:		CUrlString: A very simple MFC class to Encode and Decode an url string
-//		Author:		Stephane Erhardt
-//		URL:		http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c4029/URL-Encoding.htm (comments)
-//		Date:		Mar 03, 2006
+//      Title:      CUrlString: A very simple MFC class to Encode and Decode an url string
+//      Author:     Stephane Erhardt
+//      URL:        http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c4029/URL-Encoding.htm (comments)
+//      Date:       Mar 03, 2006
 //
 // ====================================================================================================
 
-/*****************************************************************************
-Module :     UrlString.h
-Notices:     Written 2006 by Stephane Erhardt
-Description: H URL Encoder/Decoder
-*****************************************************************************/
-#ifndef __CURLSTRING_H_
-#define __CURLSTRING_H_
+#pragma once
 
+// Description : H URL Encoder / Decoder
 class CUrlString
 {
-private:
-    CString m_csUnsafe;
-
 public:
     CUrlString();
 
     virtual ~CUrlString()
     {
-    };
+    }
+
     CString Encode(CString csDecoded);
     CString Decode(CString csEncoded);
-};
 
-#endif //__CURLSTRING_H_
+private:
+    CString m_csUnsafe;
+};

@@ -19,6 +19,7 @@
 #include "stdafx.h"
 
 #include "FileTiff.h"
+#include "snoop.h"
 
 
 FileTiff::FileTiff()

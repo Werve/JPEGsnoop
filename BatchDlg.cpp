@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "BatchDlg.h"
+#include "FolderDlg.h"
 
 
 // CBatchDlg dialog

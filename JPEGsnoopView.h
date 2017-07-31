@@ -16,63 +16,42 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - JPEGsnoop SDI View class for the main text log window
-//
-// ==========================================================================
-
-
-// JPEGsnoopView.h : interface of the CJPEGsnoopView class
-//
-
-
 #pragma once
 
 #include "JPEGsnoopDoc.h"
 
 class CJPEGsnoopCntrItem;
 
+// JPEGsnoop SDI View class for the main text log window
 class CJPEGsnoopView : public CRichEditView
 {
-protected: // create from serialization only
-    CJPEGsnoopView();
-    DECLARE_DYNCREATE(CJPEGsnoopView)
-
-    // Attributes
-public:
-    CJPEGsnoopDoc* GetDocument() const;
-
-    // Operations
-public:
-
-    // Overrides
-public:
-    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-protected:
-    void OnInitialUpdate() override; // called first time after construct
-    BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
-
-    // Implementation
 public:
     virtual ~CJPEGsnoopView();
+
+    CJPEGsnoopDoc* GetDocument() const;
+    BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+
 #ifdef _DEBUG
     void AssertValid() const override;
     void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
+    // create from serialization only
+    CJPEGsnoopView();
+    void OnInitialUpdate() override; // called first time after construct
+    BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
 
-    // Generated message map functions
-protected:
     afx_msg void OnDestroy();
+    afx_msg void OnDropFiles(HDROP hDropInfo);
 
     DECLARE_MESSAGE_MAP()
-public:
-    afx_msg void OnDropFiles(HDROP hDropInfo);
+    DECLARE_DYNCREATE(CJPEGsnoopView)
 };
 
 #ifndef _DEBUG  // debug version in JPEGsnoopView.cpp
 inline CJPEGsnoopDoc* CJPEGsnoopView::GetDocument() const
-   { return reinterpret_cast<CJPEGsnoopDoc*>(m_pDocument); }
+{
+    return reinterpret_cast<CJPEGsnoopDoc*>(m_pDocument);
+}
 #endif

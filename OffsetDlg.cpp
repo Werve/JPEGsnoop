@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "JPEGsnoop.h"
 #include "OffsetDlg.h"
+#include "General.h"
 
 
 // COffsetDlg dialog

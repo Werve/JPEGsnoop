@@ -16,25 +16,23 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box providing options for detailed scan segment decoding
-//
-// ==========================================================================
-
-
 #pragma once
+#include "Resource.h"
 
-
-// CDecodeDetailDlg dialog
-
+// Dialog box providing options for detailed scan segment decoding
 class CDecodeDetailDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CDecodeDetailDlg)
-
 public:
-    CDecodeDetailDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CDecodeDetailDlg(CWnd* pParent = nullptr);
     virtual ~CDecodeDetailDlg();
+
+    UINT m_nMcuX;
+    UINT m_nMcuY;
+    UINT m_nMcuLen;
+    BOOL m_bEn;
+    UINT m_nLoadMcuX;
+    UINT m_nLoadMcuY;
+    UINT m_nLoadMcuLen;
 
     // Dialog Data
     enum
@@ -44,17 +42,8 @@ public:
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-public:
     afx_msg void OnBnClickedBtnLoad();
 
-    UINT m_nMcuX;
-    UINT m_nMcuY;
-    UINT m_nMcuLen;
-    BOOL m_bEn;
-
-    UINT m_nLoadMcuX;
-    UINT m_nLoadMcuY;
-    UINT m_nLoadMcuLen;
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CDecodeDetailDlg)
 };

@@ -23,6 +23,7 @@
 #include <math.h>
 
 #include "JPEGsnoop.h"
+#include "General.h"
 
 
 // ------------------------------------------------------

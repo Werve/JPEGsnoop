@@ -16,13 +16,13 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// MainFrm.cpp : implementation of the CMainFrame class
-//
-
 #include "stdafx.h"
-#include "JPEGsnoop.h"
 
 #include "MainFrm.h"
+#include "JPEGsnoop.h"
+#include "JPEGsnoopView.h"
+#include "JPEGsnoopViewImg.h"
+#include "Resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

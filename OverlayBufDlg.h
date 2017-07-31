@@ -16,29 +16,28 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
+#pragma once
+#include "Resource.h"
+
 // - Dialog box for configuring a file decoder overlay
 // - Enables local overwrite of the file buffer during decode for testing purposes
-//
-// ==========================================================================
-
-
-#pragma once
-
-
-// COverlayBufDlg dialog
-
 class COverlayBufDlg : public CDialog
 {
-    DECLARE_DYNAMIC(COverlayBufDlg)
-
 public:
-    COverlayBufDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit COverlayBufDlg(CWnd* pParent = nullptr);
     COverlayBufDlg(CWnd* pParent,
                    bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin);
     virtual ~COverlayBufDlg();
 
+    unsigned m_nOffset;
+    unsigned m_nLen;
+    bool m_bApply; // When OnOK(), indicate apply and redo dialog
+    BOOL m_bEn;
+    CString m_sValueNewHex;
+
+    // Callback function for Buf()
+    void SetCbBuf(void* pClassCbBuf,
+        BYTE(*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
 
     // Dialog Data
     enum
@@ -47,33 +46,23 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
-    DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnBnClickedOvrLoad();
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedApply();
     BOOL OnInitDialog() override;
 
-public:
-    // Callback function for Buf()
-    void SetCbBuf(void* pClassCbBuf,
-                  BYTE (*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
-private:
     // References to callback function for Buf()
     void* m_pClassCbBuf;
     BYTE (*m_pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool);
 
-public:
-    unsigned m_nOffset;
-    unsigned m_nLen;
-    bool m_bApply; // When OnOK(), indicate apply and redo dialog
-    BOOL m_bEn;
-    CString m_sValueNewHex;
-private:
     CString m_sOffset;
     CString m_sValueCurHex;
     CString m_sValueCurBin;
     CString m_sValueNewBin;
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(COverlayBufDlg)
 };

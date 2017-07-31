@@ -16,20 +16,14 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Simple wrapper for document log routines
-//
-// ==========================================================================
-
-
 #pragma once
 
+// Simple wrapper for document log routines
 class CDocLog
 {
 public:
     CDocLog();
-    ~CDocLog(void);
+    ~CDocLog();
 
     void AddLine(CString str);
     void AddLineHdr(CString str);
@@ -53,8 +47,6 @@ public:
 
 private:
     unsigned AppendToLogLocal(CString strTxt, COLORREF sColor);
-
-private:
 
     bool m_bUseDoc; // Use Document or local buffer
     CDocument* m_pDoc;

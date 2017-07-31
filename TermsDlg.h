@@ -16,26 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box for the terms & conditions (EULA)
-// - This dialog must be agreed to before application can be used
-//
-// ==========================================================================
-
-
 #pragma once
+#include "Resource.h"
 
-
-// CTermsDlg dialog
-
+// Dialog box for the terms & conditions (EULA)
+// This dialog must be agreed to before application can be used
 class CTermsDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CTermsDlg)
-
 public:
-    CTermsDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit CTermsDlg(CWnd* pParent = nullptr);
     virtual ~CTermsDlg();
+
+    BOOL bEulaOk;
+    BOOL bUpdateAuto;
 
     // Dialog Data
     enum
@@ -44,15 +37,13 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
-    DECLARE_MESSAGE_MAP()
 private:
     afx_msg void OnBnClickedOk();
 
-private:
     CString strEula;
-public:
-    BOOL bEulaOk;
-    BOOL bUpdateAuto;
+
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CTermsDlg)
 };

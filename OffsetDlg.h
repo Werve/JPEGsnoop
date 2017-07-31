@@ -25,6 +25,7 @@
 
 #pragma once
 #include "afxwin.h"
+#include "Resource.h"
 
 
 // COffsetDlg dialog
