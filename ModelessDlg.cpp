@@ -25,10 +25,6 @@ CModelessDlg::CModelessDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CModelessDlg::~CModelessDlg()
-{
-}
-
 void CModelessDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

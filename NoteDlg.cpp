@@ -26,10 +26,6 @@ CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CNoteDlg::~CNoteDlg()
-{
-}
-
 void CNoteDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

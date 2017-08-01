@@ -80,7 +80,7 @@ struct tsTagDetail
     tsTagDetail()
     {
         Reset();
-    };
+    }
 
     void Reset()
     {
@@ -100,7 +100,7 @@ struct tsTagDetail
 
         bTagIsJpeg = false;
         nPosJpeg = 0;
-    };
+    }
 };
 
 
@@ -120,12 +120,10 @@ class CDecodeDicom
 {
 public:
     CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog);
-    ~CDecodeDicom();
 
     void Reset();
 
     bool DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, unsigned long& nPosJpeg);
-    //bool          DecodeTagHeader(unsigned long nPos,CString &strTag,CString &strVR,unsigned &nLen,unsigned &nOffset,unsigned long &nPosJpeg);
     bool GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail);
     bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
 

@@ -26,7 +26,6 @@ class CLookupDlg : public CDialog
 public:
     explicit CLookupDlg(CWnd* pParent = nullptr);
     CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
-    virtual ~CLookupDlg();
 
     // Dialog Data
     enum
@@ -39,7 +38,7 @@ public:
         void(*pCbLookup)(void* pClassCbBuf, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit));
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
 private:
     afx_msg void OnBnClickedBtnCalc();

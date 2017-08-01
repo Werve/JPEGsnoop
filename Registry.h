@@ -30,6 +30,7 @@
 // ====================================================================================================
 
 #pragma once
+
 #include <string>
 #include <Shlwapi.h>
 #include <tchar.h>
@@ -86,7 +87,7 @@ public: //methods
         return RegDeleteValue(m_hKey, (LPCTSTR)m_key);
     }
 
-public: //members
+    //members
     HKEY m_base; ///< handle to the registry base
     HKEY m_hKey; ///< handle to the open registry key
     CString m_key; ///< the name of the value
@@ -156,7 +157,7 @@ public: //members
 class CRegDWORD : public CRegBase
 {
 public:
-    CRegDWORD(void);
+    CRegDWORD();
     /**
      * Constructor.
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -164,8 +165,8 @@ public:
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    CRegDWORD(CString key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegDWORD(void);
+    explicit CRegDWORD(CString key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+
     /**
      * reads the assigned value from the registry. Use this method only if you think the registry
      * value could have been altered without using the CRegDWORD object.
@@ -274,8 +275,7 @@ public:
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    CRegString(CString key, CString def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegString(void);
+    explicit CRegString(CString key, CString def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
 
     CString read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
@@ -284,125 +284,12 @@ public:
     CRegString& operator=(CString s);
     CRegString& operator+=(CString s) { return *this = (CString)*this + s; }
 
-
 protected:
-
     CString m_value; ///< the cached value of the registry
     CString m_defaultvalue; ///< the default value to use
     BOOL m_read; ///< indicates if the value has already been read from the registry
     BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
-
-/**
- * \ingroup CommonClasses
- * CRect value in registry. with this class you can use CRect values in registry
- * almost like normal CRect variables in your program.
- * Usage:
- * in your header file, declare your registry CString variable:
- * \code
- * CRegRect regvalue;
- * \endcode
- * next initialize the variable e.g. in the constructor of your class:
- * \code
- * regvalue = CRegRect("Software\\Company\\SubKey\\MyValue", CRect(100,100,200,200));
- * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
- * "Software\Company\SubKey" to the variable. If the key does not yet exist or
- * an error occured during read from the registry, a default
- * value of 100,100,200,200 is used when accessing the variable.
- * now the variable can be used like any other CRect variable:
- * \code
- * regvalue = CRect(40,20,300,500);             //stores the value in the registry
- * CRect temp = regvalue + CPoint(1,1);
- * temp |= CSize(5,5);
- * \endcode
- * to use the normal methods of the CRect class, just typecast the CRegRect to a CRect
- * and do whatever you want with the rect:
- * \code
- * ((CRect)regvalue).MoveToX(100);
- * ((CRect)regvalue).DeflateRect(10,10);
- * \endcode
- * please be aware that in the second line the change in the CRect won't be written
- * to the registry! To force a write use the write() method. A write() is only needed
- * if you change the CRect with Methods not overloaded by CRegRect.
- * to avoid too much access to the registry the value is cached inside the object.
- * once the value is read, no more read accesses to the registry will be made.
- * this means the variable will contain a wrong value if the corresponding registry
- * entry is changed by anything else than this variable! If you think that could happen
- * then use 
- * \code
- * regvalue.read();
- * \endcode
- * to force a refresh of the variable with the registry.
- * a write to the registry is only made if the new value assigned with the variable
- * is different than the last assigned value.
- * to force a write use the method write();
- * another option to force reads and writes to the registry is to specify TRUE as the
- * third parameter in the constructor.
- *
- * \par requirements 
- * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
- * import library Shlwapi.lib
- *
- * \author Stefan Kueng (stefan_kueng@catv.rol.ch)
- *
- * \par license 
- * This code is absolutely free to use and modify. The code is provided "as is" with
- * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
- * or makes your car start emitting strange noises when you start it up.
- * This code has no bugs, just undocumented features!
- * 
- * \version 1.1
- * corrected a bug, thanks to Hans Dietrich for the correction.
- * added base class CRegBase with methods removeKey() and removeValue()
- * \version 1.0 
- * \date 06-2002
- * \todo
- * \bug
- * \warning
- */
-#if 0 // Remove CRegRect (unneeded, triggers C2440)
-class CRegRect : public CRegBase
-{
-public:
-    CRegRect();
-/**
- * Constructor.
- * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
- * \param def the default value used when the key does not exist or a read error occured
- * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
- * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
- */
-    CRegRect(CString key, CRect def = CRect(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegRect(void);
-    
-    CRect read();                       ///< reads the value from the registry
-    void    write();                    ///< writes the value to the registry
-    
-    operator CRect();
-    operator LPCRECT() { return (LPCRECT)(CRect)*this; }
-    operator LPRECT() { return (LPRECT)(CRect)*this; }
-    CRegRect& operator=(CRect r);
-    CRegRect& operator+=(POINT r) { return *this = (CRect)*this + r;}
-    CRegRect& operator+=(SIZE r) { return *this = (CRect)*this + r;}
-    CRegRect& operator+=(LPCRECT  r) { return *this = (CRect)*this + r;}
-    CRegRect& operator-=(POINT r) { return *this = (CRect)*this - r;}
-    CRegRect& operator-=(SIZE r) { return *this = (CRect)*this - r;}
-    CRegRect& operator-=(LPCRECT  r) { return *this = (CRect)*this - r;}
-    
-    CRegRect& operator&=(CRect r) { return *this = r & *this;}
-    CRegRect& operator|=(CRect r) { return *this = r | *this;}
-    
-    
-protected:
-
-    CRect   m_value;                    ///< the cached value of the registry
-    CRect   m_defaultvalue;             ///< the default value to use
-    BOOL    m_read;                     ///< indicates if the value has already been read from the registry
-    BOOL    m_force;                    ///< indicates if no cache should be used, i.e. always read and write directly from registry
-};
-#endif // Remove CRegRect
 
 /**
  * \ingroup CommonClasses
@@ -483,8 +370,7 @@ public:
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    CRegPoint(CString key, CPoint def = CPoint(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegPoint(void);
+    explicit CRegPoint(CString key, CPoint def = CPoint(), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
 
     CPoint read();
     void write(); ///< writes the value to the registry
@@ -494,7 +380,6 @@ public:
 
     CRegPoint& operator+=(CPoint p) { return *this = p + *this; }
     CRegPoint& operator-=(CPoint p) { return *this = p - *this; }
-
 
 protected:
 
@@ -603,7 +488,6 @@ public:
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
     CRegStdString(stdstring key, stdstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegStdString(void);
 
     stdstring read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
@@ -614,7 +498,6 @@ public:
     //     use this function anyway.
     //CRegStdString& operator+=(stdstring s) { return *this = (stdstring)*this + s; }
     operator LPCTSTR();
-
 
 protected:
 
@@ -694,7 +577,6 @@ public:
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
     CRegStdWORD(stdstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
-    ~CRegStdWORD(void);
 
     DWORD read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
@@ -711,7 +593,6 @@ public:
     CRegStdWORD& operator&=(DWORD d) { return *this = *this & d; }
     CRegStdWORD& operator|=(DWORD d) { return *this = *this | d; }
     CRegStdWORD& operator^=(DWORD d) { return *this = *this ^ d; }
-
 
 protected:
 

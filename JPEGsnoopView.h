@@ -26,8 +26,6 @@ class CJPEGsnoopCntrItem;
 class CJPEGsnoopView : public CRichEditView
 {
 public:
-    virtual ~CJPEGsnoopView();
-
     CJPEGsnoopDoc* GetDocument() const;
     BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
@@ -38,7 +36,7 @@ public:
 
 protected:
     // create from serialization only
-    CJPEGsnoopView();
+    CJPEGsnoopView() = default;
     void OnInitialUpdate() override; // called first time after construct
     BOOL OnPreparePrinting(CPrintInfo* pInfo) override;
 

@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // - Dialog box alerting user of new application updates available
@@ -24,7 +25,6 @@ class CUpdateAvailDlg : public CDialog
 {
 public:
     explicit CUpdateAvailDlg(CWnd* pParent = nullptr);
-    virtual ~CUpdateAvailDlg();
 
     CString strVerCur;
     CString strVerLatest;

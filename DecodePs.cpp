@@ -50,10 +50,6 @@ CDecodePs::CDecodePs(CwindowBuf* pWBuf, CDocLog* pLog)
     Reset();
 }
 
-CDecodePs::~CDecodePs()
-{
-}
-
 void CDecodePs::Reset()
 {
     m_bPsd = false;

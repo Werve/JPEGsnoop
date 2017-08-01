@@ -42,15 +42,12 @@ static char THIS_FILE[] = __FILE__;
 //     to set WINVER >= 0x0500
 #define IDC_HAND MAKEINTRESOURCE(32649)
 
-CHyperlinkStatic::CHyperlinkStatic()
-{
-    _bMouseInControl = _bCreateFont = _bGetCaptionSize = false;
-
-    _hHandCursor = ::LoadCursor(nullptr, IDC_HAND);
-    _hArrowCursor = ::LoadCursor(nullptr, IDC_ARROW);
-}
-
-CHyperlinkStatic::~CHyperlinkStatic()
+CHyperlinkStatic::CHyperlinkStatic() :
+    _bCreateFont(false),
+    _bMouseInControl(false),
+    _bGetCaptionSize(false),
+    _hHandCursor(LoadCursor(nullptr, IDC_HAND)),
+    _hArrowCursor(LoadCursor(nullptr, IDC_ARROW))
 {
 }
 

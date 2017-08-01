@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // Dialog box for the application settings
@@ -24,7 +25,6 @@ class CSettingsDlg : public CDialog
 {
 public:
     explicit CSettingsDlg(CWnd* pParent = nullptr);
-    virtual ~CSettingsDlg();
 
     CString m_strDbDir;
     BOOL m_bUpdateAuto;

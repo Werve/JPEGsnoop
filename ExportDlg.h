@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // Dialog box providing options for exporting to JPEG
@@ -24,7 +25,6 @@ class CExportDlg : public CDialog
 {
 public:
     explicit CExportDlg(CWnd* pParent = nullptr);
-    virtual ~CExportDlg();
 
     BOOL m_bOverlayEn;
     BOOL m_bDhtAviInsert;
@@ -41,7 +41,7 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
     DECLARE_MESSAGE_MAP()
     DECLARE_DYNAMIC(CExportDlg)

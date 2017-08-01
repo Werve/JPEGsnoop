@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // Dialog box providing options for detailed scan segment decoding
@@ -24,7 +25,6 @@ class CDecodeDetailDlg : public CDialog
 {
 public:
     explicit CDecodeDetailDlg(CWnd* pParent = nullptr);
-    virtual ~CDecodeDetailDlg();
 
     UINT m_nMcuX;
     UINT m_nMcuY;
@@ -41,7 +41,7 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
     afx_msg void OnBnClickedBtnLoad();
 
     DECLARE_MESSAGE_MAP()

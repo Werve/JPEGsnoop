@@ -30,10 +30,6 @@ CJPEGsnoopCntrItem::CJPEGsnoopCntrItem(REOBJECT* preo, CJPEGsnoopDoc* pContainer
 {
 }
 
-CJPEGsnoopCntrItem::~CJPEGsnoopCntrItem()
-{
-}
-
 #ifdef _DEBUG
 void CJPEGsnoopCntrItem::AssertValid() const
 {

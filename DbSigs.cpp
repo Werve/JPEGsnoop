@@ -108,10 +108,6 @@ CDbSigs::CDbSigs()
     m_nSigListExtraNum = 0;
 }
 
-CDbSigs::~CDbSigs()
-{
-}
-
 // Is this the first time running the application?
 // If so, we skip certain warning messages (such as lack of existing user DB file)
 void CDbSigs::SetFirstRun(bool bFirstRun)

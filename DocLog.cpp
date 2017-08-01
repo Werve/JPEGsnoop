@@ -37,10 +37,6 @@ CDocLog::CDocLog()
 #endif
 }
 
-CDocLog::~CDocLog()
-{
-}
-
 // Enable logging
 void CDocLog::Enable()
 {

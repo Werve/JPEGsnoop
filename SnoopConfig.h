@@ -28,7 +28,6 @@ class CSnoopConfig
 {
 public:
     CSnoopConfig();
-    ~CSnoopConfig();
 
     void UseDefaults();
 

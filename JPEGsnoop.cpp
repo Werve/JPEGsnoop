@@ -42,46 +42,6 @@
 // Global log file
 CDocLog* glb_pDocLog = nullptr;
 
-BEGIN_MESSAGE_MAP(CJPEGsnoopApp, CWinApp)
-    ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-    // Standard file based document commands
-
-    ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
-    //CAL! ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
-    //ON_COMMAND(ID_FILE_NEW, MyOnFileNew)
-    ON_COMMAND(ID_FILE_OPEN, MyOnFileOpen)
-
-    // Standard print setup command
-    ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
-
-    ON_COMMAND(ID_OPTIONS_DHTEXPAND, OnOptionsDhtexpand)
-    ON_COMMAND(ID_OPTIONS_MAKERNOTES, OnOptionsMakernotes)
-    ON_COMMAND(ID_OPTIONS_CONFIGURATION, OnOptionsConfiguration)
-    ON_COMMAND(ID_OPTIONS_CHECKFORUPDATES, OnOptionsCheckforupdates)
-    ON_COMMAND(ID_OPTIONS_SIGNATURESEARCH, OnOptionsSignaturesearch)
-    ON_COMMAND(ID_TOOLS_MANAGELOCALDB, OnToolsManagelocaldb)
-    ON_COMMAND(ID_SCANSEGMENT_DECODEIMAGE, OnScansegmentDecodeimage)
-    ON_COMMAND(ID_SCANSEGMENT_FULLIDCT, OnScansegmentFullidct)
-    ON_COMMAND(ID_SCANSEGMENT_HISTOGRAMY, OnScansegmentHistogramy)
-    ON_COMMAND(ID_SCANSEGMENT_DUMP, OnScansegmentDump)
-    ON_UPDATE_COMMAND_UI(ID_OPTIONS_DHTEXPAND, OnUpdateOptionsDhtexpand)
-    ON_UPDATE_COMMAND_UI(ID_OPTIONS_MAKERNOTES, OnUpdateOptionsMakernotes)
-    ON_UPDATE_COMMAND_UI(ID_OPTIONS_SIGNATURESEARCH, OnUpdateOptionsSignaturesearch)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DECODEIMAGE, OnUpdateScansegmentDecodeimage)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_FULLIDCT, OnUpdateScansegmentFullidct)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_HISTOGRAMY, OnUpdateScansegmentHistogramy)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DUMP, OnUpdateScansegmentDump)
-    ON_COMMAND(ID_SCANSEGMENT_NOIDCT, OnScansegmentNoidct)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_NOIDCT, OnUpdateScansegmentNoidct)
-    ON_COMMAND(ID_SCANSEGMENT_HISTOGRAM, OnScansegmentHistogram)
-    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_HISTOGRAM, OnUpdateScansegmentHistogram)
-    ON_COMMAND(ID_OPTIONS_HIDEUKNOWNEXIFTAGS, OnOptionsHideuknownexiftags)
-    ON_UPDATE_COMMAND_UI(ID_OPTIONS_HIDEUKNOWNEXIFTAGS, OnUpdateOptionsHideuknownexiftags)
-    ON_COMMAND(ID_FILE_BATCHPROCESS, OnFileBatchprocess)
-    ON_COMMAND(ID_OPTIONS_RELAXEDPARSING, &CJPEGsnoopApp::OnOptionsRelaxedparsing)
-    ON_UPDATE_COMMAND_UI(ID_OPTIONS_RELAXEDPARSING, &CJPEGsnoopApp::OnUpdateOptionsRelaxedparsing)
-END_MESSAGE_MAP()
-
 // FIXME:
 // Would like to change string table JPEGsnoop.rc to add:
 //   AFX_IDS_OPENFILE 0xF000 (61440) = _T("Open Image / Movie") for Open Dialog
@@ -1767,3 +1727,36 @@ void CJPEGsnoopApp::OnUpdateOptionsRelaxedparsing(CCmdUI* pCmdUI)
         pCmdUI->SetCheck(FALSE);
     }
 }
+
+BEGIN_MESSAGE_MAP(CJPEGsnoopApp, CWinApp)
+    ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
+    ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+    ON_COMMAND(ID_FILE_OPEN, MyOnFileOpen)
+    ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+    ON_COMMAND(ID_OPTIONS_DHTEXPAND, OnOptionsDhtexpand)
+    ON_COMMAND(ID_OPTIONS_MAKERNOTES, OnOptionsMakernotes)
+    ON_COMMAND(ID_OPTIONS_CONFIGURATION, OnOptionsConfiguration)
+    ON_COMMAND(ID_OPTIONS_CHECKFORUPDATES, OnOptionsCheckforupdates)
+    ON_COMMAND(ID_OPTIONS_SIGNATURESEARCH, OnOptionsSignaturesearch)
+    ON_COMMAND(ID_TOOLS_MANAGELOCALDB, OnToolsManagelocaldb)
+    ON_COMMAND(ID_SCANSEGMENT_DECODEIMAGE, OnScansegmentDecodeimage)
+    ON_COMMAND(ID_SCANSEGMENT_FULLIDCT, OnScansegmentFullidct)
+    ON_COMMAND(ID_SCANSEGMENT_HISTOGRAMY, OnScansegmentHistogramy)
+    ON_COMMAND(ID_SCANSEGMENT_DUMP, OnScansegmentDump)
+    ON_UPDATE_COMMAND_UI(ID_OPTIONS_DHTEXPAND, OnUpdateOptionsDhtexpand)
+    ON_UPDATE_COMMAND_UI(ID_OPTIONS_MAKERNOTES, OnUpdateOptionsMakernotes)
+    ON_UPDATE_COMMAND_UI(ID_OPTIONS_SIGNATURESEARCH, OnUpdateOptionsSignaturesearch)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DECODEIMAGE, OnUpdateScansegmentDecodeimage)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_FULLIDCT, OnUpdateScansegmentFullidct)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_HISTOGRAMY, OnUpdateScansegmentHistogramy)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_DUMP, OnUpdateScansegmentDump)
+    ON_COMMAND(ID_SCANSEGMENT_NOIDCT, OnScansegmentNoidct)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_NOIDCT, OnUpdateScansegmentNoidct)
+    ON_COMMAND(ID_SCANSEGMENT_HISTOGRAM, OnScansegmentHistogram)
+    ON_UPDATE_COMMAND_UI(ID_SCANSEGMENT_HISTOGRAM, OnUpdateScansegmentHistogram)
+    ON_COMMAND(ID_OPTIONS_HIDEUKNOWNEXIFTAGS, OnOptionsHideuknownexiftags)
+    ON_UPDATE_COMMAND_UI(ID_OPTIONS_HIDEUKNOWNEXIFTAGS, OnUpdateOptionsHideuknownexiftags)
+    ON_COMMAND(ID_FILE_BATCHPROCESS, OnFileBatchprocess)
+    ON_COMMAND(ID_OPTIONS_RELAXEDPARSING, &CJPEGsnoopApp::OnOptionsRelaxedparsing)
+    ON_UPDATE_COMMAND_UI(ID_OPTIONS_RELAXEDPARSING, &CJPEGsnoopApp::OnUpdateOptionsRelaxedparsing)
+END_MESSAGE_MAP()

@@ -39,7 +39,6 @@ class CDbManageDlg : public CDialog
 
 public:
     explicit CDbManageDlg(CWnd* pParent = nullptr);
-    virtual ~CDbManageDlg();
 
     void InsertEntry(unsigned ind, CString strMake, CString strModel, CString strQual, CString strSig);
     void PopulateList();
@@ -61,7 +60,6 @@ private:
 
     CListBox m_ctlListBox; // Listbox representing custom signatures
     CStringArray m_asToInsert; // Entries to be added to Listbox via PopulateList()
-
     CUIntArray m_anListBoxInd; // Index of entries currently in listBox  (e.g 1,2,4,7,15)
 
     DECLARE_MESSAGE_MAP()

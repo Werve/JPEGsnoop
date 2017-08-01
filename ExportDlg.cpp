@@ -32,10 +32,6 @@ CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CExportDlg::~CExportDlg()
-{
-}
-
 void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

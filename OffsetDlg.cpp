@@ -22,13 +22,10 @@
 #include "General.h"
 
 COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
-{
-    m_nBaseMode = 0; // 0=hex, 1=dec
-    m_nRadioBaseMode = 0;
-}
-
-COffsetDlg::~COffsetDlg()
+    : CDialog(IDD, pParent),
+    m_nOffsetVal(0),
+    m_nRadioBaseMode(0),
+    m_nBaseMode(0) // 0=hex, 1=dec
 {
 }
 

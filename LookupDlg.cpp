@@ -48,10 +48,6 @@ CLookupDlg::CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY)
     m_strRngY.Format(_T("(0..%u)"), m_nSizeY - 1);
 }
 
-CLookupDlg::~CLookupDlg()
-{
-}
-
 void CLookupDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

@@ -24,8 +24,6 @@
 class CMainFrame : public CFrameWnd
 {
 public:
-    virtual ~CMainFrame();
-
 #ifdef _DEBUG
     void AssertValid() const override;
     void Dump(CDumpContext& dc) const override;

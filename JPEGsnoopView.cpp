@@ -26,14 +26,6 @@
 #define new DEBUG_NEW
 #endif
 
-CJPEGsnoopView::CJPEGsnoopView()
-{
-}
-
-CJPEGsnoopView::~CJPEGsnoopView()
-{
-}
-
 BOOL CJPEGsnoopView::PreCreateWindow(CREATESTRUCT& cs)
 {
     return CRichEditView::PreCreateWindow(cs);

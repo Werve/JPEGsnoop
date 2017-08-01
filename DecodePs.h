@@ -86,7 +86,6 @@ struct tsBimRecord
     CString strRecordName;
 };
 
-
 // Structure used for each enumerated field in IRB decoding
 enum teBimEnumField
 {
@@ -149,12 +148,19 @@ class CDecodePs
 {
 public:
     CDecodePs(CwindowBuf* pWBuf, CDocLog* pLog);
-    ~CDecodePs(void);
 
     void Reset();
 
     bool DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, unsigned& nHeight);
     bool PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned nIndent);
+
+    bool m_bPsd;
+    unsigned m_nQualitySaveAs;
+    unsigned m_nQualitySaveForWeb;
+
+    bool m_bDisplayLayer;
+    unsigned m_nDisplayLayerInd;
+    bool m_bDisplayImage;
 
 private:
     CString PhotoshopParseGetLStrAsc(unsigned long& nPos);
@@ -226,7 +232,6 @@ private:
 
     BYTE Buf(unsigned long offset, bool bClean);
 
-private:
     // Configuration
     CSnoopConfig* m_pAppConfig;
 
@@ -235,13 +240,4 @@ private:
     CDocLog* m_pLog;
 
     bool m_bAbort; // Abort continued decode?
-
-public:
-    bool m_bPsd;
-    unsigned m_nQualitySaveAs;
-    unsigned m_nQualitySaveForWeb;
-
-    bool m_bDisplayLayer;
-    unsigned m_nDisplayLayerInd;
-    bool m_bDisplayImage;
 };

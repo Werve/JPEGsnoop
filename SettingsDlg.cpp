@@ -32,10 +32,6 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CSettingsDlg::~CSettingsDlg()
-{
-}
-
 void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

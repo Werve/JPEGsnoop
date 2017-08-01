@@ -30,10 +30,6 @@ CBatchDlg::CBatchDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CBatchDlg::~CBatchDlg()
-{
-}
-
 void CBatchDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

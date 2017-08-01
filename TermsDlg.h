@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // Dialog box for the terms & conditions (EULA)
@@ -25,7 +26,6 @@ class CTermsDlg : public CDialog
 {
 public:
     explicit CTermsDlg(CWnd* pParent = nullptr);
-    virtual ~CTermsDlg();
 
     BOOL bEulaOk;
     BOOL bUpdateAuto;

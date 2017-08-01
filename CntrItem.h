@@ -29,7 +29,6 @@ public:
     //  IMPLEMENT_SERIALIZE requires the class have a constructor with
     //  zero arguments.  Normally, OLE items are constructed with a
     //  non-NULL document pointer
-    ~CJPEGsnoopCntrItem();
 
     CJPEGsnoopDoc* GetDocument()
     {

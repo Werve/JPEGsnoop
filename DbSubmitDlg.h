@@ -26,7 +26,6 @@ class CDbSubmitDlg : public CDialog
 {
 public:
     explicit CDbSubmitDlg(CWnd* pParent = nullptr);
-    virtual ~CDbSubmitDlg();
 
     CString m_strSig;
     CString m_strQual;

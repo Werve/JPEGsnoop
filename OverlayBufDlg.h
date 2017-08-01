@@ -17,6 +17,7 @@
 //
 
 #pragma once
+
 #include "Resource.h"
 
 // - Dialog box for configuring a file decoder overlay
@@ -27,7 +28,6 @@ public:
     explicit COverlayBufDlg(CWnd* pParent = nullptr);
     COverlayBufDlg(CWnd* pParent,
                    bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin);
-    virtual ~COverlayBufDlg();
 
     unsigned m_nOffset;
     unsigned m_nLen;

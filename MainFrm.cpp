@@ -36,11 +36,8 @@ static UINT indicators[] =
     ID_INDICATOR_YCC, // Added YCC Value
 };
 
-CMainFrame::CMainFrame()
-{
-}
-
-CMainFrame::~CMainFrame()
+CMainFrame::CMainFrame() :
+    m_bInitSplitter(FALSE)
 {
 }
 

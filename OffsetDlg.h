@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "afxwin.h"
+#include <afxwin.h>
 #include "Resource.h"
 
 // Dialog box for adjusting the starting file decode offset
@@ -26,7 +26,6 @@ class COffsetDlg : public CDialog
 {
 public:
     explicit COffsetDlg(CWnd* pParent = nullptr);
-    virtual ~COffsetDlg();
 
     void SetOffset(unsigned nPos);
     unsigned GetOffset();
@@ -53,6 +52,5 @@ private:
     CString m_sOffsetVal;
 
     DECLARE_MESSAGE_MAP()
-
     DECLARE_DYNAMIC(COffsetDlg)
 };

@@ -23,7 +23,6 @@ class CDocLog
 {
 public:
     CDocLog();
-    ~CDocLog();
 
     void AddLine(CString str);
     void AddLineHdr(CString str);

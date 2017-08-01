@@ -18,18 +18,13 @@
 
 #pragma once
 
-// FIXME:
-// For some reason, the IDD_BATCHDLG constant reports C2065 "undeclared identifier"
-// So as a workaround, I am explicitly referencing "Resource.h" here
 #include "Resource.h"
-
 
 // Dialog box for Batch image processing
 class CBatchDlg : public CDialog
 {
 public:
     explicit CBatchDlg(CWnd* pParent = nullptr);
-    virtual ~CBatchDlg();
 
     BOOL m_bProcessSubdir;
     BOOL m_bExtractAll;

@@ -26,10 +26,6 @@ CDbSubmitDlg::CDbSubmitDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CDbSubmitDlg::~CDbSubmitDlg()
-{
-}
-
 void CDbSubmitDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
@@ -49,7 +45,7 @@ void CDbSubmitDlg::OnBnClickedOk()
     // If "Software" selected, then make sure title is filled in!
     if (m_nSource == 1)
     {
-        if (m_strUserSoftware == _T(""))
+        if (m_strUserSoftware.IsEmpty())
         {
             AfxMessageBox(_T("You indicated that this file is processed. Please enter software name."));
             return;

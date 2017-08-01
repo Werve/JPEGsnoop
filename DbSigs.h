@@ -73,7 +73,6 @@ class CDbSigs
 {
 public:
     CDbSigs();
-    ~CDbSigs();
 
     unsigned GetNumSigsInternal();
     unsigned GetNumSigsExtra();

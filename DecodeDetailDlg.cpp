@@ -37,10 +37,6 @@ CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
     m_nLoadMcuLen = 0;
 }
 
-CDecodeDetailDlg::~CDecodeDetailDlg()
-{
-}
-
 void CDecodeDetailDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

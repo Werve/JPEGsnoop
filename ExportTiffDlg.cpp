@@ -16,9 +16,6 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ExportTiffDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
 
 #include "ExportTiffDlg.h"
@@ -26,10 +23,6 @@
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
       , m_nCtlFmt(0)
-{
-}
-
-CExportTiffDlg::~CExportTiffDlg()
 {
 }
 

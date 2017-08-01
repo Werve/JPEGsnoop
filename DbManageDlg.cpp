@@ -27,10 +27,6 @@ CDbManageDlg::CDbManageDlg(CWnd* pParent /*=NULL*/)
     m_anListBoxInd.SetSize(0, 10);
 }
 
-CDbManageDlg::~CDbManageDlg()
-{
-}
-
 void CDbManageDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

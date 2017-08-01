@@ -68,10 +68,6 @@ CRegDWORD::CRegDWORD(CString key, DWORD def, BOOL force, HKEY base)
     read();
 }
 
-CRegDWORD::~CRegDWORD()
-{
-}
-
 DWORD CRegDWORD::read()
 {
     ASSERT(m_key != _T(""));
@@ -154,10 +150,6 @@ CRegString::CRegString(CString key, CString def, BOOL force, HKEY base)
     m_key = key.Right(key.GetLength() - key.ReverseFind(_T('\\')));
     m_key.Trim(_T("\\"));
     read();
-}
-
-CRegString::~CRegString()
-{
 }
 
 CString CRegString::read()
@@ -255,10 +247,6 @@ CRegPoint::CRegPoint(CString key, CPoint def, BOOL force, HKEY base)
     read();
 }
 
-CRegPoint::~CRegPoint()
-{
-}
-
 CPoint CRegPoint::read()
 {
     ASSERT(m_key != _T(""));
@@ -346,10 +334,6 @@ CRegStdString::CRegStdString(stdstring key, stdstring def, BOOL force, HKEY base
     m_path = key.substr(0, pos);
     m_key = key.substr(pos + 1);
     read();
-}
-
-CRegStdString::~CRegStdString()
-{
 }
 
 stdstring CRegStdString::read()
@@ -443,10 +427,6 @@ CRegStdWORD::CRegStdWORD(stdstring key, DWORD def, BOOL force, HKEY base)
     m_path = key.substr(0, pos);
     m_key = key.substr(pos + 1);
     read();
-}
-
-CRegStdWORD::~CRegStdWORD()
-{
 }
 
 DWORD CRegStdWORD::read()

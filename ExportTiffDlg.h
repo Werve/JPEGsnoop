@@ -26,7 +26,6 @@ class CExportTiffDlg : public CDialog
 {
 public:
     explicit CExportTiffDlg(CWnd* pParent = nullptr);
-    virtual ~CExportTiffDlg();
 
     int m_nCtlFmt;
     CString m_sFname;

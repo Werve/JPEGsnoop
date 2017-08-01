@@ -58,10 +58,6 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
     m_sOffset.Format(_T("0x%08X"), m_nOffset);
 }
 
-COverlayBufDlg::~COverlayBufDlg()
-{
-}
-
 void COverlayBufDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

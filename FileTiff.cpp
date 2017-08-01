@@ -22,13 +22,16 @@
 #include "snoop.h"
 
 
-FileTiff::FileTiff()
+FileTiff::FileTiff() :
+    m_pFileOutput(nullptr),
+    m_nPtrIfdExtra(0),
+    m_nPtrImg(0),
+    m_nPos(0),
+    m_bPreCalc(false),
+    m_nNumIfd(0),
+    m_pIfdExtraBuf(nullptr),
+    m_nIfdExtraLen(0)
 {
-    m_pFileOutput = nullptr;
-    m_nPtrIfdExtra = 0;
-    m_nPtrImg = 0;
-    m_nPos = 0;
-    m_pIfdExtraBuf = nullptr;
 }
 
 FileTiff::~FileTiff()

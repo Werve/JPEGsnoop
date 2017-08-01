@@ -27,13 +27,6 @@
 //      Date:       Jun 2005
 // ====================================================================================================
 
-
-////////////////////////////////////////////////////////////////
-// MSDN Magazine -- June 2005
-// If this code works, it was written by Paul DiLascia.
-// If not, I don't know who wrote it.
-// Compiles with Visual Studio .NET 2003 (V7.1) on Windows XP. Tab size=3.
-//
 #pragma once
 
 //////////////////
@@ -80,7 +73,6 @@ public:
     static BOOL bTRACE; // controls tracing
 
     explicit CFolderDialog(CWnd* pWnd);
-    ~CFolderDialog();
 
     LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
                                   LPCITEMIDLIST pidRoot = nullptr, BOOL bFilter = FALSE);

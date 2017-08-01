@@ -16,27 +16,19 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box showing  a warning note
-// - Provide a means of disabling the specific coach message
-//
-// ==========================================================================
-
-
 #pragma once
+
 #include "Resource.h"
 
-
-// CNoteDlg dialog
-
+// Dialog box showing  a warning note
+// Provide a means of disabling the specific coach message
 class CNoteDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CNoteDlg)
-
 public:
-    CNoteDlg(CWnd* pParent = nullptr); // standard constructor
-    virtual ~CNoteDlg();
+    explicit CNoteDlg(CWnd* pParent = nullptr);
+
+    CString strMsg;
+    BOOL bCoachOff;
 
     // Dialog Data
     enum
@@ -45,11 +37,8 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX) override;
 
     DECLARE_MESSAGE_MAP()
-
-public:
-    CString strMsg;
-    BOOL bCoachOff;
+    DECLARE_DYNAMIC(CNoteDlg)
 };

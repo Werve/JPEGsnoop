@@ -54,10 +54,6 @@ CFolderDialog::CFolderDialog(CWnd* pWnd)
     m_strStartPath = "";
 }
 
-CFolderDialog::~CFolderDialog()
-{
-}
-
 //////////////////
 // Browse for folder. Args are same as for SHBrowseForFolder, but with extra
 // bFilter that tells whether to do custom filtering. Note this requires

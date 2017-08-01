@@ -103,10 +103,6 @@ CSnoopConfig::CSnoopConfig()
         ((osvi.dwMajorVersion == 5) && (osvi.dwMinorVersion >= 1)));
 }
 
-CSnoopConfig::~CSnoopConfig()
-{
-}
-
 // This is generally called after app initializes and registry
 // has just been loaded.
 void CSnoopConfig::UseDefaults()

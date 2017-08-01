@@ -27,10 +27,6 @@ CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
 {
 }
 
-CUpdateAvailDlg::~CUpdateAvailDlg()
-{
-}
-
 void CUpdateAvailDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

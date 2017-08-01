@@ -95,10 +95,6 @@ CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)
     strEula += _T("Should you have any questions concerning this EULA, or if you desire to contact ImpulseAdventure for any reason, please contact by electronic mail at: jpegsnoop@impulseadventure.com\r\n");
 }
 
-CTermsDlg::~CTermsDlg()
-{
-}
-
 void CTermsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);

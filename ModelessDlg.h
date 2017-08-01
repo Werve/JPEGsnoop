@@ -16,27 +16,25 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box displayed while checking for updates
-// - Modeless dialog box
-//
-// ==========================================================================
-
-
 #pragma once
+
 #include "Resource.h"
 
-
-// CModelessDlg dialog
-
+// Dialog box displayed while checking for updates
+// Modeless dialog box
 class CModelessDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CModelessDlg)
-
 public:
-    CModelessDlg(CWnd* pParent = nullptr); // standard constructor
-    virtual ~CModelessDlg();
+    explicit CModelessDlg(CWnd* pParent = nullptr);
+
+    BOOL Create(UINT nID, CWnd* pWnd) override
+    {
+        return CDialog::Create(nID, pWnd);
+    }
+
+    void OnCancel() override;
+
+    CString strMsg;
 
     // Dialog Data
     enum
@@ -45,19 +43,12 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-public:
-    BOOL Create(UINT nID, CWnd* pWnd) override
+    void DoDataExchange(CDataExchange* pDX) override;
+    void PostNcDestroy() override
     {
-        return CDialog::Create(nID, pWnd);
+        delete this;
     }
 
-    CString strMsg;
-
-    void OnCancel() override;
-
-protected:
-    void PostNcDestroy() override { delete this; }
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DYNAMIC(CModelessDlg)
 };

@@ -44,10 +44,6 @@ CDecodeDicom::CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog)
     Reset();
 }
 
-CDecodeDicom::~CDecodeDicom()
-{
-}
-
 void CDecodeDicom::Reset()
 {
     m_bDicom = false;

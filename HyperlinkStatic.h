@@ -34,7 +34,6 @@ class CHyperlinkStatic : public CStatic
 {
 public:
     CHyperlinkStatic();
-    virtual ~CHyperlinkStatic();
 
     void SetHyperlink(CString strHyperlink);
     void SetCaption(CString strCaption);
@@ -52,11 +51,15 @@ private:
     void GetCaptionSize();
     bool InCaptionRange(CPoint& point) const;
 
-    CString _strCaption, _strHyperlink;
+    CString _strCaption;
+    CString _strHyperlink;
     CFont _fontCaption;
     CSize _sizeCaption;
-    bool _bCreateFont, _bMouseInControl, _bGetCaptionSize;
-    HCURSOR _hHandCursor, _hArrowCursor;
+    bool _bCreateFont;
+    bool _bMouseInControl;
+    bool _bGetCaptionSize;
+    HCURSOR _hHandCursor;
+    HCURSOR _hArrowCursor;
 
     DECLARE_MESSAGE_MAP()
 };
