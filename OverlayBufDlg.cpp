@@ -26,10 +26,6 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
       , m_nLen(0)
       , m_bEn(FALSE)
-      , m_sValueNewHex(_T(""))
-      , m_sOffset(_T(""))
-      , m_sValueCurHex(_T(""))
-      , m_sValueCurBin(_T(""))
 {
     // FIXME: Should probably mark this as invalid
     m_bApply = false;
@@ -45,9 +41,6 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
     : CDialog(IDD, pParent)
       , m_nLen(0)
       , m_bEn(FALSE)
-      , m_sValueNewHex(_T(""))
-      , m_sOffset(_T(""))
-      , m_sValueCurHex(_T(""))
 {
     m_bEn = bEn;
     m_nOffset = nOffset;

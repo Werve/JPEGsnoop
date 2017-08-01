@@ -86,7 +86,7 @@ struct tsTagDetail
     {
         nTagGroup = 0;
         nTagElement = 0;
-        strVR = _T("");
+        strVR.Empty();
         nLen = 0;
         nOffset = 0;
 
@@ -94,9 +94,9 @@ struct tsTagDetail
         bLen4B = false;
 
         bTagOk = false;
-        strTag = _T("");
+        strTag.Empty();
         bValOk = false;
-        strVal = _T("");
+        strVal.Empty();
 
         bTagIsJpeg = false;
         nPosJpeg = 0;

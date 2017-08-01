@@ -21,7 +21,7 @@
 
 CString Dec2Bin(unsigned nVal, unsigned nLen, bool bSpace)
 {
-    CString strBin = _T("");
+    CString strBin;
     for (int nInd = nLen - 1; nInd >= 0; nInd--)
     {
         unsigned nBit = (nVal & (1 << nInd)) >> nInd;

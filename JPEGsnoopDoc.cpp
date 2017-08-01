@@ -97,7 +97,7 @@ void CJPEGsnoopDoc::Reset()
     m_lFileSize = 0L;
 
     // No log data available until we open & process a file
-    m_strPathNameOpened = _T("");
+    m_strPathNameOpened.Empty();
 
     // Indicate to JFIF ProcessFile() that document has changed
     // and that the scan decode needs to be redone if it
@@ -481,9 +481,9 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
 // empty search result.
 //
 // INPUT:
-// - strBatchDir		The root folder of the batch process
-// - bRecSubdir			Flag to descend recursively into sub-directories
-// - bExtractAll		Flag to extract all JPEGs from files
+// - strBatchDir        The root folder of the batch process
+// - bRecSubdir         Flag to descend recursively into sub-directories
+// - bExtractAll        Flag to extract all JPEGs from files
 //
 void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool bRecSubdir, bool bExtractAll)
 {
@@ -1105,7 +1105,7 @@ void CJPEGsnoopDoc::OnFileSaveAs()
         CString cstrSelFileExt = strFileName.Right(strFileName.GetLength() - strFileName.ReverseFind('.'));
 
         //if (cstrSelFileExt == _T(".rtf")) {
-        //	m_bRTF = true;
+        //  m_bRTF = true;
         //}
 
         // Perform the save
@@ -1240,9 +1240,8 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     CFile* pFileExe;
     CString strTmp;
 
-
-    ASSERT(strFileName != _T(""));
-    if (strFileName == _T(""))
+    ASSERT(!strFileName.IsEmpty());
+    if (strFileName.IsEmpty())
     {
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(_T("ERROR: SearchExe() but strFileName empty"));
@@ -1295,13 +1294,13 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     pExeBuf->BufFileSet(pFileExe);
     pExeBuf->BufLoadWindow(0);
 
-    //bool			bDoneFile = false;
-    //long			nFileInd = 0;
+    //bool          bDoneFile = false;
+    //long          nFileInd = 0;
     unsigned nEntriesWidth;
     bool bEntriesByteSwap;
     unsigned long nFoundPos = 0;
     bool bFound = false;
-    //bool			bFoundEntry = false;
+    //bool          bFoundEntry = false;
 
     BYTE abSearchMatrix[(64 * 4) + 4];
     unsigned nSearchMatrixLen;
@@ -1604,12 +1603,9 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     bool bAllOk = true;
     CExportDlg dlgExport;
     CString strTmp;
-    //unsigned int	nFileSize = 0;
 
     // Original function params
-    //bool			bInteractive = true;
-    //bool			bInsDhtAvi = false;
-    CString strOutPath = _T("");
+    CString strOutPath;
 
     bool bOverlayEn = false;
     bool bForceSoi = false;
@@ -1617,7 +1613,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     bool bIgnoreEoi = false;
     bool bExtractAllEn = false;
     bool bDhtAviInsert = false;
-    CString strOffsetStart = _T("");
+    CString strOffsetStart;
 
     // Get operation configuration from user
     // ------------------------------------------
@@ -1630,7 +1626,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     m_pCore->J_GetAviMode(bIsAvi, bIsMjpeg);
     dlgExport.m_bDhtAviInsert = bIsMjpeg;
 
-    dlgExport.m_bOverlayEn = false; // Changed default on 08/22/2011
+    dlgExport.m_bOverlayEn = false;
     dlgExport.m_bForceSoi = false;
     dlgExport.m_bForceEoi = false;
     dlgExport.m_bIgnoreEoi = false;
@@ -1639,7 +1635,6 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
 
     if (dlgExport.DoModal() == IDOK)
     {
-        // OK
         bExtractAllEn = (dlgExport.m_bExtractAllEn != 0);
         bForceSoi = (dlgExport.m_bForceSoi != 0);
         bForceEoi = (dlgExport.m_bForceEoi != 0);
@@ -1652,12 +1647,8 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
         bAllOk = false;
     }
 
-
     // Confirm output filename
     // ------------------------------------------
-
-    CString strInputFname;
-    CString strExportFname;
 
     // Preserve CDocument settings
     BOOL bSavedRTF = m_bRTF;
@@ -1666,8 +1657,8 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     m_bRTF = false;
 
     // Generate default export filename
-    strInputFname = m_strPathName;
-    strExportFname = strInputFname + _T(".export.jpg");
+    CString strInputFname = m_strPathName;
+    CString strExportFname = strInputFname + _T(".export.jpg");
 
     // Save File Dialog
     TCHAR aszFilter[] =
@@ -1676,9 +1667,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
 
     CFileDialog FileDlg(FALSE, _T(".jpg"), strExportFname, OFN_OVERWRITEPROMPT, aszFilter);
 
-    CString title;
-    //VERIFY(title.LoadString(IDS_CAL_FILESAVE));
-    title = _T("Save Exported JPEG file as");
+    CString title = _T("Save Exported JPEG file as");
     FileDlg.m_ofn.lpstrTitle = title;
 
     INT_PTR nDlgResult = FileDlg.DoModal();
@@ -1701,9 +1690,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
         return;
     }
 
-
     // Extract file operation
-    // ------------------------------------------
 
     // Clear the log as DoExtractEmbeddedJPEG will re-analyze file into log
     DeleteContents();
@@ -1713,7 +1700,6 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     // As the extraction adds some status lines, update the log
     InsertQuickLog();
 }
-
 
 // Menu enable status for Tools -> Extract embedded JPEG
 void CJPEGsnoopDoc::OnUpdateToolsExtractembeddedjpeg(CCmdUI* pCmdUI)
@@ -1737,20 +1723,12 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
 {
     CString strDlg;
 
-    unsigned nOffset;
-    CString strValNew;
-    unsigned nValLen;
     BYTE anValData[16];
 
-    bool bCurEn;
     BYTE* pCurData;
     unsigned nCurLen;
     unsigned nCurStart;
-    CString strCurDataHex;
-    CString strCurDataBin;
     CString strTmp;
-    CString strTmpByte;
-    unsigned nTmpByte;
 
     // NOTE: This function assumes that we've previously opened a file
     // Otherwise, there isn't much point in setting the offset value
@@ -1759,8 +1737,8 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
     bool bDone = false;
     while (!bDone)
     {
-        strCurDataHex = _T("");
-        strCurDataBin = _T("");
+        CString strCurDataHex;
+        CString strCurDataBin;
 
         if (m_pCore->AnalyzeOpen() == false)
         {
@@ -1768,13 +1746,13 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
         }
 
         // Set overlay dialog starting values...
-        bCurEn = m_pCore->B_OverlayGet(0, pCurData, nCurLen, nCurStart);
+        bool bCurEn = m_pCore->B_OverlayGet(0, pCurData, nCurLen, nCurStart);
         // Were any overlays previously defined?
         if (!bCurEn)
         {
             // If not, don't try to read the buffer! Simply force string
-            strCurDataHex = _T("");
-            strCurDataBin = _T("");
+            strCurDataHex.Empty();
+            strCurDataBin.Empty();
             nCurStart = 0;
             nCurLen = 0;
         }
@@ -1794,19 +1772,19 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
 
         COverlayBufDlg dlgOverlay(NULL, bCurEn, nCurStart, nCurLen, strCurDataHex, strCurDataBin);
         // Set the call-back function
-        dlgOverlay.SetCbBuf((void*)this, CJPEGsnoopDoc::CbWrap_B_Buf);
+        dlgOverlay.SetCbBuf(this, CbWrap_B_Buf);
 
         if (dlgOverlay.DoModal() == IDOK)
         {
             // Convert and store the params
-            nOffset = dlgOverlay.m_nOffset;
-            nValLen = dlgOverlay.m_nLen; // bits
-            strValNew = dlgOverlay.m_sValueNewHex;
+            unsigned nOffset = dlgOverlay.m_nOffset;
+            unsigned nValLen = dlgOverlay.m_nLen; // bits
+            CString strValNew = dlgOverlay.m_sValueNewHex;
 
             for (unsigned nInd = 0; nInd < _tcslen(strValNew) / 2; nInd++)
             {
-                strTmpByte = strValNew.Mid(nInd * 2, 2);
-                nTmpByte = _tcstoul(strTmpByte,NULL, 16);
+                CString strTmpByte = strValNew.Mid(nInd * 2, 2);
+                unsigned nTmpByte = _tcstoul(strTmpByte,NULL, 16);
                 anValData[nInd] = (nTmpByte & 0xFF);
             }
 
@@ -2063,7 +2041,7 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
     CString strTitle;
     CString strFileName;
     strTitle = _T("Output TIFF Filename");
-    //	VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
+    //  VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
     if (FileDlg.DoModal() == IDOK)

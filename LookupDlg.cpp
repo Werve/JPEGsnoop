@@ -23,35 +23,29 @@
 
 CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
+      , m_pClassCbLookup(nullptr)
+      , m_pCbLookup(nullptr)
       , m_nPixX(0)
       , m_nPixY(0)
-      , m_strOffset(_T(""))
+      , m_nTestVal(0)
       , m_nSizeX(0)
       , m_nSizeY(0)
-      , m_strRngX(_T(""))
-      , m_strRngY(_T(""))
 {
-    // Initialize callback functions to NULL
-    m_pCbLookup = nullptr;
-    m_pClassCbLookup = nullptr;
 }
 
 CLookupDlg::CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY)
     : CDialog(IDD, pParent)
+      , m_pClassCbLookup(nullptr)
+      , m_pCbLookup(nullptr)
       , m_nPixX(0)
       , m_nPixY(0)
       , m_strOffset(_T("Not Calculated"))
-      , m_nSizeX(nSizeX)
-      , m_nSizeY(nSizeY)
-      , m_strRngX(_T(""))
-      , m_strRngY(_T(""))
+      , m_nTestVal(0)
+      ,m_nSizeX(nSizeX)
+      ,m_nSizeY(nSizeY)
 {
     m_strRngX.Format(_T("(0..%u)"), m_nSizeX - 1);
     m_strRngY.Format(_T("(0..%u)"), m_nSizeY - 1);
-
-    // Initialize callback functions to NULL
-    m_pCbLookup = nullptr;
-    m_pClassCbLookup = nullptr;
 }
 
 CLookupDlg::~CLookupDlg()

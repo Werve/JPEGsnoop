@@ -44,7 +44,6 @@ static char THIS_FILE[] = __FILE__;
 
 CHyperlinkStatic::CHyperlinkStatic()
 {
-    _strCaption = _strHyperlink = _T("");
     _bMouseInControl = _bCreateFont = _bGetCaptionSize = false;
 
     _hHandCursor = ::LoadCursor(nullptr, IDC_HAND);

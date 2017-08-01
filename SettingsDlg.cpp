@@ -24,7 +24,6 @@
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , m_strDbDir(_T(""))
       , m_bUpdateAuto(FALSE)
       , m_nUpdateChkDays(0)
       , m_bReprocessAuto(FALSE)
@@ -52,7 +51,7 @@ void CSettingsDlg::DoDataExchange(CDataExchange* pDX)
 void CSettingsDlg::OnBnClickedDbDirBrowse()
 {
     CString strDir = SelectFolder(_T("Please select folder for User Database"));
-    if (strDir == _T(""))
+    if (strDir.IsEmpty())
     {
         // User cancelled
     }

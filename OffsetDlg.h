@@ -16,27 +16,20 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-// ==========================================================================
-// CLASS DESCRIPTION:
-// - Dialog box for adjusting the starting file decode offset
-//
-// ==========================================================================
-
-
 #pragma once
+
 #include "afxwin.h"
 #include "Resource.h"
 
-
-// COffsetDlg dialog
-
+// Dialog box for adjusting the starting file decode offset
 class COffsetDlg : public CDialog
 {
-    DECLARE_DYNAMIC(COffsetDlg)
-
 public:
-    COffsetDlg(CWnd* pParent = nullptr); // standard constructor
+    explicit COffsetDlg(CWnd* pParent = nullptr);
     virtual ~COffsetDlg();
+
+    void SetOffset(unsigned nPos);
+    unsigned GetOffset();
 
     // Dialog Data
     enum
@@ -45,28 +38,21 @@ public:
     };
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-
-    DECLARE_MESSAGE_MAP()
-
-
-public:
-    void SetOffset(unsigned nPos);
-    unsigned GetOffset();
+    void DoDataExchange(CDataExchange* pDX) override;
 
 private:
     void OffsetNum2Str();
     bool OffsetStr2Num();
-
-private:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedBaseh();
     afx_msg void OnBnClickedBased();
 
-
-private:
     unsigned m_nOffsetVal;
     int m_nRadioBaseMode;
     unsigned m_nBaseMode;
     CString m_sOffsetVal;
+
+    DECLARE_MESSAGE_MAP()
+
+    DECLARE_DYNAMIC(COffsetDlg)
 };

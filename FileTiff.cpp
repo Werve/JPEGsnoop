@@ -466,7 +466,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
 
 void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* pBitmap, unsigned nSizeX, unsigned nSizeY)
 {
-    ASSERT(sFnameOut != _T(""));
+    ASSERT(!sFnameOut.IsEmpty());
 
     unsigned char * pBitmap8 = reinterpret_cast<unsigned char *>(pBitmap);
     unsigned short * pBitmap16 = reinterpret_cast<unsigned short *>(pBitmap);

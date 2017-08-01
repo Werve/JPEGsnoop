@@ -2046,17 +2046,15 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
             m_nScanBuffLatchErr = SCANBUF_OK;
         }
 
-
         // Should this be before or after restart checks?
         unsigned nCoeffStart = nNumCoeffs;
         unsigned nCoeffEnd = nNumCoeffs + nZrl;
 
-        short int nVal2;
-        nVal2 = static_cast<short int>(nVal & 0xFFFF);
+        short int nVal2 = static_cast<short int>(nVal & 0xFFFF);
 
         if (eRsvRet == RSV_OK)
         {
-            strSpecial = _T("");
+            strSpecial.Empty();
             // DC entry is always one value only
             // FIXME: Do I need nTblDqt == 4 as well?
             if (bDC)
@@ -2190,7 +2188,6 @@ void CimgDecode::ReportDctMatrix()
 {
     CString strTmp;
     CString strLine;
-    int nCoefVal;
 
     for (unsigned nY = 0; nY < 8; nY++)
     {
@@ -2204,8 +2201,8 @@ void CimgDecode::ReportDctMatrix()
         }
         for (unsigned nX = 0; nX < 8; nX++)
         {
-            strTmp = _T("");
-            nCoefVal = m_anDctBlock[nY * 8 + nX];
+            strTmp.Empty();
+            int nCoefVal = m_anDctBlock[nY * 8 + nX];
             strTmp.Format(_T("%5d"), nCoefVal);
             strLine.Append(strTmp);
 
@@ -2244,21 +2241,14 @@ void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
                            unsigned nCoeffStart, unsigned nCoeffEnd,
                            CString specialStr)
 {
-    CString strPos;
     CString strTmp;
 
     unsigned nBufByte[4];
     unsigned nBufPosInd = nVlcPos;
-    CString strData = _T("");
-    CString strByte1 = _T("");
-    CString strByte2 = _T("");
-    CString strByte3 = _T("");
-    CString strByte4 = _T("");
-    CString strBytes = _T("");
-    CString strBytesOrig = _T("");
-    CString strBinMarked = _T("");
+    CString strData;
+    CString strBinMarked;
 
-    strPos = GetScanBufPos(nVlcPos, nVlcAlign);
+    CString strPos = GetScanBufPos(nVlcPos, nVlcAlign);
 
     // Read in the buffer bytes, but skip pad bytes (0xFF00 -> 0xFF)
 
@@ -2288,12 +2278,12 @@ void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
         nBufByte[3] = m_pWBuf->Buf(nBufPosInd++);
     }
 
-    strByte1 = Dec2Bin(nBufByte[0], 8, true);
-    strByte2 = Dec2Bin(nBufByte[1], 8, true);
-    strByte3 = Dec2Bin(nBufByte[2], 8, true);
-    strByte4 = Dec2Bin(nBufByte[3], 8, true);
-    strBytesOrig = strByte1 + _T(" ") + strByte2 + _T(" ") + strByte3 + _T(" ") + strByte4;
-    strBytes = strByte1 + strByte2 + strByte3 + strByte4;
+    CString strByte1 = Dec2Bin(nBufByte[0], 8, true);
+    CString strByte2 = Dec2Bin(nBufByte[1], 8, true);
+    CString strByte3 = Dec2Bin(nBufByte[2], 8, true);
+    CString strByte4 = Dec2Bin(nBufByte[3], 8, true);
+    CString strBytesOrig = strByte1 + _T(" ") + strByte2 + _T(" ") + strByte3 + _T(" ") + strByte4;
+    CString strBytes = strByte1 + strByte2 + strByte3 + strByte4;
 
     for (unsigned ind = 0; ind < nVlcAlign; ind++)
     {

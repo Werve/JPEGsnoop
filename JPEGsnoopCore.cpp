@@ -92,8 +92,8 @@ void CJPEGsnoopCore::Reset()
 {
     // Reset all members
     m_pFile = nullptr;
-    m_lFileSize = 0L;
-    m_strPathName = _T("");
+    m_lFileSize = 0;
+    m_strPathName.Empty();
 
     // No log data available until we open & process a file
     m_bFileOpened = false;
@@ -147,8 +147,8 @@ BOOL CJPEGsnoopCore::IsAnalyzed()
 //
 BOOL CJPEGsnoopCore::AnalyzeOpen()
 {
-    ASSERT(m_strPathName != _T(""));
-    if (m_strPathName == _T(""))
+    ASSERT(!m_strPathName.IsEmpty());
+    if (m_strPathName.IsEmpty())
     {
         // Force dialog box to show as this is a major error
         // TODO: Handle non-GUI mode
@@ -773,7 +773,6 @@ void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool 
     CString strFnameFile;
     CString strFnameDst;
     CString strFnameLog;
-    CString strFnameEmbed;
     nBatchFileCount = GetBatchFileCount();
     if (nFileInd >= nBatchFileCount)
     {
@@ -824,7 +823,7 @@ void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool 
         // process.
 
         // Create the filepath for any batch embedded JPEG extraction
-        strFnameEmbed = strFnameDst;
+        CString strFnameEmbed = strFnameDst;
         strFnameEmbed.Append(_T(".export.jpg"));
 
         CString strInputFname = strFnameFile;
@@ -835,11 +834,10 @@ void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool 
         bool bIgnoreEoi = false;
         bool bExtractAllEn = true;
         bool bDhtAviInsert = false;
-        CString strOutPath = _T(""); // unused
+        CString strOutPath; // unused
 
         DoExtractEmbeddedJPEG(strInputFname, strExportFname, bOverlayEn, bForceSoi, bForceEoi, bIgnoreEoi, bExtractAllEn, bDhtAviInsert, strOutPath);
     }
-
 
     // Now submit entry to database!
 #if 0   // Not supported currently
@@ -1006,9 +1004,6 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
         bool bSkipFrame = false;
 
 
-        // Determine the root filename
-        // Filename selected by user: strEmbedFileName
-        CString strRootFileName;
         int nExtInd;
 
 
@@ -1024,8 +1019,8 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
                 AfxMessageBox(strTmp);
             return;
         }
-        strRootFileName = strOutputFname.Left(nExtInd);
-        CString strOutputFnameTemp = _T("");
+        CString strRootFileName = strOutputFname.Left(nExtInd);
+        CString strOutputFnameTemp;
 
         // Loop through file until done
         while (!bDoneBatch)

@@ -22,7 +22,6 @@
 #include "snoop.h"
 
 CAboutDlg::CAboutDlg() : CDialog(IDD)
-                         , m_staticVerNum(_T(""))
 {
 }
 

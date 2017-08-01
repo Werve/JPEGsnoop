@@ -79,17 +79,13 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
     CString strError;
     unsigned nTagGroup;
     unsigned nTagElement;
-    CString strTagName = _T("");
+    CString strTagName;
 
     unsigned nLen = 0;
     unsigned nOffset = 0;
-    CString strVR = _T("");
 
     bool bTagOk = false;
-    CString strTag = _T("");
-
-    bool bVrExplicit;
-    bool bLen4B;
+    CString strTag;
 
     bool bTagIsJpeg;
     unsigned long nPosJpeg;
@@ -128,21 +124,19 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
         bTagOk = true;
     }
 
-
     // Check for zeros in place of VR. This might hint at implicit VR
     // FIXME
     if (m_pWBuf->BufX(nPos + 4, 2, true) == 0)
     {
         //unsigned nBad=1;
     }
-    strVR = m_pWBuf->BufReadStrn(nPos + 4, 2);
+    CString strVR = m_pWBuf->BufReadStrn(nPos + 4, 2);
     nVR = m_pWBuf->BufX(nPos + 4, 2, false);
-
 
     // Value Representation (VR)
     // Reference: Part 5, Section 6.2
-    bVrExplicit = false;
-    bLen4B = false;
+    bool bVrExplicit = false;
+    bool bLen4B = false;
 
     switch (nVR)
     {
@@ -364,7 +358,7 @@ bool CDecodeDicom::DecodeTagHeader(unsigned long nPos,CString &strTag,CString &s
     CString     strError;
     unsigned    nTagGroup;
     unsigned    nTagElement;
-    CString     strTagName = _T("");
+    CString     strTagName;
 
 // Assign defaults
     strTag = _T("");
@@ -656,12 +650,9 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
 
         // See if this is an enumerated value
         // If not, just report as hex for now
-
-        // Now determine enum value
-        CString strValTrunc = _T("");
-        CString strDesc = _T("");
+        CString strDesc;
         bool bIsEnum = false;
-        strValTrunc = m_pWBuf->BufReadStrn(nPos, 200);
+        CString strValTrunc = m_pWBuf->BufReadStrn(nPos, 200);
         bIsEnum = LookupEnum(sTagDetail.nTagGroup, sTagDetail.nTagElement, strValTrunc, strDesc);
         if (bIsEnum)
         {
@@ -680,7 +671,6 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
         }
     } // bDone
 
-
     return true;
 }
 
@@ -688,7 +678,7 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
 // - Returns a sequence of spaces according to the indent level
 CString CDecodeDicom::ParseIndent(unsigned nIndent)
 {
-    CString strIndent = _T("");
+    CString strIndent;
     for (unsigned nInd = 0; nInd < nIndent; nInd++)
     {
         strIndent += _T("  ");
@@ -821,8 +811,6 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
     unsigned nRowOffset = 0;
     bool bDone = false;
     unsigned nLenClip = min(nLen,DC_HEX_TOTAL);
-    CString strValHex = _T("");
-    CString strValAsc = _T("");
     while (!bDone)
     {
         // Have we reached the end of the data we wish to display?
@@ -833,8 +821,8 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
         else
         {
             // Reset the cumulative hex/ascii value strings
-            strValHex = _T("");
-            strValAsc = _T("");
+            CString strValHex = _T("");
+            CString strValAsc = _T("");
             // Build the hex/ascii value strings
             for (unsigned nInd = 0; nInd < DC_HEX_MAX_ROW; nInd++)
             {
@@ -920,7 +908,7 @@ bool CDecodeDicom::LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString 
                 strDesc = asTagSpecial[nEnumInd].strDefinition;
             }
         }
-        if (asTagSpecial[nEnumInd].strVal == _T(""))
+        if (asTagSpecial[nEnumInd].strVal.IsEmpty())
         {
             bDone = true;
         }

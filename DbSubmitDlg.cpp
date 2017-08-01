@@ -22,14 +22,7 @@
 
 CDbSubmitDlg::CDbSubmitDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , m_strSig(_T(""))
-      , m_strExifModel(_T(""))
-      , m_strExifSoftware(_T(""))
-      , m_strExifMake(_T(""))
-      , m_strQual(_T(""))
-      , m_strUserSoftware(_T(""))
       , m_nSource(0)
-      , m_strNotes(_T(""))
 {
 }
 

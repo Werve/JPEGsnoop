@@ -23,14 +23,9 @@
 
 CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , strEula(_T(""))
-      , bEulaOk(FALSE)
-      , bUpdateAuto(FALSE)
+      , bEulaOk(false)
+      , bUpdateAuto(true)
 {
-    bEulaOk = false;
-    bUpdateAuto = true;
-
-    strEula = _T("");
     strEula += _T("\r\n");
     strEula += _T("ImpulseAdventure Software - License Agreement\r\n");
     strEula += _T("\r\n");

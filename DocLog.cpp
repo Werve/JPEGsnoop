@@ -301,7 +301,7 @@ void CDocLog::DoLogSave(CString strLogName)
     CStdioFile* pLog;
 
     // Open the file for output
-    ASSERT(strLogName != _T(""));
+    ASSERT(!strLogName.IsEmpty());
 
     // OLD COMMENTS FOLLOW
     // This save method will only work if we were in Quick Log mode

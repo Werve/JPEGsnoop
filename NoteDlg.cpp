@@ -22,7 +22,6 @@
 
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , strMsg(_T(""))
       , bCoachOff(TRUE)
 {
 }

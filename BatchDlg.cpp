@@ -27,8 +27,6 @@ CBatchDlg::CBatchDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
       , m_bProcessSubdir(FALSE)
       , m_bExtractAll(FALSE)
-      , m_strDirSrc(_T(""))
-      , m_strDirDst(_T(""))
 {
 }
 

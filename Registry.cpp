@@ -129,9 +129,6 @@ CRegDWORD& CRegDWORD::operator =(DWORD d)
 
 CRegString::CRegString()
 {
-    m_value = _T("");
-    m_defaultvalue = _T("");
-    m_key = _T("");
     m_base = HKEY_CURRENT_USER;
     m_read = FALSE;
     m_force = FALSE;
@@ -326,9 +323,6 @@ CRegPoint& CRegPoint::operator =(CPoint s)
 
 CRegStdString::CRegStdString()
 {
-    m_value = _T("");
-    m_defaultvalue = _T("");
-    m_key = _T("");
     m_base = HKEY_CURRENT_USER;
     m_read = FALSE;
     m_force = FALSE;
@@ -343,7 +337,6 @@ CRegStdString::CRegStdString()
  */
 CRegStdString::CRegStdString(stdstring key, stdstring def, BOOL force, HKEY base)
 {
-    m_value = _T("");
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
@@ -426,7 +419,6 @@ CRegStdWORD::CRegStdWORD()
 {
     m_value = 0;
     m_defaultvalue = 0;
-    m_key = _T("");
     m_base = HKEY_CURRENT_USER;
     m_read = FALSE;
     m_force = FALSE;

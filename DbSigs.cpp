@@ -84,7 +84,6 @@ CDbSigs::CDbSigs()
             m_nExcMmIsEditListNum++;
     }
 
-
     bDone = false;
     m_nSwIjgListNum = 0;
     while (!bDone)
@@ -105,14 +104,8 @@ CDbSigs::CDbSigs()
             m_nXcomSwListNum++;
     }
 
-
     // Reset extra database
     m_nSigListExtraNum = 0;
-
-    // Default to user database dir not set yet
-    // This will cause a fail if database load/store
-    // functions are called before SetDbDir()
-    m_strDbDir = _T("");
 }
 
 CDbSigs::~CDbSigs()
@@ -178,18 +171,17 @@ bool CDbSigs::BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool b
     bool bDone;
 
     char chAsc;
-    wchar_t chUni;
     unsigned nCharSz = ((bUni) ? sizeof(wchar_t) : sizeof(char));
 
     bDone = false;
-    strOut = _T("");
+    strOut.Empty();
     // Ensure we don't overrun the buffer by calculating the last
     // byte index required for each iteration.
     for (unsigned nInd = nOffsetBytes; (!bDone) && (nInd + nCharSz - 1 < nMaxBytes); nInd += nCharSz)
     {
         if (bUni)
         {
-            chUni = pBuf[nInd];
+            wchar_t chUni = pBuf[nInd];
             if ((chUni != '\n') && (chUni != 0))
             {
                 strOut += chUni;
@@ -318,12 +310,11 @@ void CDbSigs::DatabaseExtraLoad()
 {
     CFile* pInFile = nullptr;
     PBYTE pBuf = nullptr;
-    unsigned nBufLenBytes = 0;
-    unsigned nBufOffset = 0;
+    unsigned nBufLenBytes;
     CString strError;
 
-    ASSERT(m_strDbDir != _T(""));
-    if (m_strDbDir == _T(""))
+    ASSERT(!m_strDbDir.IsEmpty());
+    if (m_strDbDir.IsEmpty())
     {
         return;
     }
@@ -374,7 +365,7 @@ void CDbSigs::DatabaseExtraLoad()
     ASSERT(nBufLenBytes>0);
     // TODO: Error check for config file longer than max buffer!
     ASSERT(nBufLenBytes<MAX_BUF_SET_FILE);
-    nBufOffset = 0;
+    unsigned nBufOffset = 0;
 
     CString strLine;
     CString strParam;
@@ -392,11 +383,8 @@ void CDbSigs::DatabaseExtraLoad()
     bool bFileOk = false;
     bool bFileModeUni = false;
 
-    bool bValid;
-
     unsigned nNumLoad = 0; // Number of entries to read
     CompSig sDbLocalEntry; // Temp entry for load
-    bool bDbLocalEntryFound; // Temp entry already in built-in DB?
     bool bDbLocalTrimmed = false; // Did we trim down the DB?
 
 
@@ -452,7 +440,7 @@ void CDbSigs::DatabaseExtraLoad()
 
     // Version
     bRet = BufReadStr(pBuf, strVer, nBufLenBytes, bFileModeUni, nBufOffset);
-    bValid = false;
+    bool bValid = false;
     if (strVer == _T("00")) { bValid = false; }
     if (strVer == _T("01")) { bValid = true; }
     if (strVer == _T("02")) { bValid = true; }
@@ -481,17 +469,16 @@ void CDbSigs::DatabaseExtraLoad()
             for (unsigned ind = 0; ind < nNumLoad; ind++)
             {
                 sDbLocalEntry.bValid = false;
-                sDbLocalEntry.strXMake = _T("");
-                sDbLocalEntry.strXModel = _T("");
-                sDbLocalEntry.strUmQual = _T("");
-                sDbLocalEntry.strCSig = _T("");
-                sDbLocalEntry.strCSigRot = _T("");
-                sDbLocalEntry.strXSubsamp = _T("");
-                sDbLocalEntry.strMSwTrim = _T("");
-                sDbLocalEntry.strMSwDisp = _T("");
+                sDbLocalEntry.strXMake.Empty();
+                sDbLocalEntry.strXModel.Empty();
+                sDbLocalEntry.strUmQual.Empty();
+                sDbLocalEntry.strCSig.Empty();
+                sDbLocalEntry.strCSigRot.Empty();
+                sDbLocalEntry.strXSubsamp.Empty();
+                sDbLocalEntry.strMSwTrim.Empty();
+                sDbLocalEntry.strMSwDisp.Empty();
 
-                bDbLocalEntryFound = false;
-
+                bool bDbLocalEntryFound = false;
 
                 if (strVer == _T("01"))
                 {
@@ -500,7 +487,7 @@ void CDbSigs::DatabaseExtraLoad()
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strXMake, nBufLenBytes, bFileModeUni, nBufOffset);
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strXModel, nBufLenBytes, bFileModeUni, nBufOffset);
 
-                    strTmp = _T("");
+                    strTmp.Empty();
                     bRet = BufReadStr(pBuf, strTmp, nBufLenBytes, bFileModeUni, nBufOffset);
                     sDbLocalEntry.eEditor = static_cast<teEditor>(_tstoi(strTmp));
 
@@ -521,7 +508,7 @@ void CDbSigs::DatabaseExtraLoad()
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strXMake, nBufLenBytes, bFileModeUni, nBufOffset);
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strXModel, nBufLenBytes, bFileModeUni, nBufOffset);
 
-                    strTmp = _T("");
+                    strTmp.Empty();
                     bRet = BufReadStr(pBuf, strTmp, nBufLenBytes, bFileModeUni, nBufOffset);
                     sDbLocalEntry.eEditor = static_cast<teEditor>(_tstoi(strTmp));
 
@@ -535,9 +522,6 @@ void CDbSigs::DatabaseExtraLoad()
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strMSwTrim, nBufLenBytes, bFileModeUni, nBufOffset);
                     bRet = BufReadStr(pBuf, sDbLocalEntry.strMSwDisp, nBufLenBytes, bFileModeUni, nBufOffset);
                 }
-
-                // -------------------------------------------------------
-
 
                 // Does the entry already exist in the internal DB?
                 bDbLocalEntryFound = SearchSignatureExactInternal(sDbLocalEntry.strXMake, sDbLocalEntry.strXModel, sDbLocalEntry.strCSig);
@@ -643,8 +627,8 @@ void CDbSigs::DatabaseExtraStore()
 
     bool bModeUni = true; // Save in Unicode format
 
-    ASSERT(m_strDbDir != _T(""));
-    if (m_strDbDir == _T(""))
+    ASSERT(!m_strDbDir.IsEmpty());
+    if (m_strDbDir.IsEmpty())
     {
         return;
     }
@@ -652,7 +636,6 @@ void CDbSigs::DatabaseExtraStore()
     // Retrieve from environment user profile path.
     TCHAR szFilePathName[200];
     _stprintf_s(szFilePathName,_T("%s\\%s"), (LPCTSTR)m_strDbDir,DAT_FILE);
-
 
     // Open the output file
     try
@@ -771,21 +754,21 @@ void CDbSigs::DatabaseExtraAdd(CString strExifMake, CString strExifModel,
     if (eUserSource == ENUM_SOURCE_CAM)
     { // digicam
         m_sSigListExtra[m_nSigListExtraNum].eEditor = ENUM_EDITOR_CAM;
-        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim = _T("");
-        m_sSigListExtra[m_nSigListExtraNum].strMSwDisp = _T("");
+        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim.Empty();
+        m_sSigListExtra[m_nSigListExtraNum].strMSwDisp.Empty();
     }
     else if (eUserSource == ENUM_SOURCE_SW)
     { // software
         m_sSigListExtra[m_nSigListExtraNum].eEditor = ENUM_EDITOR_SW;
-        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim = _T("");
+        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim.Empty();
         m_sSigListExtra[m_nSigListExtraNum].strMSwDisp = strUserSoftware; // Not quite right perfect
-        m_sSigListExtra[m_nSigListExtraNum].strXMake = _T("");
-        m_sSigListExtra[m_nSigListExtraNum].strXModel = _T("");
+        m_sSigListExtra[m_nSigListExtraNum].strXMake.Empty();
+        m_sSigListExtra[m_nSigListExtraNum].strXModel.Empty();
     }
     else
     { // user didn't know
         m_sSigListExtra[m_nSigListExtraNum].eEditor = ENUM_EDITOR_UNSURE;
-        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim = _T("");
+        m_sSigListExtra[m_nSigListExtraNum].strMSwTrim.Empty();
         m_sSigListExtra[m_nSigListExtraNum].strMSwDisp = strUserSoftware; // Not quite right perfect
     }
 

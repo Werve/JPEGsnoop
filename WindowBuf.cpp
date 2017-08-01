@@ -912,7 +912,7 @@ CString CwindowBuf::BufReadStr(unsigned long nPosition)
 {
     // Try to read a NULL-terminated string from file offset "nPosition"
     // up to a maximum of MAX_BUF_READ_STR bytes. Result is max length MAX_BUF_READ_STR
-    CString strRd = _T("");
+    CString strRd;
     bool bDone = false;
     unsigned nIndex = 0;
 
@@ -1060,7 +1060,7 @@ CString CwindowBuf::BufReadStrn(unsigned long nPosition, unsigned nLen)
 {
     // Try to read a fixed-length string from file offset "nPosition"
     // up to a maximum of "nLen" bytes. Result is length "nLen"
-    CString strRd = _T("");
+    CString strRd;
     bool bDone = false;
 
     if (nLen > 0)
@@ -1079,5 +1079,5 @@ CString CwindowBuf::BufReadStrn(unsigned long nPosition, unsigned nLen)
         }
         return strRd;
     }
-    return _T("");
+    return CString();
 }

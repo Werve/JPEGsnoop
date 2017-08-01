@@ -23,10 +23,7 @@
 
 CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , strVerCur(_T(""))
-      , strVerLatest(_T(""))
       , bUpdateAutoStill(FALSE)
-      , strDateLatest(_T(""))
 {
 }
 

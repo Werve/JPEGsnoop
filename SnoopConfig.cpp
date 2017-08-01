@@ -35,11 +35,8 @@ CSnoopConfig::CSnoopConfig()
     // Command-line modes
     bGuiMode = true;
     bCmdLineOpenEn = false;
-    strCmdLineOpenFname = _T("");
     bCmdLineOutputEn = false; // No output file specified
-    strCmdLineOutputFname = _T("");
     bCmdLineBatchEn = false;
-    strCmdLineBatchDirName = _T("");
     bCmdLineBatchRec = false;
     bCmdLineExtractEn = false;
     bCmdLineExtractDhtAvi = false;
@@ -58,8 +55,6 @@ CSnoopConfig::CSnoopConfig()
     bEulaAccepted = false;
     bUpdateAuto = true;
     nUpdateAutoDays = 14; // Check every 14 days
-    strUpdateLastChk = _T("");
-    strDbDir = _T("");
     bReprocessAuto = false;
     bDecodeScanImg = true;
     bDecodeScanImgAc = false; // Coach message will be shown just in case
@@ -91,9 +86,6 @@ CSnoopConfig::CSnoopConfig()
 
     // Reset coach message flags
     CoachReset();
-
-    // Reset the current filename
-    strCurFname = _T("");
 
     // Determine operating system
     // Particularly for: WinHTTP functions

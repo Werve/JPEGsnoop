@@ -266,12 +266,11 @@ bool CDecodePs::LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& n
 //
 CString CDecodePs::DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos)
 {
-    //unsigned  nFldInd = 0;
     unsigned nInd;
     unsigned nVal;
-    CString strField = _T("");
-    CString strByte = _T("");
-    CString strVal = _T("");
+    CString strField;
+    CString strByte;
+    CString strVal;
     switch (eIptcType)
     {
     case IPTC_T_NUM:
@@ -395,7 +394,7 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
 // - Returns a sequence of spaces according to the indent level
 CString CDecodePs::PhotoshopParseIndent(unsigned nIndent)
 {
-    CString strIndent = _T("");
+    CString strIndent;
     for (unsigned nInd = 0; nInd < nIndent; nInd++)
     {
         strIndent += _T("  ");
@@ -409,7 +408,7 @@ CString CDecodePs::PhotoshopParseIndent(unsigned nIndent)
 // - Otherwise it is defined length string (no terminator required)
 CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos)
 {
-    CString strVal = _T("");
+    CString strVal;
     unsigned nStrLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     if (nStrLen != 0)
     {
@@ -434,19 +433,15 @@ CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos)
 // - Unicode string
 CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset)
 {
-    CString strVal;
-    unsigned nStrLenActual, nStrLenTrunc;
     BYTE anStrBuf[(PS_MAX_UNICODE_STRLEN + 1) * 2];
     wchar_t acStrBuf[(PS_MAX_UNICODE_STRLEN + 1)];
-    BYTE nChVal;
     nPosOffset = 0;
-    nStrLenActual = m_pWBuf->BufX(nPos + nPosOffset, 4,PS_BSWAP);
+    unsigned nStrLenActual = m_pWBuf->BufX(nPos + nPosOffset, 4,PS_BSWAP);
     nPosOffset += 4;
-    nStrLenTrunc = nStrLenActual;
+    unsigned nStrLenTrunc = nStrLenActual;
 
     // Initialize return
-    strVal = _T("");
-
+    CString strVal;
 
     if (nStrLenTrunc > 0)
     {
@@ -459,7 +454,7 @@ CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPo
         for (unsigned nInd = 0; nInd < nStrLenTrunc; nInd++)
         {
             // Reverse the order of the bytes
-            nChVal = Buf(nPos + nPosOffset + (nInd * 2) + 0);
+            BYTE nChVal = Buf(nPos + nPosOffset + (nInd * 2) + 0);
             anStrBuf[(nInd * 2) + 1] = nChVal;
             nChVal = Buf(nPos + nPosOffset + (nInd * 2) + 1);
             anStrBuf[(nInd * 2) + 0] = nChVal;
@@ -541,8 +536,6 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
     CString strPrefix;
     CString strByteHex;
     CString strByteAsc;
-    CString strValHex;
-    CString strValAsc;
     CString strLine;
 
     CString strIndent = PhotoshopParseIndent(nIndent);
@@ -569,15 +562,11 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
         strPrefix.Format(_T("%s"), (LPCTSTR)strIndent);
     }
 
-
     // Build up the hex string
     // Limit to PS_HEX_TOTAL bytes
     unsigned nRowOffset = 0;
     bool bDone = false;
-    unsigned nLenClip;
-    nLenClip = min(nLen,PS_HEX_TOTAL);
-    strValHex = _T("");
-    strValAsc = _T("");
+    unsigned nLenClip = min(nLen,PS_HEX_TOTAL);
     while (!bDone)
     {
         // Have we reached the end of the data we wish to display?
@@ -588,8 +577,8 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
         else
         {
             // Reset the cumulative hex/ascii value strings
-            strValHex = _T("");
-            strValAsc = _T("");
+            CString strValHex;
+            CString strValAsc;
             // Build the hex/ascii value strings
             for (unsigned nInd = 0; nInd < PS_HEX_MAX_ROW; nInd++)
             {
@@ -642,8 +631,8 @@ CString CDecodePs::PhotoshopDispHexWord(unsigned nVal)
     CString strLine;
 
     // Reset the cumulative hex/ascii value strings
-    CString strValHex = _T("");
-    CString strValAsc = _T("");
+    CString strValHex;
+    CString strValAsc;
     // Build the hex/ascii value strings
     for (unsigned nInd = 0; nInd <= 3; nInd++)
     {
@@ -676,7 +665,7 @@ CString CDecodePs::PhotoshopDispHexWord(unsigned nVal)
 // - Returns "" if the field wasn't found
 CString CDecodePs::PhotoshopParseLookupEnum(teBimEnumField eEnumField, unsigned nVal)
 {
-    CString strVal = _T("");
+    CString strVal;
     // Find the enum value
     bool bDone = false;
     bool bFound = false;
@@ -2294,7 +2283,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
     CString strByte;
 
     // Lookup 8BIM defined name
-    CString strBimDefName = _T("");
+    CString strBimDefName;
     bool bBimKnown = false;
     unsigned nFldInd = 0;
     bBimKnown = FindBimRecord(nBimId, nFldInd);

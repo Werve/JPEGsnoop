@@ -272,7 +272,6 @@ void CJPEGsnoopViewImg::OnMouseMove(UINT nFlags, CPoint point)
     }
     else
     {
-        //      GetCore()->I_SetStatusText(_T(""));
         GetCore()->I_SetStatusMcuText(_T(""));
         GetCore()->I_SetStatusFilePosText(_T(""));
         GetCore()->I_SetStatusYccText(_T(""));

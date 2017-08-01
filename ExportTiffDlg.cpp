@@ -26,7 +26,6 @@
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
       , m_nCtlFmt(0)
-      , m_sFname(_T(""))
 {
 }
 

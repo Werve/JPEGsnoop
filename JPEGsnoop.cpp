@@ -90,8 +90,8 @@ END_MESSAGE_MAP()
 // Display the command-line help/options summary
 void CJPEGsnoopApp::CmdLineHelp()
 {
-    CString strMsg = _T("");
-    CString strLine = _T("");
+    CString strMsg;
+    CString strLine;
     strMsg += _T("\n");
     strLine.Format(_T("JPEGsnoop v%s\n"),VERSION_STR);
     strMsg += strLine;
@@ -344,11 +344,10 @@ public:
             m_pCfg->strCmdLineOpenFname = pszParam;
 
             m_nShellCommand = FileNothing;
-            m_strFileName = _T(""); // Unused
+            m_strFileName.Empty(); // Unused
 
             next_arg = cla_idle;
             break;
-
 
             // Batch directory processing
         case cla_batchdir:
@@ -681,10 +680,10 @@ void CJPEGsnoopApp::DoCmdLineCore()
                 bool bIgnoreEoi = false;
                 bool bExtractAllEn = true;
                 bool bDhtAviInsert = false;
-                CString strOutPath = _T(""); // unused
+                CString strOutPath; // unused
 
                 // If the user didn't explicitly provide an output filename, default to one
-                if (strExportFname == _T(""))
+                if (strExportFname.IsEmpty())
                 {
                     strExportFname = strInputFname + _T(".export.jpg");
                 }
@@ -852,8 +851,8 @@ void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
 //
 bool CJPEGsnoopApp::CheckUpdatesWww()
 {
-    CString strVerLatest = _T("");
-    CString strDateLatest = _T("");
+    CString strVerLatest;
+    CString strDateLatest;
 
     CString strSubmitHost = IA_HOST;
     CString strSubmitPage = IA_UPDATES_CHK_PAGE;
@@ -938,8 +937,6 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
         strContents.GetLength();
 
         CString strData;
-        CString strParam;
-        CString strVal;
         int nIndDataStart = -1;
         int nIndDataEnd = -1;
         unsigned nIndDataLen = 0;
@@ -965,7 +962,6 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
             nIndDataLen = nIndDataEnd - nIndDataStart;
             strData = strContents.Mid(nIndDataStart, nIndDataLen);
             bool bDone = false;
-            bool bTokDone;
             CString strCh;
             unsigned nInd = 0;
             while (!bDone)
@@ -976,8 +972,8 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
                 }
                 else
                 {
-                    bTokDone = false;
-                    strParam = _T("");
+                    bool bTokDone = false;
+                    CString strParam;
                     while (!bTokDone)
                     {
                         strCh = strData.GetAt(nInd);
@@ -994,7 +990,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
                     }
 
                     bTokDone = false;
-                    strVal = _T("");
+                    CString strVal;
                     while (!bTokDone)
                     {
                         strCh = strData.GetAt(nInd);
@@ -1009,9 +1005,6 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
                             nInd++;
                         }
                     }
-
-                    //strTmp.Format(_T("Param[%s] Val[%s]"),strParam,strVal);
-                    //AfxMessageBox(strTmp);
 
                     if (strParam == _T("latest_ver"))
                     {

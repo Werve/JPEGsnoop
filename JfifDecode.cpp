@@ -65,9 +65,9 @@ void CjfifDecode::Reset()
     m_nImgExifMakeSubtype = 0;
     m_strImgExifModel = _T("???");
     m_bImgExifMakernotes = false;
-    m_strImgExtras = _T("");
-    m_strComment = _T("");
-    m_strSoftware = _T("");
+    m_strImgExtras.Empty();
+    m_strComment.Empty();
+    m_strSoftware.Empty();
     m_bImgProgressive = false;
     m_bImgSofUnsupported = false;
     _tcscpy_s(m_acApp0Identifier,_T(""));
@@ -76,7 +76,7 @@ void CjfifDecode::Reset()
     m_strHash = _T("NONE");
     m_strHashRot = _T("NONE");
     m_eImgLandscape = ENUM_LANDSCAPE_UNSET;
-    m_strImgQualExif = _T("");
+    m_strImgQualExif.Empty();
     m_bAvi = false;
     m_bAviMjpeg = false;
     m_bPsd = false;
@@ -1671,13 +1671,11 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
 //
 bool CjfifDecode::DecodeMakerSubType()
 {
-    CString strTmp;
-
     m_nImgExifMakeSubtype = 0;
 
     if (m_strImgExifMake == _T("NIKON"))
     {
-        strTmp = _T("");
+        CString strTmp;
         for (unsigned nInd = 0; nInd < 5; nInd++)
         {
             strTmp += Buf(m_nPos + nInd);
@@ -1720,7 +1718,7 @@ bool CjfifDecode::DecodeMakerSubType()
     }
     else if (m_strImgExifMake == _T("SIGMA"))
     {
-        strTmp = _T("");
+        CString strTmp;
         for (unsigned ind = 0; ind < 8; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
@@ -1744,7 +1742,7 @@ bool CjfifDecode::DecodeMakerSubType()
     } // SIGMA
     else if (m_strImgExifMake == _T("FUJIFILM"))
     {
-        strTmp = _T("");
+        CString strTmp;
         for (unsigned ind = 0; ind < 8; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
@@ -1768,7 +1766,7 @@ bool CjfifDecode::DecodeMakerSubType()
     } // FUJIFILM
     else if (m_strImgExifMake == _T("SONY"))
     {
-        strTmp = _T("");
+        CString strTmp;
         for (unsigned ind = 0; ind < 12; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
@@ -1789,7 +1787,6 @@ bool CjfifDecode::DecodeMakerSubType()
             return false;
         }
     } // SONY
-
 
     return true;
 }
@@ -3489,12 +3486,11 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             m_nImgExifThumbLen = ReadSwap4(m_nPos);
         }
 
-
         // ==========================================================================
         // Determine MakerNote support
         // ==========================================================================
 
-        if (m_strImgExifMake != _T(""))
+        if (!m_strImgExifMake.IsEmpty())
         {
             // 1) Identify the supported MakerNotes
             // 2) Remap variations of the Maker field (e.g. Nikon)
@@ -4275,7 +4271,7 @@ void CjfifDecode::DecodeDHT(bool bInject)
                 if ((nIndCode % 16) == 15)
                 {
                     m_pLog->AddLine(strFull);
-                    strFull = _T("");
+                    strFull.Empty();
                 }
 
                 // Save the huffman code
@@ -4564,7 +4560,6 @@ unsigned CjfifDecode::DecodeMarker()
     unsigned nCode;
     unsigned long nPosEnd;
     unsigned long nPosSaved; // General-purpose saved position in file
-    unsigned long nPosExifStart;
     unsigned nRet; // General purpose return value
     bool bRet;
     unsigned long nPosMarkerStart; // Offset for current marker
@@ -4572,9 +4567,8 @@ unsigned CjfifDecode::DecodeMarker()
     unsigned nColTransform = 0; // Color Transform from APP14 marker
 
     // For DQT
-    CString strDqtPrecision = _T("");
-    CString strDqtZigZagOrder = _T("");
-
+    CString strDqtPrecision;
+    CString strDqtZigZagOrder;
 
     if (Buf(m_nPos) != 0xFF)
     {
@@ -4836,8 +4830,7 @@ unsigned CjfifDecode::DecodeMarker()
 
             m_nPos += 2; // Skip two 00 bytes
 
-
-            nPosExifStart = m_nPos; // Save m_nPos @ start of EXIF used for all IFD offsets
+            unsigned long nPosExifStart = m_nPos; // Save m_nPos @ start of EXIF used for all IFD offsets
 
             // =========== EXIF TIFF Header (Start) ===========
             // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.5.2 
@@ -4847,8 +4840,6 @@ unsigned CjfifDecode::DecodeMarker()
             //   - Offset of 0th IFD (4 bytes)
 
             unsigned char acIdentifierTiff[9];
-            strFull = _T("");
-            strTmp = _T("");
 
             strFull = _T("  Identifier TIFF = ");
             for (unsigned int i = 0; i < 8; i++)
@@ -4858,7 +4849,6 @@ unsigned CjfifDecode::DecodeMarker()
             strTmp = PrintAsHexUC(acIdentifierTiff, 8);
             strFull += strTmp;
             m_pLog->AddLine(strFull);
-
 
             switch (acIdentifierTiff[0] * 256 + acIdentifierTiff[1])
             {
@@ -4875,13 +4865,11 @@ unsigned CjfifDecode::DecodeMarker()
             }
 
             // We expect the TAG mark of 0x002A (depending on endian mode)
-            unsigned test_002a;
-            test_002a = ByteSwap2(acIdentifierTiff[2], acIdentifierTiff[3]);
+            unsigned test_002a = ByteSwap2(acIdentifierTiff[2], acIdentifierTiff[3]);
             strTmp.Format(_T("  TAG Mark x002A  = 0x%04X"), test_002a);
             m_pLog->AddLine(strTmp);
 
             unsigned nIfdCount; // Current IFD #
-            unsigned nOffsetIfd1;
 
             // Mark pointer to EXIF Sub IFD as 0 so that we can
             // detect if the tag never showed up.
@@ -4892,8 +4880,8 @@ unsigned CjfifDecode::DecodeMarker()
 
             bool exif_done = false;
 
-            nOffsetIfd1 = ByteSwap4(acIdentifierTiff[4], acIdentifierTiff[5],
-                                    acIdentifierTiff[6], acIdentifierTiff[7]);
+            unsigned nOffsetIfd1 = ByteSwap4(acIdentifierTiff[4], acIdentifierTiff[5],
+                                             acIdentifierTiff[6], acIdentifierTiff[7]);
 
             // =========== EXIF TIFF Header (End) ===========
 
@@ -5353,7 +5341,7 @@ unsigned CjfifDecode::DecodeMarker()
                     strTmp.Format(_T("  Custom coeff scan sequence"));
                     m_pLog->AddLine(strTmp);
             // Now expect sequence of 64 coefficient entries
-                    CString strSequence = _T("");
+                    CString strSequence;
                     for (unsigned nInd=0;nInd<64;nInd++) {
                         nTmpVal = Buf(m_nPos++);
                         strTmp.Format(_T("%u"),nTmpVal);
@@ -5946,7 +5934,7 @@ unsigned CjfifDecode::DecodeMarker()
 
         // Assume COM field valid length (ie. >= 2)
         strFull = _T("    Comment=");
-        m_strComment = _T("");
+        m_strComment.Empty();
         for (unsigned ind = 0; ind < nLength - 2; ind++)
         {
             nTmpVal1 = Buf(m_nPos++);
@@ -5972,236 +5960,229 @@ unsigned CjfifDecode::DecodeMarker()
         break;
 
     case JFIF_SOS: // SOS
-        unsigned long nPosScanStart; // Byte count at start of scan data segment
-
-        m_bStateSos = true;
-
-        // NOTE: Only want to capture position of first SOS
-        //       This should make other function such as AVI frame extract
-        //       more robust in case we get multiple SOS segments.
-        // We assume that this value is reset when we start a new decode
-        if (m_nPosSos == 0)
         {
-            m_nPosSos = m_nPos - 2; // Used for Extract. Want to include actual marker
-        }
+            unsigned long nPosScanStart; // Byte count at start of scan data segment
 
-        nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1);
-        m_nPos += 2;
+            m_bStateSos = true;
 
-        // Ensure that we have seen proper markers before we try this one!
-        if (!m_bStateSofOk)
-        {
-            strTmp.Format(_T("  ERROR: SOS before valid SOF defined"));
-            m_pLog->AddLineErr(strTmp);
-            return DECMARK_ERR;
-        }
-
-        strTmp.Format(_T("  Scan header length = %u"), nLength);
-        m_pLog->AddLine(strTmp);
-
-        m_nSosNumCompScan_Ns = Buf(m_nPos++); // Ns, range 1..4
-        //XXX       strTmp.Format(_T("  Number of image components <Ns> = %u"),m_nSosNumCompScan_Ns);
-        strTmp.Format(_T("  Number of img components = %u"), m_nSosNumCompScan_Ns);
-        m_pLog->AddLine(strTmp);
-
-        // Just in case something got corrupted, don't want to get out
-        // of range here. Note that this will be a hard abort, and
-        // will not resume decoding.
-        if (m_nSosNumCompScan_Ns > MAX_SOS_COMP_NS)
-        {
-            strTmp.Format(_T("  ERROR: Scan decode does not support > %u components"),MAX_SOS_COMP_NS);
-            m_pLog->AddLineErr(strTmp);
-            return DECMARK_ERR;
-        }
-
-        unsigned nSosCompSel_Cs;
-        unsigned nSosHuffTblSel;
-        unsigned nSosHuffTblSelDc_Td;
-        unsigned nSosHuffTblSelAc_Ta;
-        // Max range of components indices is between 1..4
-        for (unsigned int nScanCompInd = 1; ((nScanCompInd <= m_nSosNumCompScan_Ns) && (!m_bStateAbort)); nScanCompInd++)
-        {
-            strFull.Format(_T("    Component[%u]: "), nScanCompInd);
-            nSosCompSel_Cs = Buf(m_nPos++); // Cs, range 0..255
-            nSosHuffTblSel = Buf(m_nPos++);
-            nSosHuffTblSelDc_Td = (nSosHuffTblSel & 0xf0) >> 4; // Td, range 0..3
-            nSosHuffTblSelAc_Ta = (nSosHuffTblSel & 0x0f); // Ta, range 0..3
-            strTmp.Format(_T("selector=0x%02X, table=%u(DC),%u(AC)"), nSosCompSel_Cs, nSosHuffTblSelDc_Td, nSosHuffTblSelAc_Ta);
-            strFull += strTmp;
-            m_pLog->AddLine(strFull);
-
-            bRet = m_pImgDec->SetDhtTables(nScanCompInd, nSosHuffTblSelDc_Td, nSosHuffTblSelAc_Ta);
-
-            DecodeErrCheck(bRet);
-        }
-
-
-        m_nSosSpectralStart_Ss = Buf(m_nPos++);
-        m_nSosSpectralEnd_Se = Buf(m_nPos++);
-        m_nSosSuccApprox_A = Buf(m_nPos++);
-
-        strTmp.Format(_T("  Spectral selection = %u .. %u"), m_nSosSpectralStart_Ss, m_nSosSpectralEnd_Se);
-        m_pLog->AddLine(strTmp);
-        strTmp.Format(_T("  Successive approximation = 0x%02X"), m_nSosSuccApprox_A);
-        m_pLog->AddLine(strTmp);
-
-        if (m_pAppConfig->bOutputScanDump)
-        {
-            m_pLog->AddLine(_T(""));
-            m_pLog->AddLine(_T("  Scan Data: (after bitstuff removed)"));
-        }
-
-        // Save the scan data segment position
-        nPosScanStart = m_nPos;
-
-        // Skip over the Scan Data segment
-        //   Pass 1) Quick, allowing for bOutputScanDump to dump first 640B.
-        //   Pass 2) If bDecodeScanImg, we redo the process but in detail decoding.
-
-        // FIXME: Not sure why, but if I skip over Pass 1 (eg if I leave in the
-        // following line uncommented), then I get an error at the end of the
-        // pass 2 decode (indicating that EOI marker not seen, and expecting
-        // marker).
-        //      if (m_pAppConfig->bOutputScanDump) {
-
-        // --- PASS 1 ---
-        bool bSkipDone;
-        unsigned nSkipCount;
-        unsigned nSkipData;
-        unsigned nSkipPos;
-        bool bScanDumpTrunc;
-
-        bSkipDone = false;
-        nSkipCount = 0;
-        nSkipPos = 0;
-        bScanDumpTrunc = false;
-
-        strFull = _T("");
-        while (!bSkipDone)
-        {
-            nSkipCount++;
-            nSkipPos++;
-            nSkipData = Buf(m_nPos++);
-
-            if (nSkipData == 0xFF)
+            // NOTE: Only want to capture position of first SOS
+            //       This should make other function such as AVI frame extract
+            //       more robust in case we get multiple SOS segments.
+            // We assume that this value is reset when we start a new decode
+            if (m_nPosSos == 0)
             {
-                // this could either be a marker or a byte stuff
-                nSkipData = Buf(m_nPos++);
-                nSkipCount++;
-                if (nSkipData == 0x00)
-                {
-                    // Byte stuff
-                    nSkipData = 0xFF;
-                }
-                else if ((nSkipData >= JFIF_RST0) && (nSkipData <= JFIF_RST7))
-                {
-                    // Skip over
-                }
-                else
-                {
-                    // Marker
-                    bSkipDone = true;
-                    m_nPos -= 2;
-                }
+                m_nPosSos = m_nPos - 2; // Used for Extract. Want to include actual marker
             }
 
-            if (m_pAppConfig->bOutputScanDump && (!bSkipDone))
-            {
-                // Only display 20 lines of scan data
-                if (nSkipPos > 640)
-                {
-                    if (!bScanDumpTrunc)
-                    {
-                        m_pLog->AddLineWarn(_T("    WARNING: Dump truncated."));
-                        bScanDumpTrunc = true;
-                    }
-                }
-                else
-                {
-                    if (((nSkipPos - 1) == 0) || (((nSkipPos - 1) % 32) == 0))
-                    {
-                        strFull = _T("    ");
-                    }
+            nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1);
+            m_nPos += 2;
 
-                    strTmp.Format(_T("%02x "), nSkipData);
-                    strFull += strTmp;
-
-                    if (((nSkipPos - 1) % 32) == 31)
-                    {
-                        m_pLog->AddLine(strFull);
-                        strFull = _T("");
-                    }
-                }
-            }
-
-            // Did we run out of bytes?
-
-            // FIXME:
-            // NOTE: This line here doesn't allow us to attempt to 
-            // decode images that are missing EOI. Maybe this is
-            // not the best solution here? Instead, we should be
-            // checking m_nPos against file length? .. and not 
-            // return but "break".
-            if (!m_pWBuf->GetBufOk())
-            {
-                strTmp.Format(_T("ERROR: Ran out of buffer before EOI during phase 1 of Scan decode @ 0x%08X"), m_nPos);
-                m_pLog->AddLineErr(strTmp);
-                break;
-            }
-        }
-        m_pLog->AddLine(strFull);
-
-        //      }
-
-        // --- PASS 2 ---
-        // If the option is set, start parsing!
-        if (m_pAppConfig->bDecodeScanImg && m_bImgSofUnsupported)
-        {
-            // SOF marker was of type we don't support, so skip decoding
-            m_pLog->AddLineWarn(_T("  NOTE: Scan parsing doesn't support this SOF mode."));
-#ifndef DEBUG_YCCK
-        }
-        else if (m_pAppConfig->bDecodeScanImg && (m_nSofNumComps_Nf == 4))
-        {
-            m_pLog->AddLineWarn(_T("  NOTE: Scan parsing doesn't support CMYK files yet."));
-#endif
-        }
-        else if (m_pAppConfig->bDecodeScanImg && !m_bImgSofUnsupported)
-        {
+            // Ensure that we have seen proper markers before we try this one!
             if (!m_bStateSofOk)
             {
-                m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as SOF not decoded."));
+                strTmp.Format(_T("  ERROR: SOS before valid SOF defined"));
+                m_pLog->AddLineErr(strTmp);
+                return DECMARK_ERR;
             }
-            else if (!m_bStateDqtOk)
+
+            strTmp.Format(_T("  Scan header length = %u"), nLength);
+            m_pLog->AddLine(strTmp);
+
+            m_nSosNumCompScan_Ns = Buf(m_nPos++); // Ns, range 1..4
+            //XXX       strTmp.Format(_T("  Number of image components <Ns> = %u"),m_nSosNumCompScan_Ns);
+            strTmp.Format(_T("  Number of img components = %u"), m_nSosNumCompScan_Ns);
+            m_pLog->AddLine(strTmp);
+
+            // Just in case something got corrupted, don't want to get out
+            // of range here. Note that this will be a hard abort, and
+            // will not resume decoding.
+            if (m_nSosNumCompScan_Ns > MAX_SOS_COMP_NS)
             {
-                m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as DQT not decoded."));
+                strTmp.Format(_T("  ERROR: Scan decode does not support > %u components"),MAX_SOS_COMP_NS);
+                m_pLog->AddLineErr(strTmp);
+                return DECMARK_ERR;
             }
-            else if (!m_bStateDhtOk)
+
+            unsigned nSosCompSel_Cs;
+            unsigned nSosHuffTblSel;
+            unsigned nSosHuffTblSelDc_Td;
+            unsigned nSosHuffTblSelAc_Ta;
+            // Max range of components indices is between 1..4
+            for (unsigned int nScanCompInd = 1; ((nScanCompInd <= m_nSosNumCompScan_Ns) && (!m_bStateAbort)); nScanCompInd++)
             {
-                m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as DHT not decoded."));
+                strFull.Format(_T("    Component[%u]: "), nScanCompInd);
+                nSosCompSel_Cs = Buf(m_nPos++); // Cs, range 0..255
+                nSosHuffTblSel = Buf(m_nPos++);
+                nSosHuffTblSelDc_Td = (nSosHuffTblSel & 0xf0) >> 4; // Td, range 0..3
+                nSosHuffTblSelAc_Ta = (nSosHuffTblSel & 0x0f); // Ta, range 0..3
+                strTmp.Format(_T("selector=0x%02X, table=%u(DC),%u(AC)"), nSosCompSel_Cs, nSosHuffTblSelDc_Td, nSosHuffTblSelAc_Ta);
+                strFull += strTmp;
+                m_pLog->AddLine(strFull);
+
+                bRet = m_pImgDec->SetDhtTables(nScanCompInd, nSosHuffTblSelDc_Td, nSosHuffTblSelAc_Ta);
+
+                DecodeErrCheck(bRet);
             }
-            else
+
+            m_nSosSpectralStart_Ss = Buf(m_nPos++);
+            m_nSosSpectralEnd_Se = Buf(m_nPos++);
+            m_nSosSuccApprox_A = Buf(m_nPos++);
+
+            strTmp.Format(_T("  Spectral selection = %u .. %u"), m_nSosSpectralStart_Ss, m_nSosSpectralEnd_Se);
+            m_pLog->AddLine(strTmp);
+            strTmp.Format(_T("  Successive approximation = 0x%02X"), m_nSosSuccApprox_A);
+            m_pLog->AddLine(strTmp);
+
+            if (m_pAppConfig->bOutputScanDump)
             {
                 m_pLog->AddLine(_T(""));
+                m_pLog->AddLine(_T("  Scan Data: (after bitstuff removed)"));
+            }
 
-                // Set the primary image details
-                m_pImgDec->SetImageDetails(m_nSofSampsPerLine_X, m_nSofNumLines_Y,
-                                           m_nSofNumComps_Nf, m_nSosNumCompScan_Ns, m_nImgRstEn, m_nImgRstInterval);
+            // Save the scan data segment position
+            nPosScanStart = m_nPos;
 
-                // Only recalculate the scan decoding if we need to (i.e. file
-                // changed, offset changed, scan option changed)
-                // TODO: In order to decode multiple scans, we will need to alter the
-                // way that m_pImgSrcDirty is set
-                if (m_pImgSrcDirty)
+            // Skip over the Scan Data segment
+            //   Pass 1) Quick, allowing for bOutputScanDump to dump first 640B.
+            //   Pass 2) If bDecodeScanImg, we redo the process but in detail decoding.
+
+            // FIXME: Not sure why, but if I skip over Pass 1 (eg if I leave in the
+            // following line uncommented), then I get an error at the end of the
+            // pass 2 decode (indicating that EOI marker not seen, and expecting
+            // marker).
+            //      if (m_pAppConfig->bOutputScanDump) {
+
+            bool bSkipDone = false;
+            unsigned nSkipCount = 0;
+            unsigned nSkipPos = 0;
+            bool bScanDumpTrunc = false;
+
+            strFull = _T("");
+            while (!bSkipDone)
+            {
+                nSkipCount++;
+                nSkipPos++;
+                unsigned nSkipData = Buf(m_nPos++);
+
+                if (nSkipData == 0xFF)
                 {
-                    m_pImgDec->DecodeScanImg(nPosScanStart, true, false);
-                    m_pImgSrcDirty = false;
+                    // this could either be a marker or a byte stuff
+                    nSkipData = Buf(m_nPos++);
+                    nSkipCount++;
+                    if (nSkipData == 0x00)
+                    {
+                        // Byte stuff
+                        nSkipData = 0xFF;
+                    }
+                    else if ((nSkipData >= JFIF_RST0) && (nSkipData <= JFIF_RST7))
+                    {
+                        // Skip over
+                    }
+                    else
+                    {
+                        // Marker
+                        bSkipDone = true;
+                        m_nPos -= 2;
+                    }
+                }
+
+                if (m_pAppConfig->bOutputScanDump && (!bSkipDone))
+                {
+                    // Only display 20 lines of scan data
+                    if (nSkipPos > 640)
+                    {
+                        if (!bScanDumpTrunc)
+                        {
+                            m_pLog->AddLineWarn(_T("    WARNING: Dump truncated."));
+                            bScanDumpTrunc = true;
+                        }
+                    }
+                    else
+                    {
+                        if (((nSkipPos - 1) == 0) || (((nSkipPos - 1) % 32) == 0))
+                        {
+                            strFull = _T("    ");
+                        }
+
+                        strTmp.Format(_T("%02x "), nSkipData);
+                        strFull += strTmp;
+
+                        if (((nSkipPos - 1) % 32) == 31)
+                        {
+                            m_pLog->AddLine(strFull);
+                            strFull = _T("");
+                        }
+                    }
+                }
+
+                // Did we run out of bytes?
+
+                // FIXME:
+                // NOTE: This line here doesn't allow us to attempt to 
+                // decode images that are missing EOI. Maybe this is
+                // not the best solution here? Instead, we should be
+                // checking m_nPos against file length? .. and not 
+                // return but "break".
+                if (!m_pWBuf->GetBufOk())
+                {
+                    strTmp.Format(_T("ERROR: Ran out of buffer before EOI during phase 1 of Scan decode @ 0x%08X"), m_nPos);
+                    m_pLog->AddLineErr(strTmp);
+                    break;
                 }
             }
+            m_pLog->AddLine(strFull);
+
+            //      }
+
+            // --- PASS 2 ---
+            // If the option is set, start parsing!
+            if (m_pAppConfig->bDecodeScanImg && m_bImgSofUnsupported)
+            {
+                // SOF marker was of type we don't support, so skip decoding
+                m_pLog->AddLineWarn(_T("  NOTE: Scan parsing doesn't support this SOF mode."));
+    #ifndef DEBUG_YCCK
+            }
+            else if (m_pAppConfig->bDecodeScanImg && (m_nSofNumComps_Nf == 4))
+            {
+                m_pLog->AddLineWarn(_T("  NOTE: Scan parsing doesn't support CMYK files yet."));
+    #endif
+            }
+            else if (m_pAppConfig->bDecodeScanImg && !m_bImgSofUnsupported)
+            {
+                if (!m_bStateSofOk)
+                {
+                    m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as SOF not decoded."));
+                }
+                else if (!m_bStateDqtOk)
+                {
+                    m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as DQT not decoded."));
+                }
+                else if (!m_bStateDhtOk)
+                {
+                    m_pLog->AddLineWarn(_T("  NOTE: Scan decode disabled as DHT not decoded."));
+                }
+                else
+                {
+                    m_pLog->AddLine(_T(""));
+
+                    // Set the primary image details
+                    m_pImgDec->SetImageDetails(m_nSofSampsPerLine_X, m_nSofNumLines_Y,
+                                               m_nSofNumComps_Nf, m_nSosNumCompScan_Ns, m_nImgRstEn, m_nImgRstInterval);
+
+                    // Only recalculate the scan decoding if we need to (i.e. file
+                    // changed, offset changed, scan option changed)
+                    // TODO: In order to decode multiple scans, we will need to alter the
+                    // way that m_pImgSrcDirty is set
+                    if (m_pImgSrcDirty)
+                    {
+                        m_pImgDec->DecodeScanImg(nPosScanStart, true, false);
+                        m_pImgSrcDirty = false;
+                    }
+                }
+            }
+
+            m_bStateSosOk = true;
         }
-
-        m_bStateSosOk = true;
-
         break;
 
     case JFIF_DRI:
@@ -6887,13 +6868,11 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     bool bSrchXmmUsig = false;
     bool bSrchUsig = false;
     bool bMatchIjg = false;
-    CString sMatchIjgQual = _T("");
 
     ASSERT(m_strHash != _T("NONE"));
     ASSERT(m_strHashRot != _T("NONE"));
 
     if (bQuiet) { m_pLog->Disable(); }
-
 
     m_pLog->AddLine(_T(""));
     m_pLog->AddLineHdr(_T("*** Searching Compression Signatures ***"));
@@ -6914,7 +6893,6 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     strTmp.Format(_T("  Chroma subsampling:  %s"), (LPCTSTR)m_strImgQuantCss);
     m_pLog->AddLine(strTmp);
 
-
     // Calculate the final fields
     // Add Photoshop IRB entries
     // Note that we always add an entry to the m_strImgExtras even if
@@ -6922,7 +6900,6 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     strTmp = _T("");
     strTmp.Format(_T("[PS]:[%u/%u],"), m_nImgQualPhotoshopSa, m_nImgQualPhotoshopSfw);
     m_strImgExtras += strTmp;
-
 
     // --------------------------------------
     // Determine current entry fields
@@ -6970,7 +6947,6 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     // --------------------------------------
     // Determine search results
 
-
     // All of the rest of the search results require searching
     // through the database entries
 
@@ -6978,7 +6954,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     bSrchXmmUsig = false;
     bSrchUsig = false;
     bMatchIjg = false;
-    sMatchIjgQual = _T("");
+    CString sMatchIjgQual;
 
     unsigned nSigsInternal = theApp.m_pDbSigs->GetNumSigsInternal();
     unsigned nSigsExtra = theApp.m_pDbSigs->GetNumSigsExtra();
@@ -6986,16 +6962,13 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     strTmp.Format(_T("  Searching Compression Signatures: (%u built-in, %u user(*) )"), nSigsInternal, nSigsExtra);
     m_pLog->AddLine(strTmp);
 
-
     // Now in SIG version 0x01 and later, we are not including
     // the CSS in the signature. Therefore, we need to compare it
     // manually.
 
-    bool curMatchMm;
     bool curMatchSw;
     bool curMatchSig;
     bool curMatchSigCss;
-
 
     // Check on Extras field
     // Noted that Canon EOS Viewer Utility (EVU) seems to convert RAWs with
@@ -7039,7 +7012,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
         theApp.m_pDbSigs->GetDBEntry(ind, &pEntry);
 
         // Reset current entry state
-        curMatchMm = false;
+        bool curMatchMm = false;
         curMatchSw = false;
         curMatchSig = false;
         curMatchSigCss = false;
@@ -7600,7 +7573,6 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
     }
 #endif
 
-
     // Is automatic internet update enabled?
     if (!theApp.m_pAppConfig->bDbSubmitNet)
     {
@@ -7609,16 +7581,13 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 
     CString strTmp;
 
-    CString strFormat;
     CString strFormDataPre;
     CString strFormData;
     unsigned nFormDataLen;
 
     unsigned nChecksum = 32;
-    CString strSubmitHost;
-    CString strSubmitPage;
-    strSubmitHost = IA_HOST;
-    strSubmitPage = IA_DB_SUBMIT_PAGE;
+    CString strSubmitHost = IA_HOST;
+    CString strSubmitPage = IA_DB_SUBMIT_PAGE;
     for (unsigned i = 0; i < _tcslen(IA_HOST); i++)
     {
         nChecksum += strSubmitHost.GetAt(i);
@@ -7634,7 +7603,7 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
             _T("Content-Type: application/x-www-form-urlencoded; charset=utf-8");
 
         // URL-encoded form variables -
-        strFormat = _T("ver=%s&js_ver=%s&x_make=%s&x_model=%s&um_qual=%s&x_dqt0=%s&x_dqt1=%s&x_dqt2=%s&x_dqt3=%s");
+        CString strFormat = _T("ver=%s&js_ver=%s&x_make=%s&x_model=%s&um_qual=%s&x_dqt0=%s&x_dqt1=%s&x_dqt2=%s&x_dqt3=%s");
         strFormat += _T("&x_subsamp=%s&c_sig=%s&c_sigrot=%s&c_qfact0=%f&c_qfact1=%f&x_img_w=%u&x_img_h=%u");
         strFormat += _T("&x_sw=%s&x_com=%s&x_maker=%u&u_source=%d&u_sw=%s");
         strFormat += _T("&x_extra=%s&u_notes=%s&c_sigthumb=%s&c_sigthumbrot=%s&x_landscape=%u");
@@ -7789,14 +7758,10 @@ void CjfifDecode::DecodeEmbeddedThumb()
     unsigned nPosEnd;
     bool bDone;
     unsigned nCode;
-    bool bRet;
 
     CString strFull;
-    unsigned nDqtPrecision_Pq;
-    unsigned nDqtQuantDestId_Tq;
     unsigned nImgPrecision;
     unsigned nLength;
-    unsigned nTmpVal;
     bool bScanSkipDone;
     bool bErrorAny = false;
     bool bErrorThumbLenZero = false;
@@ -7872,10 +7837,10 @@ void CjfifDecode::DecodeEmbeddedThumb()
                         strTmp.Format(_T("    ----"));
                         m_pLog->AddLine(strTmp);
 
-                        nTmpVal = Buf(m_nPos++);
-                        nDqtPrecision_Pq = (nTmpVal & 0xF0) >> 4;
-                        nDqtQuantDestId_Tq = nTmpVal & 0x0F;
-                        CString strPrecision = _T("");
+                        unsigned nTmpVal = Buf(m_nPos++);
+                        unsigned nDqtPrecision_Pq = (nTmpVal & 0xF0) >> 4;
+                        unsigned nDqtQuantDestId_Tq = nTmpVal & 0x0F;
+                        CString strPrecision;
                         if (nDqtPrecision_Pq == 0)
                         {
                             strPrecision = _T("8 bits");
@@ -7915,7 +7880,6 @@ void CjfifDecode::DecodeEmbeddedThumb()
                         }
                         m_pLog->AddLine(strTmp);
 
-
                         if (nDqtQuantDestId_Tq >= 4)
                         {
                             strTmp.Format(_T("ERROR: nDqtQuantDestId_Tq = %u, >= 4"), nDqtQuantDestId_Tq);
@@ -7942,8 +7906,8 @@ void CjfifDecode::DecodeEmbeddedThumb()
                                 strFull += strTmp;
 
                                 // Store the DQT entry into the Image DenCoder
-                                bRet = m_pImgDec->SetDqtEntry(nDqtQuantDestId_Tq, nY * 8 + nX,
-                                                              glb_anUnZigZag[nY * 8 + nX], m_anImgDqtTbl[nDqtQuantDestId_Tq][nY * 8 + nX]);
+                                bool bRet = m_pImgDec->SetDqtEntry(nDqtQuantDestId_Tq, nY * 8 + nX,
+                                                                   glb_anUnZigZag[nY * 8 + nX], m_anImgDqtTbl[nDqtQuantDestId_Tq][nY * 8 + nX]);
                                 DecodeErrCheck(bRet);
                             }
 
@@ -8087,7 +8051,6 @@ bool CjfifDecode::GetMarkerName(unsigned nCode, CString& markerStr)
     }
     if (!bFound)
     {
-        markerStr = _T("");
         markerStr.Format(_T("(0xFF%02X)"), nCode);
         return false;
     }
@@ -8139,7 +8102,6 @@ bool CjfifDecode::DecodeAvi()
         return false;
     }
 
-    CString strHeader;
     unsigned nChunkSize;
     unsigned nChunkDataStart;
 
@@ -8152,7 +8114,7 @@ bool CjfifDecode::DecodeAvi()
             break;
         }
 
-        strHeader = m_pWBuf->BufReadStrn(m_nPos, 4);
+        CString strHeader = m_pWBuf->BufReadStrn(m_nPos, 4);
         m_nPos += 4;
         strTmp.Format(_T("  %s"), (LPCTSTR)strHeader);
         m_pLog->AddLine(strTmp);
@@ -8161,13 +8123,10 @@ bool CjfifDecode::DecodeAvi()
         m_nPos += 4;
         nChunkDataStart = m_nPos;
 
-
         if (strHeader == _T("LIST"))
         {
             // --- LIST ---
-
-            CString strListType;
-            strListType = m_pWBuf->BufReadStrn(m_nPos, 4);
+            CString strListType = m_pWBuf->BufReadStrn(m_nPos, 4);
             m_nPos += 4;
 
             strTmp.Format(_T("    %s"), (LPCTSTR)strListType);
@@ -8177,14 +8136,12 @@ bool CjfifDecode::DecodeAvi()
             {
                 // --- hdrl ---
 
-                unsigned nPosHdrlStart;
                 CString strHdrlId;
                 strHdrlId = m_pWBuf->BufReadStrn(m_nPos, 4);
                 m_nPos += 4;
-                unsigned nHdrlLen;
-                nHdrlLen = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                unsigned nHdrlLen = m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                nPosHdrlStart = m_nPos;
+                unsigned nPosHdrlStart = m_nPos;
 
                 // nHdrlLen should be 14*4 bytes
 
@@ -8238,7 +8195,7 @@ bool CjfifDecode::DecodeAvi()
                 xdwSampleSize = m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
 
-                CString fccTypeDecode = _T("");
+                CString fccTypeDecode;
                 if (fccType == _T("vids")) { fccTypeDecode = _T("[vids] Video"); }
                 else if (fccType == _T("auds")) { fccTypeDecode = _T("[auds] Audio"); }
                 else if (fccType == _T("txts")) { fccTypeDecode = _T("[txts] Subtitle"); }
@@ -8361,7 +8318,7 @@ bool CjfifDecode::DecodeAvi()
 
                 if (strInfoId == _T("ISFT"))
                 {
-                    CString strIsft = _T("");
+                    CString strIsft;
                     strIsft = m_pWBuf->BufReadStrn(m_nPos, nChunkSize);
                     strIsft.TrimRight();
                     strTmp.Format(_T("      -[Software] = [%s]"), (LPCTSTR)strIsft);
@@ -8386,7 +8343,7 @@ bool CjfifDecode::DecodeAvi()
         {
             // Timestamp info (Canon, etc.)
 
-            CString strIditTimestamp = _T("");
+            CString strIditTimestamp;
             strIditTimestamp = m_pWBuf->BufReadStrn(m_nPos, nChunkSize);
             strIditTimestamp.TrimRight();
             strTmp.Format(_T("    -[Timestamp] = [%s]"), (LPCTSTR)strIditTimestamp);
@@ -8721,7 +8678,7 @@ bool CjfifDecode::ExportJpegPrepare(CString strFileIn, bool bForceSoi, bool bFor
     //   [m_nPosEmbedStart ... m_nPosEmbedEnd]
     // If state is valid (i.e. file opened)
 
-    CString strTmp = _T("");
+    CString strTmp;
 
     m_pLog->AddLine(_T(""));
     m_pLog->AddLineHdr(_T("*** Exporting JPEG ***"));
@@ -8731,7 +8688,7 @@ bool CjfifDecode::ExportJpegPrepare(CString strFileIn, bool bForceSoi, bool bFor
 
     // Only bother to extract if all main sections are present
     bool bExtractWarn = false;
-    CString strMissing = _T("");
+    CString strMissing;
 
     if (!m_bStateEoi)
     {
@@ -8828,7 +8785,7 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
                                unsigned long nFileLen, bool bOverlayEn, bool bDhtAviInsert, bool bForceSoi, bool bForceEoi)
 {
     CFile* pFileOutput;
-    CString strTmp = _T("");
+    CString strTmp;
 
     strTmp.Format(_T("  Exporting to:   [%s]"), (LPCTSTR)strFileOut);
     m_pLog->AddLine(strTmp);
@@ -8843,8 +8800,8 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         return false;
     }
 
-    ASSERT(strFileIn != _T(""));
-    if (strFileIn == _T(""))
+    ASSERT(!strFileIn.IsEmpty());
+    if (strFileIn.IsEmpty())
     {
         strTmp.Format(_T("ERROR: Export but source filename empty"));
         m_pLog->AddLineErr(strTmp);
@@ -8853,7 +8810,6 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
 
         return false;
     }
-
 
     try
     {
@@ -9008,13 +8964,12 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
     return true;
 }
 
-
 // Export a subset of the file with no overlays or mods
 bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
                                     unsigned long nStart, unsigned long nEnd)
 {
     CFile* pFileOutput;
-    CString strTmp = _T("");
+    CString strTmp;
 
     strTmp.Format(_T("  Exporting range to:   [%s]"), (LPCTSTR)strFileOut);
     m_pLog->AddLine(strTmp);
@@ -9029,8 +8984,8 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
         return false;
     }
 
-    ASSERT(strFileIn != _T(""));
-    if (strFileIn == _T(""))
+    ASSERT(!strFileIn.IsEmpty());
+    if (strFileIn.IsEmpty())
     {
         strTmp.Format(_T("ERROR: Export but source filename empty"));
         m_pLog->AddLineErr(strTmp);
@@ -9039,7 +8994,6 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
 
         return false;
     }
-
 
     try
     {
@@ -9064,15 +9018,7 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
         return false;
     }
 
-
-    unsigned nCopyStart;
-    unsigned nCopyEnd;
-    unsigned nCopyLeft;
-    unsigned ind;
-
-    BYTE* pBuf;
-
-    pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
+    BYTE * pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
     if (!pBuf)
     {
         if (pFileOutput)
@@ -9083,14 +9029,13 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
         return false;
     }
 
-
     // Step 1
-    nCopyStart = nStart;
-    nCopyEnd = nEnd;
-    ind = nCopyStart;
+    unsigned nCopyStart = nStart;
+    unsigned nCopyEnd = nEnd;
+    unsigned ind = nCopyStart;
     while (ind < nCopyEnd)
     {
-        nCopyLeft = nCopyEnd - ind + 1;
+        unsigned nCopyLeft = nCopyEnd - ind + 1;
         if (nCopyLeft > EXPORT_BUF_SIZE) { nCopyLeft = EXPORT_BUF_SIZE; }
         for (unsigned ind1 = 0; ind1 < nCopyLeft; ind1++)
         {
@@ -9101,7 +9046,6 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
         strTmp.Format(_T("Exporting %3u%%..."), ind * 100 / (nCopyEnd - nCopyStart));
         SetStatusText(strTmp);
     }
-
 
     // Free up space
     pFileOutput->Close();

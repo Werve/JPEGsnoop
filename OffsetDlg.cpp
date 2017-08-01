@@ -23,7 +23,6 @@
 
 COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , m_sOffsetVal(_T(""))
 {
     m_nBaseMode = 0; // 0=hex, 1=dec
     m_nRadioBaseMode = 0;
