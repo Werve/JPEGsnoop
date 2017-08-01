@@ -90,9 +90,9 @@ DWORD CRegDWORD::read()
 
 void CRegDWORD::write()
 {
-    ASSERT(m_key != _T(""));
+    ASSERT(!m_key.IsEmpty());
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -181,7 +181,7 @@ void CRegString::write()
 {
     ASSERT(m_key != _T(""));
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -274,9 +274,9 @@ CPoint CRegPoint::read()
 
 void CRegPoint::write()
 {
-    ASSERT(m_key != _T(""));
+    ASSERT(!m_key.IsEmpty());
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path, 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -362,7 +362,7 @@ stdstring CRegStdString::read()
 void CRegStdString::write()
 {
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
@@ -450,7 +450,7 @@ DWORD CRegStdWORD::read()
 void CRegStdWORD::write()
 {
     DWORD disp;
-    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(m_base, m_path.c_str(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }

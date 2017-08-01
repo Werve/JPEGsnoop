@@ -890,7 +890,7 @@ unsigned CDbSigs::GetIjgNum() const
     return m_nSwIjgListNum;
 }
 
-LPTSTR CDbSigs::GetIjgEntry(unsigned nInd)
+LPCTSTR CDbSigs::GetIjgEntry(unsigned nInd)
 {
     return m_sSwIjgList[nInd];
 }
@@ -940,7 +940,7 @@ bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
                     // Need to check model as well
                     // Since we may like to do a substring match, support wildcards
                     unsigned nCompareLen;
-                    LPTSTR pWildcard = _tcschr(m_sExcMmNoMkrList[nInd].strXModel, '*');
+                    LPCTSTR pWildcard = _tcschr(m_sExcMmNoMkrList[nInd].strXModel, '*');
                     if (pWildcard != nullptr)
                     {
                         // Wildcard present
@@ -1036,7 +1036,7 @@ bool CDbSigs::LookupExcMmIsEdit(CString strMake, CString strModel)
 
 
 // Sample list of software programs that also use the IJG encoder
-LPTSTR CDbSigs::m_sSwIjgList[] = {
+LPCTSTR CDbSigs::m_sSwIjgList[] = {
     _T("GIMP"),
     _T("IrfanView"),
     _T("idImager"),
@@ -1057,7 +1057,7 @@ LPTSTR CDbSigs::m_sSwIjgList[] = {
 //   "U-Lead Systems"
 //   "Intel(R) JPEG Library" (unsure if ever in hardware)
 //
-LPTSTR CDbSigs::m_sXComSwList[] = {
+LPCTSTR CDbSigs::m_sXComSwList[] = {
     _T("gd-jpeg"),
     _T("Photoshop"),
     _T("ACD Systems"),

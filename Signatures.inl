@@ -3377,13 +3377,12 @@ const CompSigConst CDbSigs::m_sSigList[] = {
     {ENUM_EDITOR_SW, _T(""),_T(""),_T("zqual"),_T("zsig"),_T("zsig"),_T(""),_T("Roxio PhotoSuite"),_T("Roxio PhotoSuite")},
     {ENUM_EDITOR_SW, _T(""),_T(""),_T("zqual"),_T("zsig"),_T("zsig"),_T(""),_T("ViewNX"),_T("ViewNX")},
 
-
     // Unknown:
     //  - COACHWare 1.0
     //  - CAM ZE15
     //  - adoWKS15
-    //  - Digital Lab System	(Seen in Kodak printing lab)
-    //  - DVWare 1.0			(Seen in AIPTEK DV 6800)
+    //  - Digital Lab System    (Seen in Kodak printing lab)
+    //  - DVWare 1.0            (Seen in AIPTEK DV 6800)
     //  - IRSDK
 
     {ENUM_EDITOR_UNSET, _T("*"),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T("")}

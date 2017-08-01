@@ -7672,8 +7672,8 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 
             // POST requests from HttpSendRequest() don't work well with
             // unicode, so convert from unicode to ANSI
-            CStringA strHeadersA = CW2A(strHeaders,CP_UTF8);
-            CStringA strFormDataA = CW2A(strFormData,CP_UTF8);
+            CStringA strHeadersA = static_cast<const char*>(CW2A(strHeaders, CP_UTF8));
+            CStringA strFormDataA = static_cast<const char*>(CW2A(strFormData, CP_UTF8));
             HttpSendRequestA(hData, strHeadersA, strHeadersA.GetLength(), strFormDataA.GetBuffer(), strFormDataA.GetLength());
         }
         catch (CInternetException* e)
@@ -9140,7 +9140,6 @@ const MarkerNameTable CjfifDecode::m_pMarkerNames[] = {
     {JFIF_JPG13,_T("JPG13")},
     {JFIF_COM,_T("COM")},
     {JFIF_TEM,_T("TEM")},
-    //{JFIF_RES*,_T("RES")},
     {0x00,_T("*")},
 };
 

@@ -33,8 +33,8 @@
 // Signature exception structure with metadata fields
 struct CompExcMm
 {
-    LPTSTR strXMake; // EXIF Make
-    LPTSTR strXModel; // EXIF Model
+    LPCTSTR strXMake; // EXIF Make
+    LPCTSTR strXModel; // EXIF Model
 };
 
 
@@ -42,14 +42,14 @@ struct CompExcMm
 struct CompSigConst
 {
     teEditor eEditor; // Digicam vs software/editor
-    LPTSTR strXMake; // Blank for editors (set to strMSwDisp)
-    LPTSTR strXModel; // Blank for editors
-    LPTSTR strUmQual;
-    LPTSTR strCSig; // Signature
-    LPTSTR strCSigRot; // Signature of rotated DQTs
-    LPTSTR strXSubsamp; // Blank for editors
-    LPTSTR strMSwTrim; // Blank for digicam
-    LPTSTR strMSwDisp; // Blank for digicam
+    LPCTSTR strXMake; // Blank for editors (set to strMSwDisp)
+    LPCTSTR strXModel; // Blank for editors
+    LPCTSTR strUmQual;
+    LPCTSTR strCSig; // Signature
+    LPCTSTR strCSigRot; // Signature of rotated DQTs
+    LPCTSTR strXSubsamp; // Blank for editors
+    LPCTSTR strMSwTrim; // Blank for digicam
+    LPCTSTR strMSwDisp; // Blank for digicam
 };
 
 
@@ -106,7 +106,7 @@ public:
     bool LookupExcMmIsEdit(CString strMake, CString strModel);
 
     unsigned GetIjgNum() const;
-    LPTSTR GetIjgEntry(unsigned nInd);
+    LPCTSTR GetIjgEntry(unsigned nInd);
 
     void SetDbDir(CString strDbDir);
     void SetFirstRun(bool bFirstRun);
@@ -125,10 +125,10 @@ private:
     static const CompExcMm m_sExcMmIsEditList[];
 
     unsigned m_nSwIjgListNum;
-    static LPTSTR m_sSwIjgList[];
+    static LPCTSTR m_sSwIjgList[];
 
     unsigned m_nXcomSwListNum;
-    static LPTSTR m_sXComSwList[];
+    static LPCTSTR m_sXComSwList[];
 
     CString m_strDbDir; // Database directory
 

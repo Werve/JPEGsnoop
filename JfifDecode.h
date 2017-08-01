@@ -125,7 +125,7 @@ struct CStr2
 struct MarkerNameTable
 {
     unsigned nCode;
-    LPTSTR strName;
+    LPCTSTR strName;
 };
 
 
