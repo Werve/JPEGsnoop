@@ -34,10 +34,6 @@
 #include "FolderDlg.h"
 #include "BatchDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 CJPEGsnoopDoc::CJPEGsnoopDoc()
     : m_pView(NULL)
 {

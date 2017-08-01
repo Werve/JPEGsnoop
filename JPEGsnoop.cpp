@@ -35,10 +35,6 @@
 #include "afxinet.h"            // For internet
 #include "io.h"                 // For _open_osfhandle
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 // Global log file
 CDocLog* glb_pDocLog = nullptr;
 

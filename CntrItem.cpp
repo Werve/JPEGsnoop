@@ -21,10 +21,6 @@
 #include "CntrItem.h"
 #include "JPEGsnoopDoc.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 CJPEGsnoopCntrItem::CJPEGsnoopCntrItem(REOBJECT* preo, CJPEGsnoopDoc* pContainer)
     : CRichEditCntrItem(preo, pContainer)
 {

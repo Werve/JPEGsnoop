@@ -22,10 +22,6 @@
 #include "JPEGsnoop.h"
 #include "JPEGsnoopDoc.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 BOOL CJPEGsnoopView::PreCreateWindow(CREATESTRUCT& cs)
 {
     return CRichEditView::PreCreateWindow(cs);

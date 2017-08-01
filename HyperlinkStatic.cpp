@@ -32,12 +32,6 @@
 
 #include "HyperlinkStatic.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 //CAL! Added the following as otherwise we need
 //     to set WINVER >= 0x0500
 #define IDC_HAND MAKEINTRESOURCE(32649)
