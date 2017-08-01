@@ -28,11 +28,6 @@
 CwindowBuf::CwindowBuf()
 {
     m_pBuffer = new BYTE[MAX_BUF];
-    if (!m_pBuffer)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for File Buffer"));
-        exit(1);
-    }
 
     m_pStatBar = nullptr;
 
@@ -479,11 +474,6 @@ bool CwindowBuf::OverlayAlloc(unsigned nInd)
         return true;
     }
     m_psOverlay[nInd] = new sOverlay();
-    if (!m_psOverlay[nInd])
-    {
-        AfxMessageBox(_T("NOTE: Out of memory for extra file overlays"));
-        return false;
-    }
     memset(m_psOverlay[nInd], 0, sizeof(sOverlay));
     // FIXME: may not be necessary
     m_psOverlay[nInd]->bEn = false;

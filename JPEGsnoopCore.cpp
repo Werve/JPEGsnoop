@@ -33,26 +33,11 @@ CJPEGsnoopCore::CJPEGsnoopCore()
 
     // Allocate the file window buffer
     m_pWBuf = new CwindowBuf();
-    if (!m_pWBuf)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for File Buffer"));
-        exit(1);
-    }
 
     // Allocate the JPEG decoder
     m_pImgDec = new CimgDecode(glb_pDocLog, m_pWBuf);
-    if (!m_pWBuf)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for Image Decoder"));
-        exit(1);
-    }
 
     m_pJfifDec = new CjfifDecode(glb_pDocLog, m_pWBuf, m_pImgDec);
-    if (!m_pWBuf)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for JFIF Decoder"));
-        exit(1);
-    }
 
     // Reset all members
     Reset();

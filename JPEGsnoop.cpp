@@ -363,13 +363,9 @@ public:
             m_pCfg->bGuiMode = false;
             m_pCfg->bInteractive = false;
         }
-    };
+    }
 };
 
-
-// CJPEGsnoopApp construction
-
-// Constructor
 CJPEGsnoopApp::CJPEGsnoopApp()
 {
     // Reset fatal error flag
@@ -377,31 +373,12 @@ CJPEGsnoopApp::CJPEGsnoopApp()
 
     // Application-level config options
     m_pAppConfig = new CSnoopConfig();
-    if (!m_pAppConfig)
-    {
-        AfxMessageBox(_T("ERROR: Couldn't allocate memory for SnoopConfig"));
-        m_bFatal = true;
-    }
 
-    if (false) m_pAppConfig->DebugLogCreate();
-
-    if (false) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopApp::CJPEGsnoopApp() Checkpoint 1"));
     glb_pDocLog = new CDocLog();
-    if (!glb_pDocLog)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for Log"));
-        exit(1);
-    }
 
     m_pDbSigs = new CDbSigs();
-    if (!m_pDbSigs)
-    {
-        AfxMessageBox(_T("ERROR: Couldn't allocate memory for DbSigs"));
-        m_bFatal = true;
-    }
 }
 
-// Destructor
 CJPEGsnoopApp::~CJPEGsnoopApp()
 {
     // Save and then Delete
@@ -426,7 +403,6 @@ CJPEGsnoopApp::~CJPEGsnoopApp()
     }
 }
 
-// The one and only CJPEGsnoopApp object
 
 CJPEGsnoopApp theApp;
 
@@ -507,8 +483,6 @@ BOOL CJPEGsnoopApp::InitInstance()
         RUNTIME_CLASS(CJPEGsnoopDoc),
         RUNTIME_CLASS(CMainFrame), // main SDI frame window
         RUNTIME_CLASS(CJPEGsnoopView));
-    if (!pDocTemplate)
-        return FALSE;
     pDocTemplate->SetContainerInfo(IDR_CNTR_INPLACE);
     AddDocTemplate(pDocTemplate);
 
@@ -580,11 +554,6 @@ void CJPEGsnoopApp::DoCmdLineCore()
     // Allocate the command-line processing core
     CJPEGsnoopCore* pSnoopCore = nullptr;
     pSnoopCore = new CJPEGsnoopCore;
-    ASSERT(pSnoopCore);
-    if (!pSnoopCore)
-    {
-        exit(1);
-    }
 
     BOOL bStatus = false;
     // Perform processing requested by command-line
@@ -780,11 +749,6 @@ void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
     if ((bForceNow) || (tmeDiff >= tmePeriod))
     {
         CModelessDlg * pdlg = new CModelessDlg;
-        if (!pdlg)
-        {
-            // Fatal error
-            exit(1);
-        }
         pdlg->Create(IDD_MODELESSDLG, nullptr);
 
         CheckUpdatesWww();
@@ -1090,8 +1054,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
     // Extend the maximum filename length
     // Default is 64 for filename, 260 for path
     // Some users have requested support for longer filenames
-    LPTSTR spFilePath;
-    spFilePath = new TCHAR[501];
+    LPTSTR spFilePath = new TCHAR[501];
     spFilePath[0] = TCHAR(0);
     FileDlg.m_pOFN->lpstrFile = spFilePath;
     FileDlg.m_pOFN->nMaxFile = 500;

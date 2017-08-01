@@ -180,19 +180,10 @@ CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
 
     // Allocate the Photoshop decoder
     m_pPsDec = new CDecodePs(pWBuf, pLog);
-    if (!m_pPsDec)
-    {
-        ASSERT(false);
-        return;
-    }
 
 #ifdef SUPPORT_DICOM
     // Allocate the DICOM decoder
     m_pDecDicom = new CDecodeDicom(pWBuf,pLog);
-    if (!m_pDecDicom) {
-        ASSERT(false);
-        return;
-    }
     if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CjfifDecode::CjfifDecode() Checkpoint 5"));
 #endif
 }
@@ -8851,29 +8842,9 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
     }
 
 
-    // Need to insert fake DHT. Assume we have enough buffer allocated.
-    //
-    // Step 1: Copy from SOI -> SOS (not incl)
-    // Step 2: Insert Fake DHT
-    // Step 3: Copy from SOS -> EOI
-    unsigned nCopyStart;
-    unsigned nCopyEnd;
     unsigned nCopyLeft;
-    unsigned ind;
 
-    BYTE* pBuf;
-
-    pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
-    if (!pBuf)
-    {
-        if (pFileOutput)
-        {
-            delete pFileOutput;
-            pFileOutput = nullptr;
-        }
-        return false;
-    }
-
+    BYTE * pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
 
     // Step 1
 
@@ -8885,9 +8856,9 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         pFileOutput->Write(&anBufSoi, 2);
     }
 
-    nCopyStart = m_nPosEmbedStart;
-    nCopyEnd = (m_nPosSos - 1);
-    ind = nCopyStart;
+    unsigned nCopyStart = m_nPosEmbedStart;
+    unsigned nCopyEnd = (m_nPosSos - 1);
+    unsigned ind = nCopyStart;
     while (ind < nCopyEnd)
     {
         nCopyLeft = nCopyEnd - ind + 1;
@@ -9019,15 +8990,6 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
     }
 
     BYTE * pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
-    if (!pBuf)
-    {
-        if (pFileOutput)
-        {
-            delete pFileOutput;
-            pFileOutput = nullptr;
-        }
-        return false;
-    }
 
     // Step 1
     unsigned nCopyStart = nStart;

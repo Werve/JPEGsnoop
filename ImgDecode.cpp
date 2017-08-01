@@ -3005,27 +3005,10 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     // Allocate the MCU File Map
     ASSERT(m_pMcuFileMap == NULL);
     m_pMcuFileMap = new unsigned[m_nMcuYMax * m_nMcuXMax];
-    if (!m_pMcuFileMap)
-    {
-        strTmp = _T("ERROR: Not enough memory for Image Decoder MCU File Pos Map");
-        m_pLog->AddLineErr(strTmp);
-        if (m_pAppConfig->bInteractive)
-            AfxMessageBox(strTmp);
-        return;
-    }
     memset(m_pMcuFileMap, 0, (m_nMcuYMax * m_nMcuXMax * sizeof(unsigned)));
-
 
     // Allocate the 8x8 Block DC Map
     m_pBlkDcValY = new short[m_nBlkYMax * m_nBlkXMax];
-    if ((!m_pBlkDcValY))
-    {
-        strTmp = _T("ERROR: Not enough memory for Image Decoder Blk DC Value Map");
-        m_pLog->AddLineErr(strTmp);
-        if (m_pAppConfig->bInteractive)
-            AfxMessageBox(strTmp);
-        return;
-    }
     if (m_nNumSosComps == NUM_CHAN_YCC)
     {
         m_pBlkDcValCb = new short[m_nBlkYMax * m_nBlkXMax];
@@ -3059,29 +3042,12 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
         ASSERT(m_pPixValCr==NULL);
     }
 
-
     // Allocate image (YCC)
     m_pPixValY = new short[nPixMapW * nPixMapH];
-    if ((!m_pPixValY))
-    {
-        strTmp = _T("ERROR: Not enough memory for Image Decoder Pixel YCC Value Map");
-        m_pLog->AddLineErr(strTmp);
-        if (m_pAppConfig->bInteractive)
-            AfxMessageBox(strTmp);
-        return;
-    }
     if (m_nNumSosComps == NUM_CHAN_YCC)
     {
         m_pPixValCb = new short[nPixMapW * nPixMapH];
         m_pPixValCr = new short[nPixMapW * nPixMapH];
-        if ((!m_pPixValCb) || (!m_pPixValCr))
-        {
-            strTmp = _T("ERROR: Not enough memory for Image Decoder Pixel YCC Value Map");
-            m_pLog->AddLineErr(strTmp);
-            if (m_pAppConfig->bInteractive)
-                AfxMessageBox(strTmp);
-            return;
-        }
     }
 
     // Reset pixel map
@@ -3090,10 +3056,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
         ClrFullRes(nPixMapW, nPixMapH);
     }
 
-
-    // -------------------------------------
     // Allocate the device-independent bitmap (DIB)
-
     unsigned char* pDibImgTmpBits = nullptr;
     unsigned nDibImgRowBytes;
 

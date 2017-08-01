@@ -48,12 +48,6 @@ CJPEGsnoopDoc::CJPEGsnoopDoc()
 
     // Allocate the processing core
     m_pCore = new CJPEGsnoopCore;
-    ASSERT(m_pCore);
-    if (!m_pCore)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for Processing Core"));
-        exit(1);
-    }
 
     // Setup link to CDocument for document log
     ASSERT(glb_pDocLog);
@@ -396,11 +390,6 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
     }
 
     BYTE* pszBuffer = new BYTE[nLength];
-    if (!pszBuffer)
-    {
-        AfxMessageBox(_T("ERROR: Not enough memory for Document ReadLine"));
-        exit(1);
-    }
 
     int nReturned = m_pFile->Read(pszBuffer, nLength);
 
@@ -1210,15 +1199,13 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
 
     CString strTitle;
     CString strFileName;
-    CString strPathName;
     VERIFY(strTitle.LoadString(IDS_CAL_EXE_OPEN));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
     // Extend the maximum filename length
     // Default is 64 for filename, 260 for path
     // Some users have requested support for longer filenames
-    LPTSTR spFilePath;
-    spFilePath = new TCHAR[501];
+    LPTSTR spFilePath = new TCHAR[501];
     spFilePath[0] = TCHAR(0);
     FileDlg.m_pOFN->lpstrFile = spFilePath;
     FileDlg.m_pOFN->nMaxFile = 500;
@@ -1231,7 +1218,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
 
     // We selected a file!
     strFileName = FileDlg.GetFileName();
-    strPathName = FileDlg.GetPathName();
+    CString strPathName = FileDlg.GetPathName();
 
     CFile* pFileExe;
     CString strTmp;
@@ -1275,28 +1262,15 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     strTmp.Format(_T("  Size:     [%lu]"), lFileSize);
     glb_pDocLog->AddLine(strTmp);
 
-    CwindowBuf* pExeBuf;
-    pExeBuf = new CwindowBuf();
-
-    ASSERT(pExeBuf);
-    if (!pExeBuf)
-    {
-        if (m_pAppConfig->bInteractive)
-            AfxMessageBox(_T("ERROR: Not enough memory for EXE Search"));
-        return;
-    }
-
+    CwindowBuf * pExeBuf = new CwindowBuf();
     pExeBuf->SetStatusBar(GetStatusBar());
     pExeBuf->BufFileSet(pFileExe);
     pExeBuf->BufLoadWindow(0);
 
-    //bool          bDoneFile = false;
-    //long          nFileInd = 0;
     unsigned nEntriesWidth;
     bool bEntriesByteSwap;
     unsigned long nFoundPos = 0;
     bool bFound = false;
-    //bool          bFoundEntry = false;
 
     BYTE abSearchMatrix[(64 * 4) + 4];
     unsigned nSearchMatrixLen;
@@ -2112,22 +2086,10 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
     if (bMode16b)
     {
         pBitmapSel16 = new unsigned short[nSizeX * nSizeY * 3];
-        ASSERT(pBitmapSel16);
-        if (!pBitmapSel16)
-        {
-            AfxMessageBox(_T("ERROR: Insufficient memory for export"));
-            return;
-        }
     }
     else
     {
         pBitmapSel8 = new unsigned char[nSizeX * nSizeY * 3];
-        ASSERT(pBitmapSel8);
-        if (!pBitmapSel8)
-        {
-            AfxMessageBox(_T("ERROR: Insufficient memory for export"));
-            return;
-        }
     }
     if (!bModeYcc)
     {
