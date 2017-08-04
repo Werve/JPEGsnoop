@@ -361,7 +361,6 @@ private:
     void ConvertYCCtoRGBFastFloat(PixelCc& sPix);
     void ConvertYCCtoRGBFastFixed(PixelCc& sPix);
 
-    void ScanYccToRgb();
     void CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix);
     void CapRgbRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix);
 
@@ -418,7 +417,6 @@ public: // For Export
     CString GetStatusFilePosText();
 
     void ReportDctMatrix();
-    void ReportDctYccMatrix();
     void ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
                    unsigned nZrl, int nVal,
                    unsigned nCoeffStart, unsigned nCoeffEnd,

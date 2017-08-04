@@ -186,14 +186,9 @@ void CFolderDialog::OnIUnknown(IUnknown* punk)
     }
 }
 
-//////////////////
 // User selected a different folder.
-//
-void CFolderDialog::OnSelChanged(LPCITEMIDLIST pidl)
+void CFolderDialog::OnSelChanged(LPCITEMIDLIST /*pidl*/)
 {
-    pidl; // Unrefernced param
-    //BFTRACE(_T("CFolderDialog::OnSelChanged: %s\n"),
-    //  GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
 }
 
 // User attempted to enter a name in the edit box that isn't a folder.
@@ -229,7 +224,7 @@ STDMETHODIMP_(ULONG) CFolderDialog::Release()
     return ExternalRelease();
 }
 
-STDMETHODIMP CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
+HRESULT CFolderDialog::QueryInterface(REFIID iid, LPVOID* ppvRet)
 {
     if (ppvRet == nullptr)
         return E_INVALIDARG;
@@ -248,22 +243,22 @@ STDMETHODIMP_(ULONG) CFolderDialog::XFolderFilter::Release()
     return pThis->Release();
 }
 
-STDMETHODIMP CFolderDialog::XFolderFilter::QueryInterface(REFIID iid, LPVOID* ppv)
+HRESULT CFolderDialog::XFolderFilter::QueryInterface(REFIID iid, LPVOID* ppv)
 {
     METHOD_PROLOGUE(CFolderDialog, FolderFilter);
     return pThis->QueryInterface(iid, ppv);
 }
 
 // Note: pHwnd is always NULL here as far as I can tell.
-STDMETHODIMP CFolderDialog::XFolderFilter::GetEnumFlags(IShellFolder* psf,
+HRESULT CFolderDialog::XFolderFilter::GetEnumFlags(IShellFolder* psf,
                                                         LPCITEMIDLIST pidlFolder, HWND* /*pHwnd*/, DWORD* pgrfFlags)
 {
     METHOD_PROLOGUE(CFolderDialog, FolderFilter);
     return pThis->OnGetEnumFlags(psf, pidlFolder, pgrfFlags);
 }
 
-STDMETHODIMP CFolderDialog::XFolderFilter::ShouldShow(IShellFolder* psf,
-                                                      LPCITEMIDLIST pidlFolder, LPCITEMIDLIST pidlItem)
+HRESULT CFolderDialog::XFolderFilter::ShouldShow(IShellFolder* psf,
+                                                 LPCITEMIDLIST pidlFolder, LPCITEMIDLIST pidlItem)
 {
     METHOD_PROLOGUE(CFolderDialog, FolderFilter);
     return pThis->OnShouldShow(psf, pidlFolder, pidlItem);

@@ -2127,7 +2127,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
             if (m_nWarnBadScanNum < m_nScanErrMax)
             {
                 strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
-                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), strPos, nNumCoeffs);
+                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), strPos.GetString(), nNumCoeffs);
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;

@@ -582,17 +582,6 @@ public:
     void write(); ///< writes the value to the registry
 
     operator DWORD();
-    CRegStdWORD& operator=(DWORD d);
-    CRegStdWORD& operator+=(DWORD d) { return *this = *this + d; }
-    CRegStdWORD& operator-=(DWORD d) { return *this = *this - d; }
-    CRegStdWORD& operator*=(DWORD d) { return *this = *this * d; }
-    CRegStdWORD& operator/=(DWORD d) { return *this = *this / d; }
-    CRegStdWORD& operator%=(DWORD d) { return *this = *this % d; }
-    CRegStdWORD& operator<<=(DWORD d) { return *this = *this << d; }
-    CRegStdWORD& operator>>=(DWORD d) { return *this = *this >> d; }
-    CRegStdWORD& operator&=(DWORD d) { return *this = *this & d; }
-    CRegStdWORD& operator|=(DWORD d) { return *this = *this | d; }
-    CRegStdWORD& operator^=(DWORD d) { return *this = *this ^ d; }
 
 protected:
 

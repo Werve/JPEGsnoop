@@ -169,11 +169,11 @@ protected:
     BEGIN_INTERFACE_PART(FolderFilter, IFolderFilter)
         STDMETHOD(GetEnumFlags)(IShellFolder* psf,
                                 LPCITEMIDLIST pidlFolder,
-                                HWND* pHwnd,
-                                DWORD* pgrfFlags);
+                                HWND* /*pHwnd*/,
+                                DWORD* pgrfFlags) override;
         STDMETHOD(ShouldShow)(IShellFolder* psf,
                               LPCITEMIDLIST pidlFolder,
-                              LPCITEMIDLIST pidlItem);
+                              LPCITEMIDLIST pidlItem) override;
     END_INTERFACE_PART(FolderFilter)
 
 private:
