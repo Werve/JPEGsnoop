@@ -325,7 +325,7 @@ void CDocLog::DoLogSave(CString strLogName)
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
-                        (LPCTSTR)strLogName, (LPCTSTR)msg);
+                        strLogName.GetString(), msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
         pLog = nullptr;

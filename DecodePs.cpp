@@ -313,7 +313,6 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
     CString strTmp;
     CString strIptcTypeName;
     CString strIptcField;
-    CString strIptcVal;
     CString strByte;
     unsigned long nPosStart;
     bool bDone;
@@ -340,7 +339,7 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
             teIptcType eIptcType;
             if (LookupIptcField(nRecordNumber, nDataSetNumber, nFldInd))
             {
-                strIptcField.Format(_T("%-35s"), (LPCTSTR)asIptcFields[nFldInd].strFldName);
+                strIptcField.Format(_T("%-35s"), asIptcFields[nFldInd].strFldName.GetString());
                 eIptcType = asIptcFields[nFldInd].eFldType;
             }
             else
@@ -349,9 +348,9 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
                 eIptcType = IPTC_T_UNK;
             }
 
-            strIptcVal = DecodeIptcValue(eIptcType, nDataFieldCnt, nPos);
+            CString strIptcVal = DecodeIptcValue(eIptcType, nDataFieldCnt, nPos);
             strTmp.Format(_T("%sIPTC [%03u:%03u] %s = %s"),
-                          (LPCTSTR)strIndent, nRecordNumber, nDataSetNumber, (LPCTSTR)strIptcField, (LPCTSTR)strIptcVal);
+                          strIndent.GetString(), nRecordNumber, nDataSetNumber, strIptcField.GetString(), strIptcVal.GetString());
             m_pLog->AddLine(strTmp);
             nPos += nDataFieldCnt;
         }
@@ -366,8 +365,8 @@ void CDecodePs::DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent)
 
 #ifdef DEBUG_LOG
             CString strDebug;
-            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                            _T("PsDecode"), (LPCTSTR)strTmp);
+            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                            _T("PsDecode"), strTmp.GetString());
             OutputDebugString(strDebug);
 #endif
 
@@ -476,11 +475,9 @@ CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPo
 // - Apply the current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportNote(unsigned nIndent, CString strNote)
 {
-    CString strIndent;
+    CString strIndent = PhotoshopParseIndent(nIndent);
     CString strLine;
-
-    strIndent = PhotoshopParseIndent(nIndent);
-    strLine.Format(_T("%s%-50s"), (LPCTSTR)strIndent, (LPCTSTR)strNote);
+    strLine.Format(_T("%s%-50s"), strIndent.GetString(), strNote.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -489,13 +486,12 @@ void CDecodePs::PhotoshopParseReportNote(unsigned nIndent, CString strNote)
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldNum(unsigned nIndent, CString strField, unsigned nVal, CString strUnits)
 {
-    CString strIndent;
     CString strVal;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
+    CString strIndent = PhotoshopParseIndent(nIndent);
     strVal.Format(_T("%u"), nVal);
-    strLine.Format(_T("%s%-50s = %s %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal, (LPCTSTR)strUnits);
+    strLine.Format(_T("%s%-50s = %s %s"), strIndent.GetString(), strField.GetString(), strVal.GetString(), strUnits.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -503,13 +499,11 @@ void CDecodePs::PhotoshopParseReportFldNum(unsigned nIndent, CString strField, u
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldBool(unsigned nIndent, CString strField, unsigned nVal)
 {
-    CString strIndent;
-    CString strVal;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
-    strVal = (nVal != 0) ? _T("true") : _T("false");
-    strLine.Format(_T("%s%-50s = %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal);
+    CString strIndent = PhotoshopParseIndent(nIndent);
+    CString strVal = (nVal != 0) ? _T("true") : _T("false");
+    strLine.Format(_T("%s%-50s = %s"), strIndent.GetString(), strField.GetString(), strVal.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -539,7 +533,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
     if (nLen == 0)
     {
         // Print out the header row, but no data will be shown
-        strLine.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strLine.Format(_T("%s%-50s = "), strIndent.GetString(), strField.GetString());
         m_pLog->AddLine(strLine);
         // Nothing to report, exit now
         return;
@@ -547,15 +541,15 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
     if (nLen <= PS_HEX_MAX_INLINE)
     {
         // Define prefix for row
-        strPrefix.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strPrefix.Format(_T("%s%-50s = "), strIndent.GetString(), strField.GetString());
     }
     else
     {
         // Print out header row
-        strLine.Format(_T("%s%-50s ="), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strLine.Format(_T("%s%-50s ="), strIndent.GetString(), strField.GetString());
         m_pLog->AddLine(strLine);
         // Define prefix for next row
-        strPrefix.Format(_T("%s"), (LPCTSTR)strIndent);
+        strPrefix.Format(_T("%s"), strIndent.GetString());
     }
 
     // Build up the hex string
@@ -604,7 +598,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
             }
 
             // Generate the line with Hex and ASCII representations
-            strLine.Format(_T("%s | 0x%s | %s"), (LPCTSTR)strPrefix, (LPCTSTR)strValHex, (LPCTSTR)strValAsc);
+            strLine.Format(_T("%s | 0x%s | %s"), strPrefix.GetString(), strValHex.GetString(), strValAsc.GetString());
             m_pLog->AddLine(strLine);
 
             // Now increment file offset
@@ -615,7 +609,7 @@ void CDecodePs::PhotoshopParseReportFldHex(unsigned nIndent, CString strField, u
     // If we had to clip the display length, then show ellipsis now
     if (nLenClip < nLen)
     {
-        strLine.Format(_T("%s | ..."), (LPCTSTR)strPrefix);
+        strLine.Format(_T("%s | ..."), strPrefix.GetString());
         m_pLog->AddLine(strLine);
     }
 }
@@ -652,7 +646,7 @@ CString CDecodePs::PhotoshopDispHexWord(unsigned nVal)
     }
 
     // Generate the line with Hex and ASCII representations
-    strLine.Format(_T("0x%s | %s"), (LPCTSTR)strValHex, (LPCTSTR)strValAsc);
+    strLine.Format(_T("0x%s | %s"), strValHex.GetString(), strValAsc.GetString());
 
     return strLine;
 }
@@ -691,7 +685,7 @@ CString CDecodePs::PhotoshopParseLookupEnum(teBimEnumField eEnumField, unsigned 
     if (!bFound)
     {
         CString strWord = PhotoshopDispHexWord(nVal);
-        strVal.Format(_T("? [%s]"), (LPCTSTR)strWord);
+        strVal.Format(_T("? [%s]"), strWord.GetString());
     }
     return strVal;
 }
@@ -701,13 +695,11 @@ CString CDecodePs::PhotoshopParseLookupEnum(teBimEnumField eEnumField, unsigned 
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldEnum(unsigned nIndent, CString strField, teBimEnumField eEnumField, unsigned nVal)
 {
-    CString strIndent;
-    CString strVal;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
-    strVal = PhotoshopParseLookupEnum(eEnumField, nVal);
-    strLine.Format(_T("%s%-50s = %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal);
+    CString strIndent = PhotoshopParseIndent(nIndent);
+    CString strVal = PhotoshopParseLookupEnum(eEnumField, nVal);
+    strLine.Format(_T("%s%-50s = %s"), strIndent.GetString(), strField.GetString(), strVal.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -717,15 +709,13 @@ void CDecodePs::PhotoshopParseReportFldEnum(unsigned nIndent, CString strField, 
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldFixPt(unsigned nIndent, CString strField, unsigned nVal, CString strUnits)
 {
-    CString strIndent;
     CString strVal;
     CString strLine;
-    float fVal;
 
-    fVal = (nVal / (float)65536.0);
-    strIndent = PhotoshopParseIndent(nIndent);
+    float fVal = (nVal / (float)65536.0);
+    CString strIndent = PhotoshopParseIndent(nIndent);
     strVal.Format(_T("%.f"), fVal);
-    strLine.Format(_T("%s%-50s = %s %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal, (LPCTSTR)strUnits);
+    strLine.Format(_T("%s%-50s = %s %s"), strIndent.GetString(), strField.GetString(), strVal.GetString(), strUnits.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -734,10 +724,8 @@ void CDecodePs::PhotoshopParseReportFldFixPt(unsigned nIndent, CString strField,
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldFloatPt(unsigned nIndent, CString strField, unsigned nVal, CString strUnits)
 {
-    CString strIndent;
     CString strVal;
     CString strLine;
-    float fVal;
 
     // Convert 4 byte unsigned int to floating-point
     // TODO: Need to check this since Photoshop web spec doesn't
@@ -753,11 +741,11 @@ void CDecodePs::PhotoshopParseReportFldFloatPt(unsigned nIndent, CString strFiel
     myUnion.nVal[2] = static_cast<BYTE>((nVal & 0x00FF0000) >> 16);
     myUnion.nVal[1] = static_cast<BYTE>((nVal & 0x0000FF00) >> 8);
     myUnion.nVal[0] = static_cast<BYTE>((nVal & 0x000000FF) >> 0);
-    fVal = myUnion.fVal;
+    float fVal = myUnion.fVal;
 
-    strIndent = PhotoshopParseIndent(nIndent);
+    CString strIndent = PhotoshopParseIndent(nIndent);
     strVal.Format(_T("%.5f"), fVal);
-    strLine.Format(_T("%s%-50s = %s %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal, (LPCTSTR)strUnits);
+    strLine.Format(_T("%s%-50s = %s %s"), strIndent.GetString(), strField.GetString(), strVal.GetString(), strUnits.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -766,10 +754,8 @@ void CDecodePs::PhotoshopParseReportFldFloatPt(unsigned nIndent, CString strFiel
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldDoublePt(unsigned nIndent, CString strField, unsigned nVal1, unsigned nVal2, CString strUnits)
 {
-    CString strIndent;
     CString strVal;
     CString strLine;
-    double dVal;
 
     // Convert 2x4 byte unsigned int to double-point
     // TODO: Need to check this since Photoshop web spec doesn't
@@ -789,11 +775,11 @@ void CDecodePs::PhotoshopParseReportFldDoublePt(unsigned nIndent, CString strFie
     myUnion.nVal[2] = static_cast<BYTE>((nVal2 & 0x00FF0000) >> 16);
     myUnion.nVal[1] = static_cast<BYTE>((nVal2 & 0x0000FF00) >> 8);
     myUnion.nVal[0] = static_cast<BYTE>((nVal2 & 0x000000FF) >> 0);
-    dVal = myUnion.dVal;
+    double dVal = myUnion.dVal;
 
-    strIndent = PhotoshopParseIndent(nIndent);
+    CString strIndent = PhotoshopParseIndent(nIndent);
     strVal.Format(_T("%.5f"), dVal);
-    strLine.Format(_T("%s%-50s = %s %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal, (LPCTSTR)strUnits);
+    strLine.Format(_T("%s%-50s = %s %s"), strIndent.GetString(), strField.GetString(), strVal.GetString(), strUnits.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -801,11 +787,10 @@ void CDecodePs::PhotoshopParseReportFldDoublePt(unsigned nIndent, CString strFie
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldStr(unsigned nIndent, CString strField, CString strVal)
 {
-    CString strIndent;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
-    strLine.Format(_T("%s%-50s = \"%s\""), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal);
+    CString strIndent = PhotoshopParseIndent(nIndent);
+    strLine.Format(_T("%s%-50s = \"%s\""), strIndent.GetString(), strField.GetString(), strVal.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -814,11 +799,10 @@ void CDecodePs::PhotoshopParseReportFldStr(unsigned nIndent, CString strField, C
 // - Report the offset with the field name (strField) and current indent level (nIndent)
 void CDecodePs::PhotoshopParseReportFldOffset(unsigned nIndent, CString strField, unsigned long nOffset)
 {
-    CString strIndent;
     CString strLine;
 
-    strIndent = PhotoshopParseIndent(nIndent);
-    strLine.Format(_T("%s%-50s @ 0x%08X"), (LPCTSTR)strIndent, (LPCTSTR)strField, nOffset);
+    CString strIndent = PhotoshopParseIndent(nIndent);
+    strLine.Format(_T("%s%-50s @ 0x%08X"), strIndent.GetString(), strField.GetString(), nOffset);
     m_pLog->AddLine(strLine);
 }
 
@@ -2064,13 +2048,13 @@ bool CDecodePs::PhotoshopParseAddtlLayerInfo(unsigned long& nPos, unsigned nInde
     {
         // Signature did not match!
         CString strError;
-        strError.Format(_T("ERROR: Addtl Layer Info signature unknown [%s] @ 0x%08X"), (LPCTSTR)strSig, nPos - 4);
+        strError.Format(_T("ERROR: Addtl Layer Info signature unknown [%s] @ 0x%08X"), strSig.GetString(), nPos - 4);
         PhotoshopParseReportNote(nIndent, strError);
 
 #ifdef DEBUG_LOG
         CString strDebug;
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("PsDecode"), (LPCTSTR)strError);
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("PsDecode"), strError.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -2246,13 +2230,13 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
     {
         // Signature did not match!
         CString strError;
-        strError.Format(_T("ERROR: IRB signature unknown [%s]"), (LPCTSTR)strSig);
+        strError.Format(_T("ERROR: IRB signature unknown [%s]"), strSig.GetString());
         PhotoshopParseReportNote(nIndent, strError);
 
 #ifdef DEBUG_LOG
         CString strDebug;
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("PsDecode"), (LPCTSTR)strError);
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("PsDecode"), strError.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -2290,7 +2274,7 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
     }
 
     strTmp.Format(_T("8BIM: [0x%04X] Name=\"%s\" Len=[0x%04X] DefinedName=\"%s\""),
-                  nBimId, (LPCTSTR)strBimName, nBimLen, (LPCTSTR)strBimDefName);
+                  nBimId, strBimName.GetString(), nBimLen, strBimDefName.GetString());
     PhotoshopParseReportNote(nIndent, strTmp);
 
     nIndent++;
@@ -2303,14 +2287,12 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
     else if (bBimKnown)
     {
         // Save the file pointer
-        unsigned nPosSaved;
-        nPosSaved = nPos;
+        unsigned nPosSaved = nPos;
 
         // Calculate the end of the record
         // - This is used for parsing records that have a conditional parsing
         //   of additional fields "if length permits".
-        unsigned nPosEnd;
-        nPosEnd = nPos + nBimLen - 1;
+        unsigned nPosEnd = nPos + nBimLen - 1;
 
         switch (asBimRecords[nFldInd].eBimType)
         {
@@ -2417,12 +2399,12 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
         {
             // Length mismatch detected: we read too much (versus length)
             strTmp.Format(_T("ERROR: Parsing exceeded expected length. Stopping decode. BIM=[%s], CurPos=[0x%08X], ExpPosEnd=[0x%08X], ExpLen=[%u]"),
-                          (LPCTSTR)strBimDefName, nPos, nPosEnd + 1, nBimLen);
+                          strBimDefName.GetString(), nPos, nPosEnd + 1, nBimLen);
             m_pLog->AddLineErr(strTmp);
 #ifdef DEBUG_LOG
             CString strDebug;
-            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                            _T("PsDecode"), (LPCTSTR)strTmp);
+            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                            _T("PsDecode"), strTmp.GetString());
             OutputDebugString(strDebug);
 #else
             ASSERT(false);
@@ -2446,8 +2428,8 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
             m_pLog->AddLineWarn(strTmp);
 #ifdef DEBUG_LOG
             CString strDebug;
-            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                            _T("PsDecode"), (LPCTSTR)strTmp);
+            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                            _T("PsDecode"), strTmp.GetString());
             OutputDebugString(strDebug);
 #endif
             return false;
@@ -2782,9 +2764,9 @@ void CDecodePs::PhotoshopParseHandleOsType(CString strOsType, unsigned long& nPo
 #ifdef DEBUG_LOG
         CString strError;
         CString strDebug;
-        strError.Format(_T("ERROR: Unsupported OSType [%s]"), (LPCTSTR)strOsType);
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("PsDecode"), (LPCTSTR)strError);
+        strError.Format(_T("ERROR: Unsupported OSType [%s]"), strOsType.GetString());
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("PsDecode"), strError.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);

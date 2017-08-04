@@ -24,7 +24,7 @@
 
 CJPEGsnoopViewImg::CJPEGsnoopViewImg()
 {
-    CWindowDC dc(NULL);
+    CWindowDC dc(nullptr);
 
     // Create main log font
     memset(&m_logfont, 0, sizeof(m_logfont));
@@ -41,7 +41,7 @@ CJPEGsnoopViewImg::CJPEGsnoopViewImg()
 
 CJPEGsnoopViewImg::~CJPEGsnoopViewImg()
 {
-    if (m_pFont != NULL)
+    if (m_pFont)
     {
         delete m_pFont;
     }
@@ -52,7 +52,7 @@ CJPEGsnoopCore* CJPEGsnoopViewImg::GetCore()
     CJPEGsnoopDoc* pDoc = (CJPEGsnoopDoc*)GetDocument();
     ASSERT_VALID(pDoc);
     if (!pDoc)
-        return NULL;
+        return nullptr;
 
     // TODO: add draw code for native data here
     CJPEGsnoopCore* pCore = pDoc->m_pCore;

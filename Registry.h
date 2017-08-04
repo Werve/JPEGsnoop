@@ -72,7 +72,7 @@ public: //methods
     DWORD removeKey()
     {
         RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey);
-        return SHDeleteKey(m_base, (LPCTSTR)m_path);
+        return SHDeleteKey(m_base, m_path);
     }
 
     /**
@@ -84,7 +84,7 @@ public: //methods
     LONG removeValue()
     {
         RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE, &m_hKey);
-        return RegDeleteValue(m_hKey, (LPCTSTR)m_key);
+        return RegDeleteValue(m_hKey, m_key);
     }
 
     //members

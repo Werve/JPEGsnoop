@@ -579,7 +579,7 @@ void CJPEGsnoopApp::DoCmdLineCore()
             // Error message was already added to the log file in AnalyzeOpen()
             // So just report to user in console
             CString strErr;
-            strErr.Format(_T("ERROR: during open of file [%s]\n"), (LPCTSTR)m_pAppConfig->strCmdLineOpenFname);
+            strErr.Format(_T("ERROR: during open of file [%s]\n"), m_pAppConfig->strCmdLineOpenFname.GetString());
             CmdLineMessage(strErr);
         }
 
@@ -803,13 +803,13 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
     }
     try
     {
-        hConnection = InternetConnect(hINet, (LPCTSTR)strSubmitHost, 80, nullptr, nullptr, INTERNET_SERVICE_HTTP, 0, 1);
+        hConnection = InternetConnect(hINet, strSubmitHost, 80, nullptr, nullptr, INTERNET_SERVICE_HTTP, 0, 1);
         if (!hConnection)
         {
             InternetCloseHandle(hINet);
             return false;
         }
-        hData = HttpOpenRequest(hConnection, _T("POST"), (LPCTSTR)strSubmitPage, nullptr, nullptr, nullptr, 0, 1);
+        hData = HttpOpenRequest(hConnection, _T("POST"), strSubmitPage, nullptr, nullptr, nullptr, 0, 1);
         if (!hData)
         {
             InternetCloseHandle(hConnection);
@@ -817,7 +817,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
             return false;
         }
 
-        if (!HttpSendRequest(hData, (LPCTSTR)strHeaders, strHeaders.GetLength(), strFormData.GetBuffer(), strFormData.GetLength()))
+        if (!HttpSendRequest(hData, strHeaders, strHeaders.GetLength(), strFormData.GetBuffer(), strFormData.GetLength()))
         {
             InternetCloseHandle(hConnection);
             InternetCloseHandle(hINet);

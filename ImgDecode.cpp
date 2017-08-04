@@ -441,8 +441,8 @@ bool CimgDecode::SetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd, unsigned n
 
 #ifdef DEBUG_LOG
         CString strDebug;
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("ImgDecode"), (LPCTSTR)strTmp);
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("ImgDecode"), strTmp.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -482,8 +482,8 @@ unsigned CimgDecode::GetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd)
 
 #ifdef DEBUG_LOG
     CString strDebug;
-    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                    _T("ImgDecode"), (LPCTSTR)strTmp);
+    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                    _T("ImgDecode"), strTmp.GetString());
     OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -763,8 +763,8 @@ bool CimgDecode::SetDhtEntry(unsigned nDestId, unsigned nClass, unsigned nInd, u
             AfxMessageBox(strTmp);
 #ifdef DEBUG_LOG
         CString strDebug;
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("ImgDecode"), (LPCTSTR)strTmp);
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("ImgDecode"), strTmp.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -1113,7 +1113,7 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
         if (m_nWarnBadScanNum < m_nScanErrMax)
         {
             CString strTmp;
-            strTmp.Format(_T("*** ERROR: Overread scan segment (before nCode)! @ Offset: %s"), (LPCTSTR)GetScanBufPos());
+            strTmp.Format(_T("*** ERROR: Overread scan segment (before nCode)! @ Offset: %s"), GetScanBufPos().GetString());
             m_pLog->AddLineErr(strTmp);
 
             m_nWarnBadScanNum++;
@@ -1138,15 +1138,12 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
     // Fast search for variable-length huffman nCode
     // Do direct lookup for any codes DHT_FAST_SIZE bits or shorter
 
-    unsigned nCodeMsb;
-    unsigned nCodeFastSearch;
-
     // Only enable this fast search if m_nScanBuff_vacant implies
     // that we have at least DHT_FAST_SIZE bits available in the buffer!
     if ((32 - m_nScanBuff_vacant) >= DHT_FAST_SIZE)
     {
-        nCodeMsb = m_nScanBuff >> (32 - DHT_FAST_SIZE);
-        nCodeFastSearch = m_anDhtLookupfast[nClass][nTbl][nCodeMsb];
+        unsigned nCodeMsb = m_nScanBuff >> (32 - DHT_FAST_SIZE);
+        unsigned nCodeFastSearch = m_anDhtLookupfast[nClass][nTbl][nCodeMsb];
         if (nCodeFastSearch != DHT_CODE_UNUSED)
         {
             // We found the code!
@@ -1226,7 +1223,7 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
     {
         // The nCode consumed more bits than we had!
         CString strTmp;
-        strTmp.Format(_T("*** ERROR: Overread scan segment (after nCode)! @ Offset: %s"), (LPCTSTR)GetScanBufPos());
+        strTmp.Format(_T("*** ERROR: Overread scan segment (after nCode)! @ Offset: %s"), GetScanBufPos().GetString());
         m_pLog->AddLineErr(strTmp);
         m_bScanEnd = true;
         m_bScanBad = true;
@@ -1277,7 +1274,7 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
         {
             // The nCode consumed more bits than we had!
             CString strTmp;
-            strTmp.Format(_T("*** ERROR: Overread scan segment (after bitstring)! @ Offset: %s"), (LPCTSTR)GetScanBufPos());
+            strTmp.Format(_T("*** ERROR: Overread scan segment (after bitstring)! @ Offset: %s"), GetScanBufPos().GetString());
             m_pLog->AddLineErr(strTmp);
             m_bScanEnd = true;
             m_bScanBad = true;
@@ -1298,7 +1295,7 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
     if (m_nWarnBadScanNum < m_nScanErrMax)
     {
         CString strTmp;
-        strTmp.Format(_T("*** ERROR: Can't find huffman bitstring @ %s, table %u, value [0x%08x]"), (LPCTSTR)GetScanBufPos(), nTbl, m_nScanBuff);
+        strTmp.Format(_T("*** ERROR: Can't find huffman bitstring @ %s, table %u, value [0x%08x]"), GetScanBufPos().GetString(), nTbl, m_nScanBuff);
         m_pLog->AddLineErr(strTmp);
 
         m_nWarnBadScanNum++;
@@ -1736,7 +1733,7 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
             {
                 CString strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
                 CString strTmp;
-                strTmp.Format(_T("*** ERROR: Bad marker @ %s"), (LPCTSTR)strPos);
+                strTmp.Format(_T("*** ERROR: Bad marker @ %s"), strPos.GetString());
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -1799,7 +1796,7 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
             {
                 CString strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
                 CString strTmp;
-                strTmp.Format(_T("*** ERROR: Bad huffman code @ %s"), (LPCTSTR)strPos);
+                strTmp.Format(_T("*** ERROR: Bad huffman code @ %s"), strPos.GetString());
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -1843,7 +1840,7 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
             {
                 CString strTmp;
                 CString strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
-                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), (LPCTSTR)strPos, nNumCoeffs);
+                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), strPos.GetString(), nNumCoeffs);
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -1951,7 +1948,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
             strTbl = _T("???");
             break;
         }
-        strTmp.Format(_T("    %s (Tbl #%u), MCU=[%u,%u]"), (LPCTSTR)strTbl, nTblDqt, nMcuX, nMcuY);
+        strTmp.Format(_T("    %s (Tbl #%u), MCU=[%u,%u]"), strTbl.GetString(), nTblDqt, nMcuX, nMcuY);
         m_pLog->AddLine(strTmp);
     }
 
@@ -2031,7 +2028,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
             if (m_nWarnBadScanNum < m_nScanErrMax)
             {
                 strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
-                strTmp.Format(_T("*** ERROR: Bad marker @ %s"), (LPCTSTR)strPos);
+                strTmp.Format(_T("*** ERROR: Bad marker @ %s"), strPos.GetString());
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -2090,7 +2087,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
                 strSpecial = _T("ERROR");
                 strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
 
-                strTmp.Format(_T("*** ERROR: Bad huffman code @ %s"), (LPCTSTR)strPos);
+                strTmp.Format(_T("*** ERROR: Bad huffman code @ %s"), strPos.GetString());
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -2133,7 +2130,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
             if (m_nWarnBadScanNum < m_nScanErrMax)
             {
                 strPos = GetScanBufPos(nSavedBufPos, nSavedBufAlign);
-                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), (LPCTSTR)strPos, nNumCoeffs);
+                strTmp.Format(_T("*** ERROR: @ %s, nNumCoeffs>64 [%u]"), strPos, nNumCoeffs);
                 m_pLog->AddLineErr(strTmp);
 
                 m_nWarnBadScanNum++;
@@ -2304,17 +2301,17 @@ void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
 
     strData.Format(_T("0x %02X %02X %02X %02X = 0b (%s)"),
                    nBufByte[0], nBufByte[1], nBufByte[2], nBufByte[3],
-                   (LPCTSTR)strBinMarked);
+                   strBinMarked.GetString());
 
     if ((nCoeffStart == 0) && (nCoeffEnd == 0))
     {
         strTmp.Format(_T("      [%s]: ZRL=[%2u] Val=[%5d] Coef=[%02u= DC] Data=[%s] %s"),
-                      (LPCTSTR)strPos, nZrl, nVal, nCoeffStart, (LPCTSTR)strData, (LPCTSTR)specialStr);
+                      strPos.GetString(), nZrl, nVal, nCoeffStart, strData.GetString(), specialStr.GetString());
     }
     else
     {
         strTmp.Format(_T("      [%s]: ZRL=[%2u] Val=[%5d] Coef=[%02u..%02u] Data=[%s] %s"),
-                      (LPCTSTR)strPos, nZrl, nVal, nCoeffStart, nCoeffEnd, (LPCTSTR)strData, (LPCTSTR)specialStr);
+                      strPos.GetString(), nZrl, nVal, nCoeffStart, nCoeffEnd, strData.GetString(), specialStr.GetString());
     }
     m_pLog->AddLine(strTmp);
 }
@@ -2563,11 +2560,6 @@ void CimgDecode::ClrFullRes(unsigned nWidth, unsigned nHeight)
 //
 void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsigned nCssXInd, unsigned nCssYInd, short int nDcOffset)
 {
-    unsigned nYX;
-    float fVal;
-    short int nVal;
-    unsigned nChan;
-
     // Convert from Component index (1-based) to Channel index (0-based)
     // Component index is direct from SOF/SOS
     // Channel index is used for internal display representation
@@ -2577,15 +2569,15 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
         CString strTmp;
         CString strDebug;
         strTmp.Format(_T("SetFullRes() with nComp <= 0 [%d]"), nComp);
-        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                        _T("ImgDecode"), (LPCTSTR)strTmp);
+        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                        _T("ImgDecode"), strTmp.GetString());
         OutputDebugString(strDebug);
 #else
         ASSERT(false);
 #endif
         return;
     }
-    nChan = nComp - 1;
+    unsigned nChan = nComp - 1;
 
     unsigned nPixMapW = m_nBlkXMax * BLK_SZ_X; // Width of pixel map
     unsigned nOffsetBlkCorner; // Linear offset to top-left corner of block
@@ -2604,7 +2596,7 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
     {
         for (unsigned nX = 0; nX < BLK_SZ_X; nX++)
         {
-            nYX = nY * BLK_SZ_X + nX;
+            unsigned nYX = nY * BLK_SZ_X + nX;
 
             // Fetch the pixel value from the IDCT 8x8 block
             // and perform DC level shift
@@ -2613,9 +2605,9 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
             // TODO: Why do I need AC value x8 multiplier?
             nVal = (nVal*8) + nDcOffset;
 #else
-            fVal = m_afIdctBlock[nYX];
+            float fVal = m_afIdctBlock[nYX];
             // TODO: Why do I need AC value x8 multiplier?
-            nVal = ((short int)(fVal * 8) + nDcOffset);
+            short int nVal = ((short int)(fVal * 8) + nDcOffset);
 #endif
 
             // NOTE: These range checks were already done in DecodeScanImg()    
@@ -2739,7 +2731,7 @@ void CimgDecode::CheckScanErrors(unsigned nMcuX, unsigned nMcuY, unsigned nCssIn
 
         if (m_nWarnBadScanNum < m_nScanErrMax)
         {
-            errStr.Format(_T("*** ERROR: Bad scan data in MCU(%u,%u): %s @ Offset %s"), nMcuX, nMcuY, (LPCTSTR)strTmp, (LPCTSTR)GetScanBufPos());
+            errStr.Format(_T("*** ERROR: Bad scan data in MCU(%u,%u): %s @ Offset %s"), nMcuX, nMcuY, strTmp.GetString(), GetScanBufPos().GetString());
             m_pLog->AddLineErr(errStr);
             errStr.Format(_T("           MCU located at pixel=(%u,%u)"), err_pos_x, err_pos_y);
             m_pLog->AddLineErr(errStr);
@@ -3298,7 +3290,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
                 }
                 else
                 {
-                    strTmp.Format(_T("  Expect Restart interval elapsed @ %s"), (LPCTSTR)GetScanBufPos());
+                    strTmp.Format(_T("  Expect Restart interval elapsed @ %s"), GetScanBufPos().GetString());
                     m_pLog->AddLine(strTmp);
                     strTmp.Format(_T("    ERROR: Restart marker not detected"));
                     m_pLog->AddLineErr(strTmp);
@@ -3666,8 +3658,8 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 #ifdef DEBUG_LOG
                         CString strDebug;
                         strTmp.Format(_T("DecodeScanImg() with nBlkXY out of range. nBlkXY=[%u] m_nBlkXMax=[%u] m_nBlkYMax=[%u]"), nBlkXY, m_nBlkXMax, m_nBlkYMax);
-                        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                                        _T("ImgDecode"), (LPCTSTR)strTmp);
+                        strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                                        _T("ImgDecode"), strTmp.GetString());
                         OutputDebugString(strDebug);
 #else
                     ASSERT(false);
@@ -3697,8 +3689,8 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 #ifdef DEBUG_LOG
                             CString strDebug;
                             strTmp.Format(_T("DecodeScanImg() with nBlkXY out of range. nBlkXY=[%u] m_nBlkXMax=[%u] m_nBlkYMax=[%u]"), nBlkXY, m_nBlkXMax, m_nBlkYMax);
-                            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                                            _T("ImgDecode"), (LPCTSTR)strTmp);
+                            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                                            _T("ImgDecode"), strTmp.GetString());
                             OutputDebugString(strDebug);
 #else
                             ASSERT(false);
@@ -3726,8 +3718,8 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 #ifdef DEBUG_LOG
                             CString strDebug;
                             strTmp.Format(_T("DecodeScanImg() with nBlkXY out of range. nBlkXY=[%u] m_nBlkXMax=[%u] m_nBlkYMax=[%u]"), nBlkXY, m_nBlkXMax, m_nBlkYMax);
-                            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                                            _T("ImgDecode"), (LPCTSTR)strTmp);
+                            strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                                            _T("ImgDecode"), strTmp.GetString());
                             OutputDebugString(strDebug);
 #else
                             ASSERT(false);
@@ -3867,7 +3859,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
         m_pLog->AddLine(_T("  Finished Decoding SCAN Data"));
         strTmp.Format(_T("    Number of RESTART markers decoded: %u"), m_nRestartRead);
         m_pLog->AddLine(strTmp);
-        strTmp.Format(_T("    Next position in scan buffer: Offset %s"), (LPCTSTR)GetScanBufPos());
+        strTmp.Format(_T("    Next position in scan buffer: Offset %s"), GetScanBufPos().GetString());
         m_pLog->AddLine(strTmp);
 
         m_pLog->AddLine(_T(""));
@@ -4520,7 +4512,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Y Overflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipYOver++;
@@ -4539,7 +4531,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Y Underflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipYUnder++;
@@ -4558,7 +4550,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Cb Overflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipCbOver++;
@@ -4577,7 +4569,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Cb Underflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipCbUnder++;
@@ -4596,7 +4588,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Cr Overflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipCrOver++;
@@ -4615,7 +4607,7 @@ void CimgDecode::CapYccRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
             {
                 CString strTmp;
                 strTmp.Format(_T("*** NOTE: YCC Clipped. MCU=(%4u,%4u) YCC=(%5d,%5d,%5d) Cr Underflow @ Offset %s"),
-                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, (LPCTSTR)GetScanBufPos());
+                              nMcuX, nMcuY, nCurY, nCurCb, nCurCr, GetScanBufPos().GetString());
                 m_pLog->AddLineWarn(strTmp);
                 m_nWarnYccClipNum++;
                 m_sStatClip.nClipCrUnder++;

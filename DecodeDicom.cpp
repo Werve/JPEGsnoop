@@ -322,7 +322,7 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
     }
 #else
     // Simple tag info  
-    strTag.Format(_T("%s"), (LPCTSTR)strTagName);
+    strTag.Format(_T("%s"), strTagName.GetString());
 #endif
 
     // Assign struct
@@ -686,9 +686,9 @@ CString CDecodeDicom::ParseIndent(unsigned nIndent)
 // - Report the value with the field name (strField) and current indent level (nIndent)
 void CDecodeDicom::ReportFldStr(unsigned nIndent, CString strField, CString strVal)
 {
-    CString strLine;
     CString strIndent = ParseIndent(nIndent);
-    strLine.Format(_T("%s%-50s = \"%s\""), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strVal);
+    CString strLine;
+    strLine.Format(_T("%s%-50s = \"%s\""), strIndent.GetString(), strField.GetString(), strVal.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -698,7 +698,7 @@ void CDecodeDicom::ReportFldStrEnc(unsigned nIndent, CString strField, CString s
 {
     CString strIndent = ParseIndent(nIndent);
     CString strLine;
-    strLine.Format(_T("%s%-50s = %s \"%s\""), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strEncVal, (LPCTSTR)strVal);
+    strLine.Format(_T("%s%-50s = %s \"%s\""), strIndent.GetString(), strField.GetString(), strEncVal.GetString(), strVal.GetString());
     m_pLog->AddLine(strLine);
 }
 
@@ -764,19 +764,17 @@ bool CDecodeDicom::FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& n
 //
 void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned long nPosStart, unsigned nLen)
 {
-    CString strIndent;
-    unsigned nByte;
     CString strPrefix;
     CString strByteHex;
     CString strByteAsc;
     CString strLine;
 
-    strIndent = ParseIndent(nIndent);
+    CString strIndent = ParseIndent(nIndent);
 
     if (nLen == 0)
     {
         // Print out the header row, but no data will be shown
-        strLine.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strLine.Format(_T("%s%-50s = "), strIndent.GetString(), strField.GetString());
         m_pLog->AddLine(strLine);
         // Nothing to report, exit now
         return;
@@ -784,21 +782,20 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
     if (nLen <= DC_HEX_MAX_INLINE)
     {
         // Define prefix for row
-        strPrefix.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strPrefix.Format(_T("%s%-50s = "), strIndent.GetString(), strField.GetString());
     }
     else
     {
 #if 0
         // Print out header row
-        strLine.Format(_T("%s%-50s ="),(LPCTSTR)strIndent,(LPCTSTR)strField);
+        strLine.Format(_T("%s%-50s ="),strIndent.GetString(),strField.GetString());
         m_pLog->AddLine(strLine);
         // Define prefix for next row
-        //strPrefix.Format(_T("%s"),(LPCTSTR)strIndent);
-        strPrefix.Format(_T("%s%-50s   "),(LPCTSTR)strIndent,_T(""));
+        strPrefix.Format(_T("%s%-50s   "),strIndent.GetString(),_T(""));
 #else
         // Define prefix for row
         //FIXME: Only report field on first row
-        strPrefix.Format(_T("%s%-50s = "), (LPCTSTR)strIndent, (LPCTSTR)strField);
+        strPrefix.Format(_T("%s%-50s = "), strIndent.GetString(), strField.GetString());
 #endif
     }
 
@@ -817,14 +814,14 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
         else
         {
             // Reset the cumulative hex/ascii value strings
-            CString strValHex = _T("");
-            CString strValAsc = _T("");
+            CString strValHex;
+            CString strValAsc;
             // Build the hex/ascii value strings
             for (unsigned nInd = 0; nInd < DC_HEX_MAX_ROW; nInd++)
             {
                 if ((nRowOffset + nInd) < nLenClip)
                 {
-                    nByte = m_pWBuf->Buf(nPosStart + nRowOffset + nInd);
+                    unsigned nByte = m_pWBuf->Buf(nPosStart + nRowOffset + nInd);
                     strByteHex.Format(_T("%02X "), nByte);
                     // Only display printable characters
                     if (isprint(nByte))
@@ -848,7 +845,7 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
             }
 
             // Generate the line with Hex and ASCII representations
-            strLine.Format(_T("%s | 0x%s | %s"), (LPCTSTR)strPrefix, (LPCTSTR)strValHex, (LPCTSTR)strValAsc);
+            strLine.Format(_T("%s | 0x%s | %s"), strPrefix.GetString(), strValHex.GetString(), strValAsc.GetString());
             m_pLog->AddLine(strLine);
 
             // Now increment file offset
@@ -859,7 +856,7 @@ void CDecodeDicom::ReportFldHex(unsigned nIndent, CString strField, unsigned lon
     // If we had to clip the display length, then show ellipsis now
     if (nLenClip < nLen)
     {
-        strLine.Format(_T("%s | ..."), (LPCTSTR)strPrefix);
+        strLine.Format(_T("%s | ..."), strPrefix.GetString());
         m_pLog->AddLine(strLine);
     }
 }
@@ -876,7 +873,7 @@ void CDecodeDicom::ReportFldEnum(unsigned nIndent, CString strField, unsigned nT
     if (bFound)
     {
         CString strLine;
-        strLine.Format(_T("%s%-50s = %s"), (LPCTSTR)strIndent, (LPCTSTR)strField, (LPCTSTR)strDesc);
+        strLine.Format(_T("%s%-50s = %s"), strIndent.GetString(), strField.GetString(), strDesc.GetString());
         m_pLog->AddLine(strLine);
     }
     else

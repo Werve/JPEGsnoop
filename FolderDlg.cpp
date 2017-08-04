@@ -155,25 +155,22 @@ int CFolderDialog::OnMessage(UINT msg, LPARAM lp)
     {
     case BFFM_INITIALIZED:
         OnInitialized();
-        //CAL!
         // Add support for initial start directory
         if (!m_strStartPath.IsEmpty())
         {
-            LPARAM lpStartPath;
-            lpStartPath = (LPARAM)(m_strStartPath.GetBuffer(1));
+            LPARAM lpStartPath = reinterpret_cast<LPARAM>(m_strStartPath.GetBuffer(1));
             m_strStartPath.ReleaseBuffer();
             ::SendMessage(this->m_hWnd,BFFM_SETSELECTION,TRUE, lpStartPath);
         }
-        //CAL!
         return 0;
     case BFFM_IUNKNOWN:
-        OnIUnknown((IUnknown*)lp);
+        OnIUnknown(reinterpret_cast<IUnknown*>(lp));
         return 0;
     case BFFM_SELCHANGED:
-        OnSelChanged((LPCITEMIDLIST)lp);
+        OnSelChanged(reinterpret_cast<LPCITEMIDLIST>(lp));
         return 0;
     case BFFM_VALIDATEFAILED:
-        return OnValidateFailed((LPCTSTR)lp);
+        return OnValidateFailed(reinterpret_cast<LPCTSTR>(lp));
     default:
         TRACE(_T("***Warning: unknown message %d in CFolderDialog::OnMessage\n"));
     }
@@ -194,8 +191,8 @@ void CFolderDialog::OnIUnknown(IUnknown* punk)
     if (punk && m_bFilter)
     {
         CComQIPtr<IFolderFilterSite> iffs;
-        VERIFY(SUCCEEDED(punk->QueryInterface(IID_IFolderFilterSite, (void**)&iffs)));
-        iffs->SetFilter((IFolderFilter*)&m_xFolderFilter);
+        VERIFY(SUCCEEDED(punk->QueryInterface(IID_IFolderFilterSite, reinterpret_cast<void**>(&iffs))));
+        iffs->SetFilter(static_cast<IFolderFilter*>(&m_xFolderFilter));
         // smart pointer automatically Releases iffs,
         // no longer needed once you call SetFilter
     }

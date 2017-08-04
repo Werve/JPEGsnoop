@@ -318,7 +318,7 @@ void CDbSigs::DatabaseExtraLoad()
     // Retrieve from environment user profile path.
     // FIXME: Increase maximum file path size
     TCHAR szFilePathName[200];
-    _stprintf_s(szFilePathName,_T("%s\\%s"), (LPCTSTR)m_strDbDir,DAT_FILE);
+    _stprintf_s(szFilePathName,_T("%s\\%s"), m_strDbDir.GetString(),DAT_FILE);
 
     // Open the input file
     try
@@ -339,7 +339,7 @@ void CDbSigs::DatabaseExtraLoad()
         // Take from SnoopConfig.bEulaAccepted
         if (!m_bFirstRun)
         {
-            strError.Format(_T("Couldn't find User Signature Database\n\n[%s]\n\nCreating default database"), (LPCTSTR)msg);
+            strError.Format(_T("Couldn't find User Signature Database\n\n[%s]\n\nCreating default database"), msg);
             OutputDebugString(strError);
             AfxMessageBox(strError);
         }
@@ -410,7 +410,7 @@ void CDbSigs::DatabaseExtraLoad()
     if (!bFileOk)
     {
         strError.Format(_T("WARNING: User Signature Database corrupt\n[%s]\nProceeding with defaults."),
-                        (LPCTSTR)szFilePathName);
+                        szFilePathName);
         OutputDebugString(strError);
         AfxMessageBox(strError);
         // Close the file to ensure no sharing violation
@@ -422,7 +422,7 @@ void CDbSigs::DatabaseExtraLoad()
         }
         // Copy old config file
         TCHAR szFilePathNameBak[200];
-        _stprintf_s(szFilePathNameBak,_T("%s\\%s.bak"), (LPCTSTR)m_strDbDir,DAT_FILE);
+        _stprintf_s(szFilePathNameBak,_T("%s\\%s.bak"), m_strDbDir.GetString(),DAT_FILE);
         CopyFile(szFilePathName, szFilePathNameBak, false);
         // Now rewrite file in latest version
         DatabaseExtraStore();
@@ -586,7 +586,7 @@ void CDbSigs::DatabaseExtraLoad()
         {
             // Copy old config file
             TCHAR szFilePathNameBak[200];
-            _stprintf_s(szFilePathNameBak,_T("%s\\%s.bak"), (LPCTSTR)m_strDbDir,DAT_FILE);
+            _stprintf_s(szFilePathNameBak,_T("%s\\%s.bak"), m_strDbDir.GetString(),DAT_FILE);
             CopyFile(szFilePathName, szFilePathNameBak, false);
             // Now rewrite file in latest version
             DatabaseExtraStore();
@@ -631,7 +631,7 @@ void CDbSigs::DatabaseExtraStore()
 
     // Retrieve from environment user profile path.
     TCHAR szFilePathName[200];
-    _stprintf_s(szFilePathName,_T("%s\\%s"), (LPCTSTR)m_strDbDir,DAT_FILE);
+    _stprintf_s(szFilePathName,_T("%s\\%s"), m_strDbDir.GetString(),DAT_FILE);
 
     // Open the output file
     try
@@ -645,7 +645,7 @@ void CDbSigs::DatabaseExtraStore()
         TCHAR msg[MAX_BUF_EX_ERR_MSG];
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
-        strError.Format(_T("ERROR: Couldn't open file: [%s]"), (LPCTSTR)msg);
+        strError.Format(_T("ERROR: Couldn't open file: [%s]"), msg);
         OutputDebugString(strError);
         AfxMessageBox(strError);
         pOutFile = nullptr;

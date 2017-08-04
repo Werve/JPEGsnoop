@@ -53,7 +53,7 @@ BOOL CDbManageDlg::OnInitDialog()
 void CDbManageDlg::InsertEntry(unsigned /*ind*/, CString strMake, CString strModel, CString strQual, CString strSig)
 {
     CString strTmp;
-    strTmp.Format(_T("Make: [%s]\tModel: [%s]\tQual: [%s]"), (LPCTSTR)strMake, (LPCTSTR)strModel, (LPCTSTR)strQual);
+    strTmp.Format(_T("Make: [%s]\tModel: [%s]\tQual: [%s]"), strMake.GetString(), strModel.GetString(), strQual.GetString());
     m_asToInsert.Add(strTmp);
 }
 

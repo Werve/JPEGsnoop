@@ -351,8 +351,8 @@ unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd)
     CString strTmp;
     CString strDebug;
     strTmp.Format(_T("GetDqtQuantStd() with nInd out of range. nInd=[%u]"), nInd);
-    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                    _T("JfifDecode"), (LPCTSTR)strTmp);
+    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                    _T("JfifDecode"), strTmp.GetString());
     OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -383,8 +383,8 @@ unsigned CjfifDecode::GetDqtZigZagIndex(unsigned nInd, bool bZigZag)
     CString strTmp;
     CString strDebug;
     strTmp.Format(_T("GetDqtZigZagIndex() with nInd out of range. nInd=[%u]"), nInd);
-    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), (LPCTSTR)m_pAppConfig->strCurFname,
-                    _T("JfifDecode"), (LPCTSTR)strTmp);
+    strDebug.Format(_T("## File=[%-100s] Block=[%-10s] Error=[%s]\n"), m_pAppConfig->strCurFname.GetString(),
+                    _T("JfifDecode"), strTmp.GetString());
     OutputDebugString(strDebug);
 #else
         ASSERT(false);
@@ -2024,12 +2024,10 @@ CString CjfifDecode::PrintAsHexUC(unsigned char* anBytes, unsigned nCount)
 CString CjfifDecode::PrintAsHex8(unsigned* anBytes, unsigned nCount)
 {
     CString strVal;
-    CString strFull;
     unsigned nMaxDisplay = MAX_anValues;
-    bool bExceedMaxDisplay;
 
-    strFull = _T("0x[");
-    bExceedMaxDisplay = (nCount > nMaxDisplay);
+    CString strFull = _T("0x[");
+    bool bExceedMaxDisplay = (nCount > nMaxDisplay);
     for (unsigned nInd = 0; nInd < nCount; nInd++)
     {
         if (nInd < nMaxDisplay)
@@ -2169,13 +2167,11 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
     unsigned nIfdNumComps;
     bool nIfdTagUnknown;
 
-
     unsigned nCompsToDisplay; // Maximum number of values to capture for display
     unsigned anValues[MAX_anValues]; // Array of decoded values (Uint32)
     signed anValuesS[MAX_anValues]; // Array of decoded values (Int32)
     float afValues[MAX_anValues]; // Array of decoded values (float)
     unsigned nIfdOffset; // First DWORD decode, usually offset
-
 
     // Clear values array
     for (unsigned ind = 0; ind < MAX_anValues; ind++)
@@ -2192,19 +2188,16 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
     // Move the file pointer to the start of the IFD
     m_nPos = nPosExifStart + nStartIfdPtr;
 
-    strTmp.Format(_T("  EXIF %s @ Absolute 0x%08X"), (LPCTSTR)strIfd, m_nPos);
+    strTmp.Format(_T("  EXIF %s @ Absolute 0x%08X"), strIfd.GetString(), m_nPos);
     m_pLog->AddLine(strTmp);
-
-    ////////////
 
     // NOTE: Nikon type 3 starts out with the ASCII string "Nikon\0"
     //       before the rest of the items.
     // TODO: need to process type1,type2,type3
     // see: http://www.gvsoft.homedns.org/exif/makernote-nikon.html
 
-    strTmp.Format(_T("strIfd=[%s] m_strImgExifMake=[%s]"), (LPCTSTR)strIfd, (LPCTSTR)m_strImgExifMake);
+    strTmp.Format(_T("strIfd=[%s] m_strImgExifMake=[%s]"), strIfd.GetString(), m_strImgExifMake.GetString());
     DbgAddLine(strTmp);
-
 
     // If this is the MakerNotes section, then we may want to skip
     // altogether. Check to see if we are configured to process this
@@ -2229,7 +2222,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         // If this Make is not supported, we'll need to exit
         if (!m_bImgExifMakeSupported)
         {
-            strTmp.Format(_T("    Makernotes not yet supported for [%s]"), (LPCTSTR)m_strImgExifMake);
+            strTmp.Format(_T("    Makernotes not yet supported for [%s]"), m_strImgExifMake.GetString());
             m_pLog->AddLine(strTmp);
 
             m_pLog->Enable();
@@ -2292,7 +2285,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         m_nPos += 2;
         nIfdTagUnknown = false;
         strIfdTag = LookupExifTag(strIfd, nIfdTagVal, nIfdTagUnknown);
-        strTmp.Format(_T("      Tag # = 0x%04X = [%s]"), nIfdTagVal, (LPCTSTR)strIfdTag);
+        strTmp.Format(_T("      Tag # = 0x%04X = [%s]"), nIfdTagVal, strIfdTag.GetString());
         DbgAddLine(strTmp);
 
         // Read Format (or Type)
@@ -2574,7 +2567,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             // If we only have a single component, then display both the hex and decimal
             if (nCompsToDisplay == 1)
             {
-                strTmp.Format(_T("%s / %u"), (LPCTSTR)strValOut, anValues[0]);
+                strTmp.Format(_T("%s / %u"), strValOut.GetString(), anValues[0]);
                 strValOut = strTmp;
             }
             break;
@@ -2867,7 +2860,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         {
             // Assume only one
             strValTmp = strValOut;
-            strValOut.Format(_T("%s s"), (LPCTSTR)strValTmp);
+            strValOut.Format(_T("%s s"), strValTmp.GetString());
         }
         else if (strIfdTag == _T("FNumber"))
         {
@@ -3269,18 +3262,16 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
 
         if (strIfdTag == _T("CFAPattern"))
         {
-            unsigned nHorzRepeat, nVertRepeat;
             unsigned anCfaVal[16][16];
             unsigned nInd = 0;
-            unsigned nVal;
             CString strLine, strCol;
-            nHorzRepeat = anValues[nInd + 0] * 256 + anValues[nInd + 1];
-            nVertRepeat = anValues[nInd + 2] * 256 + anValues[nInd + 3];
+            unsigned nHorzRepeat = anValues[nInd + 0] * 256 + anValues[nInd + 1];
+            unsigned nVertRepeat = anValues[nInd + 2] * 256 + anValues[nInd + 3];
             nInd += 4;
             if ((nHorzRepeat < 16) && (nVertRepeat < 16))
             {
                 bExtraDecode = TRUE;
-                strTmp.Format(_T("    [%-36s] ="), (LPCTSTR)strIfdTag);
+                strTmp.Format(_T("    [%-36s] ="), strIfdTag.GetString());
                 m_pLog->AddLine(strTmp);
                 for (unsigned nY = 0; nY < nVertRepeat; nY++)
                 {
@@ -3289,7 +3280,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                     {
                         if (nInd < MAX_anValues)
                         {
-                            nVal = anValues[nInd++];
+                            unsigned nVal = anValues[nInd++];
                             anCfaVal[nY][nX] = nVal;
                             switch (nVal)
                             {
@@ -3310,7 +3301,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                             default: strCol.Format(_T("x%02X"), nVal);
                                 break;
                             }
-                            strLine.AppendFormat(_T("%s "), (LPCTSTR)strCol);
+                            strLine.AppendFormat(_T("%s "), strCol.GetString());
                         }
                     }
                     strLine.Append(_T("]"));
@@ -3319,15 +3310,11 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             }
         }
 
-
         if ((strIfd == _T("InteropIFD")) && (strIfdTag == _T("InteroperabilityVersion")))
         {
             // Assume only one
             strValOut.Format(_T("%c%c.%c%c"), anValues[0], anValues[1], anValues[2], anValues[3]);
         }
-
-
-        // ==========================================================================
 
         // ----------------------------------------
         // Handle certain MakerNotes
@@ -3342,7 +3329,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                 bExtraDecode = TRUE;
                 if ((!m_pAppConfig->bExifHideUnknown) || (!nIfdTagUnknown))
                 {
-                    strTmp.Format(_T("    [%-36s]"), (LPCTSTR)strIfdTag);
+                    strTmp.Format(_T("    [%-36s]"), strIfdTag.GetString());
                     m_pLog->AddLine(strTmp);
 
                     // Assume it is a maker field with subentries!
@@ -3356,7 +3343,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                             strValOut.Format(_T("#%u=%u "), ind, anValues[ind]);
                             strRetVal = LookupMakerCanonTag(nIfdTagVal, ind, anValues[ind]);
                             strMaker = strRetVal.strTag;
-                            strValTmp.Format(_T("      [%-34s] = %s"), (LPCTSTR)strMaker, (LPCTSTR)(strRetVal.strVal));
+                            strValTmp.Format(_T("      [%-34s] = %s"), strMaker.GetString(), strRetVal.strVal.GetString());
                             if ((!m_pAppConfig->bExifHideUnknown) || (!strRetVal.bUnknown))
                             {
                                 m_pLog->AddLine(strValTmp);
@@ -3373,7 +3360,6 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                     }
                 }
 
-
                 strValOut = _T("...");
             }
 
@@ -3387,7 +3373,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
 
                 // Collect extra details (for later DB submission)
                 strTmp = _T("");
-                strTmp.Format(_T("[%s]:[%s],"), (LPCTSTR)strIfdTag, (LPCTSTR)strValOut);
+                strTmp.Format(_T("[%s]:[%s],"), strIfdTag.GetString(), strValOut.GetString());
                 m_strImgExtras += strTmp;
             }
 
@@ -3395,12 +3381,10 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             if (strIfdTag == _T("Canon.ImageType"))
             {
                 strTmp = _T("");
-                strTmp.Format(_T("[%s]:[%s],"), (LPCTSTR)strIfdTag, (LPCTSTR)strValOut);
+                strTmp.Format(_T("[%s]:[%s],"), strIfdTag.GetString(), strValOut.GetString());
                 m_strImgExtras += strTmp;
             }
         }
-
-        // ----------------------------------------
 
         // Now extract some of the important offsets / pointers
         if ((strIfd == _T("IFD0")) && (strIfdTag == _T("ExifOffset")))
@@ -3448,14 +3432,12 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             m_strImgExifModel.Trim();
         }
 
-
         if ((strIfd == _T("SubIFD")) && (strIfdTag == _T("MakerNote")))
         {
             // Maker IFD - Pointer
             m_nImgExifMakerPtr = nIfdOffset;
             strValOut.Format(_T("@ 0x%04X"), nIfdOffset);
         }
-
 
         // -------------------------
         // IFD1 - Embedded Thumbnail
@@ -3529,7 +3511,6 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         // Now advance the m_nPos ptr as we have finished with valoffset
         m_nPos += 4;
 
-
         // ==========================================================================
         // SUMMARY REPORT
         // ==========================================================================
@@ -3544,11 +3525,11 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                 // If the tag is an ASCII string, we want to wrap with quote marks
                 if (nIfdFormat == 2)
                 {
-                    strTmp.Format(_T("    [%-36s] = \"%s\""), (LPCTSTR)strIfdTag, (LPCTSTR)strValOut);
+                    strTmp.Format(_T("    [%-36s] = \"%s\""), strIfdTag.GetString(), strValOut.GetString());
                 }
                 else
                 {
-                    strTmp.Format(_T("    [%-36s] = %s"), (LPCTSTR)strIfdTag, (LPCTSTR)strValOut);
+                    strTmp.Format(_T("    [%-36s] = %s"), strIfdTag.GetString(), strValOut.GetString());
                 }
                 m_pLog->AddLine(strTmp);
             }
@@ -3723,7 +3704,7 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
     strTmp.Format(_T("        %-33s : %u bytes"),_T("Profile Size"), nProfSz);
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Preferred CMM Type"), (LPCTSTR)Uint2Chars(nPrefCmmType));
+    strTmp.Format(_T("        %-33s : %s"),_T("Preferred CMM Type"), Uint2Chars(nPrefCmmType).GetString());
     m_pLog->AddLine(strTmp);
 
     strTmp.Format(_T("        %-33s : %u.%u.%u.%u (0x%08X)"),_T("Profile Version"),
@@ -3761,7 +3742,7 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
         strTmp1.Format(_T("? (0x%08X)"), nProfDevClass);
         break;
     }
-    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Profile Device/Class"), (LPCTSTR)strTmp1, (LPCTSTR)Uint2Chars(nProfDevClass));
+    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Profile Device/Class"), strTmp1.GetString(), Uint2Chars(nProfDevClass).GetString());
     m_pLog->AddLine(strTmp);
 
     switch (nDataColorSpace)
@@ -3845,16 +3826,16 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
         strTmp1.Format(_T("? (0x%08X)"), nDataColorSpace);
         break;
     }
-    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Data Colour Space"), (LPCTSTR)strTmp1, (LPCTSTR)Uint2Chars(nDataColorSpace));
+    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Data Colour Space"), strTmp1.GetString(), Uint2Chars(nDataColorSpace).GetString());
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Profile connection space (PCS)"), (LPCTSTR)Uint2Chars(nPcs));
+    strTmp.Format(_T("        %-33s : %s"),_T("Profile connection space (PCS)"), Uint2Chars(nPcs).GetString());
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Profile creation date"), (LPCTSTR)DecodeIccDateTime(anDateTimeCreated));
+    strTmp.Format(_T("        %-33s : %s"),_T("Profile creation date"), DecodeIccDateTime(anDateTimeCreated).GetString());
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Profile file signature"), (LPCTSTR)Uint2Chars(nProfFileSig));
+    strTmp.Format(_T("        %-33s : %s"),_T("Profile file signature"), Uint2Chars(nProfFileSig).GetString());
     m_pLog->AddLine(strTmp);
 
     switch (nPrimPlatSig)
@@ -3875,37 +3856,37 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
         strTmp1.Format(_T("? (0x%08X)"), nPrimPlatSig);
         break;
     }
-    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Primary platform"), (LPCTSTR)strTmp1, (LPCTSTR)Uint2Chars(nPrimPlatSig));
+    strTmp.Format(_T("        %-33s : %s (%s)"),_T("Primary platform"), strTmp1.GetString(), Uint2Chars(nPrimPlatSig).GetString());
     m_pLog->AddLine(strTmp);
 
     strTmp.Format(_T("        %-33s : 0x%08X"),_T("Profile flags"), nProfFlags);
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(nProfFlags, 0)) ? "Embedded profile" : "Profile not embedded";
-    strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(nProfFlags, 1)) ? "Profile can be used independently of embedded" : "Profile can't be used independently of embedded";
-    strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Device Manufacturer"), (LPCTSTR)Uint2Chars(nDevManuf));
+    strTmp.Format(_T("        %-33s : %s"),_T("Device Manufacturer"), Uint2Chars(nDevManuf).GetString());
     m_pLog->AddLine(strTmp);
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Device Model"), (LPCTSTR)Uint2Chars(nDevModel));
+    strTmp.Format(_T("        %-33s : %s"),_T("Device Model"), Uint2Chars(nDevModel).GetString());
     m_pLog->AddLine(strTmp);
 
     strTmp.Format(_T("        %-33s : 0x%08X_%08X"),_T("Device attributes"), anDevAttrib[1], anDevAttrib[0]);
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(anDevAttrib[0], 0)) ? "Transparency" : "Reflective";
-    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(anDevAttrib[0], 1)) ? "Matte" : "Glossy";
-    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(anDevAttrib[0], 2)) ? "Media polarity = positive" : "Media polarity = negative";
-    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
     strTmp1 = (TestBit(anDevAttrib[0], 3)) ? "Colour media" : "Black & white media";
-    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
 
     switch (nRenderIntent)
@@ -3922,12 +3903,12 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
         strTmp1.Format(_T("0x%08X"), nRenderIntent);
         break;
     }
-    strTmp.Format(_T("        %-33s : %s"),_T("Rendering intent"), (LPCTSTR)strTmp1);
+    strTmp.Format(_T("        %-33s : %s"),_T("Rendering intent"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
 
     // PCS illuminant
 
-    strTmp.Format(_T("        %-33s : %s"),_T("Profile creator"), (LPCTSTR)Uint2Chars(nProfCreatorSig));
+    strTmp.Format(_T("        %-33s : %s"),_T("Profile creator"), Uint2Chars(nProfCreatorSig).GetString());
     m_pLog->AddLine(strTmp);
 
     strTmp.Format(_T("        %-33s : 0x%08X_%08X_%08X_%08X"),_T("Profile ID"),
@@ -3961,14 +3942,10 @@ CString CjfifDecode::DecodeIccDateTime(unsigned anVal[3])
 unsigned CjfifDecode::DecodeApp2IccProfile(unsigned nLen)
 {
     CString strTmp;
-    unsigned nMarkerSeqNum; // Byte
-    unsigned nNumMarkers; // Byte
     unsigned nPayloadLen; // Len of this ICC marker payload
 
-    unsigned nMarkerPosStart;
-
-    nMarkerSeqNum = Buf(m_nPos++);
-    nNumMarkers = Buf(m_nPos++);
+    unsigned nMarkerSeqNum = Buf(m_nPos++);
+    unsigned nNumMarkers = Buf(m_nPos++);
     nPayloadLen = nLen - 2 - 12 - 2; // TODO: check?
 
     strTmp.Format(_T("      Marker Number = %u of %u"), nMarkerSeqNum, nNumMarkers);
@@ -3976,7 +3953,7 @@ unsigned CjfifDecode::DecodeApp2IccProfile(unsigned nLen)
 
     if (nMarkerSeqNum == 1)
     {
-        nMarkerPosStart = m_nPos;
+        unsigned nMarkerPosStart = m_nPos;
         DecodeIccHeader(nMarkerPosStart);
     }
     else
@@ -4060,7 +4037,7 @@ unsigned CjfifDecode::DecodeApp2Flashpix()
             streamStr = m_pWBuf->BufReadUniStr2(m_nPos,MAX_BUF_READ_STR);
             m_nPos += 2 * ((unsigned)_tcslen(streamStr) + 1); // 2x because unicode
 
-            strTmp.Format(_T("        Stream Name = [%s]"), (LPCTSTR)streamStr);
+            strTmp.Format(_T("        Stream Name = [%s]"), streamStr.GetString());
             m_pLog->AddLine(strTmp);
 
 
@@ -4077,7 +4054,7 @@ unsigned CjfifDecode::DecodeApp2Flashpix()
                                            Buf(m_nPos + 8), Buf(m_nPos + 9),
                                            Buf(m_nPos + 10), Buf(m_nPos + 11), Buf(m_nPos + 12), Buf(m_nPos + 13), Buf(m_nPos + 14), Buf(m_nPos + 15));
                 m_nPos += 16;
-                strTmp.Format(_T("        Storage Class = [%s]"), (LPCTSTR)strFpxStorageClsStr);
+                strTmp.Format(_T("        Storage Class = [%s]"), strFpxStorageClsStr.GetString());
                 m_pLog->AddLine(strTmp);
             }
         }
@@ -4128,7 +4105,7 @@ unsigned CjfifDecode::DecodeApp2Flashpix()
         strTmp.Format(_T("      OSVer = 0x%08X"), nFpxStDwOsVer);
         m_pLog->AddLine(strTmp);
 
-        strTmp.Format(_T("      clsid = %s"), (LPCTSTR)strFpxStClsidStr);
+        strTmp.Format(_T("      clsid = %s"), strFpxStClsidStr.GetString());
         m_pLog->AddLine(strTmp);
 
         strTmp.Format(_T("      reserved = 0x%08X"), nFpxStRsvd);
@@ -4333,7 +4310,7 @@ void CjfifDecode::DecodeDHT(bool bInject)
                             if (anDhtCodeVal[nDhtInd] == 0xF0) { strFull += _T(" (ZRL)"); }
                         }
 
-                        strTmp.Format(_T("%-40s (Total Len = %2u)"), (LPCTSTR)strFull, nBitLen + (anDhtCodeVal[nDhtInd] & 0xF));
+                        strTmp.Format(_T("%-40s (Total Len = %2u)"), strFull.GetString(), nBitLen + (anDhtCodeVal[nDhtInd] & 0xF));
 
                         m_pLog->AddLine(strTmp);
                     }
@@ -4497,13 +4474,13 @@ bool CjfifDecode::ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CS
     if (nVal < nMin)
     {
         strErr.Format(_T("  ERROR: %s value too small (Actual = %u, Expected >= %u)"),
-                      (LPCTSTR)strName, nVal, nMin);
+                      strName.GetString(), nVal, nMin);
         m_pLog->AddLineErr(strErr);
     }
     else if (nVal > nMax)
     {
         strErr.Format(_T("  ERROR: %s value too large (Actual = %u, Expected <= %u)"),
-                      (LPCTSTR)strName, nVal, nMax);
+                      strName.GetString(), nVal, nMax);
         m_pLog->AddLineErr(strErr);
     }
     if (!m_pAppConfig->bRelaxedParsing)
@@ -4955,12 +4932,9 @@ unsigned CjfifDecode::DecodeMarker()
         }
         else
         {
-            strTmp.Format(_T("Identifier [%s] not supported. Skipping remainder."), (LPCTSTR)acIdentifier);
+            strTmp.Format(_T("Identifier [%s] not supported. Skipping remainder."), acIdentifier);
             m_pLog->AddLine(strTmp);
         }
-
-        //////////
-
 
         // Dump out Makernote area
 
@@ -4984,10 +4958,8 @@ unsigned CjfifDecode::DecodeMarker()
 
         // End of dump out makernote area
 
-
         // Restore file position
         m_nPos = nPosSaved;
-
 
         // Restore original position in file to a point
         // after the section
@@ -4999,14 +4971,12 @@ unsigned CjfifDecode::DecodeMarker()
         // Typically used for Flashpix and possibly ICC profiles
         // Photoshop (Save As)
         nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1);
-        //nLength = m_pWBuf->BufX(m_nPos,2,!m_nImgExifEndian);
         strTmp.Format(_T("  Length          = %u"), nLength);
         m_pLog->AddLine(strTmp);
 
         nPosSaved = m_nPos;
 
         m_nPos += 2; // Move past length now that we've used it
-
 
         _tcscpy_s(acIdentifier,MAX_IDENTIFIER, m_pWBuf->BufReadStrn(m_nPos,MAX_IDENTIFIER - 1));
         acIdentifier[MAX_IDENTIFIER - 1] = 0; // Null terminate just in case
@@ -5288,7 +5258,7 @@ unsigned CjfifDecode::DecodeMarker()
             if (!ValidateValue(nDqtPrecision_Pq, 0, 1,_T("DQT Precision <Pq>"), true, 0)) return DECMARK_ERR;
             if (!ValidateValue(nDqtQuantDestId_Tq, 0, 3,_T("DQT Destination ID <Tq>"), true, 0)) return DECMARK_ERR;
 
-            strTmp.Format(_T("  Precision=%s"), (LPCTSTR)strDqtPrecision);
+            strTmp.Format(_T("  Precision=%s"), strDqtPrecision.GetString());
             m_pLog->AddLine(strTmp);
 
 #else
@@ -5773,7 +5743,7 @@ unsigned CjfifDecode::DecodeMarker()
             //XXX           strTmp.Format(_T("ID=0x%02X, Samp Fac <Hi,Vi>=0x%02X (Subsamp %u x %u), Quant Tbl Sel <Tqi>=0x%02X"),
             strTmp.Format(_T("ID=0x%02X, Samp Fac=0x%02X (Subsamp %s x %s), Quant Tbl Sel=0x%02X"),
                           nCompIdent, anSofSampFact[nCompIdent],
-                          (LPCTSTR)strSubsampH, (LPCTSTR)strSubsampV,
+                          strSubsampH.GetString(), strSubsampV.GetString(),
                           m_anSofQuantTblSel_Tqi[nCompIdent]);
             strFull += strTmp;
 
@@ -6519,16 +6489,16 @@ void CjfifDecode::OutputSpecial()
         strFull = _T("'*KEY*', "); // key -- need to override
 
         // Might need to change m_strImgExifMake to be lowercase
-        strTmp.Format(_T("'%s', "), (LPCTSTR)m_strImgExifMake);
+        strTmp.Format(_T("'%s', "), m_strImgExifMake.GetString());
         strFull += strTmp; // make
 
-        strTmp.Format(_T("'%s', "), (LPCTSTR)m_strImgExifModel);
+        strTmp.Format(_T("'%s', "), m_strImgExifModel.GetString());
         strFull += strTmp; // model
 
-        strTmp.Format(_T("'%s', "), (LPCTSTR)m_strImgQualExif);
+        strTmp.Format(_T("'%s', "), m_strImgQualExif.GetString());
         strFull += strTmp; // quality
 
-        strTmp.Format(_T("'%s', "), (LPCTSTR)m_strImgQuantCss);
+        strTmp.Format(_T("'%s', "), m_strImgQuantCss.GetString());
         strFull += strTmp; // subsampling
 
         m_pLog->AddLine(strFull);
@@ -6881,7 +6851,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     m_pLog->AddLine(strTmp);
 
     // Output the CSS
-    strTmp.Format(_T("  Chroma subsampling:  %s"), (LPCTSTR)m_strImgQuantCss);
+    strTmp.Format(_T("  Chroma subsampling:  %s"), m_strImgQuantCss.GetString());
     m_pLog->AddLine(strTmp);
 
     // Calculate the final fields
@@ -6903,7 +6873,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     }
     else
     {
-        strTmp.Format(_T("  EXIF Make/Model:     OK   [%s] [%s]"), (LPCTSTR)m_strImgExifMake, (LPCTSTR)m_strImgExifModel);
+        strTmp.Format(_T("  EXIF Make/Model:     OK   [%s] [%s]"), m_strImgExifMake.GetString(), m_strImgExifModel.GetString());
         m_pLog->AddLine(strTmp);
         bCurXmm = true;
     }
@@ -6926,7 +6896,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     }
     else
     {
-        strTmp.Format(_T("  EXIF Software:       OK   [%s]"), (LPCTSTR)m_strSoftware);
+        strTmp.Format(_T("  EXIF Software:       OK   [%s]"), m_strSoftware.GetString());
         m_pLog->AddLine(strTmp);
 
         // EXIF software field is non-empty
@@ -7095,20 +7065,20 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
         {
             if (pEntry.eEditor == ENUM_EDITOR_CAM)
             {
-                strTmp.Format(_T("    %s%4s[%-25s] [%-35s] [%-16s] %-5s %-5s %-5s"), (LPCTSTR)locationStr,_T("CAM:"),
-                              (LPCTSTR)pEntry.strXMake.Left(25), (LPCTSTR)pEntry.strXModel.Left(35), (LPCTSTR)pEntry.strUmQual.Left(16),
+                strTmp.Format(_T("    %s%4s[%-25s] [%-35s] [%-16s] %-5s %-5s %-5s"), locationStr.GetString(), _T("CAM:"),
+                              pEntry.strXMake.Left(25).GetString(), pEntry.strXModel.Left(35).GetString(), pEntry.strUmQual.Left(16).GetString(),
                               (curMatchSigCss ? _T("Yes") : _T("No")),_T(""),_T(""));
             }
             else if (pEntry.eEditor == ENUM_EDITOR_SW)
             {
-                strTmp.Format(_T("    %s%4s[%-25s]  %-35s  [%-16s] %-5s %-5s %-5s"), (LPCTSTR)locationStr,_T("SW :"),
-                              (LPCTSTR)pEntry.strMSwDisp.Left(25),_T(""), (LPCTSTR)pEntry.strUmQual.Left(16),
+                strTmp.Format(_T("    %s%4s[%-25s]  %-35s  [%-16s] %-5s %-5s %-5s"), locationStr.GetString(), _T("SW :"),
+                              pEntry.strMSwDisp.Left(25).GetString(),_T(""), pEntry.strUmQual.Left(16).GetString(),
                               _T(""),_T(""),_T(""));
             }
             else
             {
-                strTmp.Format(_T("    %s%4s[%-25s] [%-35s] [%-16s] %-5s %-5s %-5s"), (LPCTSTR)locationStr,_T("?? :"),
-                              (LPCTSTR)pEntry.strXMake.Left(25), (LPCTSTR)pEntry.strXModel.Left(35), (LPCTSTR)pEntry.strUmQual.Left(16),
+                strTmp.Format(_T("    %s%4s[%-25s] [%-35s] [%-16s] %-5s %-5s %-5s"), locationStr.GetString(),_T("?? :"),
+                              pEntry.strXMake.Left(25).GetString(), pEntry.strXModel.Left(35).GetString(), pEntry.strUmQual.Left(16).GetString(),
                               _T(""),_T(""),_T(""));
             }
             if (curMatchMm || curMatchSw)
@@ -7135,7 +7105,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
         {
             strIjgSw = theApp.m_pDbSigs->GetIjgEntry(ind);
             strTmp.Format(_T("     %4s[%-25s]  %-35s  [%-16s] %-5s %-5s %-5s"),_T("SW :"),
-                          (LPCTSTR)strIjgSw.Left(25),_T(""), (LPCTSTR)sMatchIjgQual.Left(16),
+                          strIjgSw.Left(25).GetString(),_T(""), sMatchIjgQual.Left(16).GetString(),
                           _T(""),_T(""),_T(""));
             m_pLog->AddLine(strTmp);
         }
@@ -7600,29 +7570,27 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
         strFormat += _T("&x_extra=%s&u_notes=%s&c_sigthumb=%s&c_sigthumbrot=%s&x_landscape=%u");
         strFormat += _T("&x_thumbx=%u&x_thumby=%u");
 
-
         strFormDataPre.Format(strFormat,
-                              (LPCTSTR)DB_SUBMIT_WWW_VER, (LPCTSTR)VERSION_STR, (LPCTSTR)strExifMake, (LPCTSTR)strExifModel,
-                              (LPCTSTR)strQual, (LPCTSTR)strDqt0, (LPCTSTR)strDqt1, (LPCTSTR)strDqt2, (LPCTSTR)strDqt3,
-                              (LPCTSTR)strCss, (LPCTSTR)strSig, (LPCTSTR)strSigRot, fQFact0, fQFact1, nImgW, nImgH,
-                              (LPCTSTR)strExifSoftware, (LPCTSTR)strComment,
-                              eMaker, eUserSource, (LPCTSTR)strUserSoftware,
-                              (LPCTSTR)strExtra, (LPCTSTR)strUserNotes,
-                              (LPCTSTR)strSigThumb, (LPCTSTR)strSigThumbRot, nExifLandscape, nThumbX, nThumbY);
+                              DB_SUBMIT_WWW_VER.GetString(), VERSION_STR, strExifMake.GetString(), strExifModel.GetString(),
+                              strQual.GetString(), strDqt0.GetString(), strDqt1.GetString(), strDqt2.GetString(), strDqt3.GetString(),
+                              strCss.GetString(), strSig.GetString(), strSigRot.GetString(), fQFact0, fQFact1, nImgW, nImgH,
+                              strExifSoftware.GetString(), strComment.GetString(),
+                              eMaker, eUserSource, strUserSoftware.GetString(),
+                              strExtra.GetString(), strUserNotes.GetString(),
+                              strSigThumb.GetString(), strSigThumbRot.GetString(), nExifLandscape, nThumbX, nThumbY);
 
         //*** Need to sanitize data for URL submission!
         // Search for "&", "?", "="
         strFormData.Format(strFormat,
-                           (LPCTSTR)DB_SUBMIT_WWW_VER, (LPCTSTR)VERSION_STR, (LPCTSTR)curls.Encode(strExifMake), (LPCTSTR)curls.Encode(strExifModel),
-                           (LPCTSTR)strQual, (LPCTSTR)strDqt0, (LPCTSTR)strDqt1, (LPCTSTR)strDqt2, (LPCTSTR)strDqt3,
-                           (LPCTSTR)strCss, (LPCTSTR)strSig, (LPCTSTR)strSigRot, fQFact0, fQFact1, nImgW, nImgH,
-                           (LPCTSTR)curls.Encode(strExifSoftware), (LPCTSTR)curls.Encode(strComment),
-                           eMaker, eUserSource, (LPCTSTR)curls.Encode(strUserSoftware),
-                           (LPCTSTR)curls.Encode(strExtra), (LPCTSTR)curls.Encode(strUserNotes),
-                           (LPCTSTR)strSigThumb, (LPCTSTR)strSigThumbRot, nExifLandscape, nThumbX, nThumbY);
+                           DB_SUBMIT_WWW_VER.GetString(), VERSION_STR, curls.Encode(strExifMake).GetString(), curls.Encode(strExifModel).GetString(),
+                           strQual.GetString(), strDqt0.GetString(), strDqt1.GetString(), strDqt2.GetString(), strDqt3.GetString(),
+                           strCss.GetString(), strSig.GetString(), strSigRot.GetString(), fQFact0, fQFact1, nImgW, nImgH,
+                           curls.Encode(strExifSoftware).GetString(), curls.Encode(strComment).GetString(),
+                           eMaker, eUserSource, curls.Encode(strUserSoftware).GetString(),
+                           curls.Encode(strExtra).GetString(), curls.Encode(strUserNotes).GetString(),
+                           strSigThumb.GetString(), strSigThumbRot.GetString(), nExifLandscape, nThumbX, nThumbY);
 
         nFormDataLen = strFormData.GetLength();
-
 
 #ifdef DEBUG_SIG
         if (m_pAppConfig->bInteractive) {
@@ -7646,13 +7614,13 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
         }
         try
         {
-            hConnection = InternetConnect(hINet, (LPCTSTR)strSubmitHost, 80, nullptr, nullptr, INTERNET_SERVICE_HTTP, 0, 1);
+            hConnection = InternetConnect(hINet, strSubmitHost, 80, nullptr, nullptr, INTERNET_SERVICE_HTTP, 0, 1);
             if (!hConnection)
             {
                 InternetCloseHandle(hINet);
                 return;
             }
-            hData = HttpOpenRequest(hConnection, _T("POST"), (LPCTSTR)strSubmitPage, nullptr, nullptr, nullptr, 0, 1);
+            hData = HttpOpenRequest(hConnection, _T("POST"), strSubmitPage, nullptr, nullptr, nullptr, 0, 1);
             if (!hData)
             {
                 InternetCloseHandle(hConnection);
@@ -7688,13 +7656,14 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 
         // *** NOTE: Will not work on Windows 95/98!
         // This section is avoided in early OSes otherwise we get an Illegal Op
-        try {       
+        try
+        {
             pConnection = sSession.GetHttpConnection(submit_host);
             ASSERT (pConnection);
             pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST,_T(submit_page));
             ASSERT (pFile);
             bResult = pFile->SendRequest(
-                strHeaders,(LPVOID)(LPCTSTR)strFormData, strFormData.GetLength());
+                strHeaders, strFormData.GetString(), strFormData.GetLength());
             ASSERT (bResult != 0);
             pFile->QueryInfoStatusCode(dwRet);
             ASSERT (dwRet == HTTP_STATUS_OK);
@@ -7711,9 +7680,7 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
                 pConnection = NULL;
             }
             sSession.Close();
-
         }
-
         catch (CInternetException* pEx) 
         {
         // catch any exceptions from WinINet      
@@ -7744,21 +7711,16 @@ void CjfifDecode::DecodeEmbeddedThumb()
 {
     CString strTmp;
     CString strMarker;
-    unsigned nPosSaved;
     unsigned nPosSaved_sof;
     unsigned nPosEnd;
-    bool bDone;
-    unsigned nCode;
 
     CString strFull;
     unsigned nImgPrecision;
     unsigned nLength;
-    bool bScanSkipDone;
     bool bErrorAny = false;
     bool bErrorThumbLenZero = false;
-    unsigned nSkipCount;
 
-    nPosSaved = m_nPos;
+    unsigned nPosSaved = m_nPos;
 
     // Examine the EXIF embedded thumbnail (if it exists)
     if (m_nImgExifThumbComp == 6)
@@ -7772,7 +7734,7 @@ void CjfifDecode::DecodeEmbeddedThumb()
 
         // Quick scan for DQT tables
         m_nPos = m_nImgExifThumbOffset;
-        bDone = false;
+        bool bDone = false;
         while (!bDone)
         {
             // For some reason, I have found files that have a nLength of 0
@@ -7805,7 +7767,7 @@ void CjfifDecode::DecodeEmbeddedThumb()
 
             if (!bDone)
             {
-                nCode = Buf(m_nPos++);
+                unsigned nCode = Buf(m_nPos++);
 
                 m_pLog->AddLine(_T(""));
                 switch (nCode)
@@ -7845,7 +7807,7 @@ void CjfifDecode::DecodeEmbeddedThumb()
                             strPrecision.Format(_T("??? unknown [value=%u]"), nDqtPrecision_Pq);
                         }
 
-                        strTmp.Format(_T("    Precision=%s"), (LPCTSTR)strPrecision);
+                        strTmp.Format(_T("    Precision=%s"), strPrecision.GetString());
                         m_pLog->AddLine(strTmp);
                         strTmp.Format(_T("    Destination ID=%u"), nDqtQuantDestId_Tq);
                         // NOTE: The mapping between destination IDs and the actual
@@ -7938,33 +7900,35 @@ void CjfifDecode::DecodeEmbeddedThumb()
                     break;
 
                 case JFIF_SOS: // SOS
-                    m_pLog->AddLine(_T("  * Embedded Thumb Marker: SOS"));
-                    m_pLog->AddLine(_T("    Skipping scan data"));
-                    bScanSkipDone = false;
-                    nSkipCount = 0;
-                    while (!bScanSkipDone)
                     {
-                        if ((Buf(m_nPos) == 0xFF) && (Buf(m_nPos + 1) != 0x00))
+                        m_pLog->AddLine(_T("  * Embedded Thumb Marker: SOS"));
+                        m_pLog->AddLine(_T("    Skipping scan data"));
+                        bool bScanSkipDone = false;
+                        unsigned nSkipCount = 0;
+                        while (!bScanSkipDone)
                         {
-                            // Was it a restart marker?
-                            if ((Buf(m_nPos + 1) >= JFIF_RST0) && (Buf(m_nPos + 1) <= JFIF_RST7))
+                            if ((Buf(m_nPos) == 0xFF) && (Buf(m_nPos + 1) != 0x00))
                             {
-                                m_nPos++;
+                                // Was it a restart marker?
+                                if ((Buf(m_nPos + 1) >= JFIF_RST0) && (Buf(m_nPos + 1) <= JFIF_RST7))
+                                {
+                                    m_nPos++;
+                                }
+                                else
+                                {
+                                    // No... it's a real marker
+                                    bScanSkipDone = true;
+                                }
                             }
                             else
                             {
-                                // No... it's a real marker
-                                bScanSkipDone = true;
+                                m_nPos++;
+                                nSkipCount++;
                             }
                         }
-                        else
-                        {
-                            m_nPos++;
-                            nSkipCount++;
-                        }
+                        strTmp.Format(_T("    Skipped %u bytes"), nSkipCount);
+                        m_pLog->AddLine(strTmp);
                     }
-                    strTmp.Format(_T("    Skipped %u bytes"), nSkipCount);
-                    m_pLog->AddLine(strTmp);
                     break;
 
                 case JFIF_EOI:
@@ -7984,7 +7948,7 @@ void CjfifDecode::DecodeEmbeddedThumb()
 
                 default:
                     GetMarkerName(nCode, strMarker);
-                    strTmp.Format(_T("  * Embedded Thumb Marker: %s"), (LPCTSTR)strMarker);
+                    strTmp.Format(_T("  * Embedded Thumb Marker: %s"), strMarker.GetString());
                     m_pLog->AddLine(strTmp);
                     nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1);
                     strTmp.Format(_T("    Length = %u"), nLength);
@@ -8000,7 +7964,7 @@ void CjfifDecode::DecodeEmbeddedThumb()
         {
             PrepareSignatureThumb();
             m_pLog->AddLine(_T(""));
-            strTmp.Format(_T("  * Embedded Thumb Signature: %s"), (LPCTSTR)m_strHashThumb);
+            strTmp.Format(_T("  * Embedded Thumb Signature: %s"), m_strHashThumb.GetString());
             m_pLog->AddLine(strTmp);
         }
 
@@ -8068,15 +8032,11 @@ bool CjfifDecode::DecodeAvi()
 
     bool bSwap = true;
 
-    CString strRiff;
-    unsigned nRiffLen;
-    CString strForm;
-
-    strRiff = m_pWBuf->BufReadStrn(m_nPos, 4);
+    CString strRiff = m_pWBuf->BufReadStrn(m_nPos, 4);
     m_nPos += 4;
-    nRiffLen = m_pWBuf->BufX(m_nPos, 4, bSwap);
+    m_pWBuf->BufX(m_nPos, 4, bSwap);
     m_nPos += 4;
-    strForm = m_pWBuf->BufReadStrn(m_nPos, 4);
+    CString strForm = m_pWBuf->BufReadStrn(m_nPos, 4);
     m_nPos += 4;
     if ((strRiff == _T("RIFF")) && (strForm == _T("AVI ")))
     {
@@ -8107,7 +8067,7 @@ bool CjfifDecode::DecodeAvi()
 
         CString strHeader = m_pWBuf->BufReadStrn(m_nPos, 4);
         m_nPos += 4;
-        strTmp.Format(_T("  %s"), (LPCTSTR)strHeader);
+        strTmp.Format(_T("  %s"), strHeader.GetString());
         m_pLog->AddLine(strTmp);
 
         nChunkSize = m_pWBuf->BufX(m_nPos, 4, bSwap);
@@ -8120,7 +8080,7 @@ bool CjfifDecode::DecodeAvi()
             CString strListType = m_pWBuf->BufReadStrn(m_nPos, 4);
             m_nPos += 4;
 
-            strTmp.Format(_T("    %s"), (LPCTSTR)strListType);
+            strTmp.Format(_T("    %s"), strListType.GetString());
             m_pLog->AddLine(strTmp);
 
             if (strListType == _T("hdrl"))
@@ -8190,11 +8150,11 @@ bool CjfifDecode::DecodeAvi()
                 if (fccType == _T("vids")) { fccTypeDecode = _T("[vids] Video"); }
                 else if (fccType == _T("auds")) { fccTypeDecode = _T("[auds] Audio"); }
                 else if (fccType == _T("txts")) { fccTypeDecode = _T("[txts] Subtitle"); }
-                else { fccTypeDecode.Format(_T("[%s]"), (LPCTSTR)fccType); }
-                strTmp.Format(_T("      -[FourCC Type]  = %s"), (LPCTSTR)fccTypeDecode);
+                else { fccTypeDecode.Format(_T("[%s]"), fccType.GetString()); }
+                strTmp.Format(_T("      -[FourCC Type]  = %s"), fccTypeDecode.GetString());
                 m_pLog->AddLine(strTmp);
 
-                strTmp.Format(_T("      -[FourCC Codec] = [%s]"), (LPCTSTR)fccHandler);
+                strTmp.Format(_T("      -[FourCC Codec] = [%s]"), fccHandler.GetString());
                 m_pLog->AddLine(strTmp);
 
                 float fSampleRate = 0;
@@ -8209,7 +8169,7 @@ bool CjfifDecode::DecodeAvi()
 
                 m_nPos = nPosStrlStart + nStrhLen; // Skip
 
-                strTmp.Format(_T("      %s"), (LPCTSTR)fccType);
+                strTmp.Format(_T("      %s"), fccType.GetString());
                 m_pLog->AddLine(strTmp);
 
                 if (fccType == _T("vids"))
@@ -8312,7 +8272,7 @@ bool CjfifDecode::DecodeAvi()
                     CString strIsft;
                     strIsft = m_pWBuf->BufReadStrn(m_nPos, nChunkSize);
                     strIsft.TrimRight();
-                    strTmp.Format(_T("      -[Software] = [%s]"), (LPCTSTR)strIsft);
+                    strTmp.Format(_T("      -[Software] = [%s]"), strIsft.GetString());
                     m_pLog->AddLine(strTmp);
                 }
 
@@ -8337,7 +8297,7 @@ bool CjfifDecode::DecodeAvi()
             CString strIditTimestamp;
             strIditTimestamp = m_pWBuf->BufReadStrn(m_nPos, nChunkSize);
             strIditTimestamp.TrimRight();
-            strTmp.Format(_T("    -[Timestamp] = [%s]"), (LPCTSTR)strIditTimestamp);
+            strTmp.Format(_T("    -[Timestamp] = [%s]"), strIditTimestamp.GetString());
             m_pLog->AddLine(strTmp);
 
             m_nPos = nChunkDataStart + nChunkSize + (nChunkSize % 2);
@@ -8674,7 +8634,7 @@ bool CjfifDecode::ExportJpegPrepare(CString strFileIn, bool bForceSoi, bool bFor
     m_pLog->AddLine(_T(""));
     m_pLog->AddLineHdr(_T("*** Exporting JPEG ***"));
 
-    strTmp.Format(_T("  Exporting from: [%s]"), (LPCTSTR)strFileIn);
+    strTmp.Format(_T("  Exporting from: [%s]"), strFileIn.GetString());
     m_pLog->AddLine(strTmp);
 
     // Only bother to extract if all main sections are present
@@ -8750,7 +8710,7 @@ bool CjfifDecode::ExportJpegPrepare(CString strFileIn, bool bForceSoi, bool bFor
 
     if (bExtractWarn)
     {
-        strTmp.Format(_T("  NOTE: Missing marker: %s"), (LPCTSTR)strMissing);
+        strTmp.Format(_T("  NOTE: Missing marker: %s"), strMissing.GetString());
         m_pLog->AddLineWarn(strTmp);
         m_pLog->AddLineWarn(_T("        Exported JPEG may not be valid"));
     }
@@ -8778,7 +8738,7 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
     CFile* pFileOutput;
     CString strTmp;
 
-    strTmp.Format(_T("  Exporting to:   [%s]"), (LPCTSTR)strFileOut);
+    strTmp.Format(_T("  Exporting to:   [%s]"), strFileOut.GetString());
     m_pLog->AddLine(strTmp);
 
     if (strFileIn == strFileOut)
@@ -8816,7 +8776,7 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
-                        (LPCTSTR)strFileOut, (LPCTSTR)msg);
+                        strFileOut.GetString(), msg);
         m_pLog->AddLineErr(strError);
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(strError);
@@ -8942,7 +8902,7 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
     CFile* pFileOutput;
     CString strTmp;
 
-    strTmp.Format(_T("  Exporting range to:   [%s]"), (LPCTSTR)strFileOut);
+    strTmp.Format(_T("  Exporting range to:   [%s]"), strFileOut.GetString());
     m_pLog->AddLine(strTmp);
 
     if (strFileIn == strFileOut)
@@ -8980,7 +8940,7 @@ bool CjfifDecode::ExportJpegDoRange(CString strFileIn, CString strFileOut,
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
-                        (LPCTSTR)strFileOut, (LPCTSTR)msg);
+                        strFileOut.GetString(), msg);
         m_pLog->AddLineErr(strError);
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(strError);

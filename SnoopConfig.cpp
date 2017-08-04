@@ -541,7 +541,7 @@ bool CSnoopConfig::DebugLogCreate()
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open debug log file for write [%s]: [%s]"),
-            (LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
+            strDebugLogFname.GetString(), msg.GetString());
         AfxMessageBox(strError);
         fpDebugLog = NULL;
 
@@ -615,7 +615,7 @@ bool CSnoopConfig::DebugLogAdd(CString strText)
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open debug log file for append [%s]: [%s]"),
-            (LPCTSTR)strDebugLogFname, (LPCTSTR)msg);
+            strDebugLogFname.GetString(), msg.GetString());
         AfxMessageBox(strError);
         fpDebugLog = NULL;
 

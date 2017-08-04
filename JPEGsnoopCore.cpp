@@ -260,7 +260,7 @@ void CJPEGsnoopCore::AnalyzeFileDo()
     glb_pDocLog->AddLine(_T("  http://www.impulseadventure.com/photo/"));
     glb_pDocLog->AddLine(_T("  -------------------------------------"));
     glb_pDocLog->AddLine(_T(""));
-    strTmp.Format(_T("  Filename: [%s]"), (LPCTSTR)m_strPathName);
+    strTmp.Format(_T("  Filename: [%s]"), m_strPathName.GetString());
     glb_pDocLog->AddLine(strTmp);
     strTmp.Format(_T("  Filesize: [%llu] Bytes"), m_lFileSize);
     glb_pDocLog->AddLine(strTmp);
@@ -365,7 +365,7 @@ void CJPEGsnoopCore::DoLogSave(CString strLogName)
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
-                        (LPCTSTR)strLogName, (LPCTSTR)msg);
+                        strLogName.GetString(), msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
         pLog = nullptr;
@@ -459,18 +459,16 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
 
     CFileFind finder;
     CString strWildcard;
-    CString strDirName;
     CString strSubPath;
-    CString strPath;
 
     // build a string with wildcards
     if (strPathName.IsEmpty())
     {
-        strWildcard.Format(_T("%s\\*.*"), (LPCTSTR)strSrcRootName);
+        strWildcard.Format(_T("%s\\*.*"), strSrcRootName.GetString());
     }
     else
     {
-        strWildcard.Format(_T("%s\\%s\\*.*"), (LPCTSTR)strSrcRootName, (LPCTSTR)strPathName);
+        strWildcard.Format(_T("%s\\%s\\*.*"), strSrcRootName.GetString(), strPathName.GetString());
     }
 
     // start working for files
@@ -486,18 +484,18 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
         if (finder.IsDots())
             continue;
 
-        strPath = finder.GetFilePath();
+        CString strPath = finder.GetFilePath();
 
         // Now need to remove "root" from "path" to recalculate
         // new relative subpath
-        strDirName = finder.GetFileName();
+        CString strDirName = finder.GetFileName();
         if (strPathName.IsEmpty())
         {
             strSubPath = strDirName;
         }
         else
         {
-            strSubPath.Format(_T("%s\\%s"), (LPCTSTR)strPathName, (LPCTSTR)strDirName);
+            strSubPath.Format(_T("%s\\%s"), strPathName.GetString(), strDirName.GetString());
         }
 
         // if it's a directory, recursively search it
@@ -536,18 +534,12 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
 //
 void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strDstRootName, CString strPathName, bool bExtractAll)
 {
-    //bool      bDoSubmit = false;
-    unsigned nInd;
-
     CString strFnameSrc;
     CString strFnameDst;
-    CString strFnameOnly;
-    CString strFnameExt;
-    CString strFnameLog;
     CString strFnameEmbed;
 
-    strFnameSrc.Format(_T("%s\\%s"), (LPCTSTR)strSrcRootName, (LPCTSTR)strPathName);
-    strFnameDst.Format(_T("%s\\%s"), (LPCTSTR)strDstRootName, (LPCTSTR)strPathName);
+    strFnameSrc.Format(_T("%s\\%s"), strSrcRootName.GetString(), strPathName.GetString());
+    strFnameDst.Format(_T("%s\\%s"), strDstRootName.GetString(), strPathName.GetString());
 
     // Extract the filename (without extension) and extension from
     // the full pathname.
@@ -558,16 +550,14 @@ void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strD
     //  
 #if 1
     // -----------
-    strFnameOnly = strFnameSrc.Mid(strFnameSrc.ReverseFind('\\') + 1);
-    nInd = strFnameOnly.ReverseFind('.');
+    CString strFnameOnly = strFnameSrc.Mid(strFnameSrc.ReverseFind('\\') + 1);
+    unsigned nInd = strFnameOnly.ReverseFind('.');
     strFnameOnly = strFnameOnly.Mid(0, nInd);
-
 
     // Extract the file extension
     nInd = strFnameSrc.ReverseFind('.');
-    strFnameExt = strFnameSrc.Mid(nInd);
+    CString strFnameExt = strFnameSrc.Mid(nInd);
     strFnameExt.MakeLower();
-    // -----------
 #else
     unsigned    nLen = strFnameSrc.GetLength();
     LPTSTR lpstrSrcFullpath = new TCHAR[nLen+1];
@@ -620,7 +610,7 @@ void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strD
         //   In the interests of paranoia, we perform some extra checks
         //   here to ensure that this doesn't happen.
 
-        strFnameLog = strFnameDst;
+        CString strFnameLog = strFnameDst;
         strFnameLog.Append(_T(".txt"));
 
         // Now double check the filenames to ensure they don't match the image
@@ -998,7 +988,7 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
         if (nExtInd == -1)
         {
             CString strTmp;
-            strTmp.Format(_T("ERROR: Invalid filename [%s]"), (LPCTSTR)strOutputFname);
+            strTmp.Format(_T("ERROR: Invalid filename [%s]"), strOutputFname.GetString());
             glb_pDocLog->AddLineErr(strTmp);
             if (m_pAppConfig->bInteractive)
                 AfxMessageBox(strTmp);
@@ -1014,7 +1004,7 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
 
             // Create filename
             // 6 digits of numbering will support videos at 60 fps for over 4.5hrs.
-            strOutputFnameTemp.Format(_T("%s.%06u.jpg"), (LPCTSTR)strRootFileName, nExportCnt);
+            strOutputFnameTemp.Format(_T("%s.%06u.jpg"), strRootFileName.GetString(), nExportCnt);
 
             // Opens file (m_strPathName), resets window buffer, file size, etc.
             AnalyzeOpen();

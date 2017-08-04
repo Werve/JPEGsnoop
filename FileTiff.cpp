@@ -488,7 +488,7 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file for write [%s]: [%s]"),
-                        (LPCTSTR)sFnameOut, msg);
+                        sFnameOut.GetString(), msg);
         AfxMessageBox(strError);
         m_pFileOutput = nullptr;
 

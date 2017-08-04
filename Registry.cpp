@@ -179,16 +179,16 @@ CString CRegString::read()
 
 void CRegString::write()
 {
-    ASSERT(m_key != _T(""));
+    ASSERT(!m_key.IsEmpty());
     DWORD disp;
     if (RegCreateKeyEx(m_base, m_path, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &m_hKey, &disp) != ERROR_SUCCESS)
     {
         return;
     }
 #ifdef _UNICODE
-    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)(LPCTSTR)m_value, (m_value.GetLength() + 1) * 2) == ERROR_SUCCESS)
+    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)m_value.GetString(), (m_value.GetLength() + 1) * 2) == ERROR_SUCCESS)
 #else
-    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)(LPCTSTR)m_value, m_value.GetLength()+1)==ERROR_SUCCESS)
+    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)m_value.GetString(), m_value.GetLength()+1)==ERROR_SUCCESS)
 #endif
     {
         m_read = TRUE;

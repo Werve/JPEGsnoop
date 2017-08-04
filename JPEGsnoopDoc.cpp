@@ -35,7 +35,7 @@
 #include "BatchDlg.h"
 
 CJPEGsnoopDoc::CJPEGsnoopDoc()
-    : m_pView(NULL)
+    : m_pView(nullptr)
 {
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
@@ -65,15 +65,15 @@ CJPEGsnoopDoc::CJPEGsnoopDoc()
 // Cleanup all of the allocated classes
 CJPEGsnoopDoc::~CJPEGsnoopDoc()
 {
-    if (m_pCore != NULL)
+    if (m_pCore)
     {
         delete m_pCore;
-        m_pCore = NULL;
+        m_pCore = nullptr;
     }
 
     // Sever link to CDocument in log
     ASSERT(glb_pDocLog);
-    glb_pDocLog->SetDoc(NULL);
+    glb_pDocLog->SetDoc(nullptr);
 }
 
 // Reset is only called by the constructor, New and Open
@@ -560,11 +560,10 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool bRecSubdir, bool bE
         for (unsigned nFileInd = 0; nFileInd < nBatchFileCount; nFileInd++)
         {
             // Update the status report in window
-            CString strSrcFname;
-            strSrcFname = pSnoopCore->GetBatchFileInfo(nFileInd);
+            CString strSrcFname = pSnoopCore->GetBatchFileInfo(nFileInd);
             strStat.Format(_T("Batch processing file %6u of %6u (%6.2f %%): [%s]"),
                            nFileInd + 1, nBatchFileCount, (100.0 * (nFileInd + 1) / nBatchFileCount),
-                           (LPCTSTR)strSrcFname);
+                           strSrcFname.GetString());
 
             // Inject progress message into main log window
             AppendToLog(strStat + _T("\n"),RGB(1,1,1));
@@ -1243,7 +1242,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
         e->GetErrorMessage(msg,MAX_BUF_EX_ERR_MSG);
         e->Delete();
         strError.Format(_T("ERROR: Couldn't open file [%s]: [%s]"),
-                        (LPCTSTR)strFileName, (LPCTSTR)msg);
+                        strFileName.GetString(), msg);
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(strError);
         pFileExe = NULL;
@@ -1257,7 +1256,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     // Search the file!
 
     glb_pDocLog->AddLineHdr(_T("*** Searching Executable for DQT ***"));
-    strTmp.Format(_T("  Filename: [%s]"), (LPCTSTR)strPathName);
+    strTmp.Format(_T("  Filename: [%s]"), strPathName.GetString());
     glb_pDocLog->AddLine(strTmp);
     strTmp.Format(_T("  Size:     [%lu]"), lFileSize);
     glb_pDocLog->AddLine(strTmp);
@@ -1327,7 +1326,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
             }
             else
             {
-                strTmp.Format(_T("      Matching [%s]"), (LPCTSTR)m_strPathName);
+                strTmp.Format(_T("      Matching [%s]"), m_strPathName.GetString());
                 glb_pDocLog->AddLine(strTmp);
             }
 
@@ -2023,14 +2022,13 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
         return;
     }
 
-
     FileTiff myTiff;
-    unsigned char* pBitmapRgb = NULL;
-    short* pBitmapYccY = NULL;
-    short* pBitmapYccCb = NULL;
-    short* pBitmapYccCr = NULL;
-    unsigned char* pBitmapSel8 = NULL;
-    unsigned short* pBitmapSel16 = NULL;
+    unsigned char* pBitmapRgb = nullptr;
+    short* pBitmapYccY = nullptr;
+    short* pBitmapYccCb = nullptr;
+    short* pBitmapYccCr = nullptr;
+    unsigned char* pBitmapSel8 = nullptr;
+    unsigned short* pBitmapSel16 = nullptr;
 
     unsigned nSizeX, nSizeY;
     unsigned nOffsetSrc, nOffsetDst;
