@@ -213,10 +213,8 @@ bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float sc
 }
 
 
-bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float scale)
+bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*scale*/)
 {
-    scale; // Unreferenced param
-
     if (!m_pDIB || !pDestDC) return false;
 
     int nDstW;

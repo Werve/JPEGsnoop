@@ -2610,10 +2610,8 @@ void CDecodePs::PhotoshopParseSliceResource(unsigned long& nPos, unsigned nInden
 // NOTE:
 // - This IRB is private, so reverse-engineered and may not be per spec
 //
-void CDecodePs::PhotoshopParseJpegQuality(unsigned long& nPos, unsigned nIndent, unsigned long nPosEnd)
+void CDecodePs::PhotoshopParseJpegQuality(unsigned long& nPos, unsigned nIndent, unsigned long /*nPosEnd*/)
 {
-    nPosEnd; // Unreferenced param
-
     CString strVal;
 
     // Save As Quality

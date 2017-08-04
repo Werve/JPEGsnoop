@@ -105,10 +105,8 @@ public:
         next_arg = cla_idle;
     };
 
-    void ParseParam(LPCTSTR pszParam, BOOL bFlag, BOOL bLast) override
+    void ParseParam(LPCTSTR pszParam, BOOL bFlag, BOOL /*bLast*/) override
     {
-        bLast; // Unreferenced param
-
         CString msg;
 
         // GUI mode decision

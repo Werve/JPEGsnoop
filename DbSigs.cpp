@@ -125,12 +125,9 @@ unsigned CDbSigs::GetNumSigsExtra()
     return m_nSigListExtraNum;
 }
 
-
 // Read an unsigned integer (4B) from the buffer
-bool CDbSigs::BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned nMaxBytes, unsigned& nOffsetBytes)
+bool CDbSigs::BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned /*nMaxBytes*/, unsigned& nOffsetBytes)
 {
-    nMaxBytes; // Unreferenced param
-
     ASSERT(pBuf);
     // TODO: check for buffer bounds
     nOut = (unsigned)pBuf[nOffsetBytes];
@@ -139,16 +136,12 @@ bool CDbSigs::BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned nMaxBytes, unsigne
 }
 
 // Write an unsigned integer (4B) to the buffer
-bool CDbSigs::BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned nMaxBytes, unsigned& nOffsetBytes)
+bool CDbSigs::BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned /*nMaxBytes*/, unsigned& nOffsetBytes)
 {
-    nMaxBytes; // Unreferenced param
-
     ASSERT(pBuf);
     // TODO: check for buffer bounds
-    PBYTE pBufBase;
-    unsigned* pBufInt;
-    pBufBase = &pBuf[nOffsetBytes];
-    pBufInt = (unsigned*)pBufBase;
+    PBYTE pBufBase = &pBuf[nOffsetBytes];
+    unsigned * pBufInt = (unsigned*)pBufBase;
     pBufInt[0] = nIn;
     nOffsetBytes += sizeof(unsigned);
     return true;

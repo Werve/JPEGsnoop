@@ -106,10 +106,8 @@ void CMainFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 //CAL! Following code was added to support split windows
-BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
-    lpcs; // Unreferenced param
-
     //calculate client size 
     CRect cr;
     GetClientRect(&cr);

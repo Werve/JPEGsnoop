@@ -1642,10 +1642,8 @@ unsigned CimgDecode::BuffAddByte()
 //
 // FIXME: Consider adding checks for DHT table like in ReadScanVal()
 //
-bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned nTblDqt, unsigned nMcuX, unsigned nMcuY)
+bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned nTblDqt, unsigned /*nMcuX*/, unsigned /*nMcuY*/)
 {
-    nMcuX; // Unreferenced param
-    nMcuY; // Unreferenced param
     unsigned nZrl;
     signed nVal;
     bool bDone = false;
@@ -1654,7 +1652,6 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
     teRsvRet eRsvRet; // Return value from ReadScanVal()
 
     unsigned nNumCoeffs = 0;
-    //unsigned nDctMax = 0;         // Maximum DCT coefficient to use for IDCT
     unsigned nSavedBufPos = 0;
     unsigned nSavedBufErr = SCANBUF_OK;
     unsigned nSavedBufAlign = 0;
@@ -2763,12 +2760,9 @@ void CimgDecode::CheckScanErrors(unsigned nMcuX, unsigned nMcuY, unsigned nCssIn
 // - nMcuY              = MCU y coordinate
 // - nVal               = DC value
 //
-void CimgDecode::PrintDcCumVal(unsigned nMcuX, unsigned nMcuY, int nVal)
+void CimgDecode::PrintDcCumVal(unsigned /*nMcuX*/, unsigned /*nMcuY*/, int nVal)
 {
-    nMcuX; // Unreferenced param
-    nMcuY; // Unreferenced param
     CString strTmp;
-    //  strTmp.Format(_T("  MCU [%4u,%4u] DC Cumulative Val = [%5d]"),nMcuX,nMcuY,nVal);
     strTmp.Format(_T("                 Cumulative DC Val=[%5d]"), nVal);
     m_pLog->AddLine(strTmp);
 }
@@ -4783,15 +4777,12 @@ void CimgDecode::CapRgbRange(unsigned nMcuX, unsigned nMcuY, PixelCc& sPix)
 // OUTPUT:
 // - pTmp                   = RGB pixel map (32-bit per pixel, [0x00,R,G,B])
 //
-void CimgDecode::CalcChannelPreviewFull(CRect* pRectView, unsigned char* pTmp)
+void CimgDecode::CalcChannelPreviewFull(CRect* /*pRectView*/, unsigned char* pTmp)
 {
-    pRectView; // Unreferenced param
     PixelCc sPixSrc, sPixDst;
     CString strTmp;
 
-    unsigned nRowBytes;
-    nRowBytes = m_nImgSizeX * sizeof(RGBQUAD);
-
+    unsigned nRowBytes = m_nImgSizeX * sizeof(RGBQUAD);
 
     // Color conversion process
 
@@ -5897,10 +5888,8 @@ void CimgDecode::ViewMcuOverlay(CDC* pDC)
 // INPUT:
 // - pDC            = The device context pointer
 //
-void CimgDecode::ViewMcuMarkedOverlay(CDC* pDC)
+void CimgDecode::ViewMcuMarkedOverlay(CDC* /*pDC*/)
 {
-    pDC; // Unreferenced param
-
     // Now draw a simple MCU Marker overlay
     CRect my_rect;
     CBrush my_brush(RGB(255, 0, 255));

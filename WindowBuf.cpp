@@ -544,12 +544,10 @@ void CwindowBuf::ReportOverlays(CDocLog* pLog)
 // - nAdjCb             Additional info for this overlay
 // - nAdjCr             Additional info for this overlay
 //
-bool CwindowBuf::OverlayInstall(unsigned nOvrInd, BYTE* pOverlay, unsigned nLen, unsigned nBegin,
+bool CwindowBuf::OverlayInstall(unsigned /*nOvrInd*/, BYTE* pOverlay, unsigned nLen, unsigned nBegin,
                                 unsigned nMcuX, unsigned nMcuY, unsigned nMcuLen, unsigned nMcuLenIns,
                                 int nAdjY, int nAdjCb, int nAdjCr)
 {
-    nOvrInd; // Unreferenced param
-
     // Ensure that the overlay is allocated, and allocate it
     // if required. Fail out if we can't add (or run out of space)
     if (!OverlayAlloc(m_nOverlayNum))

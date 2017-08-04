@@ -91,10 +91,8 @@ void CHyperlinkStatic::PreSubclassWindow()
     CStatic::PreSubclassWindow();
 }
 
-LRESULT CHyperlinkStatic::OnMouseLeave(WPARAM wParam, LPARAM lParam)
+LRESULT CHyperlinkStatic::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    lParam; // Unreferenced param
-    wParam; // Unreferenced param
     _bMouseInControl = false;
     ::SetCursor(_hArrowCursor);
     return 0;

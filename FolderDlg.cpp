@@ -34,27 +34,15 @@
 // You must link shlwapi.lib for StrRetToBuf
 #pragma comment(lib, "shlwapi.lib")
 
-IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget);
-
-CFolderDialog::CFolderDialog(CWnd* pWnd)
+CFolderDialog::CFolderDialog(CWnd* /*pWnd*/)
 {
-    pWnd; // Unreferenced param
-
-    //CAL! Modified the following to allow us to call this
-    //     routine without a parent window defined. This
-    //     is a temporary workaround so that I can call
-    //     CFolderDialog() from the JPEGsnoopDoc class.
-
-    //CAL!  ASSERT(pWnd);
     memset(&m_brinfo, 0, sizeof(m_brinfo));
-    //CAL!  m_brinfo.hwndOwner=pWnd->m_hWnd;         // use parent window
     m_bFilter = FALSE; // default: no filtering
     SHGetDesktopFolder(&m_shfRoot); // get root IShellFolder
 
     m_strStartPath = "";
 }
 
-//////////////////
 // Browse for folder. Args are same as for SHBrowseForFolder, but with extra
 // bFilter that tells whether to do custom filtering. Note this requires
 // BIF_NEWDIALOGSTYLE, which is inconsistent with some other flags--be
@@ -208,40 +196,26 @@ void CFolderDialog::OnSelChanged(LPCITEMIDLIST pidl)
     //  GetDisplayNameOf(m_shfRoot, pidl, SHGDN_FORPARSING));
 }
 
-//////////////////
 // User attempted to enter a name in the edit box that isn't a folder.
-//
-BOOL CFolderDialog::OnValidateFailed(LPCTSTR lpsz)
+BOOL CFolderDialog::OnValidateFailed(LPCTSTR /*lpsz*/)
 {
-    lpsz; // Unreferenced param
-    //BFTRACE(_T("CFolderDialog::OnValidateFailed: %s\n"), lpsz);
     return TRUE; // don't close dialog.
 }
 
-//////////////////
 // Used for custom filtering. You must override to specify filter flags.
-//
 HRESULT CFolderDialog::OnGetEnumFlags(
-    IShellFolder* psf, // this folder's IShellFolder
-    LPCITEMIDLIST pidlFolder, // folder's PIDL
-    DWORD* pgrfFlags) // [out] return flags you want to allow
+    IShellFolder* /*psf*/, // this folder's IShellFolder
+    LPCITEMIDLIST /*pidlFolder*/, // folder's PIDL
+    DWORD* /*pgrfFlags*/) // [out] return flags you want to allow
 {
-    psf; // Unreferenced param
-    pidlFolder; // Unreferenced param
-    pgrfFlags; // Unreferenced param
-    //BFTRACE(_T("CFolderDialog::OnGetEnumFlags(%p): %s\n"),
-    //  psf, GetPathName(pidlFolder));
     return S_OK;
 }
 
 HRESULT CFolderDialog::OnShouldShow(
-    IShellFolder* psf, // This folder's IShellFolder
-    LPCITEMIDLIST pidlFolder, // PIDL for folder containing item
-    LPCITEMIDLIST pidlItem) // PIDL for item
+    IShellFolder* /*psf*/, // This folder's IShellFolder
+    LPCITEMIDLIST /*pidlFolder*/, // PIDL for folder containing item
+    LPCITEMIDLIST /*pidlItem*/) // PIDL for item
 {
-    psf; // Unreferenced param
-    pidlFolder; // Unreferenced param
-    pidlItem; // Unreferenced param
     return S_OK;
 }
 
@@ -282,9 +256,8 @@ STDMETHODIMP CFolderDialog::XFolderFilter::QueryInterface(REFIID iid, LPVOID* pp
 
 // Note: pHwnd is always NULL here as far as I can tell.
 STDMETHODIMP CFolderDialog::XFolderFilter::GetEnumFlags(IShellFolder* psf,
-                                                        LPCITEMIDLIST pidlFolder, HWND* pHwnd, DWORD* pgrfFlags)
+                                                        LPCITEMIDLIST pidlFolder, HWND* /*pHwnd*/, DWORD* pgrfFlags)
 {
-    pHwnd; // Unreferenced param
     METHOD_PROLOGUE(CFolderDialog, FolderFilter);
     return pThis->OnGetEnumFlags(psf, pidlFolder, pgrfFlags);
 }
@@ -299,3 +272,5 @@ STDMETHODIMP CFolderDialog::XFolderFilter::ShouldShow(IShellFolder* psf,
 BEGIN_INTERFACE_MAP(CFolderDialog, CCmdTarget)
     INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
 END_INTERFACE_MAP()
+
+IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget);

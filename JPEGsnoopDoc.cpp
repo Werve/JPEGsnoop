@@ -470,10 +470,8 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
 // - bRecSubdir         Flag to descend recursively into sub-directories
 // - bExtractAll        Flag to extract all JPEGs from files
 //
-void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool bRecSubdir, bool bExtractAll)
+void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, bool bExtractAll)
 {
-    bRecSubdir; // Unreferenced param
-
     CFolderDialog myFolderDlg(NULL);
     CString strRootDir;
     CString strDir;
