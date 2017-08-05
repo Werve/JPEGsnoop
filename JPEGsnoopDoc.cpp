@@ -83,7 +83,7 @@ CJPEGsnoopDoc::~CJPEGsnoopDoc()
 void CJPEGsnoopDoc::Reset()
 {
     // Reset all members
-    m_pFile = NULL;
+    m_pFile = nullptr;
     m_lFileSize = 0L;
 
     // No log data available until we open & process a file
@@ -350,7 +350,7 @@ void CJPEGsnoopDoc::SetupView(CRichEditView* pView)
 CStatusBar* CJPEGsnoopDoc::GetStatusBar()
 {
     CWnd* pMainWnd = AfxGetMainWnd();
-    if (!pMainWnd) return NULL;
+    if (!pMainWnd) return nullptr;
 
     if (pMainWnd->IsKindOf(RUNTIME_CLASS(CFrameWnd)))
     {
@@ -471,7 +471,7 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
 //
 void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, bool bExtractAll)
 {
-    CFolderDialog myFolderDlg(NULL);
+    CFolderDialog myFolderDlg(nullptr);
     CString strRootDir;
     CString strDir;
     bool bSubdirs = false;
@@ -515,13 +515,7 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, boo
     if (bAllOk)
     {
         // Allocate core engine
-        CJPEGsnoopCore* pSnoopCore = NULL;
-        pSnoopCore = new CJPEGsnoopCore;
-        ASSERT(pSnoopCore);
-        if (!pSnoopCore)
-        {
-            return;
-        }
+        CJPEGsnoopCore* pSnoopCore = new CJPEGsnoopCore;
 
         // Enable and hook up the status bar
         CStatusBar* pStatBar = GetStatusBar();
@@ -540,7 +534,6 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, boo
         // // Until-done based
         // BOOL bOk = LengthyOp.RunUntilDone( true );
         // // === END
-
 
         // Generate the batch file list
         pSnoopCore->GenBatchFileList(strDirSrc, strDirDst, bSubdirs, bExtractAll);
@@ -586,7 +579,7 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, boo
         if (pSnoopCore)
         {
             delete pSnoopCore;
-            pSnoopCore = NULL;
+            pSnoopCore = nullptr;
         }
     }
 
@@ -638,7 +631,7 @@ void CJPEGsnoopDoc::OnFileOffset()
 
         // Now try to update all views. This is particularly important
         // for View 2 (ScrollView) as it does not automatically invalidate
-        UpdateAllViews(NULL);
+        UpdateAllViews(nullptr);
     }
 
     if (m_pCore->IsAnalyzed())
@@ -919,17 +912,17 @@ BOOL CJPEGsnoopDoc::Reprocess()
     // when holding down Fwd/Rev Search hotkey
 
     POSITION pos = GetFirstViewPosition();
-    if (pos != NULL)
+    if (pos)
     {
         CView* pFirstView = GetNextView(pos);
         pFirstView->Invalidate();
-        pFirstView->RedrawWindow(NULL, 0,RDW_UPDATENOW);
+        pFirstView->RedrawWindow(nullptr, nullptr,RDW_UPDATENOW);
     }
-    if (pos != NULL)
+    if (pos)
     {
         CView* pSecondView = GetNextView(pos);
         pSecondView->Invalidate();
-        pSecondView->RedrawWindow(NULL, 0,RDW_UPDATENOW);
+        pSecondView->RedrawWindow(nullptr, nullptr,RDW_UPDATENOW);
     }
 
     return bRet;
@@ -1075,7 +1068,7 @@ void CJPEGsnoopDoc::OnPreviewRng(UINT nID)
 {
     unsigned nInd = nID - ID_PREVIEW_RGB + PREVIEW_RGB;
     m_pCore->I_SetPreviewMode(nInd);
-    UpdateAllViews(NULL);
+    UpdateAllViews(nullptr);
 }
 
 // Menu enable status for Channel Preview
@@ -1102,18 +1095,18 @@ void CJPEGsnoopDoc::OnZoomRng(UINT nID)
     if (nID == ID_IMAGEZOOM_ZOOMIN)
     {
         m_pCore->I_SetPreviewZoom(true, false, false, 0);
-        UpdateAllViews(NULL);
+        UpdateAllViews(nullptr);
     }
     else if (nID == ID_IMAGEZOOM_ZOOMOUT)
     {
         m_pCore->I_SetPreviewZoom(false, true, false, 0);
-        UpdateAllViews(NULL);
+        UpdateAllViews(nullptr);
     }
     else
     {
         unsigned nInd = nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
         m_pCore->I_SetPreviewZoom(false, false, true, nInd);
-        UpdateAllViews(NULL);
+        UpdateAllViews(nullptr);
     }
 }
 
@@ -1154,7 +1147,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
         _T("DLL Library (*.dll)|*.dll|")
         _T("All Files (*.*)|*.*||");
 
-    CFileDialog FileDlg(TRUE, _T(".exe"), NULL, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, astrFilter);
+    CFileDialog FileDlg(TRUE, _T(".exe"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, astrFilter);
 
     CString strTitle;
     CString strFileName;
@@ -1205,9 +1198,9 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
                         strFileName.GetString(), msg);
         if (m_pAppConfig->bInteractive)
             AfxMessageBox(strError);
-        pFileExe = NULL;
+        pFileExe = nullptr;
 
-        return; // FALSE;
+        return;
     }
 
     // Set the file size variable
@@ -1697,7 +1690,7 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
 
         // Determine binary form
 
-        COverlayBufDlg dlgOverlay(NULL, bCurEn, nCurStart, nCurLen, strCurDataHex, strCurDataBin);
+        COverlayBufDlg dlgOverlay(nullptr, bCurEn, nCurStart, nCurLen, strCurDataHex, strCurDataBin);
         // Set the call-back function
         dlgOverlay.SetCbBuf(this, CbWrap_B_Buf);
 
@@ -1711,7 +1704,7 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
             for (unsigned nInd = 0; nInd < _tcslen(strValNew) / 2; nInd++)
             {
                 CString strTmpByte = strValNew.Mid(nInd * 2, 2);
-                unsigned nTmpByte = _tcstoul(strTmpByte,NULL, 16);
+                unsigned nTmpByte = _tcstoul(strTmpByte, nullptr, 16);
                 anValData[nInd] = (nTmpByte & 0xFF);
             }
 
@@ -1779,9 +1772,9 @@ void CJPEGsnoopDoc::OnToolsLookupmcuoffset()
 
     unsigned nPicWidth, nPicHeight;
     m_pCore->I_GetImageSize(nPicWidth, nPicHeight);
-    CLookupDlg lookupDlg(NULL, nPicWidth, nPicHeight);
+    CLookupDlg lookupDlg(nullptr, nPicWidth, nPicHeight);
     // Set the call-back function
-    lookupDlg.SetCbLookup((void*)this, CJPEGsnoopDoc::CbWrap_I_LookupFilePosPix);
+    lookupDlg.SetCbLookup(this, CbWrap_I_LookupFilePosPix);
 
     if (lookupDlg.DoModal() == IDOK)
     {
@@ -1808,7 +1801,7 @@ void CJPEGsnoopDoc::OnUpdateToolsLookupmcuoffset(CCmdUI* pCmdUI)
 void CJPEGsnoopDoc::OnOverlaysMcugrid()
 {
     m_pCore->I_SetPreviewOverlayMcuGridToggle();
-    UpdateAllViews(NULL);
+    UpdateAllViews(nullptr);
 }
 
 
@@ -1856,12 +1849,11 @@ void CJPEGsnoopDoc::OnUpdateIndicatorFilePos(CCmdUI* pCmdUI)
 //
 void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
 {
-    CDecodeDetailDlg dlgDetail(NULL);
+    CDecodeDetailDlg dlgDetail(nullptr);
 
     bool bEn;
     m_pCore->I_GetDetailVlc(bEn, dlgDetail.m_nMcuX, dlgDetail.m_nMcuY, dlgDetail.m_nMcuLen);
     dlgDetail.m_bEn = bEn;
-
 
     // Sequence of markers:
     //   #1 - Start MCU
@@ -2000,8 +1992,8 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
     m_pCore->I_GetImageSize(nSizeX, nSizeY);
     m_pCore->I_GetBitmapPtr(pBitmapRgb);
     m_pCore->I_GetPixMapPtrs(pBitmapYccY, pBitmapYccCb, pBitmapYccCr);
-    pBitmapSel8 = NULL;
-    pBitmapSel16 = NULL;
+    pBitmapSel8 = nullptr;
+    pBitmapSel16 = nullptr;
 
     CExportTiffDlg myTiffDlg;
     myTiffDlg.m_sFname = strFnameOut;
@@ -2123,22 +2115,22 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
 
     if (bMode16b)
     {
-        myTiff.WriteFile(strFnameOut, bModeYcc, bMode16b, (void*)pBitmapSel16, nSizeX, nSizeY);
+        myTiff.WriteFile(strFnameOut, bModeYcc, bMode16b, pBitmapSel16, nSizeX, nSizeY);
     }
     else
     {
-        myTiff.WriteFile(strFnameOut, bModeYcc, bMode16b, (void*)pBitmapSel8, nSizeX, nSizeY);
+        myTiff.WriteFile(strFnameOut, bModeYcc, bMode16b, pBitmapSel8, nSizeX, nSizeY);
     }
 
     if (pBitmapSel8)
     {
         delete [] pBitmapSel8;
-        pBitmapSel8 = NULL;
+        pBitmapSel8 = nullptr;
     }
     if (pBitmapSel16)
     {
         delete [] pBitmapSel16;
-        pBitmapSel16 = NULL;
+        pBitmapSel16 = nullptr;
     }
 }
 

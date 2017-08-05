@@ -314,7 +314,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
     m_nPtrIfdExtra = 0;
     m_nIfdExtraLen = 0;
 
-    ASSERT(m_pIfdExtraBuf==NULL);
+    ASSERT(!m_pIfdExtraBuf);
 
     unsigned short nFinalNumIfd = 0;
     unsigned nFinalPtrIfdStart = m_nPos;

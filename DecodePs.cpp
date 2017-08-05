@@ -1442,7 +1442,7 @@ bool CDecodePs::PhotoshopParseLayerRecord(unsigned long& nPos, unsigned nIndent,
     //nChans = nNumChans;
     pLayerInfo->nNumChans = nNumChans;
 
-    ASSERT(pLayerInfo->pnChanLen == NULL);
+    ASSERT(!pLayerInfo->pnChanLen);
     pLayerInfo->pnChanLen = new unsigned [nNumChans];
     ASSERT(pLayerInfo->pnChanLen);
     pLayerInfo->pnChanID = new unsigned [nNumChans];

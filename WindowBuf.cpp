@@ -595,8 +595,6 @@ void CwindowBuf::OverlayRemove()
     {
         // Don't need to delete the overlay struct as we might as well reuse it
         m_psOverlay[m_nOverlayNum]->bEn = false;
-        //delete m_psOverlay[m_nOverlayNum];
-        //m_psOverlay[m_nOverlayNum] = NULL;
     }
 }
 

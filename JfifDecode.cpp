@@ -202,7 +202,7 @@ CjfifDecode::~CjfifDecode()
     // Free the DICOM decoder
     if (m_pDecDicom) {
         delete m_pDecDicom;
-        m_pDecDicom = NULL;
+        m_pDecDicom = nullptr;
     }
 #endif
 }
@@ -7460,7 +7460,6 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
 #endif
 
 #ifdef WWW_WININET
-        //static LPSTR astrAcceptTypes[2]={"*/*", NULL};
         HINTERNET hINet = nullptr;
         HINTERNET hConnection = nullptr;
         HINTERNET hData = nullptr;
@@ -7487,7 +7486,6 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
                 InternetCloseHandle(hINet);
                 return;
             }
-            // GET HttpSendRequest( hData, NULL, 0, NULL, 0);
 
             // POST requests from HttpSendRequest() don't work well with
             // unicode, so convert from unicode to ANSI
@@ -7532,12 +7530,12 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
             if (pFile) {
                 pFile->Close();
                 delete pFile;
-                pFile = NULL;
+                pFile = nullptr;
             }
             if (pConnection) {
                 pConnection->Close();
                 delete pConnection;
-                pConnection = NULL;
+                pConnection = nullptr;
             }
             sSession.Close();
         }
@@ -8264,7 +8262,7 @@ void CjfifDecode::ProcessFile(CFile* inFile)
     }
 #else
     // Don't attempt to display Photoshop image data
-    if (m_pPsDec->DecodePsd(nStartPos,NULL,nWidth,nHeight)) {
+    if (m_pPsDec->DecodePsd(nStartPos, nullptr,nWidth,nHeight)) {
         return;
     }
 #endif

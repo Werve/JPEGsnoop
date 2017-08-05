@@ -85,7 +85,7 @@ void CJPEGsnoopView::OnDestroy()
     if (pActiveItem != nullptr && pActiveItem->GetActiveView() == this)
     {
         pActiveItem->Deactivate();
-        ASSERT(GetDocument()->GetInPlaceActiveItem(this) == NULL);
+        ASSERT(!GetDocument()->GetInPlaceActiveItem(this));
     }
     CRichEditView::OnDestroy();
 }

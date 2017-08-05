@@ -1029,16 +1029,6 @@ void CJPEGsnoopApp::MyOnFileOpen()
         _T("Photoshop Files (*.psd)|*.psd|")
         _T("All Files (*.*)|*.*||");
 
-    /*
-        CFileDialog(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
-        LPCTSTR lpszDefExt = NULL,
-        LPCTSTR lpszFileName = NULL,
-        DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-        LPCTSTR lpszFilter = NULL,
-        CWnd* pParentWnd = NULL,
-        DWORD dwSize = 0);
-        */
-
     // BUG: #1008
     CFileDialog FileDlg(TRUE, _T(".jpg"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
 

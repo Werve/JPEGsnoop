@@ -543,7 +543,7 @@ bool CSnoopConfig::DebugLogCreate()
         strError.Format(_T("ERROR: Couldn't open debug log file for write [%s]: [%s]"),
             strDebugLogFname.GetString(), msg.GetString());
         AfxMessageBox(strError);
-        fpDebugLog = NULL;
+        fpDebugLog = nullptr;
 
         return false;
     }
@@ -557,7 +557,7 @@ bool CSnoopConfig::DebugLogCreate()
     if (fpDebugLog) {
         fpDebugLog->Close();
         delete fpDebugLog;
-        fpDebugLog = NULL;
+        fpDebugLog = nullptr;
     }
 
     // Extra code to record OS version
@@ -617,7 +617,7 @@ bool CSnoopConfig::DebugLogAdd(CString strText)
         strError.Format(_T("ERROR: Couldn't open debug log file for append [%s]: [%s]"),
             strDebugLogFname.GetString(), msg.GetString());
         AfxMessageBox(strError);
-        fpDebugLog = NULL;
+        fpDebugLog = nullptr;
 
         return false;
     }

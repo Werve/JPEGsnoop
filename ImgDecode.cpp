@@ -2952,7 +2952,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     nDecMcuRowEndFinal = min(nDecMcuRowEndFinal,m_nMcuYMax);
 
     // Allocate the MCU File Map
-    ASSERT(m_pMcuFileMap == NULL);
+    ASSERT(!m_pMcuFileMap);
     m_pMcuFileMap = new unsigned[m_nMcuYMax * m_nMcuXMax];
     memset(m_pMcuFileMap, 0, (m_nMcuYMax * m_nMcuXMax * sizeof(unsigned)));
 
@@ -2984,11 +2984,11 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     nPixMapW = m_nBlkXMax * BLK_SZ_X;
 
     // Ensure no image allocated yet
-    ASSERT(m_pPixValY==NULL);
+    ASSERT(!m_pPixValY);
     if (m_nNumSosComps == NUM_CHAN_YCC)
     {
-        ASSERT(m_pPixValCb==NULL);
-        ASSERT(m_pPixValCr==NULL);
+        ASSERT(!m_pPixValCb);
+        ASSERT(!m_pPixValCr);
     }
 
     // Allocate image (YCC)
@@ -5093,16 +5093,12 @@ void CimgDecode::CalcChannelPreview()
         return;
     }
 
-
     // If we need to do a YCC shift, then do full recalc into tmp array
     CalcChannelPreviewFull(nullptr, pDibImgTmpBits);
 
     // Since this was a complex mod, we don't mark this channel as
     // being "done", so we will need to recalculate any time we change
     // the channel display.
-
-    // Force an update of the view to be sure
-    //m_pDoc->UpdateAllViews(NULL);
 }
 
 
