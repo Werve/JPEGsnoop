@@ -109,8 +109,6 @@ void CJPEGsnoopViewImg::Dump(CDumpContext& dc) const
 // FIXME: Migrate into ImgDec!
 bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
 {
-    int pix_x;
-    int pix_y;
     float fZoom;
     unsigned nImgPosX;
     unsigned nImgPosY;
@@ -125,8 +123,8 @@ bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
     CPoint ScrolledPos = GetScrollPosition();
     CString strTmp;
 
-    pix_x = point.x;
-    pix_y = point.y;
+    int pix_x = point.x;
+    int pix_y = point.y;
     pix_x -= (nImgPosX - ScrolledPos.x);
     pix_y -= (nImgPosY - ScrolledPos.y);
 
@@ -246,8 +244,6 @@ void CJPEGsnoopViewImg::OnMouseMove(UINT nFlags, CPoint point)
     unsigned nByte;
     unsigned nBit;
     CPoint ptPix;
-    CPoint ptMcu;
-    CPoint ptBlk;
     int nY1, nCb1, nCr1;
 
     // FIXME: Migrate the following into ImgDec!
@@ -255,10 +251,10 @@ void CJPEGsnoopViewImg::OnMouseMove(UINT nFlags, CPoint point)
     // MCU/Block map info
     if ((GetCore()->I_IsPreviewReady() && InPreviewArea(point, ptPix)))
     {
-        ptMcu = GetCore()->I_PixelToMcu(ptPix);
+        CPoint ptMcu = GetCore()->I_PixelToMcu(ptPix);
         GetCore()->I_LookupFilePosMcu(ptMcu.x, ptMcu.y, nByte, nBit);
 
-        ptBlk = GetCore()->I_PixelToBlk(ptPix);
+        CPoint ptBlk = GetCore()->I_PixelToBlk(ptPix);
         GetCore()->I_LookupBlkYCC(ptBlk.x, ptBlk.y, nY1, nCb1, nCr1);
 
         strTmp.Format(_T("MCU [%04u,%04u]"), ptMcu.x, ptMcu.y);

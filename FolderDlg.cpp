@@ -268,4 +268,4 @@ BEGIN_INTERFACE_MAP(CFolderDialog, CCmdTarget)
     INTERFACE_PART(CFolderDialog, IID_IFolderFilter, FolderFilter)
 END_INTERFACE_MAP()
 
-IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget);
+IMPLEMENT_DYNAMIC(CFolderDialog, CCmdTarget)

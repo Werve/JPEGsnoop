@@ -37,8 +37,7 @@ CDecodeDicom::CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
     m_pAppConfig = pApp->m_pAppConfig;
 
     Reset();
@@ -83,17 +82,14 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
     bool bTagOk = false;
     CString strTag;
 
-    bool bTagIsJpeg;
     unsigned long nPosJpeg;
-    bool bTagIsOffsetHdr;
 
     // Find the tag
     nTagGroup = m_pWBuf->BufX(nPos + 0, 2, true);
     nTagElement = m_pWBuf->BufX(nPos + 2, 2, true);
 
-    bool bFoundTag;
     unsigned nFldInd = 0;
-    bFoundTag = FindTag(nTagGroup, nTagElement, nFldInd);
+    bool bFoundTag = FindTag(nTagGroup, nTagElement, nFldInd);
     if (!bFoundTag)
     {
         // Check for group length entry
@@ -243,10 +239,9 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
         nOffset = 8;
     }
 
-
     // Handle Items & Sequences (Image Fragment?)
-    bTagIsJpeg = false;
-    bTagIsOffsetHdr = false;
+    bool bTagIsJpeg = false;
+    bool bTagIsOffsetHdr = false;
     if (!m_bJpegEncap)
     {
         // Not in a delimited sequence
@@ -566,21 +561,13 @@ bool CDecodeDicom::DecodeTagHeader(unsigned long nPos,CString &strTag,CString &s
 // If so, parse the headers. Generally want to start at start of file (nPos=0).
 bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, unsigned long& nPosJpeg)
 {
-    unsigned nLen;
-    unsigned nOffset;
-    CString strTag;
-    CString strSig;
-    CString strVR;
-
-
     m_bDicom = false;
-
 
     // Skip File Preamble
     nPos += 128;
 
     // DICOM Prefix
-    strSig = m_pWBuf->BufReadStrn(nPos, 4);
+    CString strSig = m_pWBuf->BufReadStrn(nPos, 4);
     if (strSig == _T("DICM"))
     {
         m_bDicom = true;
@@ -613,11 +600,10 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
         GetTagHeader(nPos, sTagDetail);
 
         // Fetch results
-        nLen = sTagDetail.nLen;
+        unsigned nLen = sTagDetail.nLen;
         nPosJpegFound = sTagDetail.nPosJpeg;
-        strTag = sTagDetail.strTag;
-        strVR = sTagDetail.strVR;
-        nOffset = sTagDetail.nOffset;
+        CString strTag = sTagDetail.strTag;
+        CString strVR = sTagDetail.strVR;
 
         // Advance the file position
         nPos += sTagDetail.nOffset;

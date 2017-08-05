@@ -122,11 +122,10 @@ void* CDIB::GetDIBBitArray() const
 {
     if (!m_pDIB) return nullptr;
 
-    unsigned char* ptr;
-    ptr = (unsigned char*)m_pDIB;
+    unsigned char * ptr = (unsigned char*)m_pDIB;
     ptr += m_pDIB->bmiHeader.biSize;
     ptr += GetDIBCols() * sizeof(RGBQUAD);
-    return (void*)ptr;
+    return ptr;
 }
 
 bool CDIB::CreateDIBFromBitmap(CDC* pDC)
@@ -177,21 +176,15 @@ bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale)
 
 bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float scale)
 {
-    HDC hdcMem;
-    HBITMAP hbmMem;
-    HANDLE hOld;
-
     int win_width = rectClient->Width();
     int win_height = rectClient->Height();
 
-
     // Create an off-screen DC for double-buffering
-    hdcMem = CreateCompatibleDC(pDestDC->GetSafeHdc());
-    hbmMem = CreateCompatibleBitmap(pDestDC->GetSafeHdc(), win_width, win_height);
-    hOld = SelectObject(hdcMem, hbmMem);
+    HDC hdcMem = CreateCompatibleDC(pDestDC->GetSafeHdc());
+    HBITMAP hbmMem = CreateCompatibleBitmap(pDestDC->GetSafeHdc(), win_width, win_height);
+    HANDLE hOld = SelectObject(hdcMem, hbmMem);
 
     // Draw into hdcMem
-
     bool bOK = StretchDIBits(hdcMem, //hdcMem->GetSafeHdc(),
                              x, y,
                              (unsigned)(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
@@ -217,31 +210,22 @@ bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*s
 {
     if (!m_pDIB || !pDestDC) return false;
 
-    int nDstW;
-    int nDstH;
-    int nDstX;
-    int nDstY;
-    int nSrcX;
-    int nSrcY;
-    int nSrcW;
-    int nSrcH;
-    CRect rectSrc;
     CRect rectInter;
 
     // Determine boundaries of region to copy
     rectInter.IntersectRect(rectClient, rectImg);
 
     // Now determine what original source rect this corresponds to
-    rectSrc = rectInter;
+    CRect rectSrc = rectInter;
     rectSrc.OffsetRect(-rectImg.left, -rectImg.top);
-    nSrcX = rectSrc.left;
-    nSrcY = rectSrc.top;
-    nSrcW = rectInter.Width();
-    nSrcH = rectInter.Height();
-    nDstX = rectInter.left;// - rectClient->left;
-    nDstY = rectInter.top;// - rectClient->top;
-    nDstW = rectInter.Width();
-    nDstH = rectInter.Height();
+    int nSrcX = rectSrc.left;
+    int nSrcY = rectSrc.top;
+    int nSrcW = rectInter.Width();
+    int nSrcH = rectInter.Height();
+    int nDstX = rectInter.left;// - rectClient->left;
+    int nDstY = rectInter.top;// - rectClient->top;
+    int nDstW = rectInter.Width();
+    int nDstH = rectInter.Height();
 
     int nOldMapMode = pDestDC->SetMapMode(MM_TEXT);
 
@@ -259,28 +243,17 @@ bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*s
     nDstW = rectClient->Width();
     nDstH = rectClient->Height();
 
-    int nBmpH;
-    int nStDstX;
-    int nStDstY;
-    int nStDstW;
-    int nStDstH;
-    int nStSrcX;
-    int nStSrcY;
-    int nStSrcW;
-    int nStSrcH;
+    int nBmpH = rectImg.Height();
 
-    nBmpH = rectImg.Height();
+    int nStDstX = nDstX;
+    int nStDstY = nDstH + nDstY - 1;
+    int nStDstW = nDstW;
+    int nStDstH = -nDstH;
 
-    nStDstX = nDstX;
-    nStDstY = nDstH + nDstY - 1;
-    nStDstW = nDstW;
-    nStDstH = -nDstH;
-
-    nStSrcX = nSrcX;
-    nStSrcY = nBmpH - nSrcY + 1;
-    nStSrcW = nSrcW;
-    nStSrcH = -nSrcH;
-
+    int nStSrcX = nSrcX;
+    int nStSrcY = nBmpH - nSrcY + 1;
+    int nStSrcW = nSrcW;
+    int nStSrcH = -nSrcH;
 
     bool bOK = StretchDIBits(pDestDC->GetSafeHdc(),
                              nStDstX, nStDstY, // Dest X,Y

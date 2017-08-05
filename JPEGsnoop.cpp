@@ -103,7 +103,7 @@ public:
         CCommandLineInfo();
         index = 0; // initializes an index to allow make a positional analysis
         next_arg = cla_idle;
-    };
+    }
 
     void ParseParam(LPCTSTR pszParam, BOOL bFlag, BOOL /*bLast*/) override
     {
@@ -854,7 +854,6 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
         // version identification string
         strContents.GetLength();
 
-        CString strData;
         int nIndDataStart = -1;
         int nIndDataEnd = -1;
         unsigned nIndDataLen = 0;
@@ -878,7 +877,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
         {
             // Found start & end markers
             nIndDataLen = nIndDataEnd - nIndDataStart;
-            strData = strContents.Mid(nIndDataStart, nIndDataLen);
+            CString strData = strContents.Mid(nIndDataStart, nIndDataLen);
             bool bDone = false;
             CString strCh;
             unsigned nInd = 0;
@@ -1044,8 +1043,6 @@ void CJPEGsnoopApp::MyOnFileOpen()
     CFileDialog FileDlg(TRUE, _T(".jpg"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
 
     CString strTitle;
-    CString strFileName;
-    CString strPathName; // Added
     VERIFY(strTitle.LoadString(IDS_CAL_FILEOPEN));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
@@ -1062,8 +1059,8 @@ void CJPEGsnoopApp::MyOnFileOpen()
     // For reference, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ms646960%28v=vs.85%29.aspx
     if (FileDlg.DoModal() == IDOK)
     {
-        strFileName = FileDlg.GetFileName();
-        strPathName = FileDlg.GetPathName();
+        CString strFileName = FileDlg.GetFileName();
+        CString strPathName = FileDlg.GetPathName();
         //
         // For testing purposes, added this GetCurrentDirectory() check
         TCHAR szDirCur[501];
@@ -1107,8 +1104,7 @@ CJPEGsnoopDoc* CJPEGsnoopApp::GetCurDoc()
 {
     CFrameWnd* pFrame = (CFrameWnd *)(AfxGetApp()->m_pMainWnd);
     ASSERT(pFrame);
-    CJPEGsnoopDoc* pMyDoc;
-    pMyDoc = (CJPEGsnoopDoc *)pFrame->GetActiveDocument();
+    CJPEGsnoopDoc * pMyDoc = (CJPEGsnoopDoc *)pFrame->GetActiveDocument();
     return pMyDoc;
 }
 

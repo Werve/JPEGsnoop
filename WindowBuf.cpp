@@ -148,13 +148,11 @@ void CwindowBuf::BufFileUnset()
 bool CwindowBuf::BufSearch(unsigned long nStartPos, unsigned nSearchVal, unsigned nSearchLen,
                            bool bDirFwd, unsigned long& nFoundPos)
 {
-    // Save the current position
-    unsigned long nCurPos;
     unsigned nCurVal;
     CString strStatus;
     time_t tmLast = clock();
 
-    nCurPos = nStartPos;
+    unsigned long nCurPos = nStartPos;
     bool bDone = false;
     bool bFound = false;
     while (!bDone)
@@ -260,21 +258,13 @@ void CwindowBuf::SetStatusBar(CStatusBar* pStatBar)
 bool CwindowBuf::BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned nSearchLen,
                             bool bDirFwd, unsigned long& nFoundPos)
 {
-    // Save the current position
-    unsigned long nCurPos;
-    unsigned nByteCur;
-    unsigned nByteSearch;
-
-    unsigned long nCurPosOffset;
-
     unsigned long nMatchStartPos = 0;
-    //bool          bMatchStart = false;
     bool bMatchOn = false;
     CString strStatus;
     time_t tmLast = clock();
 
-    nCurPosOffset = 0;
-    nCurPos = nStartPos;
+    unsigned long nCurPosOffset = 0;
+    unsigned long nCurPos = nStartPos;
     bool bDone = false;
     bool bFound = false; // Matched entire search string
     while (!bDone)
@@ -315,8 +305,8 @@ bool CwindowBuf::BufSearchX(unsigned long nStartPos, BYTE* anSearchVal, unsigned
             }
         }
 
-        nByteSearch = anSearchVal[nCurPosOffset];
-        nByteCur = Buf(nCurPos);
+        unsigned nByteSearch = anSearchVal[nCurPosOffset];
+        unsigned nByteCur = Buf(nCurPos);
         if (nByteSearch == nByteCur)
         {
             if (!bMatchOn)
@@ -430,8 +420,7 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
         }
 
 
-        unsigned long nVal;
-        nVal = (unsigned long)m_pBufFile->Seek(nPositionAdj, CFile::begin);
+        unsigned long nVal = (unsigned long)m_pBufFile->Seek(nPositionAdj, CFile::begin);
         nVal = (unsigned long)m_pBufFile->Read(m_pBuffer,MAX_BUF_WINDOW);
         if (nVal <= 0)
         {
@@ -877,8 +866,7 @@ unsigned short CwindowBuf::BufRdAdv2(unsigned long& nOffset, bool bByteSwap)
 
 unsigned CwindowBuf::BufRdAdv4(unsigned long& nOffset, bool bByteSwap)
 {
-    unsigned nRet;
-    nRet = BufX(nOffset, 4, bByteSwap);
+    unsigned nRet = BufX(nOffset, 4, bByteSwap);
     nOffset += 4;
     return nRet;
 }
@@ -945,13 +933,12 @@ CString CwindowBuf::BufReadUniStr(unsigned long nPosition)
     // Try to read a NULL-terminated string from file offset "nPosition"
     // up to a maximum of MAX_BUF_READ_STR bytes. Result is max length MAX_BUF_READ_STR
     CString strRd;
-    unsigned char cRd;
     bool bDone = false;
     unsigned nIndex = 0;
 
     while (!bDone)
     {
-        cRd = Buf(nPosition + nIndex);
+        unsigned char cRd = Buf(nPosition + nIndex);
 
         // Make sure it is a printable char!
         // FIXME: No, we can't check for this as it will cause
@@ -986,14 +973,12 @@ CString CwindowBuf::BufReadUniStr2(unsigned long nPos, unsigned nBufLen)
     // TODO: Replace with call to ByteStr2Unicode()
 
     bool bByteSwap = false;
-    CString strVal;
-    unsigned nStrLenTrunc;
     BYTE nChVal;
     BYTE anStrBuf[(MAX_UNICODE_STRLEN + 1) * 2];
     wchar_t acStrBuf[(MAX_UNICODE_STRLEN + 1)];
 
     // Start with length before any truncation
-    nStrLenTrunc = nBufLen;
+    unsigned nStrLenTrunc = nBufLen;
 
     // Read unicode bytes into byte array
     // Truncate the string, leaving room for terminator
@@ -1027,7 +1012,7 @@ CString CwindowBuf::BufReadUniStr2(unsigned long nPos, unsigned nBufLen)
     // Ensure that it is terminated first!
     lstrcpyW(acStrBuf, (LPCWSTR)anStrBuf);
     // Copy into CString
-    strVal = acStrBuf;
+    CString strVal = acStrBuf;
 
     return strVal;
 }

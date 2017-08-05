@@ -119,8 +119,7 @@ BOOL CJPEGsnoopDoc::OnNewDocument()
 
     // ---------------------------------------
     // Get the status bar and configure the decoder to link up to it
-    CStatusBar* pStatBar;
-    pStatBar = GetStatusBar();
+    CStatusBar* pStatBar = GetStatusBar();
 
     // Hook up the status bar
     m_pCore->J_SetStatusBar(pStatBar);
@@ -525,8 +524,7 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, boo
         }
 
         // Enable and hook up the status bar
-        CStatusBar* pStatBar;
-        pStatBar = GetStatusBar();
+        CStatusBar* pStatBar = GetStatusBar();
         pSnoopCore->SetStatusBar(pStatBar);
 
         // Indicate long operation ahead!
@@ -548,8 +546,7 @@ void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, boo
         pSnoopCore->GenBatchFileList(strDirSrc, strDirDst, bSubdirs, bExtractAll);
 
         // Now that we've created the list of files, start processing them
-        unsigned nBatchFileCount;
-        nBatchFileCount = pSnoopCore->GetBatchFileCount();
+        unsigned nBatchFileCount = pSnoopCore->GetBatchFileCount();
 
         // TODO: Clear the current RichEdit log
         DeleteContents();
@@ -658,11 +655,7 @@ void CJPEGsnoopDoc::OnFileOffset()
 void CJPEGsnoopDoc::OnToolsAddcameratodb()
 {
     CDbSubmitDlg submitDlg;
-    unsigned nUserSrcPre;
     teSource eUserSrc;
-    CString strUserSoftware;
-    CString strQual;
-    CString strUserNotes;
 
     // Return values from JfifDec
     CString strDecHash;
@@ -709,13 +702,12 @@ void CJPEGsnoopDoc::OnToolsAddcameratodb()
         submitDlg.m_nSource = 2; // I don't know!
     }
 
-
     if (submitDlg.DoModal() == IDOK)
     {
-        strQual = submitDlg.m_strQual;
-        nUserSrcPre = submitDlg.m_nSource;
-        strUserSoftware = submitDlg.m_strUserSoftware;
-        strUserNotes = submitDlg.m_strNotes;
+        CString strQual = submitDlg.m_strQual;
+        unsigned nUserSrcPre = submitDlg.m_nSource;
+        CString strUserSoftware = submitDlg.m_strUserSoftware;
+        CString strUserNotes = submitDlg.m_strNotes;
 
         // Prior to v1.8.0 the nUserSrcPre was compared against the ENUM_SOURCE_* values
         // - This led to an incorrect mapping to the database value
@@ -756,13 +748,10 @@ void CJPEGsnoopDoc::OnToolsSearchforward()
 {
     // Search for start:
     unsigned long nSearchPos = 0;
-    unsigned long nStartPos;
-    bool bSearchResult;
     CString strTmp;
 
     // Get status bar pointer
-    CStatusBar* pStatBar;
-    pStatBar = GetStatusBar();
+    CStatusBar* pStatBar = GetStatusBar();
 
     // NOTE: m_bFileAnalyzed doesn't actually refer to underlying file....
     //  so therefore it is not reliable.
@@ -773,7 +762,7 @@ void CJPEGsnoopDoc::OnToolsSearchforward()
         return;
     }
 
-    nStartPos = theApp.m_pAppConfig->nPosStart;
+    unsigned long nStartPos = theApp.m_pAppConfig->nPosStart;
     m_pCore->J_ImgSrcChanged();
 
     // Update status bar
@@ -784,7 +773,7 @@ void CJPEGsnoopDoc::OnToolsSearchforward()
     }
 
     m_pCore->B_SetStatusBar(GetStatusBar());
-    bSearchResult = m_pCore->B_BufSearch(nStartPos, 0xFFD8FF, 3, true, nSearchPos);
+    bool bSearchResult = m_pCore->B_BufSearch(nStartPos, 0xFFD8FF, 3, true, nSearchPos);
 
     // Update status bar
     if (pStatBar)
@@ -814,13 +803,10 @@ void CJPEGsnoopDoc::OnToolsSearchreverse()
     // Search for start:
 
     unsigned long nSearchPos = 0;
-    unsigned long nStartPos;
-    bool bSearchResult;
     CString strTmp;
 
     // Get status bar pointer
-    CStatusBar* pStatBar;
-    pStatBar = GetStatusBar();
+    CStatusBar* pStatBar = GetStatusBar();
 
     // If file got renamed or moved, AnalyzeOpen() will return false
     if (m_pCore->AnalyzeOpen() == false)
@@ -828,7 +814,7 @@ void CJPEGsnoopDoc::OnToolsSearchreverse()
         return;
     }
 
-    nStartPos = theApp.m_pAppConfig->nPosStart;
+    unsigned long nStartPos = theApp.m_pAppConfig->nPosStart;
     m_pCore->J_ImgSrcChanged();
 
     // Don't attempt to search past start of file
@@ -842,7 +828,7 @@ void CJPEGsnoopDoc::OnToolsSearchreverse()
         }
 
         m_pCore->B_SetStatusBar(GetStatusBar());
-        bSearchResult = m_pCore->B_BufSearch(nStartPos, 0xFFD8FF, 3, false, nSearchPos);
+        bool bSearchResult = m_pCore->B_BufSearch(nStartPos, 0xFFD8FF, 3, false, nSearchPos);
 
         // Update status bar
         if (pStatBar)
@@ -1009,8 +995,6 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
     // log/output filename.
     m_strPathNameOpened = m_strPathName;
 
-    BOOL bStatus;
-
     // Reset the offset pointer!
     theApp.m_pAppConfig->nPosStart = 0;
 
@@ -1020,8 +1004,7 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
     // ---------------------------------------
     // Get the status bar and configure the decoder to link up to it
-    CStatusBar* pStatBar;
-    pStatBar = GetStatusBar();
+    CStatusBar* pStatBar = GetStatusBar();
 
     // Hook up the status bar
     m_pCore->J_SetStatusBar(pStatBar);
@@ -1029,7 +1012,7 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
     // ---------------------------------------
 
     // Now process the file!
-    bStatus = Reprocess();
+    BOOL bStatus = Reprocess();
 
     return bStatus;
 }
@@ -1039,12 +1022,9 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
 // - Brings up a Save As dialog box before saving
 void CJPEGsnoopDoc::OnFileSaveAs()
 {
-    CString strPathName;
-    BOOL bRTF;
-
     // Preserve
-    strPathName = m_strPathName;
-    bRTF = m_bRTF;
+    CString strPathName = m_strPathName;
+    BOOL bRTF = m_bRTF;
 
     // FIXME:
     // Need to determine the best method to allow user selection between
@@ -1059,13 +1039,6 @@ void CJPEGsnoopDoc::OnFileSaveAs()
     m_bRTF = false;
     m_strPathName = m_strPathName + _T(".txt");
 
-    //bool status = 0;
-    /*
-    TCHAR aszFilter[] =
-        _T("Log - Plain Text (*.txt)|*.txt|")\
-        //_T("Log - Rich Text (*.rtf)|*.rtf|")\
-        _T("All Files (*.*)|*.*||");
-    */
     TCHAR aszFilter[] =
         _T("Log - Plain Text (*.txt)|*.txt|")
         _T("All Files (*.*)|*.*||");
@@ -1073,22 +1046,17 @@ void CJPEGsnoopDoc::OnFileSaveAs()
     CFileDialog FileDlg(FALSE, _T(".txt"), m_strPathName, OFN_OVERWRITEPROMPT, aszFilter);
 
     CString strTitle;
-    CString strFileName;
     VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
     if (FileDlg.DoModal() == IDOK)
     {
-        strFileName = FileDlg.GetPathName();
+        CString strFileName = FileDlg.GetPathName();
 
         // Determine the extension
         // If the user entered an ".rtf" extension, then we allow RTF
         // saving, otherwise we default to plain text
         CString cstrSelFileExt = strFileName.Right(strFileName.GetLength() - strFileName.ReverseFind('.'));
-
-        //if (cstrSelFileExt == _T(".rtf")) {
-        //  m_bRTF = true;
-        //}
 
         // Perform the save
         DoSave(strFileName, false);
@@ -1105,8 +1073,7 @@ void CJPEGsnoopDoc::OnFileSaveAs()
 //
 void CJPEGsnoopDoc::OnPreviewRng(UINT nID)
 {
-    unsigned nInd;
-    nInd = nID - ID_PREVIEW_RGB + PREVIEW_RGB;
+    unsigned nInd = nID - ID_PREVIEW_RGB + PREVIEW_RGB;
     m_pCore->I_SetPreviewMode(nInd);
     UpdateAllViews(NULL);
 }
@@ -1116,8 +1083,7 @@ void CJPEGsnoopDoc::OnPreviewRng(UINT nID)
 //
 void CJPEGsnoopDoc::OnUpdatePreviewRng(CCmdUI* pCmdUI)
 {
-    unsigned nID;
-    nID = pCmdUI->m_nID - ID_PREVIEW_RGB + PREVIEW_RGB;
+    unsigned nID = pCmdUI->m_nID - ID_PREVIEW_RGB + PREVIEW_RGB;
     if (m_pCore->I_GetPreviewMode() == nID)
     {
         pCmdUI->SetCheck(true);
@@ -1133,7 +1099,6 @@ void CJPEGsnoopDoc::OnUpdatePreviewRng(CCmdUI* pCmdUI)
 //
 void CJPEGsnoopDoc::OnZoomRng(UINT nID)
 {
-    unsigned nInd;
     if (nID == ID_IMAGEZOOM_ZOOMIN)
     {
         m_pCore->I_SetPreviewZoom(true, false, false, 0);
@@ -1146,7 +1111,7 @@ void CJPEGsnoopDoc::OnZoomRng(UINT nID)
     }
     else
     {
-        nInd = nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
+        unsigned nInd = nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
         m_pCore->I_SetPreviewZoom(false, false, true, nInd);
         UpdateAllViews(NULL);
     }
@@ -1157,7 +1122,6 @@ void CJPEGsnoopDoc::OnZoomRng(UINT nID)
 //
 void CJPEGsnoopDoc::OnUpdateZoomRng(CCmdUI* pCmdUI)
 {
-    unsigned nID;
     if (pCmdUI->m_nID == ID_IMAGEZOOM_ZOOMIN)
     {
         // No checkmark
@@ -1168,11 +1132,9 @@ void CJPEGsnoopDoc::OnUpdateZoomRng(CCmdUI* pCmdUI)
     }
     else
     {
-        nID = pCmdUI->m_nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
-        unsigned nGetZoom;
-        nGetZoom = m_pCore->I_GetPreviewZoomMode();
-        unsigned nMenuOffset;
-        nMenuOffset = pCmdUI->m_nID - ID_IMAGEZOOM_12;
+        unsigned nID = pCmdUI->m_nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
+        unsigned nGetZoom = m_pCore->I_GetPreviewZoomMode();
+        unsigned nMenuOffset = pCmdUI->m_nID - ID_IMAGEZOOM_12;
         pCmdUI->SetCheck(m_pCore->I_GetPreviewZoomMode() == nID);
     }
 }
@@ -1270,15 +1232,13 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     bool bFound = false;
 
     BYTE abSearchMatrix[(64 * 4) + 4];
-    unsigned nSearchMatrixLen;
-    unsigned nSearchSetMax;
 
     unsigned nVal;
 
     bool bAllSame = true;
     bool bBaseline = true;
 
-    nSearchSetMax = 1;
+    unsigned nSearchSetMax = 1;
     if (m_pCore->IsAnalyzed())
     {
         nVal = m_pCore->I_GetDqtEntry(0, 0);
@@ -1378,7 +1338,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
                     glb_pDocLog->AddLine(strTmp);
                 }
 
-                nSearchMatrixLen = (nEntriesWidth * 64);
+                unsigned nSearchMatrixLen = (nEntriesWidth * 64);
 
                 for (unsigned nInd = 0; nInd < nSearchMatrixLen; nInd++)
                 {
@@ -1906,7 +1866,7 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
     // Sequence of markers:
     //   #1 - Start MCU
     //   #2 - End MCU
-    CPoint ptScan1, ptScan2;
+    CPoint ptScan1;
 
     unsigned nStartMcuX = 0;
     unsigned nStartMcuY = 0;
@@ -1914,25 +1874,24 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
     unsigned nEndMcuY = 0;
     int nMcuRngLen = 0;
 
-    unsigned nMarkerCnt;
-    CPoint ptMcuStart, ptMcuEnd;
+    CPoint ptMcuStart;
     unsigned nStartMcu, nEndMcu;
 
-    nMarkerCnt = m_pCore->I_GetMarkerCount();
+    unsigned nMarkerCnt = m_pCore->I_GetMarkerCount();
 
     // Double-point, gives range
     if (nMarkerCnt >= 2)
     {
         // Get last two block selections
         ptScan1 = m_pCore->I_GetMarkerBlk(nMarkerCnt - 2);
-        ptScan2 = m_pCore->I_GetMarkerBlk(nMarkerCnt - 1);
+        CPoint ptScan2 = m_pCore->I_GetMarkerBlk(nMarkerCnt - 1);
         // Convert block index to MCU
         ptScan1.x *= BLK_SZ_X;
         ptScan1.y *= BLK_SZ_Y;
         ptScan2.x *= BLK_SZ_X;
         ptScan2.y *= BLK_SZ_Y;
         ptMcuStart = m_pCore->I_PixelToMcu(ptScan1);
-        ptMcuEnd = m_pCore->I_PixelToMcu(ptScan2);
+        CPoint ptMcuEnd = m_pCore->I_PixelToMcu(ptScan2);
         nStartMcuX = ptMcuStart.x;
         nStartMcuY = ptMcuStart.y;
         nEndMcuX = ptMcuEnd.x;
@@ -1994,10 +1953,7 @@ void CJPEGsnoopDoc::OnUpdateScansegmentDetaileddecode(CCmdUI* pCmdUI)
 //
 void CJPEGsnoopDoc::OnToolsExporttiff()
 {
-    // Get filename
-    CString strFnameOut;
-
-    strFnameOut = m_strPathName + _T(".tif");
+    CString strFnameOut = m_strPathName + _T(".tif");
 
     TCHAR aszFilter[] =
         _T("TIFF (*.tif)|*.tif|")
@@ -2005,9 +1961,8 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
 
     CFileDialog FileDlg(FALSE, _T(".tif"), strFnameOut, OFN_OVERWRITEPROMPT, aszFilter);
 
-    CString strTitle;
     CString strFileName;
-    strTitle = _T("Output TIFF Filename");
+    CString strTitle = _T("Output TIFF Filename");
     //  VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
@@ -2033,7 +1988,6 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
     bool bModeYcc; // YCC (true), RGB (false)
     bool bMode16b; // 16b (true), 8b (false)
     short nValY, nValCb, nValCr;
-    unsigned short nValR, nValG, nValB;
 
     // Initialize min/max range values (to 16-bit signed limits)
     short nValMaxY = -32768;
@@ -2050,10 +2004,9 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
     pBitmapSel16 = NULL;
 
     CExportTiffDlg myTiffDlg;
-    int rVal, nModeSel;
     myTiffDlg.m_sFname = strFnameOut;
-    rVal = myTiffDlg.DoModal();
-    nModeSel = myTiffDlg.m_nCtlFmt;
+    int rVal = myTiffDlg.DoModal();
+    int nModeSel = myTiffDlg.m_nCtlFmt;
 
     switch (nModeSel)
     {
@@ -2097,9 +2050,9 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
                 nOffsetDst = (nIndY * nSizeX + nIndX) * 3;
                 // pBitmapRgb is actually the DIB, which is inverted vertically
                 nOffsetSrc = ((nSizeY - 1 - nIndY) * nSizeX + nIndX) * 4;
-                nValR = (unsigned short)pBitmapRgb[nOffsetSrc + 2];
-                nValG = (unsigned short)pBitmapRgb[nOffsetSrc + 1];
-                nValB = (unsigned short)pBitmapRgb[nOffsetSrc + 0];
+                unsigned short nValR = (unsigned short)pBitmapRgb[nOffsetSrc + 2];
+                unsigned short nValG = (unsigned short)pBitmapRgb[nOffsetSrc + 1];
+                unsigned short nValB = (unsigned short)pBitmapRgb[nOffsetSrc + 0];
                 if (!bMode16b)
                 {
                     // Rearrange into file-order

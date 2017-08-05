@@ -43,13 +43,13 @@ CUrlString::CUrlString()
 
 CString CUrlString::Encode(CString csDecoded)
 {
-    CString csCharEncoded, csCharDecoded;
+    CString csCharEncoded;
     CString csEncoded = csDecoded;
 
     for (int iPos = 0; iPos < m_csUnsafe.GetLength(); iPos++)
     {
         csCharEncoded.Format(_T("%%%02X"), m_csUnsafe[iPos]);
-        csCharDecoded = m_csUnsafe[iPos];
+        CString csCharDecoded(m_csUnsafe[iPos]);
         csEncoded.Replace(csCharDecoded, csCharEncoded);
     }
     return csEncoded;
@@ -59,12 +59,11 @@ CString CUrlString::Decode(CString csEncoded)
 {
     CString csUnsafeEncoded = Encode(m_csUnsafe);
     CString csDecoded = csEncoded;
-    CString csCharDecoded;
 
     for (int iPos = 0; iPos < csUnsafeEncoded.GetLength(); iPos += 3)
     {
         CString csCharEncoded = csUnsafeEncoded.Mid(iPos, 3);
-        csCharDecoded = (TCHAR)_tcstol(csUnsafeEncoded.Mid(iPos + 1, 2), nullptr, 16);
+        CString csCharDecoded(static_cast<TCHAR>(_tcstol(csUnsafeEncoded.Mid(iPos + 1, 2), nullptr, 16)));
         csDecoded.Replace(csCharEncoded, csCharDecoded);
     }
     return csDecoded;

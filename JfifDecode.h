@@ -241,7 +241,6 @@ private:
     // Class variables
     // --------------------------------------
 
-private:
     // Configuration
     CSnoopConfig* m_pAppConfig;
     bool m_bVerbose;

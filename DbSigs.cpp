@@ -157,12 +157,10 @@ bool CDbSigs::BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool b
 {
     ASSERT(pBuf);
     CString strOutTmp;
-    bool bDone;
 
-    char chAsc;
     unsigned nCharSz = ((bUni) ? sizeof(wchar_t) : sizeof(char));
 
-    bDone = false;
+    bool bDone = false;
     strOut.Empty();
     // Ensure we don't overrun the buffer by calculating the last
     // byte index required for each iteration.
@@ -183,7 +181,7 @@ bool CDbSigs::BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool b
         }
         else
         {
-            chAsc = pBuf[nInd];
+            char chAsc = pBuf[nInd];
             if ((chAsc != '\n') && (chAsc != 0))
             {
                 strOut += chAsc;
@@ -216,30 +214,24 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
     char chAsc;
     wchar_t chUni;
     unsigned nCharSz = ((bUni) ? sizeof(wchar_t) : sizeof(char));
-    PBYTE pBufBase;
-    LPWSTR pBufUni;
-    LPSTR pBufAsc;
 
-    pBufBase = pBuf + nOffsetBytes;
-    pBufUni = (LPWSTR)pBufBase;
-    pBufAsc = (LPSTR)pBufBase;
+    PBYTE pBufBase = pBuf + nOffsetBytes;
+    LPWSTR pBufUni = reinterpret_cast<LPWSTR>(pBufBase);
+    LPSTR pBufAsc = reinterpret_cast<LPSTR>(pBufBase);
 
 #ifdef UNICODE
     // Create non-Unicode version of string
     // Ref: http://social.msdn.microsoft.com/Forums/vstudio/en-US/85f02321-de88-47d2-98c8-87daa839a98e/how-to-convert-cstring-to-const-char-?forum=vclanguage
     // Added constant specifier
-    LPCSTR pszNonUnicode;
     USES_CONVERSION;
     // Not specifying code page explicitly but assume content
     // should be ASCII. Default code page is probably Windows-1252.
-    pszNonUnicode = CW2A(strIn.LockBuffer());
+    LPCSTR pszNonUnicode = CW2A(strIn.LockBuffer());
     strIn.UnlockBuffer();
 #endif
 
-
-    unsigned nStrLen;
     unsigned nChInd;
-    nStrLen = strIn.GetLength();
+    unsigned nStrLen = strIn.GetLength();
     for (nChInd = 0; (nChInd < nStrLen) && (nOffsetBytes + nCharSz - 1 < nMaxBytes); nChInd++)
     {
         if (bUni)
@@ -364,11 +356,8 @@ void CDbSigs::DatabaseExtraLoad()
     CString strVer;
     CString strSec;
 
-    //bool      bErr = false;
     bool bDone = false;
-    BOOL bRet;
 
-    unsigned nBufOffsetTmp;
     bool bFileOk = false;
     bool bFileModeUni = false;
 
@@ -382,8 +371,8 @@ void CDbSigs::DatabaseExtraLoad()
     // and then write-back in unicode mode.
 
     // Test unicode mode
-    nBufOffsetTmp = 0;
-    bRet = BufReadStr(pBuf, strLine, nBufLenBytes, true, nBufOffsetTmp);
+    unsigned nBufOffsetTmp = 0;
+    BOOL bRet = BufReadStr(pBuf, strLine, nBufLenBytes, true, nBufOffsetTmp);
     if (strLine.Compare(_T("JPEGsnoop")) == 0)
     {
         bFileOk = true;
@@ -842,7 +831,6 @@ unsigned CDbSigs::IsDBEntryUser(unsigned nInd)
 // Return a ptr to the struct containing the indexed entry
 bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry)
 {
-    unsigned nIndOffset;
     unsigned nIndMax = GetDBNumEntries();
     ASSERT(pEntry);
     ASSERT(nInd<nIndMax);
@@ -859,7 +847,7 @@ bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry)
         pEntry->strMSwDisp = m_sSigList[nInd].strMSwDisp;
         return true;
     }
-    nIndOffset = nInd - m_nSigListNum;
+    unsigned nIndOffset = nInd - m_nSigListNum;
     pEntry->eEditor = m_sSigListExtra[nIndOffset].eEditor;
     pEntry->strXMake = m_sSigListExtra[nIndOffset].strXMake;
     pEntry->strXModel = m_sSigListExtra[nIndOffset].strXModel;

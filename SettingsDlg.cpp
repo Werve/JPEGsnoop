@@ -115,16 +115,14 @@ LPITEMIDLIST CSettingsDlg::ConvertPathToLpItemIdList(const char* pszPath)
 
 void CSettingsDlg::OnBnClickedDbDirDefault()
 {
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp * pApp = (CJPEGsnoopApp*)AfxGetApp();
     m_strDbDir = pApp->m_pAppConfig->GetDefaultDbDir();
     UpdateData(false);
 }
 
 void CSettingsDlg::OnBnClickedCoachReset()
 {
-    CJPEGsnoopApp* pApp;
-    pApp = (CJPEGsnoopApp*)AfxGetApp();
+    CJPEGsnoopApp * pApp = (CJPEGsnoopApp*)AfxGetApp();
     pApp->m_pAppConfig->CoachReset();
 }
 

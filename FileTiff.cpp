@@ -306,8 +306,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
 
     unsigned anVals[16];
 
-    unsigned nFinalPtrIfdEnd;
-
     // Save the PreCalc mode
     bool bPreCalcSaved = m_bPreCalc;
 
@@ -321,7 +319,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
     unsigned short nFinalNumIfd = 0;
     unsigned nFinalPtrIfdStart = m_nPos;
     unsigned nFinalPtrIfdExtra = 0;
-    nFinalPtrIfdEnd = 0;
     unsigned nFinalIfdExtraLen = 0;
 
     for (unsigned nPass = 0; nPass < 2; nPass++)
@@ -451,8 +448,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
             }
         }
 
-        nFinalPtrIfdEnd = m_nPos;
-        m_nPtrImg = nFinalPtrIfdEnd;
+        m_nPtrImg = m_nPos;
     }
 
     // Elininate the IFD Extra buffer

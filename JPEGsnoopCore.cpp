@@ -744,11 +744,7 @@ BOOL CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
 void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool bExtractAll)
 {
     BOOL bStatus = false;
-    unsigned nBatchFileCount;
-    CString strFnameFile;
-    CString strFnameDst;
-    CString strFnameLog;
-    nBatchFileCount = GetBatchFileCount();
+    unsigned nBatchFileCount = GetBatchFileCount();
     if (nFileInd >= nBatchFileCount)
     {
         ASSERT(false);
@@ -756,9 +752,9 @@ void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool 
     }
 
     //TODO: strFnameDst is not really used as it is base destination filename
-    strFnameFile = m_asBatchFiles.GetAt(nFileInd);
-    strFnameDst = m_asBatchDest.GetAt(nFileInd);
-    strFnameLog = m_asBatchOutputs.GetAt(nFileInd);
+    CString strFnameFile = m_asBatchFiles.GetAt(nFileInd);
+    CString strFnameDst = m_asBatchDest.GetAt(nFileInd);
+    CString strFnameLog = m_asBatchOutputs.GetAt(nFileInd);
 
     // Indicate that the file source has changed so that any image decoding is enabled
     J_ImgSrcChanged();

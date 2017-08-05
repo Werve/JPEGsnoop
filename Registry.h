@@ -420,7 +420,7 @@ public: //methods
         return RegDeleteValue(m_hKey, m_key.c_str());
     }
 
-public: //members
+    //members
     HKEY m_base; ///< handle to the registry base
     HKEY m_hKey; ///< handle to the open registry key
     stdstring m_key; ///< the name of the value
