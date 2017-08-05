@@ -1234,12 +1234,12 @@ void CJPEGsnoopCore::I_SetPreviewZoom(bool bInc, bool bDec, bool bSet, unsigned 
     m_pImgDec->SetPreviewZoom(bInc, bDec, bSet, nVal);
 }
 
-unsigned CJPEGsnoopCore::I_GetPreviewZoomMode()
+unsigned CJPEGsnoopCore::I_GetPreviewZoomMode() const
 {
     return m_pImgDec->GetPreviewZoomMode();
 }
 
-float CJPEGsnoopCore::I_GetPreviewZoom()
+float CJPEGsnoopCore::I_GetPreviewZoom() const
 {
     return m_pImgDec->GetPreviewZoom();
 }

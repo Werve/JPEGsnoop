@@ -50,7 +50,7 @@ BOOL CDbManageDlg::OnInitDialog()
 }
 
 // Prepare a custom signature entry for addition into the dialog listbox
-void CDbManageDlg::InsertEntry(unsigned /*ind*/, CString strMake, CString strModel, CString strQual, CString strSig)
+void CDbManageDlg::InsertEntry(unsigned /*ind*/, CString strMake, CString strModel, CString strQual, CString /*strSig*/)
 {
     CString strTmp;
     strTmp.Format(_T("Make: [%s]\tModel: [%s]\tQual: [%s]"), strMake.GetString(), strModel.GetString(), strQual.GetString());

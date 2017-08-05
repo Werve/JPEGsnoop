@@ -79,8 +79,8 @@ public:
     void I_SetPreviewMcuInsert(unsigned nMcuX, unsigned nMcuY, int nLen);
     void I_GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned& nLen);
     void I_SetPreviewZoom(bool bInc, bool bDec, bool bSet, unsigned nVal);
-    unsigned I_GetPreviewZoomMode();
-    float I_GetPreviewZoom();
+    unsigned I_GetPreviewZoomMode() const;
+    float I_GetPreviewZoom() const;
     bool I_GetPreviewOverlayMcuGrid();
     void I_SetPreviewOverlayMcuGridToggle();
     CPoint I_PixelToMcu(CPoint ptPix);

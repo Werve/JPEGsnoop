@@ -7975,17 +7975,17 @@ bool CjfifDecode::DecodeAvi()
                 m_nPos += 4;
                 m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned dwLength = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned dwSuggestedBufferSize = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned dwQuality = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned dwSampleSize = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned xdwQuality = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
-                unsigned xdwSampleSize = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
 
                 CString fccTypeDecode;
@@ -8083,11 +8083,9 @@ bool CjfifDecode::DecodeAvi()
             else if (strListType == _T("INFO"))
             {
                 // INFO
-                unsigned nInfoStart = m_nPos;
-
                 CString strInfoId = m_pWBuf->BufReadStrn(m_nPos, 4);
                 m_nPos += 4;
-                unsigned nInfoLen = m_pWBuf->BufX(m_nPos, 4, bSwap);
+                m_pWBuf->BufX(m_nPos, 4, bSwap);
                 m_nPos += 4;
 
                 if (strInfoId == _T("ISFT"))

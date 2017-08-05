@@ -1126,8 +1126,6 @@ void CJPEGsnoopDoc::OnUpdateZoomRng(CCmdUI* pCmdUI)
     else
     {
         unsigned nID = pCmdUI->m_nID - ID_IMAGEZOOM_12 + PRV_ZOOM_12;
-        unsigned nGetZoom = m_pCore->I_GetPreviewZoomMode();
-        unsigned nMenuOffset = pCmdUI->m_nID - ID_IMAGEZOOM_12;
         pCmdUI->SetCheck(m_pCore->I_GetPreviewZoomMode() == nID);
     }
 }
@@ -1997,7 +1995,7 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
 
     CExportTiffDlg myTiffDlg;
     myTiffDlg.m_sFname = strFnameOut;
-    int rVal = myTiffDlg.DoModal();
+    myTiffDlg.DoModal();
     int nModeSel = myTiffDlg.m_nCtlFmt;
 
     switch (nModeSel)
