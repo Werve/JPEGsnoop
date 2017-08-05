@@ -1319,8 +1319,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
     PhotoshopParseReportNote(nIndent,_T("Channel Image Data:"));
     CString strLine;
     unsigned nNumChans;
-    unsigned nPosLastLayer = 0;
-    unsigned nPosLastChan = 0;
+    unsigned nPosLastChan;
     for (unsigned nLayerInd = 0; (bDecOk) && (nLayerInd < nLayerCount); nLayerInd++)
     {
         nNumChans = sLayerAllInfo.psLayers[nLayerInd].nNumChans;
@@ -1349,7 +1348,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
         }
 #endif
 
-        nPosLastLayer = nPos;
+        unsigned nPosLastLayer = nPos;
         for (unsigned nChanInd = 0; (bDecOk) && (nChanInd < nNumChans); nChanInd++)
         {
             nPosLastChan = nPos;
@@ -1523,7 +1522,6 @@ bool CDecodePs::PhotoshopParseLayerMask(unsigned long& nPos, unsigned nIndent)
     m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
 
-    unsigned nTmp;
     m_pWBuf->BufRdAdv1(nPos,PS_BSWAP); // unsigned nDefaultColor
     unsigned nFlags = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
 
@@ -1539,24 +1537,24 @@ bool CDecodePs::PhotoshopParseLayerMask(unsigned long& nPos, unsigned nIndent)
         if (nMaskParams & (1 << 0))
         {
             // User mask density, 1 byte
-            nTmp = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
         }
         if (nMaskParams & (1 << 1))
         {
             // User mask feather, 8 bytes, double
-            nTmp = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
-            nTmp = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
         }
         if (nMaskParams & (1 << 2))
         {
             // Vector mask density, 1 byte
-            nTmp = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
         }
         if (nMaskParams & (1 << 3))
         {
             // Vector mask feather, 8 bytes, double
-            nTmp = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
-            nTmp = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+            m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
         }
 
         m_pWBuf->BufRdAdv2(nPos,PS_BSWAP); // unsigned nPadding

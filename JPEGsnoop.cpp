@@ -775,7 +775,6 @@ bool CJPEGsnoopApp::CheckUpdatesWww() const
     CString strSubmitHost = IA_HOST;
     CString strSubmitPage = IA_UPDATES_CHK_PAGE;
 
-    static LPCTSTR acceptTypes[2] = {_T("*/*"), nullptr};
     HINTERNET hConnection, hData;
 
     CString strFormData;

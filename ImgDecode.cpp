@@ -1074,7 +1074,6 @@ void CimgDecode::ScanErrorsEnable()
 //                   ExtractBits(), HuffmanDc2Signed()
 teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl, signed& rVal)
 {
-    bool bDone = false;
     unsigned nInd = 0;
     unsigned nCode = DHT_CODE_UNUSED; // Not a valid nCode
 
@@ -1095,12 +1094,10 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
         return RSV_RST_TERM;
     }
 
-
     // Has the scan buffer been depleted?
     if (m_nScanBuff_vacant >= 32)
     {
         // Trying to overread end of scan segment
-
         if (m_nWarnBadScanNum < m_nScanErrMax)
         {
             CString strTmp;
@@ -1123,7 +1120,7 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
     // Top up the buffer just in case
     BuffTopup();
 
-    bDone = false;
+    bool bDone = false;
     bool bFound = false;
 
     // Fast search for variable-length huffman nCode
@@ -1245,10 +1242,9 @@ teRsvRet CimgDecode::ReadScanVal(unsigned nClass, unsigned nTbl, unsigned& rZrl,
 
         // Now handle the different precision values
         // Treat 12-bit like 8-bit but scale values first (ie. drop precision down to 8-bit)
-        signed nPrecisionDivider = 1;
         if (m_nPrecision >= 8)
         {
-            nPrecisionDivider = 1 << (m_nPrecision - 8);
+            signed nPrecisionDivider = 1 << (m_nPrecision - 8);
             rVal /= nPrecisionDivider;
         }
         else
@@ -1636,9 +1632,6 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
     teRsvRet eRsvRet; // Return value from ReadScanVal()
 
     unsigned nNumCoeffs = 0;
-    unsigned nSavedBufPos = 0;
-    unsigned nSavedBufErr = SCANBUF_OK;
-    unsigned nSavedBufAlign = 0;
 
     // Profiling: No difference noted
     DecodeIdctClear();
@@ -1650,9 +1643,9 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
         // Note that once we perform ReadScanVal(), then GetScanBufPos() will be
         // after the decoded VLC
         // Save old file position info in case we want accurate error positioning
-        nSavedBufPos = m_anScanBuffPtr_pos[0];
-        nSavedBufErr = m_nScanBuffLatchErr;
-        nSavedBufAlign = m_nScanBuffPtr_align;
+        unsigned nSavedBufPos = m_anScanBuffPtr_pos[0];
+        unsigned nSavedBufErr = m_nScanBuffLatchErr;
+        unsigned nSavedBufAlign = m_nScanBuffPtr_align;
 
         // ReadScanVal return values:
         // - RSV_OK         OK
@@ -5806,7 +5799,6 @@ void CimgDecode::ViewMcuOverlay(CDC* pDC) const
 void CimgDecode::ViewMcuMarkedOverlay(CDC* /*pDC*/)
 {
     // Now draw a simple MCU Marker overlay
-    CRect my_rect;
     CBrush my_brush(RGB(255, 0, 255));
     for (unsigned nMcuY = 0; nMcuY < m_nMcuYMax; nMcuY++)
     {

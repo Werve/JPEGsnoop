@@ -70,16 +70,15 @@ BYTE CDecodeDicom::Buf(unsigned long offset, bool bClean = false) const
 
 bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
 {
-    unsigned nVR = 0;
     CString strError;
     unsigned nTagGroup;
     unsigned nTagElement;
     CString strTagName;
 
-    unsigned nLen = 0;
-    unsigned nOffset = 0;
+    unsigned nLen;
+    unsigned nOffset;
 
-    bool bTagOk = false;
+    bool bTagOk;
     CString strTag;
 
     unsigned long nPosJpeg;
@@ -123,12 +122,12 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
         //unsigned nBad=1;
     }
     CString strVR = m_pWBuf->BufReadStrn(nPos + 4, 2);
-    nVR = m_pWBuf->BufX(nPos + 4, 2, false);
+    unsigned nVR = m_pWBuf->BufX(nPos + 4, 2, false);
 
     // Value Representation (VR)
     // Reference: Part 5, Section 6.2
-    bool bVrExplicit = false;
-    bool bLen4B = false;
+    bool bVrExplicit;
+    bool bLen4B;
 
     switch (nVR)
     {
@@ -241,7 +240,6 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
 
     // Handle Items & Sequences (Image Fragment?)
     bool bTagIsJpeg = false;
-    bool bTagIsOffsetHdr = false;
     if (!m_bJpegEncap)
     {
         // Not in a delimited sequence
@@ -279,8 +277,6 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
                 ASSERT(nTagElement == 0xE000);
                 // Clear next flag since we've handled it
                 m_bJpegEncapOffsetNext = false;
-                // This is an offset header
-                bTagIsOffsetHdr = true;
             }
             else
             {
@@ -591,8 +587,6 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
         bDone = true;
     }
 
-    //bool          bFoundJpeg = false;
-    unsigned long nPosJpegFound = 0;
     tsTagDetail sTagDetail;
     while (!bDone)
     {
@@ -601,7 +595,7 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
 
         // Fetch results
         unsigned nLen = sTagDetail.nLen;
-        nPosJpegFound = sTagDetail.nPosJpeg;
+        unsigned long nPosJpegFound = sTagDetail.nPosJpeg;
         CString strTag = sTagDetail.strTag;
         CString strVR = sTagDetail.strVR;
 
@@ -633,9 +627,8 @@ bool CDecodeDicom::DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, un
         // See if this is an enumerated value
         // If not, just report as hex for now
         CString strDesc;
-        bool bIsEnum = false;
         CString strValTrunc = m_pWBuf->BufReadStrn(nPos, 200);
-        bIsEnum = LookupEnum(sTagDetail.nTagGroup, sTagDetail.nTagElement, strValTrunc, strDesc);
+        bool bIsEnum = LookupEnum(sTagDetail.nTagGroup, sTagDetail.nTagElement, strValTrunc, strDesc);
         if (bIsEnum)
         {
             ReportFldStrEnc(1, sTagDetail.strTag, strDesc, strValTrunc);

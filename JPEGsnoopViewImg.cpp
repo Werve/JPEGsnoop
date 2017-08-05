@@ -201,7 +201,6 @@ void CJPEGsnoopViewImg::OnLButtonUp(UINT nFlags, CPoint point)
 {
     CString strTmp;
     CPoint ptPix;
-    CPoint ptMcu;
 
     // Need to ensure that the Preview image was based on a JPEG with
     // MCU/Block map info
