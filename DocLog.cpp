@@ -64,7 +64,7 @@ void CDocLog::SetQuickMode(bool bQuick)
 // RETURN:
 // - Are we in quick mode?
 //
-bool CDocLog::GetQuickMode()
+bool CDocLog::GetQuickMode() const
 {
     return m_bLogQuickMode;
 }
@@ -267,7 +267,7 @@ unsigned CDocLog::AppendToLogLocal(CString strTxt, COLORREF sColor)
 }
 
 // Get the number of lines in the local log or quick buffer
-unsigned CDocLog::GetNumLinesLocal()
+unsigned CDocLog::GetNumLinesLocal() const
 {
     return m_saLogQuickTxt.GetCount();
 }

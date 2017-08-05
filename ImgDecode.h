@@ -291,7 +291,7 @@ public:
     void ReportHistogramY();
     void ReportColorStats();
 
-    bool IsPreviewReady();
+    bool IsPreviewReady() const;
 
     // Config
     void SetImageDimensions(unsigned nWidth, unsigned nHeight);
@@ -311,14 +311,14 @@ public:
 
     // Modes -- accessed from Doc
     void SetPreviewMode(unsigned nMode);
-    unsigned GetPreviewMode();
+    unsigned GetPreviewMode() const;
     void SetPreviewYccOffset(unsigned nMcuX, unsigned nMcuY, int nY, int nCb, int nCr);
-    void GetPreviewYccOffset(unsigned& nMcuX, unsigned& nMcuY, int& nY, int& nCb, int& nCr);
+    void GetPreviewYccOffset(unsigned& nMcuX, unsigned& nMcuY, int& nY, int& nCb, int& nCr) const;
     void SetPreviewMcuInsert(unsigned nMcuX, unsigned nMcuY, int nLen);
-    void GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned& nLen);
+    void GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned& nLen) const;
     void SetPreviewZoom(bool bInc, bool bDec, bool bSet, unsigned nVal);
     unsigned GetPreviewZoomMode();
-    float GetPreviewZoom();
+    float GetPreviewZoom() const;
     bool GetPreviewOverlayMcuGrid();
     void SetPreviewOverlayMcuGridToggle();
 
@@ -334,20 +334,20 @@ public:
     CPoint PixelToMcu(CPoint ptPix);
     CPoint PixelToBlk(CPoint ptPix);
     unsigned McuXyToLinear(CPoint ptMcu);
-    void GetImageSize(unsigned& nX, unsigned& nY);
+    void GetImageSize(unsigned& nX, unsigned& nY) const;
 
     // View helper routines
     void ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos, CFont* pFont, CSize& szNewScrollSize);
-    void ViewMcuOverlay(CDC* pDC);
+    void ViewMcuOverlay(CDC* pDC) const;
     void ViewMcuMarkedOverlay(CDC* pDC);
     void ViewMarkerOverlay(CDC* pDC, unsigned nBlkX, unsigned nBlkY); // UNUSED?
 
-    void GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr);
-    void GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigned& nLen);
+    void GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr) const;
+    void GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigned& nLen) const;
     void SetDetailVlc(bool bDetail, unsigned nX, unsigned nY, unsigned nLen);
 
-    void GetPreviewPos(unsigned& nX, unsigned& nY);
-    void GetPreviewSize(unsigned& nX, unsigned& nY);
+    void GetPreviewPos(unsigned& nX, unsigned& nY) const;
+    void GetPreviewSize(unsigned& nX, unsigned& nY) const;
 
 private:
 
@@ -405,10 +405,10 @@ private:
     void CalcChannelPreview();
 
 public: // For Export
-    void GetBitmapPtr(unsigned char* & pBitmap);
+    void GetBitmapPtr(unsigned char* & pBitmap) const;
 
     // Miscellaneous
-    void SetStatusText(CString strText);
+    void SetStatusText(CString strText) const;
     void SetStatusYccText(CString strText);
     CString GetStatusYccText();
     void SetStatusMcuText(CString strText);

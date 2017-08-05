@@ -49,12 +49,12 @@ private:
 
     void DoCmdLineCore();
     void CmdLineHelp();
-    void CmdLineMessage(CString strMsg);
+    void CmdLineMessage(CString strMsg) const;
     void CmdLineDoneMessage();
 
     void CheckUpdates(bool bForceNow);
-    bool CheckUpdatesWww();
-    bool CheckEula();
+    bool CheckUpdatesWww() const;
+    bool CheckEula() const;
     CJPEGsnoopDoc* GetCurDoc();
     void DocReprocess();
     void DocImageDirty();

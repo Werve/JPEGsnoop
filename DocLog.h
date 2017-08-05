@@ -34,12 +34,12 @@ public:
     void Enable();
     void Disable();
     void SetQuickMode(bool bQuick);
-    bool GetQuickMode();
+    bool GetQuickMode() const;
 
     void SetDoc(CDocument* pDoc);
     void Clear();
 
-    unsigned GetNumLinesLocal();
+    unsigned GetNumLinesLocal() const;
     bool GetLineLogLocal(unsigned nLine, CString& strOut, COLORREF& sCol);
 
     void DoLogSave(CString strLogName);

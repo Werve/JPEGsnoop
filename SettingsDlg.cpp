@@ -58,7 +58,7 @@ void CSettingsDlg::OnBnClickedDbDirBrowse()
     }
 }
 
-CString CSettingsDlg::SelectFolder(const CString& strMessage)
+CString CSettingsDlg::SelectFolder(const CString& strMessage) const
 {
     CString Result;
 

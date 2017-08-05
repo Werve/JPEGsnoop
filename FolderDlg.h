@@ -109,20 +109,20 @@ protected:
     // virtual handler functions above!
 
     // Enable or disable the OK button
-    void EnableOK(BOOL bEnable)
+    void EnableOK(BOOL bEnable) const
     {
         SendMessage(BFFM_ENABLEOK, 0, bEnable);
     }
 
     // The Microsoft documentation is wrong for this: text in LPARAM, not WPARAM!
-    void SetOKText(LPCWSTR lpText)
+    void SetOKText(LPCWSTR lpText) const
     {
         SendMessage(BFFM_SETOKTEXT, 0, (LPARAM)lpText);
     }
 
     // Set selected item from string or PIDL.
     // The documentation says lpText must be Unicode, but it can be LPCTSTR.
-    void SetSelection(LPCTSTR lpText)
+    void SetSelection(LPCTSTR lpText) const
     {
         SendMessage(BFFM_SETSELECTION,TRUE, (LPARAM)lpText);
     }
@@ -144,7 +144,7 @@ protected:
     }
 
     // Set status window text
-    void SetStatusText(LPCTSTR pText)
+    void SetStatusText(LPCTSTR pText) const
     {
         SendMessage(BFFM_SETSTATUSTEXT, 0, (LPARAM)pText);
     }

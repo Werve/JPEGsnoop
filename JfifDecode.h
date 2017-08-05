@@ -137,17 +137,17 @@ public:
 
     void Reset();
 
-    void GetAviMode(bool& bIsAvi, bool& bIsMjpeg);
+    void GetAviMode(bool& bIsAvi, bool& bIsMjpeg) const;
     void SetAviMode(bool bIsAvi, bool bIsMjpeg);
     void ImgSrcChanged();
-    unsigned long GetPosEmbedStart();
-    unsigned long GetPosEmbedEnd();
+    unsigned long GetPosEmbedStart() const;
+    unsigned long GetPosEmbedEnd() const;
     void GetDecodeSummary(CString& strHash, CString& strHashRot, CString& strImgExifMake, CString& strImgExifModel,
-                          CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest);
-    unsigned GetDqtZigZagIndex(unsigned nInd, bool bZigZag);
-    unsigned GetDqtQuantStd(unsigned nInd);
+                          CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest) const;
+    unsigned GetDqtZigZagIndex(unsigned nInd, bool bZigZag) const;
+    unsigned GetDqtQuantStd(unsigned nInd) const;
 
-    bool GetDecodeStatus();
+    bool GetDecodeStatus() const;
     bool ExportJpegPrepare(CString strFileIn, bool bForceSoi, bool bForceEoi, bool bIgnoreEoi);
     bool ExportJpegDo(CString strFileIn, CString strFileOut, unsigned long nFileLen,
                       bool bOverlayEn, bool bDhtAviInsert, bool bForceSoi, bool bForceEoi);
@@ -164,7 +164,7 @@ private:
     void DecodeEmbeddedThumb();
     bool DecodeAvi();
 
-    bool ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal);
+    bool ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal) const;
 
     // Marker specific parsing
     bool GetMarkerName(unsigned nCode, CString& markerStr);
@@ -183,12 +183,12 @@ private:
     void GenLookupHuffMask();
 
     // Field parsing
-    bool DecodeValRational(unsigned nPos, float& nVal);
+    bool DecodeValRational(unsigned nPos, float& nVal) const;
     CString DecodeValFraction(unsigned nPos);
     bool DecodeValGPS(unsigned nPos, CString& strCoord);
     bool PrintValGPS(unsigned nCount, float fCoord1, float fCoord2, float fCoord3, CString& strCoord);
     CString DecodeIccDateTime(unsigned anVal[3]);
-    CString LookupExifTag(CString strSect, unsigned nTag, bool& bUnknown);
+    CString LookupExifTag(CString strSect, unsigned nTag, bool& bUnknown) const;
     CStr2 LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsigned nVal);
 
 
@@ -209,25 +209,25 @@ private:
                     CString strExifSoftware, CString strComment, teMaker eMaker,
                     teSource eUserSource, CString strUserSoftware, CString strExtra,
                     CString strUserNotes, unsigned nExifLandscape,
-                    unsigned nThumbX, unsigned nThumbY);
+                    unsigned nThumbX, unsigned nThumbY) const;
     void OutputSpecial();
 
 
     // Display routines
-    void DbgAddLine(LPCTSTR strLine);
-    void AddHeader(unsigned nCode);
+    void DbgAddLine(LPCTSTR strLine) const;
+    void AddHeader(unsigned nCode) const;
     CString PrintAsHexUC(unsigned char* anBytes, unsigned nCount);
     CString PrintAsHex8(unsigned* anBytes, unsigned nCount);
     CString PrintAsHex32(unsigned* anWords, unsigned nCount);
 
     // Buffer access
-    BYTE Buf(unsigned long nOffset, bool bClean);
-    void UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1, unsigned& nByte2, unsigned& nByte3);
-    unsigned ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte2, unsigned nByte3);
-    unsigned ByteSwap2(unsigned nByte0, unsigned nByte1);
-    unsigned ReadSwap2(unsigned nPos);
-    unsigned ReadSwap4(unsigned nPos);
-    unsigned ReadBe4(unsigned nPos);
+    BYTE Buf(unsigned long nOffset, bool bClean) const;
+    void UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1, unsigned& nByte2, unsigned& nByte3) const;
+    unsigned ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte2, unsigned nByte3) const;
+    unsigned ByteSwap2(unsigned nByte0, unsigned nByte1) const;
+    unsigned ReadSwap2(unsigned nPos) const;
+    unsigned ReadSwap4(unsigned nPos) const;
+    unsigned ReadBe4(unsigned nPos) const;
 
     // UI elements
 public:

@@ -460,7 +460,7 @@ CString CSnoopConfig::GetDefaultDbDir()
 
 // Get the directory path of the JPEGsnoop executable
 // - This is used as a default location for the user signature database
-CString CSnoopConfig::GetExeDir()
+CString CSnoopConfig::GetExeDir() const
 {
     TCHAR szPath[1024];
     GetModuleFileName(AfxGetApp()->m_hInstance, szPath, sizeof(szPath) / sizeof(*szPath));

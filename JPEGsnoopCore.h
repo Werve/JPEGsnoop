@@ -39,13 +39,13 @@ public:
     void AnalyzeFileDo();
     BOOL AnalyzeOpen();
     void AnalyzeClose();
-    BOOL IsAnalyzed();
+    BOOL IsAnalyzed() const;
     BOOL DoAnalyzeOffset(CString strFname);
 
     void DoLogSave(CString strLogName);
 
     void GenBatchFileList(CString strDirSrc, CString strDirDst, bool bRecSubdir, bool bExtractAll);
-    unsigned GetBatchFileCount();
+    unsigned GetBatchFileCount() const;
     void DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool bExtractAll);
     CString GetBatchFileInfo(unsigned nFileInd);
 
@@ -56,15 +56,15 @@ public:
                                CString strOutPath);
 
     // Accessor wrappers for CjfifDecode
-    void J_GetAviMode(bool& bIsAvi, bool& bIsMjpeg);
+    void J_GetAviMode(bool& bIsAvi, bool& bIsMjpeg) const;
     void J_SetAviMode(bool bIsAvi, bool bIsMjpeg);
     void J_ImgSrcChanged();
-    unsigned long J_GetPosEmbedStart();
-    unsigned long J_GetPosEmbedEnd();
+    unsigned long J_GetPosEmbedStart() const;
+    unsigned long J_GetPosEmbedEnd() const;
     void J_GetDecodeSummary(CString& strHash, CString& strHashRot, CString& strImgExifMake, CString& strImgExifModel,
-                            CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest);
-    unsigned J_GetDqtZigZagIndex(unsigned nInd, bool bZigZag);
-    unsigned J_GetDqtQuantStd(unsigned nInd);
+                            CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest) const;
+    unsigned J_GetDqtZigZagIndex(unsigned nInd, bool bZigZag) const;
+    unsigned J_GetDqtQuantStd(unsigned nInd) const;
     void J_SetStatusBar(CStatusBar* pStatBar);
     void J_ProcessFile(CFile* inFile);
     void J_PrepareSendSubmit(CString strQual, teSource eUserSource, CString strUserSoftware, CString strUserNotes);

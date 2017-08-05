@@ -69,7 +69,7 @@ void CDecodePs::Reset()
 // RETURN:
 // - Byte from file
 //
-BYTE CDecodePs::Buf(unsigned long offset, bool bClean = false)
+BYTE CDecodePs::Buf(unsigned long offset, bool bClean = false) const
 {
     return m_pWBuf->Buf(offset, bClean);
 }
@@ -260,7 +260,7 @@ bool CDecodePs::LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& n
 // NOTE:
 // - The IPTC field type is used to determine how to represent the input values
 //
-CString CDecodePs::DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos)
+CString CDecodePs::DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos) const
 {
     unsigned nInd;
     CString strField;
@@ -399,7 +399,7 @@ CString CDecodePs::PhotoshopParseIndent(unsigned nIndent)
 // - String length prefix
 // - If length is 0 then fixed 4-character string
 // - Otherwise it is defined length string (no terminator required)
-CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos)
+CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos) const
 {
     CString strVal;
     unsigned nStrLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
@@ -424,7 +424,7 @@ CString CDecodePs::PhotoshopParseGetLStrAsc(unsigned long& nPos)
 // - The byte offset to advance the file pointer
 // RETURN:
 // - Unicode string
-CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset)
+CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset) const
 {
     BYTE anStrBuf[(PS_MAX_UNICODE_STRLEN + 1) * 2];
     wchar_t acStrBuf[(PS_MAX_UNICODE_STRLEN + 1)];
@@ -1677,7 +1677,7 @@ bool CDecodePs::PhotoshopParseChannelImageData(unsigned long& nPos, unsigned nIn
 }
 
 
-bool CDecodePs::PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nChanID, unsigned char* pDibBits)
+bool CDecodePs::PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nChanID, unsigned char* pDibBits) const
 {
     bool bDecOk = true;
 
@@ -1716,7 +1716,7 @@ bool CDecodePs::PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, u
     return bDecOk;
 }
 
-bool CDecodePs::PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nRowLen, unsigned nChanID, unsigned char* pDibBits)
+bool CDecodePs::PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nRowLen, unsigned nChanID, unsigned char* pDibBits) const
 {
     bool bDecOk = true;
 

@@ -97,11 +97,11 @@ public:
     void OverlayRemove();
     void OverlayRemoveAll();
     bool OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, unsigned& nBegin);
-    unsigned OverlayGetNum();
+    unsigned OverlayGetNum() const;
     void ReportOverlays(CDocLog* pLog);
 
-    bool GetBufOk();
-    unsigned long GetPosEof();
+    bool GetBufOk() const;
+    unsigned long GetPosEof() const;
 
 private:
     void Reset();

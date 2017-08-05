@@ -41,7 +41,7 @@ CUrlString::CUrlString()
         m_csUnsafe += (char)iChar;
 }
 
-CString CUrlString::Encode(CString csDecoded)
+CString CUrlString::Encode(CString csDecoded) const
 {
     CString csCharEncoded;
     CString csEncoded = csDecoded;
@@ -55,7 +55,7 @@ CString CUrlString::Encode(CString csDecoded)
     return csEncoded;
 }
 
-CString CUrlString::Decode(CString csEncoded)
+CString CUrlString::Decode(CString csEncoded) const
 {
     CString csUnsafeEncoded = Encode(m_csUnsafe);
     CString csDecoded = csEncoded;

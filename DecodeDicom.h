@@ -127,7 +127,7 @@ public:
     bool GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail);
     bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
 
-    BYTE Buf(unsigned long offset, bool bClean);
+    BYTE Buf(unsigned long offset, bool bClean) const;
 
     CString ParseIndent(unsigned nIndent);
     void ReportFldStr(unsigned nIndent, CString strField, CString strVal);

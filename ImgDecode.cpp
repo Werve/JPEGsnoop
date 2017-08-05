@@ -317,7 +317,7 @@ void CimgDecode::SetStatusBar(CStatusBar* pStatBar)
 // PRE:
 // - m_pStatBar
 //
-void CimgDecode::SetStatusText(CString str)
+void CimgDecode::SetStatusText(CString str) const
 {
     // Make sure that we have been connected to the status
     // bar of the main window first! Note that it is jpegsnoopDoc
@@ -675,7 +675,7 @@ void CimgDecode::SetPreviewYccOffset(unsigned nMcuX, unsigned nMcuY, int nY, int
 // - nCb                = DC shift in Cb component
 // - nCr                = DC shift in Cr component
 //
-void CimgDecode::GetPreviewYccOffset(unsigned& nMcuX, unsigned& nMcuY, int& nY, int& nCb, int& nCr)
+void CimgDecode::GetPreviewYccOffset(unsigned& nMcuX, unsigned& nMcuY, int& nY, int& nCb, int& nCr) const
 {
     nY = m_nPreviewShiftY;
     nCb = m_nPreviewShiftCb;
@@ -698,7 +698,7 @@ void CimgDecode::SetPreviewMcuInsert(unsigned nMcuX, unsigned nMcuY, int nLen)
 
 // Get the Preview MCU insert
 // UNUSED
-void CimgDecode::GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned& nLen)
+void CimgDecode::GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned& nLen) const
 {
     nMcuX = m_nPreviewInsMcuX;
     nMcuY = m_nPreviewInsMcuY;
@@ -711,7 +711,7 @@ void CimgDecode::GetPreviewMcuInsert(unsigned& nMcuX, unsigned& nMcuY, unsigned&
 // - nX             = X coordinate of top-left corner
 // - nY             = Y coordinate of top-left corner
 //
-void CimgDecode::GetPreviewPos(unsigned& nX, unsigned& nY)
+void CimgDecode::GetPreviewPos(unsigned& nX, unsigned& nY) const
 {
     nX = m_nPreviewPosX;
     nY = m_nPreviewPosY;
@@ -723,7 +723,7 @@ void CimgDecode::GetPreviewPos(unsigned& nX, unsigned& nY)
 // - nX             = X dimension of image
 // - nY             = Y dimension of iamge
 //
-void CimgDecode::GetPreviewSize(unsigned& nX, unsigned& nY)
+void CimgDecode::GetPreviewSize(unsigned& nX, unsigned& nY) const
 {
     nX = m_nPreviewSizeX;
     nY = m_nPreviewSizeY;
@@ -3828,7 +3828,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 // RETURN:
 // - True if image preview is ready
 //
-bool CimgDecode::IsPreviewReady()
+bool CimgDecode::IsPreviewReady() const
 {
     return m_bPreviewIsJpeg;
 }
@@ -4995,7 +4995,7 @@ void CimgDecode::ChannelExtract(unsigned nMode, PixelCc& sSrc, PixelCc& sDst)
 // - nY                 = Start of detailed scan decode MCU Y coordinate
 // - nLen               = Number of MCUs to parse in detailed scan decode
 //
-void CimgDecode::GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigned& nLen)
+void CimgDecode::GetDetailVlc(bool& bDetail, unsigned& nX, unsigned& nY, unsigned& nLen) const
 {
     bDetail = m_bDetailVlc;
     nX = m_nDetailVlcX;
@@ -5026,7 +5026,7 @@ void CimgDecode::SetDetailVlc(bool bDetail, unsigned nX, unsigned nY, unsigned n
 // - pMapCb             = Pointer to pixel map for Cb component
 // - pMapCr             = Pointer to pixel map for Cr component
 //
-void CimgDecode::GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr)
+void CimgDecode::GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr) const
 {
     ASSERT(m_pPixValY);
     ASSERT(m_pPixValCb);
@@ -5042,7 +5042,7 @@ void CimgDecode::GetPixMapPtrs(short* & pMapY, short* & pMapCb, short* & pMapCr)
 // - nX                 = X dimension of preview image
 // - nY                 = Y dimension of preview image
 //
-void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY)
+void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY) const
 {
     nX = m_nImgSizeX;
     nY = m_nImgSizeY;
@@ -5053,7 +5053,7 @@ void CimgDecode::GetImageSize(unsigned& nX, unsigned& nY)
 // OUTPUT:
 // - pBitmap            = Bitmap (DIB) of preview
 //
-void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap)
+void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap) const
 {
     unsigned char* pDibImgTmpBits = nullptr;
 
@@ -5334,7 +5334,7 @@ unsigned CimgDecode::GetPreviewZoomMode()
 // RETURN:
 // - The image preview mode enumeration
 //
-unsigned CimgDecode::GetPreviewMode()
+unsigned CimgDecode::GetPreviewMode() const
 {
     return m_nPreviewMode;
 }
@@ -5344,7 +5344,7 @@ unsigned CimgDecode::GetPreviewMode()
 // RETURN:
 // - The preview zoom level enumeration
 //
-float CimgDecode::GetPreviewZoom()
+float CimgDecode::GetPreviewZoom() const
 {
     return m_nZoom;
 }
@@ -5770,7 +5770,7 @@ void CimgDecode::ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos,
 // INPUT:
 // - pDC            = The device context pointer
 //
-void CimgDecode::ViewMcuOverlay(CDC* pDC)
+void CimgDecode::ViewMcuOverlay(CDC* pDC) const
 {
     // Now create overlays
     CPen penDot(PS_DOT, 1,RGB(32,32,32));

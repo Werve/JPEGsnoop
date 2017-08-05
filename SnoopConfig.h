@@ -129,6 +129,6 @@ public:
     CStdioFile* fpDebugLog;
 
 private:
-    CString GetExeDir();
+    CString GetExeDir() const;
     void CreateDir(LPTSTR Path);
 };

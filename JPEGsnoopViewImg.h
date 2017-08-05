@@ -38,8 +38,8 @@ protected:
     void OnInitialUpdate() override; // first time after construct
 
 private:
-    CJPEGsnoopCore* GetCore();
-    bool InPreviewArea(CPoint point, CPoint& ptPix);
+    CJPEGsnoopCore* GetCore() const;
+    bool InPreviewArea(CPoint point, CPoint& ptPix) const;
     void SetScrollCenter(float fZoomOld, float fZoomNew);
     int MeasureFontHeight(CFont* pFont, CDC* pDC);
 

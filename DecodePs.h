@@ -163,7 +163,7 @@ public:
     bool m_bDisplayImage;
 
 private:
-    CString PhotoshopParseGetLStrAsc(unsigned long& nPos);
+    CString PhotoshopParseGetLStrAsc(unsigned long& nPos) const;
     CString PhotoshopParseIndent(unsigned nIndent);
     void PhotoshopParseReportNote(unsigned nIndent, CString strNote);
     CString PhotoshopParseLookupEnum(teBimEnumField eEnumField, unsigned nVal);
@@ -216,21 +216,21 @@ private:
     bool PhotoshopParseAddtlLayerInfo(unsigned long& nPos, unsigned nIndent);
     bool PhotoshopParseImageData(unsigned long& nPos, unsigned nIndent, tsImageInfo* psImageInfo, unsigned char* pDibBits);
 
-    bool PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nChanID, unsigned char* pDibBits);
-    bool PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nRowLen, unsigned nChanID, unsigned char* pDibBits);
+    bool PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nChanID, unsigned char* pDibBits) const;
+    bool PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nRowLen, unsigned nChanID, unsigned char* pDibBits) const;
 
     CString PhotoshopDispHexWord(unsigned nVal);
 
     // 8BIM
-    CString PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset);
+    CString PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset) const;
     bool FindBimRecord(unsigned nBimId, unsigned& nFldInd);
 
     // IPTC
     void DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent);
     bool LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& nFldInd);
-    CString DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos);
+    CString DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos) const;
 
-    BYTE Buf(unsigned long offset, bool bClean);
+    BYTE Buf(unsigned long offset, bool bClean) const;
 
     // Configuration
     CSnoopConfig* m_pAppConfig;

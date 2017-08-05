@@ -347,7 +347,7 @@ void CJPEGsnoopDoc::SetupView(CRichEditView* pView)
 // RETURN:
 // - Pointer to the main frame's status bar
 //
-CStatusBar* CJPEGsnoopDoc::GetStatusBar()
+CStatusBar* CJPEGsnoopDoc::GetStatusBar() const
 {
     CWnd* pMainWnd = AfxGetMainWnd();
     if (!pMainWnd) return nullptr;
@@ -372,7 +372,7 @@ CStatusBar* CJPEGsnoopDoc::GetStatusBar()
 // UNUSED
 BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
                              int nLength,
-                             LONG lOffset /* = -1L */)
+                             LONG lOffset /* = -1L */) const
 {
     ULONGLONG lPosition;
 

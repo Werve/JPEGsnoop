@@ -37,7 +37,7 @@ void COffsetDlg::SetOffset(unsigned nPos)
 }
 
 // Fetch the current offset value from the dialog
-unsigned COffsetDlg::GetOffset()
+unsigned COffsetDlg::GetOffset() const
 {
     return m_nOffsetVal;
 }

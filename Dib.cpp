@@ -88,6 +88,7 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
 }
 
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void CDIB::InitializeColors()
 {
     if (!m_pDIB) return;
@@ -152,7 +153,7 @@ bool CDIB::CreateDIBFromBitmap(CDC* pDC)
     return bSuccess;
 }
 
-bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale)
+bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale) const
 {
     if (!m_pDIB || !pDestDC) return false;
     int nOldMapMode = pDestDC->SetMapMode(MM_TEXT);
@@ -174,7 +175,7 @@ bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale)
     return bOK;
 }
 
-bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float scale)
+bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float scale) const
 {
     int win_width = rectClient->Width();
     int win_height = rectClient->Height();
@@ -206,7 +207,7 @@ bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float sc
 }
 
 
-bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*scale*/)
+bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*scale*/) const
 {
     if (!m_pDIB || !pDestDC) return false;
 
@@ -275,7 +276,7 @@ bool CDIB::CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float /*s
 //
 // NOTE: the following is currently unused as it led to strange
 // redraw issues, likely due to client rect boundaries
-bool CDIB::CopyDIBsmall(CDC* pDestDC, int x, int y, float scale)
+bool CDIB::CopyDIBsmall(CDC* pDestDC, int x, int y, float scale) const
 {
     if (!m_pDIB || !pDestDC) return false;
 

@@ -115,12 +115,12 @@ void CDbSigs::SetFirstRun(bool bFirstRun)
     m_bFirstRun = bFirstRun;
 }
 
-unsigned CDbSigs::GetNumSigsInternal()
+unsigned CDbSigs::GetNumSigsInternal() const
 {
     return m_nSigListNum;
 }
 
-unsigned CDbSigs::GetNumSigsExtra()
+unsigned CDbSigs::GetNumSigsExtra() const
 {
     return m_nSigListExtraNum;
 }
@@ -585,7 +585,7 @@ void CDbSigs::DatabaseExtraClean()
     DatabaseExtraStore();
 }
 
-unsigned CDbSigs::DatabaseExtraGetNum()
+unsigned CDbSigs::DatabaseExtraGetNum() const
 {
     return m_nSigListExtraNum;
 }
@@ -757,7 +757,7 @@ void CDbSigs::DatabaseExtraAdd(CString strExifMake, CString strExifModel,
 }
 
 // TODO: Should we include editors in this search?
-bool CDbSigs::SearchSignatureExactInternal(CString strMake, CString strModel, CString strSig)
+bool CDbSigs::SearchSignatureExactInternal(CString strMake, CString strModel, CString strSig) const
 {
     bool bFoundExact = false;
     bool bDone = false;
@@ -784,7 +784,7 @@ bool CDbSigs::SearchSignatureExactInternal(CString strMake, CString strModel, CS
     return bFoundExact;
 }
 
-bool CDbSigs::SearchCom(CString strCom)
+bool CDbSigs::SearchCom(CString strCom) const
 {
     bool bFound = false;
     bool bDone = false;
@@ -813,13 +813,13 @@ bool CDbSigs::SearchCom(CString strCom)
 }
 
 // Returns total of built-in plus local DB
-unsigned CDbSigs::GetDBNumEntries()
+unsigned CDbSigs::GetDBNumEntries() const
 {
     return (m_nSigListNum + m_nSigListExtraNum);
 }
 
 // Returns total of built-in plus local DB
-unsigned CDbSigs::IsDBEntryUser(unsigned nInd)
+unsigned CDbSigs::IsDBEntryUser(unsigned nInd) const
 {
     if (nInd < m_nSigListNum)
     {
@@ -829,7 +829,7 @@ unsigned CDbSigs::IsDBEntryUser(unsigned nInd)
 }
 
 // Return a ptr to the struct containing the indexed entry
-bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry)
+bool CDbSigs::GetDBEntry(unsigned nInd, CompSig* pEntry) const
 {
     unsigned nIndMax = GetDBNumEntries();
     ASSERT(pEntry);
@@ -883,7 +883,7 @@ void CDbSigs::SetDbDir(CString strDbDir)
 }
 
 // Search exceptions for Make/Model in list of ones that don't have Makernotes
-bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
+bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel) const
 {
     bool bFound = false;
     bool bDone = false;
@@ -954,7 +954,7 @@ bool CDbSigs::LookupExcMmNoMkr(CString strMake, CString strModel)
 }
 
 // Search exceptions for Make/Model in list of ones that are always edited
-bool CDbSigs::LookupExcMmIsEdit(CString strMake, CString strModel)
+bool CDbSigs::LookupExcMmIsEdit(CString strMake, CString strModel) const
 {
     bool bFound = false;
     bool bDone = false;

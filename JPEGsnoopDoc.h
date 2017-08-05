@@ -38,11 +38,11 @@ public:
     int AppendToLog(CString strTxt, COLORREF sColor);
     int InsertQuickLog();
 
-    CStatusBar* GetStatusBar();
+    CStatusBar* GetStatusBar() const;
 
     void DoBatchProcess(CString strBatchDir, bool bRecSubdir, bool bExtractAll);
 
-    BOOL ReadLine(CString& strLine, int nLength, LONG lOffset = -1L);
+    BOOL ReadLine(CString& strLine, int nLength, LONG lOffset = -1L) const;
 
     void Reset();
     BOOL Reprocess();

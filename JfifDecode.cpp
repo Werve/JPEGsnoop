@@ -258,7 +258,7 @@ void CjfifDecode::SetAviMode(bool bIsAvi, bool bIsMjpeg)
 // - bIsAvi
 // - bIsMjpeg
 //
-void CjfifDecode::GetAviMode(bool& bIsAvi, bool& bIsMjpeg)
+void CjfifDecode::GetAviMode(bool& bIsAvi, bool& bIsMjpeg) const
 {
     bIsAvi = m_bAvi;
     bIsMjpeg = m_bAviMjpeg;
@@ -272,7 +272,7 @@ void CjfifDecode::GetAviMode(bool& bIsAvi, bool& bIsMjpeg)
 // RETURN:
 // - File position
 //
-unsigned long CjfifDecode::GetPosEmbedStart()
+unsigned long CjfifDecode::GetPosEmbedStart() const
 {
     return m_nPosEmbedStart;
 }
@@ -285,7 +285,7 @@ unsigned long CjfifDecode::GetPosEmbedStart()
 // RETURN:
 // - File position
 //
-unsigned long CjfifDecode::GetPosEmbedEnd()
+unsigned long CjfifDecode::GetPosEmbedEnd() const
 {
     return m_nPosEmbedEnd;
 }
@@ -295,7 +295,7 @@ unsigned long CjfifDecode::GetPosEmbedEnd()
 // RETURN:
 // - TRUE if file (at position during analysis) appeared to decode OK
 //
-bool CjfifDecode::GetDecodeStatus()
+bool CjfifDecode::GetDecodeStatus() const
 {
     return m_bImgOK;
 }
@@ -322,7 +322,7 @@ bool CjfifDecode::GetDecodeStatus()
 // - nDbReqSuggest
 //
 void CjfifDecode::GetDecodeSummary(CString& strHash, CString& strHashRot, CString& strImgExifMake, CString& strImgExifModel,
-                                   CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest)
+                                   CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest) const
 {
     strHash = m_strHash;
     strHashRot = m_strHashRot;
@@ -341,7 +341,7 @@ void CjfifDecode::GetDecodeSummary(CString& strHash, CString& strHashRot, CStrin
 // RETURN:
 // - DQT matrix element
 //
-unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd)
+unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd) const
 {
     if (nInd < MAX_DQT_COEFF)
     {
@@ -369,7 +369,7 @@ unsigned CjfifDecode::GetDqtQuantStd(unsigned nInd)
 // RETURN:
 // - Sequence index
 //
-unsigned CjfifDecode::GetDqtZigZagIndex(unsigned nInd, bool bZigZag)
+unsigned CjfifDecode::GetDqtZigZagIndex(unsigned nInd, bool bZigZag) const
 {
     if (nInd < MAX_DQT_COEFF)
     {
@@ -483,7 +483,7 @@ void CjfifDecode::GenLookupHuffMask()
 // RETURN:
 // - Byte from file (or local table)
 //
-BYTE CjfifDecode::Buf(unsigned long nOffset, bool bClean = false)
+BYTE CjfifDecode::Buf(unsigned long nOffset, bool bClean = false) const
 {
     // Buffer can be redirected to internal array for AVI DHT
     // tables, so check for it here.
@@ -511,7 +511,7 @@ BYTE CjfifDecode::Buf(unsigned long nOffset, bool bClean = false)
 // RETURN:
 // - none
 //
-void CjfifDecode::DbgAddLine(LPCTSTR strLine)
+void CjfifDecode::DbgAddLine(LPCTSTR strLine) const
 {
     if (m_bVerbose)
     {
@@ -537,7 +537,7 @@ void CjfifDecode::DbgAddLine(LPCTSTR strLine)
 // RETURN:
 // - none
 //
-void CjfifDecode::UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1, unsigned& nByte2, unsigned& nByte3)
+void CjfifDecode::UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1, unsigned& nByte2, unsigned& nByte3) const
 {
     if (m_nImgExifEndian == 0)
     {
@@ -572,7 +572,7 @@ void CjfifDecode::UnByteSwap4(unsigned nVal, unsigned& nByte0, unsigned& nByte1,
 // RETURN:
 // - UINT32
 //
-unsigned CjfifDecode::ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte2, unsigned nByte3)
+unsigned CjfifDecode::ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte2, unsigned nByte3) const
 {
     unsigned nVal;
 
@@ -602,7 +602,7 @@ unsigned CjfifDecode::ByteSwap4(unsigned nByte0, unsigned nByte1, unsigned nByte
 // RETURN:
 // - UINT16
 //
-unsigned CjfifDecode::ByteSwap2(unsigned nByte0, unsigned nByte1)
+unsigned CjfifDecode::ByteSwap2(unsigned nByte0, unsigned nByte1) const
 {
     unsigned nVal;
     if (m_nImgExifEndian == 0)
@@ -877,7 +877,7 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
 // RETURN:
 // - Formatted string
 //
-CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknown)
+CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknown) const
 {
     CString strTmp;
     bUnknown = false;
@@ -1791,7 +1791,7 @@ bool CjfifDecode::DecodeMakerSubType()
 // RETURN:
 // - Was the conversion successful?
 //
-bool CjfifDecode::DecodeValRational(unsigned nPos, float& nVal)
+bool CjfifDecode::DecodeValRational(unsigned nPos, float& nVal) const
 {
     nVal = 0;
 
@@ -1916,7 +1916,7 @@ bool CjfifDecode::DecodeValGPS(unsigned nPos, CString& strCoord)
 // RETURN:
 // - UINT16 from buffer
 //
-unsigned CjfifDecode::ReadSwap2(unsigned nPos)
+unsigned CjfifDecode::ReadSwap2(unsigned nPos) const
 {
     return ByteSwap2(Buf(nPos + 0), Buf(nPos + 1));
 }
@@ -1929,7 +1929,7 @@ unsigned CjfifDecode::ReadSwap2(unsigned nPos)
 // RETURN:
 // - UINT32 from buffer
 //
-unsigned CjfifDecode::ReadSwap4(unsigned nPos)
+unsigned CjfifDecode::ReadSwap4(unsigned nPos) const
 {
     return ByteSwap4(Buf(nPos), Buf(nPos + 1), Buf(nPos + 2), Buf(nPos + 3));
 }
@@ -1942,7 +1942,7 @@ unsigned CjfifDecode::ReadSwap4(unsigned nPos)
 // RETURN:
 // - UINT32 from buffer
 //
-unsigned CjfifDecode::ReadBe4(unsigned nPos)
+unsigned CjfifDecode::ReadBe4(unsigned nPos) const
 {
     // Big endian, no swap required
     return (Buf(nPos) << 24) + (Buf(nPos + 1) << 16) + (Buf(nPos + 2) << 8) + Buf(nPos + 3);
@@ -4389,7 +4389,7 @@ bool CjfifDecode::ExpectMarkerEnd(unsigned long nMarkerStart, unsigned nMarkerLe
 // OUTPUT:
 // - nVal           Output value (including any override)
 //
-bool CjfifDecode::ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal)
+bool CjfifDecode::ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal) const
 {
     CString strErr;
     if ((nVal >= nMin) && (nVal <= nMax))
@@ -6174,7 +6174,7 @@ unsigned CjfifDecode::DecodeMarker()
 
 
 // Print out a header for the current JFIF marker code
-void CjfifDecode::AddHeader(unsigned nCode)
+void CjfifDecode::AddHeader(unsigned nCode) const
 {
     CString strTmp;
 
@@ -6338,6 +6338,7 @@ void CjfifDecode::AddHeader(unsigned nCode)
 
 
 // Update the status bar with a message
+// ReSharper disable once CppMemberFunctionMayBeConst
 void CjfifDecode::SetStatusText(CString strText)
 {
     // Make sure that we have been connected to the status
@@ -7367,7 +7368,7 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
                              CString strExifSoftware, CString strComment, teMaker eMaker,
                              teSource eUserSource, CString strUserSoftware, CString strExtra,
                              CString strUserNotes, unsigned nExifLandscape,
-                             unsigned nThumbX, unsigned nThumbY)
+                             unsigned nThumbX, unsigned nThumbY) const
 {
     // NOTE: This assumes that we've already run PrepareSignature()
     // which usually happens when we process a file.

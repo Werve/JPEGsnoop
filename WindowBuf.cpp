@@ -72,13 +72,13 @@ void CwindowBuf::Reset()
 }
 
 // Accessor for m_bBufOk
-bool CwindowBuf::GetBufOk()
+bool CwindowBuf::GetBufOk() const
 {
     return m_bBufOK;
 }
 
 // Accessor for m_nPosEof
-unsigned long CwindowBuf::GetPosEof()
+unsigned long CwindowBuf::GetPosEof() const
 {
     return m_nPosEof;
 }
@@ -643,7 +643,7 @@ bool CwindowBuf::OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, 
 
 // Get the number of buffer overlays allocated
 //
-unsigned CwindowBuf::OverlayGetNum()
+unsigned CwindowBuf::OverlayGetNum() const
 {
     return m_nOverlayNum;
 }

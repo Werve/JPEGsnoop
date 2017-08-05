@@ -40,8 +40,8 @@ public:
     {
     }
 
-    CString Encode(CString csDecoded);
-    CString Decode(CString csEncoded);
+    CString Encode(CString csDecoded) const;
+    CString Decode(CString csEncoded) const;
 
 private:
     CString m_csUnsafe;

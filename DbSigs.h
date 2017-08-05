@@ -74,12 +74,12 @@ class CDbSigs
 public:
     CDbSigs();
 
-    unsigned GetNumSigsInternal();
-    unsigned GetNumSigsExtra();
+    unsigned GetNumSigsInternal() const;
+    unsigned GetNumSigsExtra() const;
 
-    unsigned GetDBNumEntries();
-    bool GetDBEntry(unsigned nInd, CompSig* pEntry);
-    unsigned IsDBEntryUser(unsigned nInd);
+    unsigned GetDBNumEntries() const;
+    bool GetDBEntry(unsigned nInd, CompSig* pEntry) const;
+    unsigned IsDBEntryUser(unsigned nInd) const;
 
     void SetEntryValid(unsigned nInd, bool bValid);
 
@@ -87,7 +87,7 @@ public:
     void DatabaseExtraLoad();
     void DatabaseExtraStore();
 
-    unsigned DatabaseExtraGetNum();
+    unsigned DatabaseExtraGetNum() const;
     CompSig DatabaseExtraGet(unsigned nInd);
 
     void DatabaseExtraAdd(CString strExifMake, CString strExifModel,
@@ -99,11 +99,11 @@ public:
     bool BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned nMaxBytes, unsigned& nOffsetBytes);
     bool BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bUni, unsigned& nOffsetBytes);
 
-    bool SearchSignatureExactInternal(CString strMake, CString strModel, CString strSig);
-    bool SearchCom(CString strCom);
+    bool SearchSignatureExactInternal(CString strMake, CString strModel, CString strSig) const;
+    bool SearchCom(CString strCom) const;
 
-    bool LookupExcMmNoMkr(CString strMake, CString strModel);
-    bool LookupExcMmIsEdit(CString strMake, CString strModel);
+    bool LookupExcMmNoMkr(CString strMake, CString strModel) const;
+    bool LookupExcMmIsEdit(CString strMake, CString strModel) const;
 
     unsigned GetIjgNum() const;
     LPCTSTR GetIjgEntry(unsigned nInd);

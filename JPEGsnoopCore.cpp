@@ -111,7 +111,7 @@ void CJPEGsnoopCore::SetStatusBar(CStatusBar* pStatBar)
 // - This indicator is used extensively in the CJPEGsnoopDoc
 //   to determine whether menu items are enabled or not
 //
-BOOL CJPEGsnoopCore::IsAnalyzed()
+BOOL CJPEGsnoopCore::IsAnalyzed() const
 {
     return m_bFileAnalyzed;
 }
@@ -642,7 +642,7 @@ void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strD
 }
 
 // Return the number of files in the batch list
-unsigned CJPEGsnoopCore::GetBatchFileCount()
+unsigned CJPEGsnoopCore::GetBatchFileCount() const
 {
     return m_asBatchFiles.GetCount();
 }
@@ -1077,7 +1077,7 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
 // Accessors for CjfifDecode
 // ----------------------------------------------
 
-void CJPEGsnoopCore::J_GetAviMode(bool& bIsAvi, bool& bIsMjpeg)
+void CJPEGsnoopCore::J_GetAviMode(bool& bIsAvi, bool& bIsMjpeg) const
 {
     m_pJfifDec->GetAviMode(bIsAvi, bIsMjpeg);
 }
@@ -1092,28 +1092,28 @@ void CJPEGsnoopCore::J_ImgSrcChanged()
     m_pJfifDec->ImgSrcChanged();
 }
 
-unsigned long CJPEGsnoopCore::J_GetPosEmbedStart()
+unsigned long CJPEGsnoopCore::J_GetPosEmbedStart() const
 {
     return m_pJfifDec->GetPosEmbedStart();
 }
 
-unsigned long CJPEGsnoopCore::J_GetPosEmbedEnd()
+unsigned long CJPEGsnoopCore::J_GetPosEmbedEnd() const
 {
     return m_pJfifDec->GetPosEmbedEnd();
 }
 
 void CJPEGsnoopCore::J_GetDecodeSummary(CString& strHash, CString& strHashRot, CString& strImgExifMake, CString& strImgExifModel,
-                                        CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest)
+                                        CString& strImgQualExif, CString& strSoftware, teDbAdd& eDbReqSuggest) const
 {
     m_pJfifDec->GetDecodeSummary(strHash, strHashRot, strImgExifMake, strImgExifModel, strImgQualExif, strSoftware, eDbReqSuggest);
 }
 
-unsigned CJPEGsnoopCore::J_GetDqtZigZagIndex(unsigned nInd, bool bZigZag)
+unsigned CJPEGsnoopCore::J_GetDqtZigZagIndex(unsigned nInd, bool bZigZag) const
 {
     return m_pJfifDec->GetDqtZigZagIndex(nInd, bZigZag);
 }
 
-unsigned CJPEGsnoopCore::J_GetDqtQuantStd(unsigned nInd)
+unsigned CJPEGsnoopCore::J_GetDqtQuantStd(unsigned nInd) const
 {
     return m_pJfifDec->GetDqtQuantStd(nInd);
 }

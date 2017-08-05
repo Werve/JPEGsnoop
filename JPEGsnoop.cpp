@@ -675,7 +675,7 @@ void CJPEGsnoopApp::CmdLineDoneMessage()
 // will release to command prompt immediately after launching
 // and will not block.
 
-void CJPEGsnoopApp::CmdLineMessage(CString strMsg)
+void CJPEGsnoopApp::CmdLineMessage(CString strMsg) const
 {
     // Report to the console
     // REF: http://stackoverflow.com/questions/5094502/how-do-i-write-to-stdout-from-an-mfc-program
@@ -767,7 +767,7 @@ void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
 // RETURN:
 // - Success if connection to web page was OK
 //
-bool CJPEGsnoopApp::CheckUpdatesWww()
+bool CJPEGsnoopApp::CheckUpdatesWww() const
 {
     CString strVerLatest;
     CString strDateLatest;
@@ -972,7 +972,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww()
 // - m_pAppConfig->bEulaAccepted
 // - m_pAppConfig->bUpdateAuto
 //
-bool CJPEGsnoopApp::CheckEula()
+bool CJPEGsnoopApp::CheckEula() const
 {
     if (m_pAppConfig->bEulaAccepted)
     {

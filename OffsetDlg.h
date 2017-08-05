@@ -28,7 +28,7 @@ public:
     explicit COffsetDlg(CWnd* pParent = nullptr);
 
     void SetOffset(unsigned nPos);
-    unsigned GetOffset();
+    unsigned GetOffset() const;
 
     // Dialog Data
     enum

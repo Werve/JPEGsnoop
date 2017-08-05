@@ -62,7 +62,7 @@ void CDecodeDicom::Reset()
 // RETURN:
 // - Byte from file
 //
-BYTE CDecodeDicom::Buf(unsigned long offset, bool bClean = false)
+BYTE CDecodeDicom::Buf(unsigned long offset, bool bClean = false) const
 {
     return m_pWBuf->Buf(offset, bClean);
 }

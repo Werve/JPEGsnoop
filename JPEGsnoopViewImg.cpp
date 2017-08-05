@@ -47,7 +47,7 @@ CJPEGsnoopViewImg::~CJPEGsnoopViewImg()
     }
 }
 
-CJPEGsnoopCore* CJPEGsnoopViewImg::GetCore()
+CJPEGsnoopCore* CJPEGsnoopViewImg::GetCore() const
 {
     CJPEGsnoopDoc* pDoc = (CJPEGsnoopDoc*)GetDocument();
     ASSERT_VALID(pDoc);
@@ -107,7 +107,7 @@ void CJPEGsnoopViewImg::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 // FIXME: Migrate into ImgDec!
-bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix)
+bool CJPEGsnoopViewImg::InPreviewArea(CPoint point, CPoint& ptPix) const
 {
     float fZoom;
     unsigned nImgPosX;

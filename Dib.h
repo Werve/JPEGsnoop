@@ -42,10 +42,10 @@ public:
     void InitializeColors();
     int GetDIBCols() const;
     void* GetDIBBitArray() const;
-    bool CopyDIB(CDC* pDestDC, int x, int y, float scale = 1);
-    bool CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float scale);
-    bool CopyDIBsmall(CDC* pDestDC, int x, int y, float scale = 1);
-    bool CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float scale);
+    bool CopyDIB(CDC* pDestDC, int x, int y, float scale = 1) const;
+    bool CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float scale) const;
+    bool CopyDIBsmall(CDC* pDestDC, int x, int y, float scale = 1) const;
+    bool CopyDibPart(CDC* pDestDC, CRect rectImg, CRect* rectClient, float scale) const;
 
     CBitmap m_bmBitmap;
 
