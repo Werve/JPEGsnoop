@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // - Dialog box alerting user of new application updates available
 class CUpdateAvailDlg : public CDialog
 {
@@ -31,11 +29,12 @@ public:
     BOOL bUpdateAutoStill;
     CString strDateLatest;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_UPDATEAVAILDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

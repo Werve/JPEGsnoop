@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // - Dialog box for configuring a file decoder overlay
 // - Enables local overwrite of the file buffer during decode for testing purposes
 class COverlayBufDlg : public CDialog
@@ -39,11 +37,12 @@ public:
     void SetCbBuf(void* pClassCbBuf,
         BYTE(*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_OVERLAYBUFDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

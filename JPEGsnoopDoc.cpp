@@ -33,6 +33,7 @@
 #include "FileTiff.h"
 #include "FolderDlg.h"
 #include "BatchDlg.h"
+#include "Resource.h"
 
 CJPEGsnoopDoc::CJPEGsnoopDoc()
     : m_pView(nullptr)
@@ -208,7 +209,7 @@ int CJPEGsnoopDoc::AppendToLog(CString strTxt, COLORREF sColor)
     pCtrl->SetSel(nInsertionPoint, -1);
     // Set the character format
     pCtrl->SetSelectionCharFormat(cf);
-    // Replace selection. Because we have nothing 
+    // Replace selection. Because we have nothing
     // selected, this will simply insert
     // the string at the current caret position.
     pCtrl->ReplaceSel(strTxt);
@@ -279,7 +280,7 @@ int CJPEGsnoopDoc::InsertQuickLog()
     pCtrl->SetSel(nInsertionPoint, -1);
 
 
-    // Replace selection. Because we have nothing 
+    // Replace selection. Because we have nothing
     // selected, this will simply insert
     // the string at the current caret position.
 
@@ -1356,7 +1357,7 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
 
 
                     // Handle the various combinations of entry width, coefficient
-                    // width and byteswap modes. Expand out the combinations to 
+                    // width and byteswap modes. Expand out the combinations to
                     // ensure explicit array bounds are clear.
                     if (nEntriesWidth == 1)
                     {

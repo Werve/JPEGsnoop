@@ -20,9 +20,10 @@
 
 #include "OffsetDlg.h"
 #include "General.h"
+#include "Resource.h"
 
 COffsetDlg::COffsetDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent),
+    : CDialog(IDD_OFFSETDLG, pParent),
     m_nOffsetVal(0),
     m_nRadioBaseMode(0),
     m_nBaseMode(0) // 0=hex, 1=dec

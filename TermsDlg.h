@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box for the terms & conditions (EULA)
 // This dialog must be agreed to before application can be used
 class CTermsDlg : public CDialog
@@ -30,11 +28,12 @@ public:
     BOOL bEulaOk;
     BOOL bUpdateAuto;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_TERMSDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

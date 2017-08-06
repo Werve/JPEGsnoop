@@ -20,9 +20,10 @@
 
 #include "ExportDlg.h"
 #include "JPEGsnoop.h"
+#include "Resource.h"
 
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_EXPORTDLG, pParent)
       , m_bOverlayEn(false)
       , m_bDhtAviInsert(false)
       , m_bForceEoi(false)

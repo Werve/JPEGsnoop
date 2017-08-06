@@ -19,11 +19,12 @@
 #include "stdafx.h"
 
 #include "UpdateAvailDlg.h"
-#include "JPEGsnoop.h"
+#include "Resource.h"
+#include "snoop.h"
 
 CUpdateAvailDlg::CUpdateAvailDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
-      , bUpdateAutoStill(FALSE)
+    : CDialog(IDD_UPDATEAVAILDLG, pParent)
+      , bUpdateAutoStill(false)
 {
 }
 

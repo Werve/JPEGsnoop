@@ -20,8 +20,9 @@
 
 #include "AboutDlg.h"
 #include "snoop.h"
+#include "Resource.h"
 
-CAboutDlg::CAboutDlg() : CDialog(IDD)
+CAboutDlg::CAboutDlg() : CDialog(IDD_ABOUTBOX)
 {
 }
 

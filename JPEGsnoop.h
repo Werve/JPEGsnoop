@@ -18,12 +18,10 @@
 
 #pragma once
 
-#include "JPEGsnoopDoc.h"
-#include "SnoopConfig.h"
-#include "JPEGsnoopCore.h"
-#include "afxwinappex.h"    //xxx
-
 class CDbSigs;
+class CDocLog;
+class CSnoopConfig;
+class CJPEGsnoopDoc;
 
 // Define global variable for application log
 extern CDocLog* glb_pDocLog;

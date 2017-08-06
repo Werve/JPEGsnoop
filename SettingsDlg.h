@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box for the application settings
 class CSettingsDlg : public CDialog
 {
@@ -33,11 +31,12 @@ public:
     BOOL m_bDbSubmitNet;
     UINT m_nRptErrMaxScanDecode;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_SETTINGSDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

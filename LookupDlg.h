@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box used to look up a file offset from a pixel coordinate
 class CLookupDlg : public CDialog
 {
@@ -27,11 +25,12 @@ public:
     explicit CLookupDlg(CWnd* pParent = nullptr);
     CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY);
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_LOOKUP
     };
+#endif
 
     // Callback function for LookupFilePosPix()
     void SetCbLookup(void* pClassCbLookup,

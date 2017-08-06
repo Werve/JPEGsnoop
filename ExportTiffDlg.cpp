@@ -19,9 +19,10 @@
 #include "stdafx.h"
 
 #include "ExportTiffDlg.h"
+#include "Resource.h"
 
 CExportTiffDlg::CExportTiffDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_EXPORTTIFFDLG, pParent)
       , m_nCtlFmt(0)
 {
 }

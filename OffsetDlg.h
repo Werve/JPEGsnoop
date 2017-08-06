@@ -19,7 +19,6 @@
 #pragma once
 
 #include <afxwin.h>
-#include "Resource.h"
 
 // Dialog box for adjusting the starting file decode offset
 class COffsetDlg : public CDialog
@@ -30,11 +29,12 @@ public:
     void SetOffset(unsigned nPos);
     unsigned GetOffset() const;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_OFFSETDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

@@ -19,9 +19,10 @@
 #include "stdafx.h"
 
 #include "NoteDlg.h"
+#include "Resource.h"
 
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_NOTEDLG, pParent)
       , bCoachOff(true)
 {
 }

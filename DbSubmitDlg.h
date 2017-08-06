@@ -18,8 +18,7 @@
 
 #pragma once
 
-#include "afxwin.h"
-#include "Resource.h"
+#include <afxwin.h>
 
 // Dialog box that enables user to submit a new signature to the database
 class CDbSubmitDlg : public CDialog
@@ -36,11 +35,12 @@ public:
     int m_nSource;
     CString m_strNotes;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_DBSUBMITDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

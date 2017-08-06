@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box displayed while checking for updates
 // Modeless dialog box
 class CModelessDlg : public CDialog
@@ -36,14 +34,14 @@ public:
 
     CString strMsg;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_MODELESSDLG
     };
+#endif
 
 protected:
-    void DoDataExchange(CDataExchange* pDX) override;
     void PostNcDestroy() override
     {
         delete this;

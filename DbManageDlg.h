@@ -31,8 +31,7 @@
 
 #pragma once
 
-#include "afxwin.h"
-#include "Resource.h"
+#include <afxwin.h>
 
 class CDbManageDlg : public CDialog
 {
@@ -44,11 +43,12 @@ public:
     void PopulateList();
     void GetRemainIndices(CUIntArray& anRemain) const;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_DBMANAGEDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

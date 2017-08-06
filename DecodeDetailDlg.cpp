@@ -20,9 +20,10 @@
 
 #include "DecodeDetailDlg.h"
 #include "JPEGsnoop.h"
+#include "Resource.h"
 
 CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_DECODEDETAILDLG, pParent)
       , m_nMcuX(0)
       , m_nMcuY(0)
       , m_nMcuLen(0)

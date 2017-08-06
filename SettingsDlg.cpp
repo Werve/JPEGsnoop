@@ -21,9 +21,10 @@
 #include "SettingsDlg.h"
 #include "JPEGsnoop.h"
 #include "SnoopConfig.h"
+#include "Resource.h"
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_SETTINGSDLG, pParent)
       , m_bUpdateAuto(false)
       , m_nUpdateChkDays(0)
       , m_bReprocessAuto(false)
@@ -84,7 +85,7 @@ CString CSettingsDlg::SelectFolder(const CString& strMessage) const
         SHGetPathFromIDList(pList, szBuffer);
         Result = szBuffer;
 
-        // Global pointer to the shell's IMalloc interface.  
+        // Global pointer to the shell's IMalloc interface.
         LPMALLOC pMalloc;
 
         // Get the shell's allocator and free the PIDL returned by

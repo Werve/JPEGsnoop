@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box providing options for exporting to JPEG
 class CExportDlg : public CDialog
 {
@@ -34,11 +32,12 @@ public:
     BOOL m_bForceSoi;
     BOOL m_bExtractAllEn;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_EXPORTDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

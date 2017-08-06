@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box for Batch image processing
 class CBatchDlg : public CDialog
 {
@@ -31,11 +29,12 @@ public:
     CString m_strDirSrc;
     CString m_strDirDst;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_BATCHDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

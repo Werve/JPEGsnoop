@@ -19,9 +19,10 @@
 #include "stdafx.h"
 
 #include "DbSubmitDlg.h"
+#include "Resource.h"
 
 CDbSubmitDlg::CDbSubmitDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_DBSUBMITDLG, pParent)
       , m_nSource(0)
 {
 }

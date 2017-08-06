@@ -21,10 +21,10 @@
 #include "BatchDlg.h"
 #include "JPEGsnoop.h"
 #include "FolderDlg.h"
-
+#include "Resource.h"
 
 CBatchDlg::CBatchDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_BATCHDLG, pParent)
       , m_bProcessSubdir(false)
       , m_bExtractAll(false)
 {

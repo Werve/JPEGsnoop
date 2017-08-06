@@ -20,9 +20,10 @@
 
 #include "TermsDlg.h"
 #include "JPEGsnoop.h"
+#include "Resource.h"
 
 CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_TERMSDLG, pParent)
       , bEulaOk(false)
       , bUpdateAuto(true)
 {

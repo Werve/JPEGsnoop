@@ -32,8 +32,9 @@
 #include "ModelessDlg.h"
 #include "NoteDlg.h"
 #include "DbSigs.h"
-#include "afxinet.h"            // For internet
-#include "io.h"                 // For _open_osfhandle
+#include "Resource.h"
+#include <afxinet.h>            // For internet
+#include <io.h>                 // For _open_osfhandle
 
 // Global log file
 CDocLog* glb_pDocLog = nullptr;
@@ -1099,7 +1100,7 @@ CJPEGsnoopDoc* CJPEGsnoopApp::GetCurDoc()
 
 // Reprocess the current file
 // - Invokes the Reprocess action in the Document
-// - Ensures that the document is available first 
+// - Ensures that the document is available first
 void CJPEGsnoopApp::DocReprocess()
 {
     CJPEGsnoopDoc * pMyDoc = GetCurDoc();
@@ -1215,7 +1216,7 @@ void CJPEGsnoopApp::OnScansegmentHistogramy()
     // output, assume that this will cause a change and
     // require us to dirty the scan decode.
     // FIXME: If someone has scan preview on, processes once,
-    // turns scan preview off, flips this option twice, and then 
+    // turns scan preview off, flips this option twice, and then
     // turns scan preview on, they will need to recalc the scan.
     // Perhaps fix is to leave all of this up to ImgDec() block,
     // and have it look at the AppConfig options being sent. If
@@ -1473,7 +1474,7 @@ void CJPEGsnoopApp::OnScansegmentHistogram()
     // output, assume that this will cause a change and
     // require us to dirty the scan decode.
     // FIXME: If someone has scan preview on, processes once,
-    // turns scan preview off, flips this option twice, and then 
+    // turns scan preview off, flips this option twice, and then
     // turns scan preview on, they will need to recalc the scan.
     // Perhaps fix is to leave all of this up to ImgDec() block,
     // and have it look at the AppConfig options being sent. If

@@ -19,15 +19,11 @@
 #include "stdafx.h"
 
 #include "ModelessDlg.h"
+#include "Resource.h"
 
 CModelessDlg::CModelessDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_MODELESSDLG, pParent)
 {
-}
-
-void CModelessDlg::DoDataExchange(CDataExchange* pDX)
-{
-    CDialog::DoDataExchange(pDX);
 }
 
 void CModelessDlg::OnCancel()

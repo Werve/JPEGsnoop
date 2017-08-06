@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box showing  a warning note
 // Provide a means of disabling the specific coach message
 class CNoteDlg : public CDialog
@@ -30,11 +28,12 @@ public:
     CString strMsg;
     BOOL bCoachOff;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_NOTEDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

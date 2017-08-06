@@ -18,20 +18,20 @@
 
 #pragma once
 
-#include "afxwin.h"
 #include "HyperlinkStatic.h"
-#include "Resource.h"
+#include <afxwin.h>
 
 class CAboutDlg : public CDialog
 {
 public:
     CAboutDlg();
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_ABOUTBOX
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

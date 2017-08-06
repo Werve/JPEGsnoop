@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include "Resource.h"
-
 // Dialog box providing options for detailed scan segment decoding
 class CDecodeDetailDlg : public CDialog
 {
@@ -34,11 +32,12 @@ public:
     UINT m_nLoadMcuY;
     UINT m_nLoadMcuLen;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_DECODEDETAILDLG
     };
+#endif
 
 protected:
     void DoDataExchange(CDataExchange* pDX) override;

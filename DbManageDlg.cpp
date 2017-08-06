@@ -19,9 +19,10 @@
 #include "stdafx.h"
 
 #include "DbManageDlg.h"
+#include "Resource.h"
 
 CDbManageDlg::CDbManageDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_DBMANAGEDLG, pParent)
 {
     m_asToInsert.SetSize(0, 10);
     m_anListBoxInd.SetSize(0, 10);
@@ -43,7 +44,7 @@ BOOL CDbManageDlg::OnInitDialog()
     lpiTabs[2] = 300;
     m_ctlListBox.SetTabStops(3, lpiTabs);
 
-    // Transfer the pending list of 
+    // Transfer the pending list of
     PopulateList();
 
     return TRUE;

@@ -21,9 +21,10 @@
 #include "OverlayBufDlg.h"
 #include "jpegsnoop.h"
 #include "General.h"
+#include "Resource.h"
 
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_OVERLAYBUFDLG, pParent)
       , m_nLen(0)
       , m_bEn(false)
 {
@@ -38,7 +39,7 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
 
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
                                bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_OVERLAYBUFDLG, pParent)
       , m_nLen(0)
       , m_bEn(false)
 {

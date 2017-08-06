@@ -18,8 +18,7 @@
 
 #pragma once
 
-#include "afxwin.h"
-#include "Resource.h"
+#include <afxwin.h>
 
 // Dialog box providing options for exporting to TIFF
 class CExportTiffDlg : public CDialog
@@ -30,11 +29,12 @@ public:
     int m_nCtlFmt;
     CString m_sFname;
 
-    // Dialog Data
+#ifdef AFX_DESIGN_TIME
     enum
     {
         IDD = IDD_EXPORTTIFFDLG
     };
+#endif
 
 protected:
     BOOL OnInitDialog() override;

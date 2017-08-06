@@ -20,9 +20,10 @@
 
 #include "LookupDlg.h"
 #include "jpegsnoop.h"
+#include "Resource.h"
 
 CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_LOOKUP, pParent)
       , m_pClassCbLookup(nullptr)
       , m_pCbLookup(nullptr)
       , m_nPixX(0)
@@ -34,7 +35,7 @@ CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
 }
 
 CLookupDlg::CLookupDlg(CWnd* pParent, unsigned nSizeX, unsigned nSizeY)
-    : CDialog(IDD, pParent)
+    : CDialog(IDD_LOOKUP, pParent)
       , m_pClassCbLookup(nullptr)
       , m_pCbLookup(nullptr)
       , m_nPixX(0)
