@@ -185,11 +185,7 @@ void CRegString::write()
     {
         return;
     }
-#ifdef _UNICODE
-    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)m_value.GetString(), (m_value.GetLength() + 1) * 2) == ERROR_SUCCESS)
-#else
-    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)m_value.GetString(), m_value.GetLength()+1)==ERROR_SUCCESS)
-#endif
+    if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, (BYTE *)m_value.GetString(), (m_value.GetLength() + 1) * sizeof(TCHAR)) == ERROR_SUCCESS)
     {
         m_read = TRUE;
     }

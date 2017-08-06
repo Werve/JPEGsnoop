@@ -219,16 +219,10 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
     LPWSTR pBufUni = reinterpret_cast<LPWSTR>(pBufBase);
     LPSTR pBufAsc = reinterpret_cast<LPSTR>(pBufBase);
 
-#ifdef UNICODE
-    // Create non-Unicode version of string
-    // Ref: http://social.msdn.microsoft.com/Forums/vstudio/en-US/85f02321-de88-47d2-98c8-87daa839a98e/how-to-convert-cstring-to-const-char-?forum=vclanguage
-    // Added constant specifier
-    USES_CONVERSION;
     // Not specifying code page explicitly but assume content
     // should be ASCII. Default code page is probably Windows-1252.
     LPCSTR pszNonUnicode = CW2A(strIn.LockBuffer());
     strIn.UnlockBuffer();
-#endif
 
     unsigned nChInd;
     unsigned nStrLen = strIn.GetLength();
@@ -242,7 +236,6 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
         }
         else
         {
-#ifdef UNICODE
             // To avoid Warning C4244: Conversion from 'wchar_t' to 'char' possible loss of data
             // We need to implement conversion here
             // Ref: http://stackoverflow.com/questions/4786292/converting-unicode-strings-and-vice-versa
@@ -250,11 +243,6 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
             // Since we have compiled for unicode, the CString character fetch
             // will be unicode char. Therefore we need to use ANSI-converted form.
             chAsc = pszNonUnicode[nChInd];
-#else
-            // Since we have compiled for non-Unicode, the CString character fetch
-            // will be single byte char
-            chAsc = strIn.GetAt(nChInd);
-#endif
             pBufAsc[nChInd] = chAsc;
         }
         // Advance pointers

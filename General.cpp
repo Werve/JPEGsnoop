@@ -136,17 +136,12 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
     PBYTE pBufBase = pBuf + nOffsetBytes;
     LPSTR pBufAsc = (LPSTR)pBufBase;
 
-#ifdef UNICODE
-
     CW2A pszNonUnicode(strIn);
-
-#endif  // UNICODE
 
     unsigned nChInd;
     unsigned nStrLen = strIn.GetLength();
     for (nChInd = 0; (nChInd < nStrLen) && (nOffsetBytes < nMaxBytes); nChInd++)
     {
-#ifdef UNICODE
         // To avoid Warning C4244: Conversion from 'wchar_t' to 'char' possible loss of data
         // We need to implement conversion here
         // Ref: http://stackoverflow.com/questions/4786292/converting-unicode-strings-and-vice-versa
@@ -154,11 +149,6 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
         // Since we have compiled for unicode, the CString character fetch
         // will be unicode char. Therefore we need to use ANSI-converted form.
         chAsc = pszNonUnicode[nChInd];
-#else
-        // Since we have compiled for non-Unicode, the CString character fetch
-        // will be single byte char
-        chAsc = strIn.GetAt(nChInd);
-#endif
         pBufAsc[nChInd] = chAsc;
 
         // Advance pointers
