@@ -81,22 +81,19 @@
 
 #pragma once
 
-/* Typedef a 32 bit type */
-#ifndef UINT4
-typedef unsigned long int UINT4;
-#endif
+#include <cstdint>
 
 /* Data structure for MD5 (Message Digest) computation */
-typedef struct
+struct MD5_CTX
 {
-    UINT4 i[2]; /* Number of _bits_ handled mod 2^64 */
-    UINT4 buf[4]; /* Scratch buffer */
+    std::uint32_t i[2]; /* Number of _bits_ handled mod 2^64 */
+    std::uint32_t buf[4]; /* Scratch buffer */
     unsigned char in[64]; /* Input buffer */
     unsigned char digest[16]; /* Actual digest after MD5Final call */
-    unsigned int digest32[4]; 
-} MD5_CTX;
+    unsigned int digest32[4];
+};
 
-static void MD5_Transform(UINT4* buf, UINT4* in);
+static void MD5_Transform(std::uint32_t* buf, std::uint32_t* in);
 
 void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber = 0);
 void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen);

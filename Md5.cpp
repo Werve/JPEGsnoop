@@ -105,10 +105,10 @@ static unsigned char MD5_PADDING[64] = {
 
 /* MD5_FF, MD5_GG, MD5_HH, and MD5_II transformations for rounds 1, 2, 3, and 4 */
 /* Rotation is separate from addition to prevent recomputation */
-#define MD5_FF(a, b, c, d, x, s, ac) {(a) += MD5_F ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
-#define MD5_GG(a, b, c, d, x, s, ac) {(a) += MD5_G ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
-#define MD5_HH(a, b, c, d, x, s, ac) {(a) += MD5_H ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
-#define MD5_II(a, b, c, d, x, s, ac) {(a) += MD5_I ((b), (c), (d)) + (x) + (UINT4)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define MD5_FF(a, b, c, d, x, s, ac) {(a) += MD5_F ((b), (c), (d)) + (x) + (std::uint32_t)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define MD5_GG(a, b, c, d, x, s, ac) {(a) += MD5_G ((b), (c), (d)) + (x) + (std::uint32_t)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define MD5_HH(a, b, c, d, x, s, ac) {(a) += MD5_H ((b), (c), (d)) + (x) + (std::uint32_t)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
+#define MD5_II(a, b, c, d, x, s, ac) {(a) += MD5_I ((b), (c), (d)) + (x) + (std::uint32_t)(ac); (a) = ROTATE_LEFT ((a), (s)); (a) += (b); }
 
 /* Constants for transformation */
 #define MD5_S11 7  /* Round 1 */
@@ -129,81 +129,81 @@ static unsigned char MD5_PADDING[64] = {
 #define MD5_S44 21
 
 /* Basic MD5 step. MD5_Transform buf based on in */
-static void MD5_Transform(UINT4* buf, UINT4* in)
+static void MD5_Transform(std::uint32_t* buf, std::uint32_t* in)
 {
-    UINT4 a = buf[0], b = buf[1], c = buf[2], d = buf[3];
+    std::uint32_t a = buf[0], b = buf[1], c = buf[2], d = buf[3];
 
     /* Round 1 */
-    MD5_FF ( a, b, c, d, in[ 0], MD5_S11, (UINT4) 3614090360u); /* 1 */
-    MD5_FF ( d, a, b, c, in[ 1], MD5_S12, (UINT4) 3905402710u); /* 2 */
-    MD5_FF ( c, d, a, b, in[ 2], MD5_S13, (UINT4) 606105819u); /* 3 */
-    MD5_FF ( b, c, d, a, in[ 3], MD5_S14, (UINT4) 3250441966u); /* 4 */
-    MD5_FF ( a, b, c, d, in[ 4], MD5_S11, (UINT4) 4118548399u); /* 5 */
-    MD5_FF ( d, a, b, c, in[ 5], MD5_S12, (UINT4) 1200080426u); /* 6 */
-    MD5_FF ( c, d, a, b, in[ 6], MD5_S13, (UINT4) 2821735955u); /* 7 */
-    MD5_FF ( b, c, d, a, in[ 7], MD5_S14, (UINT4) 4249261313u); /* 8 */
-    MD5_FF ( a, b, c, d, in[ 8], MD5_S11, (UINT4) 1770035416u); /* 9 */
-    MD5_FF ( d, a, b, c, in[ 9], MD5_S12, (UINT4) 2336552879u); /* 10 */
-    MD5_FF ( c, d, a, b, in[10], MD5_S13, (UINT4) 4294925233u); /* 11 */
-    MD5_FF ( b, c, d, a, in[11], MD5_S14, (UINT4) 2304563134u); /* 12 */
-    MD5_FF ( a, b, c, d, in[12], MD5_S11, (UINT4) 1804603682u); /* 13 */
-    MD5_FF ( d, a, b, c, in[13], MD5_S12, (UINT4) 4254626195u); /* 14 */
-    MD5_FF ( c, d, a, b, in[14], MD5_S13, (UINT4) 2792965006u); /* 15 */
-    MD5_FF ( b, c, d, a, in[15], MD5_S14, (UINT4) 1236535329u); /* 16 */
+    MD5_FF ( a, b, c, d, in[ 0], MD5_S11, (std::uint32_t) 3614090360u); /* 1 */
+    MD5_FF ( d, a, b, c, in[ 1], MD5_S12, (std::uint32_t) 3905402710u); /* 2 */
+    MD5_FF ( c, d, a, b, in[ 2], MD5_S13, (std::uint32_t) 606105819u); /* 3 */
+    MD5_FF ( b, c, d, a, in[ 3], MD5_S14, (std::uint32_t) 3250441966u); /* 4 */
+    MD5_FF ( a, b, c, d, in[ 4], MD5_S11, (std::uint32_t) 4118548399u); /* 5 */
+    MD5_FF ( d, a, b, c, in[ 5], MD5_S12, (std::uint32_t) 1200080426u); /* 6 */
+    MD5_FF ( c, d, a, b, in[ 6], MD5_S13, (std::uint32_t) 2821735955u); /* 7 */
+    MD5_FF ( b, c, d, a, in[ 7], MD5_S14, (std::uint32_t) 4249261313u); /* 8 */
+    MD5_FF ( a, b, c, d, in[ 8], MD5_S11, (std::uint32_t) 1770035416u); /* 9 */
+    MD5_FF ( d, a, b, c, in[ 9], MD5_S12, (std::uint32_t) 2336552879u); /* 10 */
+    MD5_FF ( c, d, a, b, in[10], MD5_S13, (std::uint32_t) 4294925233u); /* 11 */
+    MD5_FF ( b, c, d, a, in[11], MD5_S14, (std::uint32_t) 2304563134u); /* 12 */
+    MD5_FF ( a, b, c, d, in[12], MD5_S11, (std::uint32_t) 1804603682u); /* 13 */
+    MD5_FF ( d, a, b, c, in[13], MD5_S12, (std::uint32_t) 4254626195u); /* 14 */
+    MD5_FF ( c, d, a, b, in[14], MD5_S13, (std::uint32_t) 2792965006u); /* 15 */
+    MD5_FF ( b, c, d, a, in[15], MD5_S14, (std::uint32_t) 1236535329u); /* 16 */
 
     /* Round 2 */
-    MD5_GG ( a, b, c, d, in[ 1], MD5_S21, (UINT4) 4129170786u); /* 17 */
-    MD5_GG ( d, a, b, c, in[ 6], MD5_S22, (UINT4) 3225465664u); /* 18 */
-    MD5_GG ( c, d, a, b, in[11], MD5_S23, (UINT4) 643717713u); /* 19 */
-    MD5_GG ( b, c, d, a, in[ 0], MD5_S24, (UINT4) 3921069994u); /* 20 */
-    MD5_GG ( a, b, c, d, in[ 5], MD5_S21, (UINT4) 3593408605u); /* 21 */
-    MD5_GG ( d, a, b, c, in[10], MD5_S22, (UINT4) 38016083u); /* 22 */
-    MD5_GG ( c, d, a, b, in[15], MD5_S23, (UINT4) 3634488961u); /* 23 */
-    MD5_GG ( b, c, d, a, in[ 4], MD5_S24, (UINT4) 3889429448u); /* 24 */
-    MD5_GG ( a, b, c, d, in[ 9], MD5_S21, (UINT4) 568446438u); /* 25 */
-    MD5_GG ( d, a, b, c, in[14], MD5_S22, (UINT4) 3275163606u); /* 26 */
-    MD5_GG ( c, d, a, b, in[ 3], MD5_S23, (UINT4) 4107603335u); /* 27 */
-    MD5_GG ( b, c, d, a, in[ 8], MD5_S24, (UINT4) 1163531501u); /* 28 */
-    MD5_GG ( a, b, c, d, in[13], MD5_S21, (UINT4) 2850285829u); /* 29 */
-    MD5_GG ( d, a, b, c, in[ 2], MD5_S22, (UINT4) 4243563512u); /* 30 */
-    MD5_GG ( c, d, a, b, in[ 7], MD5_S23, (UINT4) 1735328473u); /* 31 */
-    MD5_GG ( b, c, d, a, in[12], MD5_S24, (UINT4) 2368359562u); /* 32 */
+    MD5_GG ( a, b, c, d, in[ 1], MD5_S21, (std::uint32_t) 4129170786u); /* 17 */
+    MD5_GG ( d, a, b, c, in[ 6], MD5_S22, (std::uint32_t) 3225465664u); /* 18 */
+    MD5_GG ( c, d, a, b, in[11], MD5_S23, (std::uint32_t) 643717713u); /* 19 */
+    MD5_GG ( b, c, d, a, in[ 0], MD5_S24, (std::uint32_t) 3921069994u); /* 20 */
+    MD5_GG ( a, b, c, d, in[ 5], MD5_S21, (std::uint32_t) 3593408605u); /* 21 */
+    MD5_GG ( d, a, b, c, in[10], MD5_S22, (std::uint32_t) 38016083u); /* 22 */
+    MD5_GG ( c, d, a, b, in[15], MD5_S23, (std::uint32_t) 3634488961u); /* 23 */
+    MD5_GG ( b, c, d, a, in[ 4], MD5_S24, (std::uint32_t) 3889429448u); /* 24 */
+    MD5_GG ( a, b, c, d, in[ 9], MD5_S21, (std::uint32_t) 568446438u); /* 25 */
+    MD5_GG ( d, a, b, c, in[14], MD5_S22, (std::uint32_t) 3275163606u); /* 26 */
+    MD5_GG ( c, d, a, b, in[ 3], MD5_S23, (std::uint32_t) 4107603335u); /* 27 */
+    MD5_GG ( b, c, d, a, in[ 8], MD5_S24, (std::uint32_t) 1163531501u); /* 28 */
+    MD5_GG ( a, b, c, d, in[13], MD5_S21, (std::uint32_t) 2850285829u); /* 29 */
+    MD5_GG ( d, a, b, c, in[ 2], MD5_S22, (std::uint32_t) 4243563512u); /* 30 */
+    MD5_GG ( c, d, a, b, in[ 7], MD5_S23, (std::uint32_t) 1735328473u); /* 31 */
+    MD5_GG ( b, c, d, a, in[12], MD5_S24, (std::uint32_t) 2368359562u); /* 32 */
 
     /* Round 3 */
-    MD5_HH ( a, b, c, d, in[ 5], MD5_S31, (UINT4) 4294588738u); /* 33 */
-    MD5_HH ( d, a, b, c, in[ 8], MD5_S32, (UINT4) 2272392833u); /* 34 */
-    MD5_HH ( c, d, a, b, in[11], MD5_S33, (UINT4) 1839030562u); /* 35 */
-    MD5_HH ( b, c, d, a, in[14], MD5_S34, (UINT4) 4259657740u); /* 36 */
-    MD5_HH ( a, b, c, d, in[ 1], MD5_S31, (UINT4) 2763975236u); /* 37 */
-    MD5_HH ( d, a, b, c, in[ 4], MD5_S32, (UINT4) 1272893353u); /* 38 */
-    MD5_HH ( c, d, a, b, in[ 7], MD5_S33, (UINT4) 4139469664u); /* 39 */
-    MD5_HH ( b, c, d, a, in[10], MD5_S34, (UINT4) 3200236656u); /* 40 */
-    MD5_HH ( a, b, c, d, in[13], MD5_S31, (UINT4) 681279174u); /* 41 */
-    MD5_HH ( d, a, b, c, in[ 0], MD5_S32, (UINT4) 3936430074u); /* 42 */
-    MD5_HH ( c, d, a, b, in[ 3], MD5_S33, (UINT4) 3572445317u); /* 43 */
-    MD5_HH ( b, c, d, a, in[ 6], MD5_S34, (UINT4) 76029189u); /* 44 */
-    MD5_HH ( a, b, c, d, in[ 9], MD5_S31, (UINT4) 3654602809u); /* 45 */
-    MD5_HH ( d, a, b, c, in[12], MD5_S32, (UINT4) 3873151461u); /* 46 */
-    MD5_HH ( c, d, a, b, in[15], MD5_S33, (UINT4) 530742520u); /* 47 */
-    MD5_HH ( b, c, d, a, in[ 2], MD5_S34, (UINT4) 3299628645u); /* 48 */
+    MD5_HH ( a, b, c, d, in[ 5], MD5_S31, (std::uint32_t) 4294588738u); /* 33 */
+    MD5_HH ( d, a, b, c, in[ 8], MD5_S32, (std::uint32_t) 2272392833u); /* 34 */
+    MD5_HH ( c, d, a, b, in[11], MD5_S33, (std::uint32_t) 1839030562u); /* 35 */
+    MD5_HH ( b, c, d, a, in[14], MD5_S34, (std::uint32_t) 4259657740u); /* 36 */
+    MD5_HH ( a, b, c, d, in[ 1], MD5_S31, (std::uint32_t) 2763975236u); /* 37 */
+    MD5_HH ( d, a, b, c, in[ 4], MD5_S32, (std::uint32_t) 1272893353u); /* 38 */
+    MD5_HH ( c, d, a, b, in[ 7], MD5_S33, (std::uint32_t) 4139469664u); /* 39 */
+    MD5_HH ( b, c, d, a, in[10], MD5_S34, (std::uint32_t) 3200236656u); /* 40 */
+    MD5_HH ( a, b, c, d, in[13], MD5_S31, (std::uint32_t) 681279174u); /* 41 */
+    MD5_HH ( d, a, b, c, in[ 0], MD5_S32, (std::uint32_t) 3936430074u); /* 42 */
+    MD5_HH ( c, d, a, b, in[ 3], MD5_S33, (std::uint32_t) 3572445317u); /* 43 */
+    MD5_HH ( b, c, d, a, in[ 6], MD5_S34, (std::uint32_t) 76029189u); /* 44 */
+    MD5_HH ( a, b, c, d, in[ 9], MD5_S31, (std::uint32_t) 3654602809u); /* 45 */
+    MD5_HH ( d, a, b, c, in[12], MD5_S32, (std::uint32_t) 3873151461u); /* 46 */
+    MD5_HH ( c, d, a, b, in[15], MD5_S33, (std::uint32_t) 530742520u); /* 47 */
+    MD5_HH ( b, c, d, a, in[ 2], MD5_S34, (std::uint32_t) 3299628645u); /* 48 */
 
     /* Round 4 */
-    MD5_II ( a, b, c, d, in[ 0], MD5_S41, (UINT4) 4096336452u); /* 49 */
-    MD5_II ( d, a, b, c, in[ 7], MD5_S42, (UINT4) 1126891415u); /* 50 */
-    MD5_II ( c, d, a, b, in[14], MD5_S43, (UINT4) 2878612391u); /* 51 */
-    MD5_II ( b, c, d, a, in[ 5], MD5_S44, (UINT4) 4237533241u); /* 52 */
-    MD5_II ( a, b, c, d, in[12], MD5_S41, (UINT4) 1700485571u); /* 53 */
-    MD5_II ( d, a, b, c, in[ 3], MD5_S42, (UINT4) 2399980690u); /* 54 */
-    MD5_II ( c, d, a, b, in[10], MD5_S43, (UINT4) 4293915773u); /* 55 */
-    MD5_II ( b, c, d, a, in[ 1], MD5_S44, (UINT4) 2240044497u); /* 56 */
-    MD5_II ( a, b, c, d, in[ 8], MD5_S41, (UINT4) 1873313359u); /* 57 */
-    MD5_II ( d, a, b, c, in[15], MD5_S42, (UINT4) 4264355552u); /* 58 */
-    MD5_II ( c, d, a, b, in[ 6], MD5_S43, (UINT4) 2734768916u); /* 59 */
-    MD5_II ( b, c, d, a, in[13], MD5_S44, (UINT4) 1309151649u); /* 60 */
-    MD5_II ( a, b, c, d, in[ 4], MD5_S41, (UINT4) 4149444226u); /* 61 */
-    MD5_II ( d, a, b, c, in[11], MD5_S42, (UINT4) 3174756917u); /* 62 */
-    MD5_II ( c, d, a, b, in[ 2], MD5_S43, (UINT4) 718787259u); /* 63 */
-    MD5_II ( b, c, d, a, in[ 9], MD5_S44, (UINT4) 3951481745u); /* 64 */
+    MD5_II ( a, b, c, d, in[ 0], MD5_S41, (std::uint32_t) 4096336452u); /* 49 */
+    MD5_II ( d, a, b, c, in[ 7], MD5_S42, (std::uint32_t) 1126891415u); /* 50 */
+    MD5_II ( c, d, a, b, in[14], MD5_S43, (std::uint32_t) 2878612391u); /* 51 */
+    MD5_II ( b, c, d, a, in[ 5], MD5_S44, (std::uint32_t) 4237533241u); /* 52 */
+    MD5_II ( a, b, c, d, in[12], MD5_S41, (std::uint32_t) 1700485571u); /* 53 */
+    MD5_II ( d, a, b, c, in[ 3], MD5_S42, (std::uint32_t) 2399980690u); /* 54 */
+    MD5_II ( c, d, a, b, in[10], MD5_S43, (std::uint32_t) 4293915773u); /* 55 */
+    MD5_II ( b, c, d, a, in[ 1], MD5_S44, (std::uint32_t) 2240044497u); /* 56 */
+    MD5_II ( a, b, c, d, in[ 8], MD5_S41, (std::uint32_t) 1873313359u); /* 57 */
+    MD5_II ( d, a, b, c, in[15], MD5_S42, (std::uint32_t) 4264355552u); /* 58 */
+    MD5_II ( c, d, a, b, in[ 6], MD5_S43, (std::uint32_t) 2734768916u); /* 59 */
+    MD5_II ( b, c, d, a, in[13], MD5_S44, (std::uint32_t) 1309151649u); /* 60 */
+    MD5_II ( a, b, c, d, in[ 4], MD5_S41, (std::uint32_t) 4149444226u); /* 61 */
+    MD5_II ( d, a, b, c, in[11], MD5_S42, (std::uint32_t) 3174756917u); /* 62 */
+    MD5_II ( c, d, a, b, in[ 2], MD5_S43, (std::uint32_t) 718787259u); /* 63 */
+    MD5_II ( b, c, d, a, in[ 9], MD5_S44, (std::uint32_t) 3951481745u); /* 64 */
 
     buf[0] += a;
     buf[1] += b;
@@ -214,13 +214,13 @@ static void MD5_Transform(UINT4* buf, UINT4* in)
 // Set pseudoRandomNumber to zero for RFC MD5 implementation
 void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber)
 {
-    mdContext->i[0] = mdContext->i[1] = (UINT4)0;
+    mdContext->i[0] = mdContext->i[1] = (std::uint32_t)0;
 
     /* Load magic initialization constants */
-    mdContext->buf[0] = (UINT4)0x67452301 + (pseudoRandomNumber * 11);
-    mdContext->buf[1] = (UINT4)0xefcdab89 + (pseudoRandomNumber * 71);
-    mdContext->buf[2] = (UINT4)0x98badcfe + (pseudoRandomNumber * 37);
-    mdContext->buf[3] = (UINT4)0x10325476 + (pseudoRandomNumber * 97);
+    mdContext->buf[0] = (std::uint32_t)0x67452301 + (pseudoRandomNumber * 11);
+    mdContext->buf[1] = (std::uint32_t)0xefcdab89 + (pseudoRandomNumber * 71);
+    mdContext->buf[2] = (std::uint32_t)0x98badcfe + (pseudoRandomNumber * 37);
+    mdContext->buf[3] = (std::uint32_t)0x10325476 + (pseudoRandomNumber * 97);
 
     //CAL! Added
     mdContext->digest32[0] = 0;
@@ -231,7 +231,7 @@ void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber)
 
 void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
 {
-    UINT4 in[16];
+    std::uint32_t in[16];
     int mdi = 0;
     unsigned int i = 0, ii = 0;
 
@@ -239,10 +239,10 @@ void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
     mdi = (int)((mdContext->i[0] >> 3) & 0x3F);
 
     /* Update number of bits */
-    if ((mdContext->i[0] + ((UINT4)inLen << 3)) < mdContext->i[0])
+    if ((mdContext->i[0] + ((std::uint32_t)inLen << 3)) < mdContext->i[0])
         mdContext->i[1]++;
-    mdContext->i[0] += ((UINT4)inLen << 3);
-    mdContext->i[1] += ((UINT4)inLen >> 29);
+    mdContext->i[0] += ((std::uint32_t)inLen << 3);
+    mdContext->i[1] += ((std::uint32_t)inLen >> 29);
 
     while (inLen--)
     {
@@ -253,10 +253,10 @@ void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
         if (mdi == 0x40)
         {
             for (i = 0 , ii = 0; i < 16; i++ , ii += 4)
-                in[i] = (((UINT4)mdContext->in[ii + 3]) << 24) |
-                    (((UINT4)mdContext->in[ii + 2]) << 16) |
-                    (((UINT4)mdContext->in[ii + 1]) << 8) |
-                    ((UINT4)mdContext->in[ii]);
+                in[i] = (((std::uint32_t)mdContext->in[ii + 3]) << 24) |
+                    (((std::uint32_t)mdContext->in[ii + 2]) << 16) |
+                    (((std::uint32_t)mdContext->in[ii + 1]) << 8) |
+                    ((std::uint32_t)mdContext->in[ii]);
 
             MD5_Transform(mdContext->buf, in);
             mdi = 0;
@@ -266,7 +266,7 @@ void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
 
 void MD5Final(MD5_CTX* mdContext)
 {
-    UINT4 in[16];
+    std::uint32_t in[16];
     int mdi = 0;
     unsigned int i = 0, ii = 0, padLen = 0;
 
@@ -283,10 +283,10 @@ void MD5Final(MD5_CTX* mdContext)
 
     /* Append length in bits and transform */
     for (i = 0 , ii = 0; i < 14; i++ , ii += 4)
-        in[i] = (((UINT4)mdContext->in[ii + 3]) << 24) |
-            (((UINT4)mdContext->in[ii + 2]) << 16) |
-            (((UINT4)mdContext->in[ii + 1]) << 8) |
-            ((UINT4)mdContext->in[ii]);
+        in[i] = (((std::uint32_t)mdContext->in[ii + 3]) << 24) |
+            (((std::uint32_t)mdContext->in[ii + 2]) << 16) |
+            (((std::uint32_t)mdContext->in[ii + 1]) << 8) |
+            ((std::uint32_t)mdContext->in[ii]);
     MD5_Transform(mdContext->buf, in);
 
     /* Store buffer in digest */

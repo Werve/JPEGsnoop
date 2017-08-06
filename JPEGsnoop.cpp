@@ -82,7 +82,7 @@ void CJPEGsnoopApp::CmdLineHelp()
 // Command-line parser class
 class CMyCommandParser : public CCommandLineInfo
 {
-    typedef enum
+    enum cla_e
     {
         cla_idle,
         cla_input,
@@ -90,7 +90,7 @@ class CMyCommandParser : public CCommandLineInfo
         cla_err,
         cla_batchdir,
         cla_offset_pos
-    } cla_e;
+    };
 
     int index;
     cla_e next_arg;

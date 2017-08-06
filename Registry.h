@@ -34,26 +34,27 @@
 #include <string>
 #include <Shlwapi.h>
 #include <tchar.h>
+
 #ifdef _MFC_VER
 
 /**
  * \ingroup CommonClasses
  * Base class for the registry classes.
  *
- * \par requirements 
+ * \par requirements
  * - win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * - import library Shlwapi.lib
  *
  * \author Stefan Kueng
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
- * \version 1.0 
+ *
+ * \version 1.0
  * \date 06-2002
  * \todo
  * \bug
@@ -107,7 +108,7 @@ public: //methods
  * \code
  * regvalue = CRegDWORD("Software\\Company\\SubKey\\MyValue", 100);
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occured during read from the registry, a default
  * value of 100 is used when accessing the variable.
@@ -121,7 +122,7 @@ public: //methods
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -132,22 +133,22 @@ public: //methods
  * another option to force reads and writes to the registry is to specify TRUE as the
  * third parameter in the constructor.
  *
- * \par requirements 
+ * \par requirements
  * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * import library Shlwapi.lib
  *
  * \author Stefan Kueng (stefan_kueng@catv.rol.ch)
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
+ *
  * \version 1.1
  * added base class CRegBase with methods removeKey() and removeValue()
- * \version 1.0 
+ * \version 1.0
  * \date 06-2002
  * \todo
  * \bug
@@ -209,7 +210,7 @@ protected:
  * \code
  * regvalue = CRegString("Software\\Company\\SubKey\\MyValue", "default");
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occured during read from the registry, a default
  * value of "default" is used when accessing the variable.
@@ -231,7 +232,7 @@ protected:
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -242,23 +243,23 @@ protected:
  * another option to force reads and writes to the registry is to specify TRUE as the
  * third parameter in the constructor.
  *
- * \par requirements 
+ * \par requirements
  * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * import library Shlwapi.lib
  *
  * \author Stefan Kueng (stefan_kueng@catv.rol.ch)
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
+ *
  * \version 1.1
  * corrected a bug, thanks to Hans Dietrich for the correction.
  * added base class CRegBase with methods removeKey() and removeValue()
- * \version 1.0 
+ * \version 1.0
  * \date 06-2002
  * \todo
  * \bug
@@ -304,7 +305,7 @@ protected:
  * \code
  * regvalue = CRegPoint("Software\\Company\\SubKey\\MyValue", CPoint(100,100));
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occured during read from the registry, a default
  * value of 100,100 is used when accessing the variable.
@@ -326,7 +327,7 @@ protected:
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -337,23 +338,23 @@ protected:
  * another option to force reads and writes to the registry is to specify TRUE as the
  * third parameter in the constructor.
  *
- * \par requirements 
+ * \par requirements
  * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * import library Shlwapi.lib
  *
  * \author Stefan Kueng (stefan_kueng@catv.rol.ch)
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
+ *
  * \version 1.1
  * corrected a bug, thanks to Hans Dietrich for the correction.
  * added base class CRegBase with methods removeKey() and removeValue()
- * \version 1.0 
+ * \version 1.0
  * \date 06-2002
  * \todo
  * \bug
@@ -391,8 +392,6 @@ protected:
 
 #endif
 
-typedef std::basic_string<TCHAR> stdstring;
-
 class CRegStdBase
 {
 public: //methods
@@ -423,8 +422,8 @@ public: //methods
     //members
     HKEY m_base; ///< handle to the registry base
     HKEY m_hKey; ///< handle to the open registry key
-    stdstring m_key; ///< the name of the value
-    stdstring m_path; ///< the path to the key
+    std::wstring m_key; ///< the name of the value
+    std::wstring m_path; ///< the path to the key
 };
 
 /**
@@ -440,7 +439,7 @@ public: //methods
  * \code
  * regvalue = CRegStdString("Software\\Company\\SubKey\\MyValue", "default");
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occured during read from the registry, a default
  * value of "default" is used when accessing the variable.
@@ -448,7 +447,7 @@ public: //methods
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -459,19 +458,19 @@ public: //methods
  * another option to force reads and writes to the registry is to specify TRUE as the
  * third parameter in the constructor.
  *
- * \par requirements 
+ * \par requirements
  * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * import library Shlwapi.lib
  *
  * \author Stefan Kueng (stefan_kueng@catv.rol.ch)
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
+ *
  * \version 1.0
  * first version which uses std::string instead of CString.
  * \date 10-2002
@@ -487,22 +486,19 @@ public:
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    CRegStdString(stdstring key, stdstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegStdString(std::wstring key, std::wstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
 
-    stdstring read(); ///< reads the value from the registry
+    std::wstring read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
 
-    operator stdstring();
-    CRegStdString& operator=(stdstring s);
-    //CAL! Commended out the following as otherwise we get error C2440. We don't
-    //     use this function anyway.
-    //CRegStdString& operator+=(stdstring s) { return *this = (stdstring)*this + s; }
+    operator std::wstring();
+    CRegStdString& operator=(std::wstring s);
     operator LPCTSTR();
 
 protected:
 
-    stdstring m_value; ///< the cached value of the registry
-    stdstring m_defaultvalue; ///< the default value to use
+    std::wstring m_value; ///< the cached value of the registry
+    std::wstring m_defaultvalue; ///< the default value to use
     BOOL m_read; ///< indicates if the value has already been read from the registry
     BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
@@ -520,7 +516,7 @@ protected:
  * \code
  * regvalue = CRegStdWORD("Software\\Company\\SubKey\\MyValue", 100);
  * \endcode
- * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path 
+ * this will set the registry value "MyValue" under HKEY_CURRENT_USER with path
  * "Software\Company\SubKey" to the variable. If the key does not yet exist or
  * an error occured during read from the registry, a default
  * value of 100 is used when accessing the variable.
@@ -534,7 +530,7 @@ protected:
  * once the value is read, no more read accesses to the registry will be made.
  * this means the variable will contain a wrong value if the corresponding registry
  * entry is changed by anything else than this variable! If you think that could happen
- * then use 
+ * then use
  * \code
  * regvalue.read();
  * \endcode
@@ -545,20 +541,20 @@ protected:
  * another option to force reads and writes to the registry is to specify TRUE as the
  * third parameter in the constructor.
  *
- * \par requirements 
+ * \par requirements
  * win98 or later, win2k or later, win95 with IE4 or later, winNT4 with IE4 or later
  * import library Shlwapi.lib
  *
  * \author Stefan Kueng
  *
- * \par license 
+ * \par license
  * This code is absolutely free to use and modify. The code is provided "as is" with
  * no expressed or implied warranty. The author accepts no liability if it causes
- * any damage to your computer, causes your pet to fall ill, increases baldness 
+ * any damage to your computer, causes your pet to fall ill, increases baldness
  * or makes your car start emitting strange noises when you start it up.
  * This code has no bugs, just undocumented features!
- * 
- * \version 1.0 
+ *
+ * \version 1.0
  * \date 11-2002
  * \todo
  * \bug
@@ -576,7 +572,7 @@ public:
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    CRegStdWORD(stdstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegStdWORD(std::wstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
 
     DWORD read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry

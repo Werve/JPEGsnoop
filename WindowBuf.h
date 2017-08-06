@@ -45,7 +45,7 @@
 
 #define MAX_BUF_READ_STR    255 // Max number of bytes to fetch in BufReadStr()
 
-typedef struct
+struct sOverlay
 {
     bool bEn; // Enabled? -- not used currently
     unsigned nStart; // File position
@@ -60,7 +60,7 @@ typedef struct
     int nDcAdjustY;
     int nDcAdjustCb;
     int nDcAdjustCr;
-} sOverlay;
+};
 
 class CwindowBuf
 {

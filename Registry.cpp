@@ -316,20 +316,20 @@ CRegStdString::CRegStdString()
  * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
-CRegStdString::CRegStdString(stdstring key, stdstring def, BOOL force, HKEY base)
+CRegStdString::CRegStdString(std::wstring key, std::wstring def, BOOL force, HKEY base)
 {
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
     m_read = FALSE;
 
-    stdstring::size_type pos = key.find_last_of(_T('\\'));
+    std::wstring::size_type pos = key.find_last_of(_T('\\'));
     m_path = key.substr(0, pos);
     m_key = key.substr(pos + 1);
     read();
 }
 
-stdstring CRegStdString::read()
+std::wstring CRegStdString::read()
 {
     if (RegOpenKeyEx(m_base, m_path.c_str(), 0, KEY_EXECUTE, &m_hKey) == ERROR_SUCCESS)
     {
@@ -373,14 +373,14 @@ CRegStdString::operator LPCTSTR()
     return read().c_str();
 }
 
-CRegStdString::operator stdstring()
+CRegStdString::operator std::wstring()
 {
     if ((m_read) && (!m_force))
         return m_value;
     return read();
 }
 
-CRegStdString& CRegStdString::operator =(stdstring s)
+CRegStdString& CRegStdString::operator =(std::wstring s)
 {
     if ((s == m_value) && (!m_force))
     {
@@ -408,7 +408,7 @@ CRegStdWORD::CRegStdWORD()
  * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
-CRegStdWORD::CRegStdWORD(stdstring key, DWORD def, BOOL force, HKEY base)
+CRegStdWORD::CRegStdWORD(std::wstring key, DWORD def, BOOL force, HKEY base)
 {
     m_value = 0;
     m_defaultvalue = def;
@@ -416,7 +416,7 @@ CRegStdWORD::CRegStdWORD(stdstring key, DWORD def, BOOL force, HKEY base)
     m_base = base;
     m_read = FALSE;
 
-    stdstring::size_type pos = key.find_last_of(_T('\\'));
+    std::wstring::size_type pos = key.find_last_of(_T('\\'));
     m_path = key.substr(0, pos);
     m_key = key.substr(pos + 1);
     read();

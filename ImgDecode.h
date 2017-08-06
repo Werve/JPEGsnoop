@@ -173,7 +173,7 @@ enum teScanBufStatus
 
 // Per-pixel color conversion structure
 // - Records each stage of the process and associated clipping/ranging
-typedef struct
+struct PixelCc
 {
     // Pre-ranged YCC
     // - Raw YCC value from pixel map before any adjustment
@@ -206,11 +206,11 @@ typedef struct
 
     // Any YCC or RGB clipping performed?
     unsigned nClip; // Multi-bit indicator of clipping (CC_CLIP_*)
-} PixelCc;
+};
 
 
 // Per-pixel stats: clipping (overflow and underflow) in YCC and RGB
-typedef struct
+struct PixelCcClip
 {
     unsigned nClipYUnder;
     unsigned nClipYOver;
@@ -225,11 +225,11 @@ typedef struct
     unsigned nClipBUnder;
     unsigned nClipBOver;
     unsigned nClipWhiteOver;
-} PixelCcClip;
+};
 
 
 // Min-max and average pixel stats for histogram
-typedef struct
+struct PixelCcHisto
 {
     int nPreclipYMin;
     int nPreclipYMax;
@@ -272,7 +272,7 @@ typedef struct
     int nPreclipBSum;
 
     unsigned nCount;
-} PixelCcHisto;
+};
 
 
 class CimgDecode
