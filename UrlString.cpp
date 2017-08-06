@@ -35,10 +35,10 @@
 CUrlString::CUrlString()
 {
     m_csUnsafe = _T("%=\"<>\\^[]`+$,@:;/!#?&'");
-    for (int iChar = 1; iChar < 33; iChar++)
-        m_csUnsafe += (char)iChar;
-    for (int iChar = 124; iChar < 256; iChar++)
-        m_csUnsafe += (char)iChar;
+    for (wchar_t iChar = 1; iChar < 33; iChar++)
+        m_csUnsafe += iChar;
+    for (wchar_t iChar = 124; iChar < 256; iChar++)
+        m_csUnsafe += iChar;
 }
 
 CString CUrlString::Encode(CString csDecoded) const

@@ -393,9 +393,7 @@ void CJPEGsnoopCore::DoLogSave(CString strLogName)
         //
         // TODO: Revise this logic so that we can have more foreign-character support
         // in the batch output files.
-        CW2A strAscii(strLine);
-        CString strConv(strAscii);
-        pLog->WriteString(strConv);
+        pLog->WriteString(strLine);
     }
 
     // Close the file

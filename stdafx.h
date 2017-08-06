@@ -28,7 +28,7 @@
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS
 
 // Disable implicit narrow wide conversion.
-//#define _CSTRING_DISABLE_NARROW_WIDE_CONVERSION
+#define _CSTRING_DISABLE_NARROW_WIDE_CONVERSION
 
 // Only use the new Unicode <-> Ansi conversion macro's.
 #define _ATL_EX_CONVERSION_MACROS_ONLY

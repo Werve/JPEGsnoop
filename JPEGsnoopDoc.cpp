@@ -431,7 +431,7 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
             strTemp.Format(_T(" %2.2X"), pszBuffer[nIndex]);
 
         if (_istprint(pszBuffer[nIndex]))
-            strCharsIn += pszBuffer[nIndex];
+            strCharsIn += static_cast<TCHAR>(pszBuffer[nIndex]);
         else
             strCharsIn += _T('.');
         strLine += strTemp;

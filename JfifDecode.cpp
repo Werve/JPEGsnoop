@@ -1667,7 +1667,7 @@ bool CjfifDecode::DecodeMakerSubType()
         CString strTmp;
         for (unsigned nInd = 0; nInd < 5; nInd++)
         {
-            strTmp += Buf(m_nPos + nInd);
+            strTmp += static_cast<TCHAR>(Buf(m_nPos + nInd));
         }
 
         if (strTmp == _T("Nikon"))
@@ -1711,7 +1711,7 @@ bool CjfifDecode::DecodeMakerSubType()
         for (unsigned ind = 0; ind < 8; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
-                strTmp += Buf(m_nPos + ind);
+                strTmp += static_cast<TCHAR>(Buf(m_nPos + ind));
         }
         if ((strTmp == _T("SIGMA")) ||
             (strTmp == _T("FOVEON")))
@@ -1735,7 +1735,7 @@ bool CjfifDecode::DecodeMakerSubType()
         for (unsigned ind = 0; ind < 8; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
-                strTmp += Buf(m_nPos + ind);
+                strTmp += static_cast<TCHAR>(Buf(m_nPos + ind));
         }
         if (strTmp == _T("FUJIFILM"))
         {
@@ -1759,7 +1759,7 @@ bool CjfifDecode::DecodeMakerSubType()
         for (unsigned ind = 0; ind < 12; ind++)
         {
             if (Buf(m_nPos + ind) != 0)
-                strTmp += Buf(m_nPos + ind);
+                strTmp += static_cast<TCHAR>(Buf(m_nPos + ind));
         }
         if (strTmp == _T("SONY DSC "))
         {
@@ -2443,7 +2443,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                     {
                         cVal = '.';
                     }
-                    strValOut += cVal;
+                    strValOut += static_cast<TCHAR>(cVal);
                 }
             }
             strFull += strValOut;
@@ -3018,7 +3018,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             {
                 unsigned char cTmp = Buf(nPosExifStart + nIfdOffset + 8 + vInd);
                 if (cTmp == 0) { bDone = true; }
-                else { strValOut += cTmp; }
+                else { strValOut += static_cast<TCHAR>(cTmp); }
             }
             strValOut += _T("\"");
         }
@@ -3338,10 +3338,10 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             }
 
             // For Nikon & Sigma, we simply support the quality field
-            if ((strIfdTag == "Nikon1.Quality") ||
-                (strIfdTag == "Nikon2.Quality") ||
-                (strIfdTag == "Nikon3.Quality") ||
-                (strIfdTag == "Sigma.Quality"))
+            if ((strIfdTag == L"Nikon1.Quality") ||
+                (strIfdTag == L"Nikon2.Quality") ||
+                (strIfdTag == L"Nikon3.Quality") ||
+                (strIfdTag == L"Sigma.Quality"))
             {
                 m_strImgQualExif = strValOut;
 
@@ -3819,10 +3819,10 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
 
     strTmp.Format(_T("        %-33s : 0x%08X"),_T("Profile flags"), nProfFlags);
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(nProfFlags, 0)) ? "Embedded profile" : "Profile not embedded";
+    strTmp1 = (TestBit(nProfFlags, 0)) ? L"Embedded profile" : L"Profile not embedded";
     strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(nProfFlags, 1)) ? "Profile can be used independently of embedded" : "Profile can't be used independently of embedded";
+    strTmp1 = (TestBit(nProfFlags, 1)) ? L"Profile can be used independently of embedded" : L"Profile can't be used independently of embedded";
     strTmp.Format(_T("        %-35s > %s"),_T("Profile flags"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
 
@@ -3834,16 +3834,16 @@ unsigned CjfifDecode::DecodeIccHeader(unsigned nPos)
 
     strTmp.Format(_T("        %-33s : 0x%08X_%08X"),_T("Device attributes"), anDevAttrib[1], anDevAttrib[0]);
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(anDevAttrib[0], 0)) ? "Transparency" : "Reflective";
+    strTmp1 = (TestBit(anDevAttrib[0], 0)) ? L"Transparency" : L"Reflective";
     strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(anDevAttrib[0], 1)) ? "Matte" : "Glossy";
+    strTmp1 = (TestBit(anDevAttrib[0], 1)) ? L"Matte" : L"Glossy";
     strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(anDevAttrib[0], 2)) ? "Media polarity = positive" : "Media polarity = negative";
+    strTmp1 = (TestBit(anDevAttrib[0], 2)) ? L"Media polarity = positive" : L"Media polarity = negative";
     strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
-    strTmp1 = (TestBit(anDevAttrib[0], 3)) ? "Colour media" : "Black & white media";
+    strTmp1 = (TestBit(anDevAttrib[0], 3)) ? L"Colour media" : L"Black & white media";
     strTmp.Format(_T("        %-35s > %s"),_T("Device attributes"), strTmp1.GetString());
     m_pLog->AddLine(strTmp);
 
@@ -6513,7 +6513,7 @@ void CjfifDecode::PrepareSignatureSingle(bool bRotate)
     if (DB_SIG_VER == 0x00)
     {
         strHashIn += "*CSS,";
-        strHashIn += m_strImgQuantCss;
+        strHashIn += CW2A(m_strImgQuantCss, CP_UTF8);
         strHashIn += ",";
     }
     strHashIn += "*END";
@@ -6610,9 +6610,9 @@ void CjfifDecode::PrepareSignatureThumbSingle(bool bRotate)
 
     if (DB_SIG_VER == 0x00)
     {
-        strHashIn = _T("");
+        strHashIn.Empty();
     }
-    strHashIn = _T("JPEGsnoop");
+    strHashIn = "JPEGsnoop";
 
     // Need to duplicate DQT0 if we only have one DQT table
     for (unsigned nSet = 0; nSet < 4; nSet++)
@@ -6635,7 +6635,7 @@ void CjfifDecode::PrepareSignatureThumbSingle(bool bRotate)
     if (DB_SIG_VER == 0x00)
     {
         strHashIn += "*CSS,";
-        strHashIn += m_strImgQuantCss;
+        strHashIn += CW2A(m_strImgQuantCss, CP_UTF8);
         strHashIn += ",";
     }
     strHashIn += "*END";

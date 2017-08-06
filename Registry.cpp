@@ -36,14 +36,13 @@
 #ifdef _MFC_VER
 //MFC is available - also use the MFC-based classes 
 
-CRegDWORD::CRegDWORD()
+CRegDWORD::CRegDWORD() :
+    m_value(0),
+    m_defaultvalue(0),
+    m_read(false),
+    m_force(false)
 {
-    m_value = 0;
-    m_defaultvalue = 0;
-    m_key = "";
     m_base = HKEY_CURRENT_USER;
-    m_read = FALSE;
-    m_force = FALSE;
 }
 
 /**
@@ -139,7 +138,6 @@ CRegString::CRegString()
  */
 CRegString::CRegString(CString key, CString def, BOOL force, HKEY base)
 {
-    m_value = "";
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
@@ -215,7 +213,6 @@ CRegPoint::CRegPoint()
 {
     m_value = CPoint(0, 0);
     m_defaultvalue = CPoint(0, 0);
-    m_key = "";
     m_base = HKEY_CURRENT_USER;
     m_read = FALSE;
     m_force = FALSE;

@@ -26,7 +26,7 @@
 #pragma once
 
 #define DBEX_ENTRIES_MAX 300
-#define DB_VER_STR "03"
+#define DB_VER_STR _T("03")
 
 #include "snoop.h"
 

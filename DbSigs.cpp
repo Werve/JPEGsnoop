@@ -184,7 +184,7 @@ bool CDbSigs::BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool b
             char chAsc = pBuf[nInd];
             if ((chAsc != '\n') && (chAsc != 0))
             {
-                strOut += chAsc;
+                strOut += static_cast<TCHAR>(chAsc);
             }
             else
             {
@@ -635,7 +635,7 @@ void CDbSigs::DatabaseExtraStore()
     unsigned nMaxBufBytes = MAX_BUF_SET_FILE;
 
     BOOL bRet = BufWriteStr(pBuf,_T("JPEGsnoop"), nMaxBufBytes, bModeUni, nBufOffset);
-    bRet = BufWriteStr(pBuf,_T(DB_VER_STR), nMaxBufBytes, bModeUni, nBufOffset);
+    bRet = BufWriteStr(pBuf, DB_VER_STR, nMaxBufBytes, bModeUni, nBufOffset);
     bRet = BufWriteStr(pBuf,_T("*DB*"), nMaxBufBytes, bModeUni, nBufOffset);
 
     // Determine how many entries will remain (after removing marked

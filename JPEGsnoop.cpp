@@ -663,8 +663,8 @@ void CJPEGsnoopApp::DoCmdLineCore()
 void CJPEGsnoopApp::CmdLineDoneMessage()
 {
     CString strMsg = L"\n";
-    strMsg += "JPEGsnoop operations complete\n";
-    strMsg += "\n";
+    strMsg += L"JPEGsnoop operations complete\n";
+    strMsg += L"\n";
     CmdLineMessage(strMsg);
 }
 
@@ -840,7 +840,7 @@ bool CJPEGsnoopApp::CheckUpdatesWww() const
                     break;
                 }
                 pcBuffer[dwRead] = 0;
-                strContents += pcBuffer;
+                strContents += CA2W(pcBuffer, CP_UTF8);
                 nScrapeLen += dwRead;
                 if (nScrapeLen >= nScrapeMax)
                 {

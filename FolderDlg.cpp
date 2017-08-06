@@ -34,13 +34,11 @@
 // You must link shlwapi.lib for StrRetToBuf
 #pragma comment(lib, "shlwapi.lib")
 
-CFolderDialog::CFolderDialog(CWnd* /*pWnd*/)
+CFolderDialog::CFolderDialog(CWnd* /*pWnd*/) :
+    m_bFilter(false)
 {
     memset(&m_brinfo, 0, sizeof(m_brinfo));
-    m_bFilter = FALSE; // default: no filtering
     SHGetDesktopFolder(&m_shfRoot); // get root IShellFolder
-
-    m_strStartPath = "";
 }
 
 // Browse for folder. Args are same as for SHBrowseForFolder, but with extra

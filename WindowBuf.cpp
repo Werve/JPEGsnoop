@@ -896,7 +896,7 @@ CString CwindowBuf::BufReadStr(unsigned long nPosition)
         // Only add if printable
         if (isprint(cRd))
         {
-            strRd += cRd;
+            strRd += static_cast<wchar_t>(cRd);
         }
         nIndex++;
         if (cRd == 0)
@@ -947,7 +947,7 @@ CString CwindowBuf::BufReadUniStr(unsigned long nPosition)
         //      } else {
         //          strRd += _T(".");
         //      }
-        strRd += cRd;
+        strRd += static_cast<wchar_t>(cRd);
 
         nIndex += 2;
         if (cRd == 0)
@@ -1041,7 +1041,7 @@ CString CwindowBuf::BufReadStrn(unsigned long nPosition, unsigned nLen)
             unsigned char cRd = Buf(nPosition + nInd);
             if (isprint(cRd))
             {
-                strRd += cRd;
+                strRd += static_cast<wchar_t>(cRd);
             }
             if (cRd == char(0))
             {

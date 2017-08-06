@@ -5579,11 +5579,11 @@ void CimgDecode::ViewOnDraw(CDC* pDC, CRect rectClient, CPoint ptScrolledPos,
 
         switch (m_nZoomMode)
         {
-        case PRV_ZOOM_12: strTitle += " @ 12.5% (1/8)";
+        case PRV_ZOOM_12: strTitle += L" @ 12.5% (1/8)";
             break;
-        case PRV_ZOOM_25: strTitle += " @ 25% (1/4)";
+        case PRV_ZOOM_25: strTitle += L" @ 25% (1/4)";
             break;
-        case PRV_ZOOM_50: strTitle += " @ 50% (1/2)";
+        case PRV_ZOOM_50: strTitle += L" @ 50% (1/2)";
             break;
         case PRV_ZOOM_100: strTitle += _T(" @ 100% (1:1)");
             break;
