@@ -2262,7 +2262,6 @@ void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
     strBinMarked.Insert(16,_T(" "));
     strBinMarked.Insert(8,_T(" "));
 
-
     strData.Format(_T("0x %02X %02X %02X %02X = 0b (%s)"),
                    nBufByte[0], nBufByte[1], nBufByte[2], nBufByte[3],
                    strBinMarked.GetString());
@@ -2291,9 +2290,9 @@ void CimgDecode::ReportVlc(unsigned nVlcPos, unsigned nVlcAlign,
 //
 void CimgDecode::DecodeIdctClear()
 {
-    memset(m_anDctBlock, 0, (64 * sizeof(int)));
-    memset(m_afIdctBlock, 0, (64 * sizeof(float)));
-    memset(m_anIdctBlock, 0, (64 * sizeof(int)));
+    memset(m_anDctBlock, 0, sizeof m_anDctBlock);
+    memset(m_afIdctBlock, 0, sizeof m_afIdctBlock);
+    memset(m_anIdctBlock, 0, sizeof m_anIdctBlock);
 
     m_nDctCoefMax = 0;
 }

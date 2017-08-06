@@ -38,7 +38,7 @@ CFolderDialog::CFolderDialog(CWnd* /*pWnd*/) :
     m_bFilter(false)
 {
     memset(&m_brinfo, 0, sizeof(m_brinfo));
-    SHGetDesktopFolder(&m_shfRoot); // get root IShellFolder
+    VERIFY(SUCCEEDED(SHGetDesktopFolder(&m_shfRoot))); // get root IShellFolder
 }
 
 // Browse for folder. Args are same as for SHBrowseForFolder, but with extra
