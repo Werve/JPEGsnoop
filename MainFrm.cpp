@@ -33,7 +33,7 @@ static UINT indicators[] =
 };
 
 CMainFrame::CMainFrame() :
-    m_bInitSplitter(FALSE)
+    m_bInitSplitter(false)
 {
 }
 
@@ -66,10 +66,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-    if (!CFrameWnd::PreCreateWindow(cs))
-        return FALSE;
-
-    return TRUE;
+    return CFrameWnd::PreCreateWindow(cs);
 }
 
 // FindMenuItem() will find a menu item string from the specified
@@ -116,7 +113,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
     {
         MessageBox(_T("Error setting up splitter frames!"),
                    _T("Init Error!"), MB_OK | MB_ICONERROR);
-        return FALSE;
+        return false;
     }
 
     if (!m_mainSplitter.CreateView(0, 0,
@@ -125,7 +122,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
     {
         MessageBox(_T("Error setting up splitter frames!"),
                    _T("Init Error!"), MB_OK | MB_ICONERROR);
-        return FALSE;
+        return false;
     }
 
     if (!m_mainSplitter.CreateView(1, 0,
@@ -134,15 +131,14 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
     {
         MessageBox(_T("Error setting up splitter frames!"),
                    _T("Init Error!"), MB_OK | MB_ICONERROR);
-        return FALSE;
+        return false;
     }
 
-    m_bInitSplitter = TRUE;
-
-    //return TRUE instead of the parent method since that would
+    m_bInitSplitter = true;
+    
+    //return true instead of the parent method since that would
     //not show our window
-    //return CFrameWnd::OnCreateClient(lpcs, pContext);
-    return TRUE;
+    return true;
 }
 
 

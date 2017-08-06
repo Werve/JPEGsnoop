@@ -44,14 +44,14 @@ BOOL CAboutDlg::OnInitDialog()
     m_staticVerNum.SetString(strTmp);
     m_staticVerNum.Format(_T("Version %s"),VERSION_STR);
 
-    UpdateData(FALSE);
+    UpdateData(false);
 
     // Update the URLs
     m_staticURL.SetHyperlink(_T("http://www.impulseadventure.com/photo/"));
     strTmp.Format(_T("http://www.impulseadventure.com/photo/jpeg-snoop.html?ver=%s"),VERSION_STR);
     m_staticURLdoc.SetHyperlink(strTmp);
 
-    return TRUE;
+    return true;
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)

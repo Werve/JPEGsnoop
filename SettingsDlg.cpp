@@ -24,10 +24,10 @@
 
 CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , m_bUpdateAuto(FALSE)
+      , m_bUpdateAuto(false)
       , m_nUpdateChkDays(0)
-      , m_bReprocessAuto(FALSE)
-      , m_bDbSubmitNet(FALSE)
+      , m_bReprocessAuto(false)
+      , m_bDbSubmitNet(false)
       , m_nRptErrMaxScanDecode(0)
 {
 }

@@ -128,7 +128,7 @@ BOOL CJPEGsnoopDoc::OnNewDocument()
 
     if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::OnNewDocument() End"));
 
-    return TRUE;
+    return true;
 }
 
 // Default CreateClientItem() implementation
@@ -451,7 +451,7 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
         delete [] pszBuffer;
     }
 
-    return TRUE;
+    return true;
 }
 
 
@@ -1139,13 +1139,12 @@ void CJPEGsnoopDoc::OnToolsSearchexecutablefordqt()
     // Don't need to do AnalyzeOpen() because a file pointer to
     // the executable is created here.
 
-    //bool bStatus = 0;
     TCHAR astrFilter[] =
         _T("Executable (*.exe)|*.exe|")
         _T("DLL Library (*.dll)|*.dll|")
         _T("All Files (*.*)|*.*||");
 
-    CFileDialog FileDlg(TRUE, _T(".exe"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, astrFilter);
+    CFileDialog FileDlg(true, _T(".exe"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, astrFilter);
 
     CString strTitle;
     CString strFileName;
@@ -1820,21 +1819,21 @@ void CJPEGsnoopDoc::OnUpdateOverlaysMcugrid(CCmdUI* pCmdUI)
 // Menu enable status for YCC indicator
 void CJPEGsnoopDoc::OnUpdateIndicatorYcc(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(TRUE);
+    pCmdUI->Enable();
     pCmdUI->SetText(m_pCore->I_GetStatusYccText());
 }
 
 // Menu enable status for MCU indicator
 void CJPEGsnoopDoc::OnUpdateIndicatorMcu(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(TRUE);
+    pCmdUI->Enable();
     pCmdUI->SetText(m_pCore->I_GetStatusMcuText());
 }
 
 // Menu enable status for file position indicator
 void CJPEGsnoopDoc::OnUpdateIndicatorFilePos(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(TRUE);
+    pCmdUI->Enable();
     pCmdUI->SetText(m_pCore->I_GetStatusFilePosText());
 }
 
@@ -1860,8 +1859,6 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
 
     unsigned nStartMcuX = 0;
     unsigned nStartMcuY = 0;
-    unsigned nEndMcuX = 0;
-    unsigned nEndMcuY = 0;
     int nMcuRngLen = 0;
 
     CPoint ptMcuStart;
@@ -1884,8 +1881,8 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
         CPoint ptMcuEnd = m_pCore->I_PixelToMcu(ptScan2);
         nStartMcuX = ptMcuStart.x;
         nStartMcuY = ptMcuStart.y;
-        nEndMcuX = ptMcuEnd.x;
-        nEndMcuY = ptMcuEnd.y;
+        unsigned nEndMcuX = ptMcuEnd.x;
+        unsigned nEndMcuY = ptMcuEnd.y;
 
         // Check to see if order needs to be reversed
         if ((nStartMcuY > nEndMcuY) || ((nStartMcuY == nEndMcuY) && (nStartMcuX > nEndMcuX)))
@@ -1922,7 +1919,6 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
     dlgDetail.m_nLoadMcuY = nStartMcuY;
     dlgDetail.m_nLoadMcuLen = nMcuRngLen;
 
-
     // If the user completed the configuration dialog then proceed
     // to update the MCU ranging for the next decode process
     if (dlgDetail.DoModal() == IDOK)
@@ -1934,7 +1930,7 @@ void CJPEGsnoopDoc::OnScansegmentDetaileddecode()
 // Menu enable status for Scan Segment -> Detailed Decode
 void CJPEGsnoopDoc::OnUpdateScansegmentDetaileddecode(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(true);
+    pCmdUI->Enable();
 }
 
 
@@ -1953,7 +1949,6 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
 
     CString strFileName;
     CString strTitle = _T("Output TIFF Filename");
-    //  VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
     FileDlg.m_ofn.lpstrTitle = strTitle;
 
     if (FileDlg.DoModal() == IDOK)

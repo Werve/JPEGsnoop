@@ -90,7 +90,7 @@ void CLookupDlg::OnBnClickedBtnCalc()
             // Use callback function for lookup
             m_pCbLookup(m_pClassCbLookup, m_nPixX, m_nPixY, nByte, nBit);
             m_strOffset.Format(_T("0x%08X : %u"), nByte, nBit);
-            UpdateData(FALSE);
+            UpdateData(false);
         }
     }
 }

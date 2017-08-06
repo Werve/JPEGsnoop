@@ -22,7 +22,7 @@
 
 CNoteDlg::CNoteDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , bCoachOff(TRUE)
+      , bCoachOff(true)
 {
 }
 

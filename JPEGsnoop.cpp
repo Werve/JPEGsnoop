@@ -1029,7 +1029,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
         _T("All Files (*.*)|*.*||");
 
     // BUG: #1008
-    CFileDialog FileDlg(TRUE, _T(".jpg"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
+    CFileDialog FileDlg(true, _T(".jpg"), nullptr, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, aszFilter);
 
     CString strTitle;
     VERIFY(strTitle.LoadString(IDS_CAL_FILEOPEN));
@@ -1292,99 +1292,43 @@ void CJPEGsnoopApp::OnScansegmentNoidct()
 // Set menu item status for Options DHT Expand
 void CJPEGsnoopApp::OnUpdateOptionsDhtexpand(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bOutputDHTexpand)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bOutputDHTexpand);
 }
 
 // Set menu item status for Options Makernotes
 void CJPEGsnoopApp::OnUpdateOptionsMakernotes(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeMaker)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bDecodeMaker);
 }
 
 
 // Set menu item status for Scan Segment Dump
 void CJPEGsnoopApp::OnUpdateScansegmentDump(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bOutputScanDump)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bOutputScanDump);
 }
 
 
 // Set menu item status for Scan Segment Decode Image
 void CJPEGsnoopApp::OnUpdateScansegmentDecodeimage(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeScanImg)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bDecodeScanImg);
 }
 
 // Set menu item status for Scan Segment Histogram (Y)
 // - May be disabled if Decode Scan Image or Histogram are disabled
 void CJPEGsnoopApp::OnUpdateScansegmentHistogramy(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeScanImg && m_pAppConfig->bHistoEn)
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
-    if (m_pAppConfig->bDumpHistoY)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->Enable(m_pAppConfig->bDecodeScanImg && m_pAppConfig->bHistoEn);
+    pCmdUI->SetCheck(m_pAppConfig->bDumpHistoY);
 }
 
 // Set menu item status for Scan Segment Full IDCT
 // - May be disabled if Decode Scan Image is disabled
 void CJPEGsnoopApp::OnUpdateScansegmentFullidct(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeScanImg)
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
-    if (m_pAppConfig->bDecodeScanImgAc)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->Enable(m_pAppConfig->bDecodeScanImg);
+    pCmdUI->SetCheck(m_pAppConfig->bDecodeScanImgAc);
 }
 
 // Set menu item status for Scan Segment No IDCT
@@ -1393,22 +1337,8 @@ void CJPEGsnoopApp::OnUpdateScansegmentFullidct(CCmdUI* pCmdUI)
 // - Opposite functionality of Fullidct
 void CJPEGsnoopApp::OnUpdateScansegmentNoidct(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeScanImg)
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
-    if (m_pAppConfig->bDecodeScanImgAc)
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
+    pCmdUI->Enable(m_pAppConfig->bDecodeScanImg);
+    pCmdUI->SetCheck(!m_pAppConfig->bDecodeScanImgAc);
 }
 
 
@@ -1426,7 +1356,6 @@ void CJPEGsnoopApp::OnOptionsConfiguration()
     setDlg.m_bReprocessAuto = m_pAppConfig->bReprocessAuto;
     setDlg.m_bDbSubmitNet = m_pAppConfig->bDbSubmitNet;
     setDlg.m_nRptErrMaxScanDecode = m_pAppConfig->nErrMaxDecodeScan;
-    //setDlg.m_bReportClip = m_pAppConfig->bStatClipEn;
 
     if (setDlg.DoModal() == IDOK)
     {
@@ -1436,7 +1365,6 @@ void CJPEGsnoopApp::OnOptionsConfiguration()
         m_pAppConfig->bReprocessAuto = (setDlg.m_bReprocessAuto != 0);
         m_pAppConfig->bDbSubmitNet = (setDlg.m_bDbSubmitNet != 0);
         m_pAppConfig->nErrMaxDecodeScan = setDlg.m_nRptErrMaxScanDecode;
-        //m_pAppConfig->bStatClipEn = (setDlg.m_bReportClip != 0);
         m_pAppConfig->Dirty();
 
         // Since the signature database needs to know of the
@@ -1517,14 +1445,8 @@ void CJPEGsnoopApp::OnToolsManagelocaldb()
 // - Invoke reprocess if enabled
 void CJPEGsnoopApp::OnOptionsSignaturesearch()
 {
-    if (m_pAppConfig->bSigSearch)
-    {
-        m_pAppConfig->bSigSearch = false;
-    }
-    else
-    {
-        m_pAppConfig->bSigSearch = true;
-    }
+    m_pAppConfig->bSigSearch = !m_pAppConfig->bSigSearch;
+
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
     HandleAutoReprocess();
@@ -1533,14 +1455,7 @@ void CJPEGsnoopApp::OnOptionsSignaturesearch()
 // Set menu item status for Options Signature Search
 void CJPEGsnoopApp::OnUpdateOptionsSignaturesearch(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bSigSearch)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bSigSearch);
 }
 
 
@@ -1549,14 +1464,8 @@ void CJPEGsnoopApp::OnUpdateOptionsSignaturesearch(CCmdUI* pCmdUI)
 // - Invoke reprocess if enabled
 void CJPEGsnoopApp::OnScansegmentHistogram()
 {
-    if (m_pAppConfig->bHistoEn)
-    {
-        m_pAppConfig->bHistoEn = false;
-    }
-    else
-    {
-        m_pAppConfig->bHistoEn = true;
-    }
+    m_pAppConfig->bHistoEn = !m_pAppConfig->bHistoEn;
+
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
 
@@ -1579,36 +1488,16 @@ void CJPEGsnoopApp::OnScansegmentHistogram()
 // - May be disabled if Decode Scan Image is disabled
 void CJPEGsnoopApp::OnUpdateScansegmentHistogram(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bDecodeScanImg)
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
-    if (m_pAppConfig->bHistoEn)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->Enable(m_pAppConfig->bDecodeScanImg);
+    pCmdUI->SetCheck(m_pAppConfig->bHistoEn);
 }
 
 // Set menu item toggle for Options Hide Unknown EXIF tags
 // - Invoke reprocess if enabled
 void CJPEGsnoopApp::OnOptionsHideuknownexiftags()
 {
-    if (m_pAppConfig->bExifHideUnknown)
-    {
-        m_pAppConfig->bExifHideUnknown = false;
-    }
-    else
-    {
-        m_pAppConfig->bExifHideUnknown = true;
-    }
+    m_pAppConfig->bExifHideUnknown = !m_pAppConfig->bExifHideUnknown;
+
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
 
@@ -1618,14 +1507,7 @@ void CJPEGsnoopApp::OnOptionsHideuknownexiftags()
 // Set menu item status for Options Hide Unknown EXIF tags
 void CJPEGsnoopApp::OnUpdateOptionsHideuknownexiftags(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bExifHideUnknown)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bExifHideUnknown);
 }
 
 // Menu item for File Batch Process
@@ -1643,14 +1525,8 @@ void CJPEGsnoopApp::OnFileBatchprocess()
 // - Invoke reprocess if enabled
 void CJPEGsnoopApp::OnOptionsRelaxedparsing()
 {
-    if (m_pAppConfig->bRelaxedParsing)
-    {
-        m_pAppConfig->bRelaxedParsing = false;
-    }
-    else
-    {
-        m_pAppConfig->bRelaxedParsing = true;
-    }
+    m_pAppConfig->bRelaxedParsing = !m_pAppConfig->bRelaxedParsing;
+
     // Mark option as changed for next registry update
     m_pAppConfig->Dirty();
 
@@ -1660,14 +1536,7 @@ void CJPEGsnoopApp::OnOptionsRelaxedparsing()
 // Set menu item status for Options Relaxed Parsing
 void CJPEGsnoopApp::OnUpdateOptionsRelaxedparsing(CCmdUI* pCmdUI)
 {
-    if (m_pAppConfig->bRelaxedParsing)
-    {
-        pCmdUI->SetCheck(TRUE);
-    }
-    else
-    {
-        pCmdUI->SetCheck(FALSE);
-    }
+    pCmdUI->SetCheck(m_pAppConfig->bRelaxedParsing);
 }
 
 BEGIN_MESSAGE_MAP(CJPEGsnoopApp, CWinApp)

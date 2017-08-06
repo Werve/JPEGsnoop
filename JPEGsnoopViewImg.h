@@ -41,7 +41,7 @@ private:
     CJPEGsnoopCore* GetCore() const;
     bool InPreviewArea(CPoint point, CPoint& ptPix) const;
     void SetScrollCenter(float fZoomOld, float fZoomNew);
-    int MeasureFontHeight(CFont* pFont, CDC* pDC);
+    static int MeasureFontHeight(CFont* pFont, CDC* pDC);
 
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

@@ -25,7 +25,7 @@
 COverlayBufDlg::COverlayBufDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
       , m_nLen(0)
-      , m_bEn(FALSE)
+      , m_bEn(false)
 {
     // FIXME: Should probably mark this as invalid
     m_bApply = false;
@@ -40,7 +40,7 @@ COverlayBufDlg::COverlayBufDlg(CWnd* pParent,
                                bool bEn, unsigned nOffset, unsigned nLen, CString sNewHex, CString sNewBin)
     : CDialog(IDD, pParent)
       , m_nLen(0)
-      , m_bEn(FALSE)
+      , m_bEn(false)
 {
     m_bEn = bEn;
     m_nOffset = nOffset;
@@ -165,7 +165,7 @@ BOOL COverlayBufDlg::OnInitDialog()
     // Get the initial values
     OnBnClickedOvrLoad();
 
-    return TRUE;
+    return true;
 }
 
 BEGIN_MESSAGE_MAP(COverlayBufDlg, CDialog)

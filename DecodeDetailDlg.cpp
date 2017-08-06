@@ -26,7 +26,7 @@ CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)
       , m_nMcuX(0)
       , m_nMcuY(0)
       , m_nMcuLen(0)
-      , m_bEn(FALSE)
+      , m_bEn(false)
 {
     // Initialize the "load" values that come from
     // the caller. This will generally be a coordinate

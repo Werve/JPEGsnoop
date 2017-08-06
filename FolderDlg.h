@@ -124,18 +124,18 @@ protected:
     // The documentation says lpText must be Unicode, but it can be LPCTSTR.
     void SetSelection(LPCTSTR lpText) const
     {
-        SendMessage(BFFM_SETSELECTION,TRUE, (LPARAM)lpText);
+        SendMessage(BFFM_SETSELECTION, true, (LPARAM)lpText);
     }
 
     void SetSelection(LPCITEMIDLIST pidl) const
     {
-        SendMessage(BFFM_SETSELECTION,FALSE, (LPARAM)pidl);
+        SendMessage(BFFM_SETSELECTION, false, (LPARAM)pidl);
     }
 
     // Expand item from string or PIDL
     void SetExpanded(LPCWSTR lpText) const
     {
-        SendMessage(BFFM_SETEXPANDED,TRUE, (LPARAM)lpText);
+        SendMessage(BFFM_SETEXPANDED, true, (LPARAM)lpText);
     }
 
     void SetExpanded(LPCITEMIDLIST pidl) const

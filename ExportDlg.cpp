@@ -23,12 +23,12 @@
 
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
     : CDialog(IDD, pParent)
-      , m_bOverlayEn(FALSE)
-      , m_bDhtAviInsert(FALSE)
-      , m_bForceEoi(FALSE)
-      , m_bIgnoreEoi(FALSE)
-      , m_bForceSoi(FALSE)
-      , m_bExtractAllEn(FALSE)
+      , m_bOverlayEn(false)
+      , m_bDhtAviInsert(false)
+      , m_bForceEoi(false)
+      , m_bIgnoreEoi(false)
+      , m_bForceSoi(false)
+      , m_bExtractAllEn(false)
 {
 }
 

@@ -181,7 +181,7 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
     // Don't attempt to load buffer with zero length file!
     if (m_lFileSize == 0)
     {
-        return TRUE;
+        return true;
     }
 
     // Open up the buffer
@@ -191,7 +191,7 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
     // Mark file as opened
     m_bFileOpened = true;
 
-    return TRUE;
+    return true;
 }
 
 // Close the current file
