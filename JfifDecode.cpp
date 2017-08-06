@@ -8567,7 +8567,6 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         return false;
     }
 
-
     unsigned nCopyLeft;
 
     BYTE * pBuf = new BYTE[EXPORT_BUF_SIZE + 10];
@@ -8600,7 +8599,6 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         strTmp.Format(_T("Exporting %3u%%..."), ind * 100 / nFileLen);
         SetStatusText(strTmp);
     }
-
 
     if (bDhtAviInsert)
     {
@@ -8638,15 +8636,10 @@ bool CjfifDecode::ExportJpegDo(CString strFileIn, CString strFileOut,
         pFileOutput->Write(&anBufEoi, 2);
     }
 
-
     // Free up space
     pFileOutput->Close();
 
-    if (pBuf)
-    {
-        delete [] pBuf;
-        pBuf = nullptr;
-    }
+    delete [] pBuf;
 
     if (pFileOutput)
     {

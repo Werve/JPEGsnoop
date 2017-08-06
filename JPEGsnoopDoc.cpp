@@ -1087,14 +1087,7 @@ void CJPEGsnoopDoc::OnPreviewRng(UINT nID)
 void CJPEGsnoopDoc::OnUpdatePreviewRng(CCmdUI* pCmdUI)
 {
     unsigned nID = pCmdUI->m_nID - ID_PREVIEW_RGB + PREVIEW_RGB;
-    if (m_pCore->I_GetPreviewMode() == nID)
-    {
-        pCmdUI->SetCheck(true);
-    }
-    else
-    {
-        pCmdUI->SetCheck(false);
-    }
+    pCmdUI->SetCheck(m_pCore->I_GetPreviewMode() == nID);
 }
 
 // Menu command for Zoom
@@ -1749,14 +1742,7 @@ void CJPEGsnoopDoc::OnToolsFileoverlay()
 // Menu enable status for Tools -> File overlay
 void CJPEGsnoopDoc::OnUpdateToolsFileoverlay(CCmdUI* pCmdUI)
 {
-    if (m_pCore->IsAnalyzed())
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
+    pCmdUI->Enable(m_pCore->IsAnalyzed());
 }
 
 // Create static wrapper for I_LookupFilePosPix callback function
@@ -1790,14 +1776,7 @@ void CJPEGsnoopDoc::OnToolsLookupmcuoffset()
 // Menu enable status for Tools -> Lookup MCU offset
 void CJPEGsnoopDoc::OnUpdateToolsLookupmcuoffset(CCmdUI* pCmdUI)
 {
-    if (m_pCore->IsAnalyzed())
-    {
-        pCmdUI->Enable(true);
-    }
-    else
-    {
-        pCmdUI->Enable(false);
-    }
+    pCmdUI->Enable(m_pCore->IsAnalyzed());
 }
 
 // Menu command to enable/disable the MCU overlay grid
@@ -1811,14 +1790,7 @@ void CJPEGsnoopDoc::OnOverlaysMcugrid()
 // Menu enable status for MCU overlay grid
 void CJPEGsnoopDoc::OnUpdateOverlaysMcugrid(CCmdUI* pCmdUI)
 {
-    if (m_pCore->I_GetPreviewOverlayMcuGrid())
-    {
-        pCmdUI->SetCheck(true);
-    }
-    else
-    {
-        pCmdUI->SetCheck(false);
-    }
+    pCmdUI->SetCheck(m_pCore->I_GetPreviewOverlayMcuGrid());
 }
 
 

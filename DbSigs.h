@@ -79,7 +79,7 @@ public:
 
     unsigned GetDBNumEntries() const;
     bool GetDBEntry(unsigned nInd, CompSig* pEntry) const;
-    unsigned IsDBEntryUser(unsigned nInd) const;
+    bool IsDBEntryUser(unsigned nInd) const;
 
     void SetEntryValid(unsigned nInd, bool bValid);
 

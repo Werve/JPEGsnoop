@@ -25,7 +25,9 @@
 // - Resets state
 // - Clears all buffer overlay bytes
 //
-CwindowBuf::CwindowBuf()
+CwindowBuf::CwindowBuf() :
+    m_nBufWinSize(0),
+    m_nBufWinStart(0)
 {
     m_pBuffer = new BYTE[MAX_BUF];
 

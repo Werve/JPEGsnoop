@@ -793,17 +793,13 @@ bool CDbSigs::SearchCom(CString strCom) const
 // Returns total of built-in plus local DB
 unsigned CDbSigs::GetDBNumEntries() const
 {
-    return (m_nSigListNum + m_nSigListExtraNum);
+    return m_nSigListNum + m_nSigListExtraNum;
 }
 
 // Returns total of built-in plus local DB
-unsigned CDbSigs::IsDBEntryUser(unsigned nInd) const
+bool CDbSigs::IsDBEntryUser(unsigned nInd) const
 {
-    if (nInd < m_nSigListNum)
-    {
-        return false;
-    }
-    return true;
+    return nInd >= m_nSigListNum;
 }
 
 // Return a ptr to the struct containing the indexed entry
