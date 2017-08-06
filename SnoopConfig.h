@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "snoop.h"	// For DEBUG_LOG_OUT
+#include "snoop.h"  // For DEBUG_LOG_OUT
 
 // CLASS DESCRIPTION:
 // - Application configuration structures
@@ -81,10 +81,6 @@ public:
     bool bCmdLineHelp; // Show command list
 
     unsigned nPosStart; // Starting decode file offset
-
-    // Operating system
-    bool bIsWindowsNTorLater;
-    bool bIsWindowsXPorLater;
 
     // Registry Configuration options
     bool bDirty; // Registry entry options dirtied?

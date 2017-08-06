@@ -87,20 +87,6 @@ CSnoopConfig::CSnoopConfig()
     // Reset coach message flags
     CoachReset();
 
-    // Determine operating system
-    // Particularly for: WinHTTP functions
-    OSVERSIONINFO osvi;
-
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-    GetVersionEx(&osvi);
-
-    bIsWindowsNTorLater = (osvi.dwPlatformId >= VER_PLATFORM_WIN32_NT);
-
-    bIsWindowsXPorLater =
-    ((osvi.dwMajorVersion > 5) ||
-        ((osvi.dwMajorVersion == 5) && (osvi.dwMinorVersion >= 1)));
 }
 
 // This is generally called after app initializes and registry
@@ -382,79 +368,30 @@ void CSnoopConfig::CoachReset()
 // Select a suitable working directory, create it if it doesn't already exist
 CString CSnoopConfig::GetDefaultDbDir()
 {
-    TCHAR szUserProfile[MAX_PATH];
     TCHAR szFilePath[MAX_PATH];
 
-
-    // Apparently, the SHGetFolderPath is not well supported in earlier
-    // versions of the OS, so we are only going to try it if we are
-    // running Win XP or later.
-    // See: http://support.microsoft.com/kb/310294
-    // Older OS versions may require linking to shfolder.dll, which I decided
-    // not to implement yet.
-
-    // Since I could not get SHGetFolderPath() to compile, even after including
-    // <shlobj.h>, I decided to revert to older version of the call:
-    // https://msdn2.microsoft.com/en-us/library/aa931257.aspx
-
-    if (bIsWindowsNTorLater)
+    // Get path for each computer, non-user specific and non-roaming data.
+    //if ( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA,
+    //                              NULL, 0, szFilePath ) ) )
+    if (SHGetSpecialFolderPath(nullptr, szFilePath, CSIDL_APPDATA, true))
     {
-        // Get path for each computer, non-user specific and non-roaming data.
-        //if ( SUCCEEDED( SHGetFolderPath( NULL, CSIDL_APPDATA, 
-        //                              NULL, 0, szFilePath ) ) )
-        if (SHGetSpecialFolderPath(nullptr, szFilePath, CSIDL_APPDATA, true))
-        {
-            // Append product-specific path.
-            PathAppend(szFilePath, _T("\\JPEGsnoop"));
+        // Append product-specific path.
+        PathAppend(szFilePath, _T("\\JPEGsnoop"));
 
-            // Since the full path may not already exist, and CreateDirectory() only
-            // works on one level of hierarchy at a time, use a recursive function
-            // to do the job.
-            CreateDir(szFilePath);
-        }
-        else
-        {
-            // No error handling
-            AfxMessageBox(_T("Problem trying to locate suitable directory; please choose manually"));
-
-            // As a default, start with EXE directory
-            wsprintf(szFilePath, GetExeDir());
-        }
+        // Since the full path may not already exist, and CreateDirectory() only
+        // works on one level of hierarchy at a time, use a recursive function
+        // to do the job.
+        CreateDir(szFilePath);
     }
     else
     {
-        // Apparently not a recent version of Windows, so we'll revert
-        // to some older methods at getting the directory
+        // No error handling
+        AfxMessageBox(_T("Problem trying to locate suitable directory; please choose manually"));
 
-        ExpandEnvironmentStrings(_T("%userprofile%"), szUserProfile, sizeof(szUserProfile) / sizeof(*szUserProfile));
-
-        // NOTE:
-        // - In Win95/98 it is likely that the above will return the literal "%userprofile%"
-        //   so in that case we don't want to create a directory -- use the exe dir instead
-        if (!_tcscmp(szUserProfile,_T("%userprofile%")))
-        {
-            wsprintf(szFilePath, _T(""));
-            // Since we can't locate the user profile directory from environment
-            // strings, we don't want to create any subdirectory. If we were to
-            // call CreateDir() with an empty string, we'd end up with a garbled
-            // folder name created!
-
-            // So, for now, default to executable directory
-            wsprintf(szFilePath, GetExeDir());
-        }
-        else
-        {
-            // FIXME
-            // Note that the following is not very good as it doesn't select
-            // a suitable directory for non-English systems.
-            wsprintf(szFilePath, _T("%s%s"), szUserProfile,_T("\\Application Data\\JPEGsnoop"));
-
-            // Since the full path may not already exist, and CreateDirectory() only
-            // works on one level of hierarchy at a time, use a recursive function
-            // to do the job.
-            CreateDir(szFilePath);
-        }
+        // As a default, start with EXE directory
+        wsprintf(szFilePath, GetExeDir());
     }
+
     return szFilePath;
 }
 
@@ -640,8 +577,8 @@ bool CSnoopConfig::DebugLogAdd(CString strText)
         nTmHour = sNow.tm_hour;
         nTmMin = sNow.tm_min;
         nTmSec = sNow.tm_sec;
-    
-    
+
+
         // Generate log line
         //strLine.Format(_T("[%4u/%2u/%2u %2u:%2u:%2u] %s\r\n"),nTmYear,nTmMon,nTmDay,nTmHour,nTmMin,nTmSec,strText);
     */
