@@ -65,11 +65,7 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
         ((dwWidth * dwHeight) * sizeof(RGBQUAD)) +
         4;
 
-    m_pDIB = (LPBITMAPINFO)new BYTE[dwSize];
-    if (!m_pDIB) return false;
-
-    //CAL! Added
-    // Erase the DIB
+    m_pDIB = reinterpret_cast<LPBITMAPINFO>(new BYTE[dwSize]);
     memset(m_pDIB, 0x00, dwSize);
 
     m_pDIB->bmiHeader.biSize = dwcBihSize;
@@ -123,7 +119,7 @@ void* CDIB::GetDIBBitArray() const
 {
     if (!m_pDIB) return nullptr;
 
-    unsigned char * ptr = (unsigned char*)m_pDIB;
+    unsigned char * ptr = reinterpret_cast<unsigned char*>(m_pDIB);
     ptr += m_pDIB->bmiHeader.biSize;
     ptr += GetDIBCols() * sizeof(RGBQUAD);
     return ptr;
@@ -147,9 +143,9 @@ bool CDIB::CreateDIBFromBitmap(CDC* pDC)
 
     // This implicitly assumes that the source bitmap
     // is at the 1 pixel per mm resolution
-    bool bSuccess = (GetDIBits(hDC, (HBITMAP)m_bmBitmap,
+    bool bSuccess = GetDIBits(hDC, m_bmBitmap,
                                0, bimapInfo.bmHeight, GetDIBBitArray(),
-                               m_pDIB,DIB_RGB_COLORS) > 0);
+                               m_pDIB,DIB_RGB_COLORS) > 0;
     return bSuccess;
 }
 
@@ -164,8 +160,8 @@ bool CDIB::CopyDIB(CDC* pDestDC, int x, int y, float scale) const
 
     bool bOK = StretchDIBits(pDestDC->GetSafeHdc(),
                              x, y,
-                             (unsigned)(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
-                             (unsigned)(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
                              0, 0,
                              m_pDIB->bmiHeader.biWidth, // Source Width
                              m_pDIB->bmiHeader.biHeight, // Source Height
@@ -188,8 +184,8 @@ bool CDIB::CopyDibDblBuf(CDC* pDestDC, int x, int y, CRect* rectClient, float sc
     // Draw into hdcMem
     bool bOK = StretchDIBits(hdcMem, //hdcMem->GetSafeHdc(),
                              x, y,
-                             (unsigned)(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
-                             (unsigned)(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
                              0, 0,
                              m_pDIB->bmiHeader.biWidth, // Source Width
                              m_pDIB->bmiHeader.biHeight, // Source Height
@@ -296,8 +292,8 @@ bool CDIB::CopyDIBsmall(CDC* pDestDC, int x, int y, float scale) const
     int nOldMapMode = dcm.SetMapMode(MM_TEXT);
     bool bOK = StretchDIBits(dcm.GetSafeHdc(),
                              x, y,
-                             (unsigned)(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
-                             (unsigned)(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biWidth * scale), // Dest Width
+                             static_cast<unsigned>(m_pDIB->bmiHeader.biHeight * scale), // Dest Height
                              0, 0,
                              m_pDIB->bmiHeader.biWidth, // Source Width
                              m_pDIB->bmiHeader.biHeight, // Source Height

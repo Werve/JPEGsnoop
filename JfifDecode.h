@@ -167,7 +167,7 @@ private:
     bool ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CString strName, bool bOverride, unsigned nOverrideVal) const;
 
     // Marker specific parsing
-    bool GetMarkerName(unsigned nCode, CString& markerStr);
+    static bool GetMarkerName(unsigned nCode, CString& markerStr);
     unsigned DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsigned nStartIfdPtr);
     //  unsigned        DecodeMakerIfd(unsigned ifd_tag,unsigned ptr,unsigned len);
     bool DecodeMakerSubType();
@@ -184,10 +184,10 @@ private:
 
     // Field parsing
     bool DecodeValRational(unsigned nPos, float& nVal) const;
-    CString DecodeValFraction(unsigned nPos);
+    CString DecodeValFraction(unsigned nPos) const;
     bool DecodeValGPS(unsigned nPos, CString& strCoord);
-    bool PrintValGPS(unsigned nCount, float fCoord1, float fCoord2, float fCoord3, CString& strCoord);
-    CString DecodeIccDateTime(unsigned anVal[3]);
+    static bool PrintValGPS(unsigned nCount, float fCoord1, float fCoord2, float fCoord3, CString& strCoord);
+    static CString DecodeIccDateTime(unsigned anVal[3]);
     CString LookupExifTag(CString strSect, unsigned nTag, bool& bUnknown) const;
     CStr2 LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsigned nVal);
 
@@ -216,9 +216,9 @@ private:
     // Display routines
     void DbgAddLine(LPCTSTR strLine) const;
     void AddHeader(unsigned nCode) const;
-    CString PrintAsHexUC(unsigned char* anBytes, unsigned nCount);
-    CString PrintAsHex8(unsigned* anBytes, unsigned nCount);
-    CString PrintAsHex32(unsigned* anWords, unsigned nCount);
+    static CString PrintAsHexUC(unsigned char* anBytes, unsigned nCount);
+    static CString PrintAsHex8(unsigned* anBytes, unsigned nCount);
+    static CString PrintAsHex32(unsigned* anWords, unsigned nCount);
 
     // Buffer access
     BYTE Buf(unsigned long nOffset, bool bClean) const;

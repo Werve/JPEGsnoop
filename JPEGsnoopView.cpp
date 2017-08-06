@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "JPEGsnoopView.h"
-#include "JPEGsnoop.h"
 #include "JPEGsnoopDoc.h"
 
 BOOL CJPEGsnoopView::PreCreateWindow(CREATESTRUCT& cs)
@@ -68,7 +67,7 @@ void CJPEGsnoopView::OnInitialUpdate()
 
     GetRichEditCtrl().SetDefaultCharFormat(cf);
 
-    GetDocument()->SetupView((CRichEditView*)this);
+    GetDocument()->SetupView(this);
 }
 
 BOOL CJPEGsnoopView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -104,7 +103,7 @@ void CJPEGsnoopView::Dump(CDumpContext& dc) const
 CJPEGsnoopDoc* CJPEGsnoopView::GetDocument() const // non-debug version is inline
 {
     ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CJPEGsnoopDoc)));
-    return (CJPEGsnoopDoc*)m_pDocument;
+    return static_cast<CJPEGsnoopDoc*>(m_pDocument);
 }
 #endif //_DEBUG
 

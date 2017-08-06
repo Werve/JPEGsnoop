@@ -34,7 +34,7 @@
 #include "Registry.h"
 
 #ifdef _MFC_VER
-//MFC is available - also use the MFC-based classes 
+//MFC is available - also use the MFC-based classes
 
 CRegDWORD::CRegDWORD() :
     m_value(0),
@@ -74,7 +74,7 @@ DWORD CRegDWORD::read()
     {
         int size = sizeof(m_value);
         DWORD type;
-        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)&m_value, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(&m_value), (LPDWORD)&size) == ERROR_SUCCESS)
         {
             ASSERT(type==REG_DWORD);
             m_read = TRUE;
@@ -95,7 +95,7 @@ void CRegDWORD::write()
     {
         return;
     }
-    if (RegSetValueEx(m_hKey, m_key, 0, REG_DWORD, (const BYTE*)&m_value, sizeof(m_value)) == ERROR_SUCCESS)
+    if (RegSetValueEx(m_hKey, m_key, 0, REG_DWORD, reinterpret_cast<const BYTE*>(&m_value), sizeof(m_value)) == ERROR_SUCCESS)
     {
         m_read = TRUE;
     }
@@ -159,7 +159,7 @@ CString CRegString::read()
         DWORD type;
         RegQueryValueEx(m_hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
         TCHAR* pStr = new TCHAR[size];
-        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)pStr, (LPDWORD)&size) == ERROR_SUCCESS)
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(pStr), (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_value = CString(pStr);
             delete [] pStr;
@@ -248,8 +248,8 @@ CPoint CRegPoint::read()
         int size = 0;
         DWORD type;
         RegQueryValueEx(m_hKey, m_key, nullptr, &type, nullptr, (LPDWORD)&size);
-        POINT* pPoint = (POINT *)new char[size];
-        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, (BYTE*)pPoint, (LPDWORD)&size) == ERROR_SUCCESS)
+        POINT* pPoint = reinterpret_cast<POINT *>(new char[size]);
+        if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(pPoint), (LPDWORD)&size) == ERROR_SUCCESS)
         {
             m_value = CPoint(*pPoint);
             delete [] pPoint;

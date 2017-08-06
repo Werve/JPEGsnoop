@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "DecodeDetailDlg.h"
-#include "JPEGsnoop.h"
 #include "Resource.h"
 
 CDecodeDetailDlg::CDecodeDetailDlg(CWnd* pParent /*=NULL*/)

@@ -232,11 +232,10 @@ void MD5Init(MD5_CTX* mdContext, unsigned long pseudoRandomNumber)
 void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
 {
     std::uint32_t in[16];
-    int mdi = 0;
     unsigned int i = 0, ii = 0;
 
     /* Compute number of bytes mod 64 */
-    mdi = (int)((mdContext->i[0] >> 3) & 0x3F);
+    int mdi = (int)((mdContext->i[0] >> 3) & 0x3F);
 
     /* Update number of bits */
     if ((mdContext->i[0] + ((std::uint32_t)inLen << 3)) < mdContext->i[0])
@@ -267,18 +266,17 @@ void MD5Update(MD5_CTX* mdContext, unsigned char* inBuf, unsigned int inLen)
 void MD5Final(MD5_CTX* mdContext)
 {
     std::uint32_t in[16];
-    int mdi = 0;
-    unsigned int i = 0, ii = 0, padLen = 0;
+    unsigned int i = 0, ii = 0;
 
     /* Save number of bits */
     in[14] = mdContext->i[0];
     in[15] = mdContext->i[1];
 
     /* Compute number of bytes mod 64 */
-    mdi = (int)((mdContext->i[0] >> 3) & 0x3F);
+    int mdi = (int)((mdContext->i[0] >> 3) & 0x3F);
 
     /* Pad out to 56 mod 64 */
-    padLen = (mdi < 56) ? (56 - mdi) : (120 - mdi);
+    unsigned int padLen = (mdi < 56) ? (56 - mdi) : (120 - mdi);
     MD5Update(mdContext, MD5_PADDING, padLen);
 
     /* Append length in bits and transform */

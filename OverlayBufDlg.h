@@ -35,7 +35,7 @@ public:
 
     // Callback function for Buf()
     void SetCbBuf(void* pClassCbBuf,
-        BYTE(*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool));
+        BYTE(*pCbBuf)(void* pClassCbBufParam, unsigned long nNum, bool bBool));
 
 #ifdef AFX_DESIGN_TIME
     enum

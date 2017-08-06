@@ -115,7 +115,7 @@ void CSnoopConfig::RegistryLoad()
     CRegString regUserDbPath(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
-    if ((CString)regUserDbPath == _T("???"))
+    if (static_cast<CString>(regUserDbPath) == _T("???"))
     {
         // None specified, so determine a suitable default
         strDbDir = GetDefaultDbDir();
@@ -135,7 +135,7 @@ void CSnoopConfig::RegistryLoad()
     CRegString regUpdateLastChk(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
-    if ((CString)regUpdateLastChk == _T("???"))
+    if (static_cast<CString>(regUpdateLastChk) == _T("???"))
     {
         // None specified, so determine a suitable default
         strUpdateLastChk = strCurDate;
@@ -525,7 +525,12 @@ bool CSnoopConfig::DebugLogCreate()
 // all debug entries are flushed to the file (in case of an
 // an application crash).
 //
-bool CSnoopConfig::DebugLogAdd(CString strText)
+bool CSnoopConfig::DebugLogAdd(CString
+#ifdef DEBUG_LOG_OUT
+    strText
+#else
+)
+#endif
 {
 #ifdef DEBUG_LOG_OUT
 

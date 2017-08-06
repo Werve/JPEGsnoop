@@ -45,7 +45,7 @@ public:
     BOOL ReadLine(CString& strLine, int nLength, LONG lOffset = -1L) const;
 
     void Reset();
-    BOOL Reprocess();
+    bool Reprocess();
 
     // Allocate the processing core
     // - Public access by CJPEGsnoopViewImg

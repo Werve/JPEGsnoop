@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "BatchDlg.h"
-#include "JPEGsnoop.h"
 #include "FolderDlg.h"
 #include "Resource.h"
 

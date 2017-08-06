@@ -70,7 +70,7 @@ void CHyperlinkStatic::OnPaint()
     if (_bCreateFont == false)
     CreateFont();
     CPaintDC dc(this);
-    CFont* pOldFont = (CFont*)dc.SelectObject(&_fontCaption);
+    CFont* pOldFont = dc.SelectObject(&_fontCaption);
     dc.SetBkMode(TRANSPARENT);
     dc.SetTextColor(RGB(0,0,255));
     dc.TextOut(0, 0, _strCaption);

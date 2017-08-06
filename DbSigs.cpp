@@ -130,7 +130,7 @@ bool CDbSigs::BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned /*nMaxBytes*/, uns
 {
     ASSERT(pBuf);
     // TODO: check for buffer bounds
-    nOut = (unsigned)pBuf[nOffsetBytes];
+    nOut = static_cast<unsigned>(pBuf[nOffsetBytes]);
     nOffsetBytes += sizeof(unsigned);
     return true;
 }
@@ -141,7 +141,7 @@ bool CDbSigs::BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned /*nMaxBytes*/, unsi
     ASSERT(pBuf);
     // TODO: check for buffer bounds
     PBYTE pBufBase = &pBuf[nOffsetBytes];
-    unsigned * pBufInt = (unsigned*)pBufBase;
+    unsigned * pBufInt = reinterpret_cast<unsigned*>(pBufBase);
     pBufInt[0] = nIn;
     nOffsetBytes += sizeof(unsigned);
     return true;
@@ -277,8 +277,8 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
 
 void CDbSigs::DatabaseExtraLoad()
 {
-    CFile* pInFile = nullptr;
-    PBYTE pBuf = nullptr;
+    CFile* pInFile;
+    PBYTE pBuf;
     unsigned nBufLenBytes;
     CString strError;
 
@@ -316,7 +316,6 @@ void CDbSigs::DatabaseExtraLoad()
             OutputDebugString(strError);
             AfxMessageBox(strError);
         }
-        pInFile = nullptr;
 
         // Now create default database file in current DB location
         DatabaseExtraStore();
@@ -353,14 +352,13 @@ void CDbSigs::DatabaseExtraLoad()
     CompSig sDbLocalEntry; // Temp entry for load
     bool bDbLocalTrimmed = false; // Did we trim down the DB?
 
-
     // Determine if config file is in Unicode or SBCS
     // If the file is in SBCS (legacy) then back it up
     // and then write-back in unicode mode.
 
     // Test unicode mode
     unsigned nBufOffsetTmp = 0;
-    BOOL bRet = BufReadStr(pBuf, strLine, nBufLenBytes, true, nBufOffsetTmp);
+    BufReadStr(pBuf, strLine, nBufLenBytes, true, nBufOffsetTmp);
     if (strLine.Compare(_T("JPEGsnoop")) == 0)
     {
         bFileOk = true;
@@ -370,7 +368,7 @@ void CDbSigs::DatabaseExtraLoad()
 
     // Test SBCS mode
     nBufOffsetTmp = 0;
-    bRet = BufReadStr(pBuf, strLine, nBufLenBytes, false, nBufOffsetTmp);
+    bool bRet = BufReadStr(pBuf, strLine, nBufLenBytes, false, nBufOffsetTmp);
     if (strLine.Compare(_T("JPEGsnoop")) == 0)
     {
         bFileOk = true;
@@ -444,8 +442,6 @@ void CDbSigs::DatabaseExtraLoad()
                 sDbLocalEntry.strMSwTrim.Empty();
                 sDbLocalEntry.strMSwDisp.Empty();
 
-                bool bDbLocalEntryFound = false;
-
                 if (strVer == _T("01"))
                 {
                     // For version 01:
@@ -490,8 +486,7 @@ void CDbSigs::DatabaseExtraLoad()
                 }
 
                 // Does the entry already exist in the internal DB?
-                bDbLocalEntryFound = SearchSignatureExactInternal(sDbLocalEntry.strXMake, sDbLocalEntry.strXModel, sDbLocalEntry.strCSig);
-
+                bool bDbLocalEntryFound = SearchSignatureExactInternal(sDbLocalEntry.strXMake, sDbLocalEntry.strXModel, sDbLocalEntry.strCSig);
                 if (!bDbLocalEntryFound)
                 {
                     // Add it!
@@ -586,11 +581,8 @@ CompSig CDbSigs::DatabaseExtraGet(unsigned nInd)
 
 void CDbSigs::DatabaseExtraStore()
 {
-    CFile* pOutFile = nullptr;
-    PBYTE pBuf = nullptr;
-    //unsigned  nBufLenBytes = 0;
-    unsigned nBufOffset = 0;
-
+    CFile* pOutFile;
+    PBYTE pBuf;
     bool bModeUni = true; // Save in Unicode format
 
     ASSERT(!m_strDbDir.IsEmpty());
@@ -618,7 +610,6 @@ void CDbSigs::DatabaseExtraStore()
         strError.Format(_T("ERROR: Couldn't open file: [%s]"), msg);
         OutputDebugString(strError);
         AfxMessageBox(strError);
-        pOutFile = nullptr;
         return;
     }
 
@@ -626,7 +617,7 @@ void CDbSigs::DatabaseExtraStore()
     pBuf = new BYTE [MAX_BUF_SET_FILE];
     ASSERT(pBuf);
 
-    nBufOffset = 0;
+    unsigned nBufOffset = 0;
 
     CString strLine;
     CString strParam;
@@ -686,7 +677,6 @@ void CDbSigs::DatabaseExtraStore()
 
         pOutFile->Close();
         delete pOutFile;
-        pOutFile = nullptr;
     }
 
     if (pBuf)

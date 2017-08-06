@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "JPEGsnoopViewImg.h"
-#include "JPEGsnoop.h"
 #include "JPEGsnoopDoc.h"
 
 CJPEGsnoopViewImg::CJPEGsnoopViewImg()
@@ -31,8 +30,7 @@ CJPEGsnoopViewImg::CJPEGsnoopViewImg()
     m_nPointSize = 120;
     _tcscpy_s(m_logfont.lfFaceName,_T("Arial"));
 
-    m_logfont.lfHeight = ::MulDiv(m_nPointSize,
-                                  dc.GetDeviceCaps(LOGPIXELSY), 720);
+    m_logfont.lfHeight = MulDiv(m_nPointSize, dc.GetDeviceCaps(LOGPIXELSY), 720);
     m_logfont.lfPitchAndFamily = FIXED_PITCH;
 
     m_pFont = new CFont;
@@ -170,8 +168,8 @@ void CJPEGsnoopViewImg::SetScrollCenter(float fZoomOld, float fZoomNew)
     CPoint ScrolledPos = GetScrollPosition();
     ScrolledPos.Offset(-(int)nImgPosX, -(int)nImgPosY);
 
-    ScrolledPos.x = (long)(ScrolledPos.x * fZoomNew / fZoomOld);
-    ScrolledPos.y = (long)(ScrolledPos.y * fZoomNew / fZoomOld);
+    ScrolledPos.x = static_cast<long>(ScrolledPos.x * fZoomNew / fZoomOld);
+    ScrolledPos.y = static_cast<long>(ScrolledPos.y * fZoomNew / fZoomOld);
 
     ScrolledPos.Offset(+nImgPosX, +nImgPosY);
 

@@ -117,36 +117,36 @@ protected:
     // The Microsoft documentation is wrong for this: text in LPARAM, not WPARAM!
     void SetOKText(LPCWSTR lpText) const
     {
-        SendMessage(BFFM_SETOKTEXT, 0, (LPARAM)lpText);
+        SendMessage(BFFM_SETOKTEXT, 0, reinterpret_cast<LPARAM>(lpText));
     }
 
     // Set selected item from string or PIDL.
     // The documentation says lpText must be Unicode, but it can be LPCTSTR.
     void SetSelection(LPCTSTR lpText) const
     {
-        SendMessage(BFFM_SETSELECTION, true, (LPARAM)lpText);
+        SendMessage(BFFM_SETSELECTION, true, reinterpret_cast<LPARAM>(lpText));
     }
 
     void SetSelection(LPCITEMIDLIST pidl) const
     {
-        SendMessage(BFFM_SETSELECTION, false, (LPARAM)pidl);
+        SendMessage(BFFM_SETSELECTION, false, reinterpret_cast<LPARAM>(pidl));
     }
 
     // Expand item from string or PIDL
     void SetExpanded(LPCWSTR lpText) const
     {
-        SendMessage(BFFM_SETEXPANDED, true, (LPARAM)lpText);
+        SendMessage(BFFM_SETEXPANDED, true, reinterpret_cast<LPARAM>(lpText));
     }
 
     void SetExpanded(LPCITEMIDLIST pidl) const
     {
-        SendMessage(BFFM_SETEXPANDED,FALSE, (LPARAM)pidl);
+        SendMessage(BFFM_SETEXPANDED,FALSE, reinterpret_cast<LPARAM>(pidl));
     }
 
     // Set status window text
     void SetStatusText(LPCTSTR pText) const
     {
-        SendMessage(BFFM_SETSTATUSTEXT, 0, (LPARAM)pText);
+        SendMessage(BFFM_SETSTATUSTEXT, 0, reinterpret_cast<LPARAM>(pText));
     }
 
     // Override for custom filtering. You must call BrowseForFolder with bFilter=TRUE.

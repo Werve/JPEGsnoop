@@ -640,9 +640,9 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
         switch (nSubTag)
         {
         case 0x0001: sRetVal.strTag = _T("Canon.Cs1.Macro");
-            break; // Short Macro mode 
+            break; // Short Macro mode
         case 0x0002: sRetVal.strTag = _T("Canon.Cs1.Selftimer");
-            break; // Short Self timer 
+            break; // Short Self timer
         case 0x0003: sRetVal.strTag = _T("Canon.Cs1.Quality");
             if (nVal == 2) { sRetVal.strVal = _T("norm"); }
             else if (nVal == 3) { sRetVal.strVal = _T("fine"); }
@@ -653,12 +653,12 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
             }
             // Save the quality string for later
             m_strImgQualExif = sRetVal.strVal;
-            break; // Short Quality 
+            break; // Short Quality
         case 0x0004: sRetVal.strTag = _T("Canon.Cs1.FlashMode");
-            break; // Short Flash mode setting 
+            break; // Short Flash mode setting
         case 0x0005: sRetVal.strTag = _T("Canon.Cs1.DriveMode");
-            break; // Short Drive mode setting 
-        case 0x0007: sRetVal.strTag = _T("Canon.Cs1.FocusMode"); // Short Focus mode setting 
+            break; // Short Drive mode setting
+        case 0x0007: sRetVal.strTag = _T("Canon.Cs1.FocusMode"); // Short Focus mode setting
             switch (nVal)
             {
             case 0: sRetVal.strVal = _T("One-shot");
@@ -679,7 +679,7 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
                 break;
             }
             break;
-        case 0x000a: sRetVal.strTag = _T("Canon.Cs1.ImageSize"); // Short Image size 
+        case 0x000a: sRetVal.strTag = _T("Canon.Cs1.ImageSize"); // Short Image size
             if (nVal == 0) { sRetVal.strVal = _T("Large"); }
             else if (nVal == 1) { sRetVal.strVal = _T("Medium"); }
             else if (nVal == 2) { sRetVal.strVal = _T("Small"); }
@@ -689,39 +689,39 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
             }
             break;
         case 0x000b: sRetVal.strTag = _T("Canon.Cs1.EasyMode");
-            break; // Short Easy shooting mode 
+            break; // Short Easy shooting mode
         case 0x000c: sRetVal.strTag = _T("Canon.Cs1.DigitalZoom");
-            break; // Short Digital zoom 
+            break; // Short Digital zoom
         case 0x000d: sRetVal.strTag = _T("Canon.Cs1.Contrast");
-            break; // Short Contrast setting 
+            break; // Short Contrast setting
         case 0x000e: sRetVal.strTag = _T("Canon.Cs1.Saturation");
-            break; // Short Saturation setting 
+            break; // Short Saturation setting
         case 0x000f: sRetVal.strTag = _T("Canon.Cs1.Sharpness");
-            break; // Short Sharpness setting 
+            break; // Short Sharpness setting
         case 0x0010: sRetVal.strTag = _T("Canon.Cs1.ISOSpeed");
-            break; // Short ISO speed setting 
+            break; // Short ISO speed setting
         case 0x0011: sRetVal.strTag = _T("Canon.Cs1.MeteringMode");
-            break; // Short Metering mode setting 
+            break; // Short Metering mode setting
         case 0x0012: sRetVal.strTag = _T("Canon.Cs1.FocusType");
-            break; // Short Focus type setting 
+            break; // Short Focus type setting
         case 0x0013: sRetVal.strTag = _T("Canon.Cs1.AFPoint");
-            break; // Short AF point selected 
+            break; // Short AF point selected
         case 0x0014: sRetVal.strTag = _T("Canon.Cs1.ExposureProgram");
-            break; // Short Exposure mode setting 
+            break; // Short Exposure mode setting
         case 0x0016: sRetVal.strTag = _T("Canon.Cs1.LensType");
-            break; // 
+            break; //
         case 0x0017: sRetVal.strTag = _T("Canon.Cs1.Lens");
-            break; // Short 'long' and 'short' focal length of lens (in 'focal m_nImgUnits') and 'focal m_nImgUnits' per mm 
+            break; // Short 'long' and 'short' focal length of lens (in 'focal m_nImgUnits') and 'focal m_nImgUnits' per mm
         case 0x001a: sRetVal.strTag = _T("Canon.Cs1.MaxAperture");
-            break; // 
+            break; //
         case 0x001b: sRetVal.strTag = _T("Canon.Cs1.MinAperture");
-            break; // 
+            break; //
         case 0x001c: sRetVal.strTag = _T("Canon.Cs1.FlashActivity");
-            break; // Short Flash activity 
+            break; // Short Flash activity
         case 0x001d: sRetVal.strTag = _T("Canon.Cs1.FlashDetails");
-            break; // Short Flash details 
+            break; // Short Flash details
         case 0x0020: sRetVal.strTag = _T("Canon.Cs1.FocusMode");
-            break; // Short Focus mode setting 
+            break; // Short Focus mode setting
         default:
             sRetVal.strTag.Format(_T("Canon.Cs1.x%04X"), nSubTag);
             sRetVal.bUnknown = true;
@@ -734,25 +734,25 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
         switch (nSubTag)
         {
         case 0x0002: sRetVal.strTag = _T("Canon.Cs2.ISOSpeed");
-            break; // Short ISO speed used 
+            break; // Short ISO speed used
         case 0x0004: sRetVal.strTag = _T("Canon.Cs2.TargetAperture");
-            break; // Short Target Aperture 
+            break; // Short Target Aperture
         case 0x0005: sRetVal.strTag = _T("Canon.Cs2.TargetShutterSpeed");
-            break; // Short Target shutter speed 
+            break; // Short Target shutter speed
         case 0x0007: sRetVal.strTag = _T("Canon.Cs2.WhiteBalance");
-            break; // Short White balance setting 
+            break; // Short White balance setting
         case 0x0009: sRetVal.strTag = _T("Canon.Cs2.Sequence");
-            break; // Short Sequence number (if in a continuous burst) 
+            break; // Short Sequence number (if in a continuous burst)
         case 0x000e: sRetVal.strTag = _T("Canon.Cs2.AFPointUsed");
-            break; // Short AF point used 
+            break; // Short AF point used
         case 0x000f: sRetVal.strTag = _T("Canon.Cs2.FlashBias");
-            break; // Short Flash bias 
+            break; // Short Flash bias
         case 0x0013: sRetVal.strTag = _T("Canon.Cs2.SubjectDistance");
-            break; // Short Subject distance (m_nImgUnits are not clear) 
+            break; // Short Subject distance (m_nImgUnits are not clear)
         case 0x0015: sRetVal.strTag = _T("Canon.Cs2.ApertureValue");
-            break; // Short Aperture 
+            break; // Short Aperture
         case 0x0016: sRetVal.strTag = _T("Canon.Cs2.ShutterSpeedValue");
-            break; // Short Shutter speed 
+            break; // Short Shutter speed
         default:
             sRetVal.strTag.Format(_T("Canon.Cs2.x%04X"), nSubTag);
             sRetVal.bUnknown = true;
@@ -768,35 +768,35 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
         switch (nValHi)
         {
         case 0x0001: sRetVal.strTag = _T("Canon.Cf.NoiseReduction");
-            break; // Short Long exposure noise reduction 
+            break; // Short Long exposure noise reduction
         case 0x0002: sRetVal.strTag = _T("Canon.Cf.ShutterAeLock");
-            break; // Short Shutter/AE lock buttons 
+            break; // Short Shutter/AE lock buttons
         case 0x0003: sRetVal.strTag = _T("Canon.Cf.MirrorLockup");
-            break; // Short Mirror lockup 
+            break; // Short Mirror lockup
         case 0x0004: sRetVal.strTag = _T("Canon.Cf.ExposureLevelIncrements");
-            break; // Short Tv/Av and exposure level 
+            break; // Short Tv/Av and exposure level
         case 0x0005: sRetVal.strTag = _T("Canon.Cf.AFAssist");
-            break; // Short AF assist light 
+            break; // Short AF assist light
         case 0x0006: sRetVal.strTag = _T("Canon.Cf.FlashSyncSpeedAv");
-            break; // Short Shutter speed in Av mode 
+            break; // Short Shutter speed in Av mode
         case 0x0007: sRetVal.strTag = _T("Canon.Cf.AEBSequence");
-            break; // Short AEB sequence/auto cancellation 
+            break; // Short AEB sequence/auto cancellation
         case 0x0008: sRetVal.strTag = _T("Canon.Cf.ShutterCurtainSync");
-            break; // Short Shutter curtain sync 
+            break; // Short Shutter curtain sync
         case 0x0009: sRetVal.strTag = _T("Canon.Cf.LensAFStopButton");
-            break; // Short Lens AF stop button Fn. Switch 
+            break; // Short Lens AF stop button Fn. Switch
         case 0x000a: sRetVal.strTag = _T("Canon.Cf.FillFlashAutoReduction");
-            break; // Short Auto reduction of fill flash 
+            break; // Short Auto reduction of fill flash
         case 0x000b: sRetVal.strTag = _T("Canon.Cf.MenuButtonReturn");
-            break; // Short Menu button return position 
+            break; // Short Menu button return position
         case 0x000c: sRetVal.strTag = _T("Canon.Cf.SetButtonFunction");
-            break; // Short SET button func. when shooting 
+            break; // Short SET button func. when shooting
         case 0x000d: sRetVal.strTag = _T("Canon.Cf.SensorCleaning");
-            break; // Short Sensor cleaning 
+            break; // Short Sensor cleaning
         case 0x000e: sRetVal.strTag = _T("Canon.Cf.SuperimposedDisplay");
-            break; // Short Superimposed display 
+            break; // Short Superimposed display
         case 0x000f: sRetVal.strTag = _T("Canon.Cf.ShutterReleaseNoCFCard");
-            break; // Short Shutter Release W/O CF Card 
+            break; // Short Shutter Release W/O CF Card
         default:
             sRetVal.strTag.Format(_T("Canon.Cf.x%04X"), nValHi);
             sRetVal.bUnknown = true;
@@ -816,7 +816,7 @@ CStr2 CjfifDecode::LookupMakerCanonTag(unsigned nMainTag, unsigned nSubTag, unsi
                         break;
                 }
                 break;
-        
+
             case 0x00C1:
                 sRetVal.strVal.Format(_T("%u"),nValLo); // Provide default value
                 switch(nValHi)
@@ -887,67 +887,57 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
         switch (nTag)
         {
         case 0x010E: return _T("ImageDescription");
-            break; // ascii string Describes image 
+            // ascii string Describes image
         case 0x010F: return _T("Make");
-            break; // ascii string Shows manufacturer of digicam 
+            // ascii string Shows manufacturer of digicam
         case 0x0110: return _T("Model");
-            break; // ascii string Shows model number of digicam
+            // ascii string Shows model number of digicam
         case 0x0112: return _T("Orientation");
-            break; // unsigned short 1  The orientation of the camera relative to the scene, when the image was captured. The start point of stored data is, '1' means upper left, '3' lower right, '6' upper right, '8' lower left, '9' undefined. 
+            // unsigned short 1  The orientation of the camera relative to the scene, when the image was captured. The start point of stored data is, '1' means upper left, '3' lower right, '6' upper right, '8' lower left, '9' undefined.
         case 0x011A: return _T("XResolution");
-            break; // unsigned rational 1  Display/Print resolution of image. Large number of digicam uses 1/72inch, but it has no mean because personal computer doesn't use this value to display/print out. 
+            // unsigned rational 1  Display/Print resolution of image. Large number of digicam uses 1/72inch, but it has no mean because personal computer doesn't use this value to display/print out.
         case 0x011B: return _T("YResolution");
-            break; // unsigned rational 1  
+            // unsigned rational 1
         case 0x0128: return _T("ResolutionUnit");
-            break; // unsigned short 1  Unit of XResolution(0x011a)/YResolution(0x011b). '1' means no-unit, '2' means inch, '3' means centimeter. 
+            // unsigned short 1  Unit of XResolution(0x011a)/YResolution(0x011b). '1' means no-unit, '2' means inch, '3' means centimeter.
         case 0x0131: return _T("Software");
-            break; //  ascii string Shows firmware(internal software of digicam) version number. 
+            //  ascii string Shows firmware(internal software of digicam) version number.
         case 0x0132: return _T("DateTime");
-            break; // ascii string 20  Date/Time of image was last modified. Data format is "YYYY:MM:DD HH:MM:SS"+0x00, total 20bytes. In usual, it has the same value of DateTimeOriginal(0x9003) 
+            // ascii string 20  Date/Time of image was last modified. Data format is "YYYY:MM:DD HH:MM:SS"+0x00, total 20bytes. In usual, it has the same value of DateTimeOriginal(0x9003)
         case 0x013B: return _T("Artist");
-            break; // Seems to be here and not only in SubIFD (maybe instead of SubIFD)
+            // Seems to be here and not only in SubIFD (maybe instead of SubIFD)
         case 0x013E: return _T("WhitePoint");
-            break; // unsigned rational 2  Defines chromaticity of white point of the image. If the image uses CIE Standard Illumination D65(known as international standard of 'daylight'), the values are '3127/10000,3290/10000'. 
+            // unsigned rational 2  Defines chromaticity of white point of the image. If the image uses CIE Standard Illumination D65(known as international standard of 'daylight'), the values are '3127/10000,3290/10000'.
         case 0x013F: return _T("PrimChromaticities");
-            break; // unsigned rational 6  Defines chromaticity of the primaries of the image. If the image uses CCIR Recommendation 709 primearies, values are '640/1000,330/1000,300/1000,600/1000,150/1000,0/1000'. 
+            // unsigned rational 6  Defines chromaticity of the primaries of the image. If the image uses CCIR Recommendation 709 primearies, values are '640/1000,330/1000,300/1000,600/1000,150/1000,0/1000'.
         case 0x0211: return _T("YCbCrCoefficients");
-            break; // unsigned rational 3  When image format is YCbCr, this value shows a constant to translate it to RGB format. In usual, values are '0.299/0.587/0.114'. 
+            // unsigned rational 3  When image format is YCbCr, this value shows a constant to translate it to RGB format. In usual, values are '0.299/0.587/0.114'.
         case 0x0213: return _T("YCbCrPositioning");
-            break; // unsigned short 1  When image format is YCbCr and uses 'Subsampling'(cropping of chroma data, all the digicam do that), defines the chroma sample point of subsampling pixel array. '1' means the center of pixel array, '2' means the datum point. 
+            // unsigned short 1  When image format is YCbCr and uses 'Subsampling'(cropping of chroma data, all the digicam do that), defines the chroma sample point of subsampling pixel array. '1' means the center of pixel array, '2' means the datum point.
         case 0x0214: return _T("ReferenceBlackWhite");
-            break; // unsigned rational 6  Shows reference value of black point/white point. In case of YCbCr format, first 2 show black/white of Y, next 2 are Cb, last 2 are Cr. In case of RGB format, first 2 show black/white of R, next 2 are G, last 2 are B.
+            // unsigned rational 6  Shows reference value of black point/white point. In case of YCbCr format, first 2 show black/white of Y, next 2 are Cb, last 2 are Cr. In case of RGB format, first 2 show black/white of R, next 2 are G, last 2 are B.
         case 0x8298: return _T("Copyright");
-            break; // ascii string Shows copyright information
+            // ascii string Shows copyright information
         case 0x8769: return _T("ExifOffset");
-            break; //unsigned long 1  Offset to Exif Sub IFD
+            //unsigned long 1  Offset to Exif Sub IFD
         case 0x8825: return _T("GPSOffset");
-            break; //unsigned long 1  Offset to Exif GPS IFD
+            //unsigned long 1  Offset to Exif GPS IFD
             //NEW:
         case 0x9C9B: return _T("XPTitle");
-            break;
         case 0x9C9C: return _T("XPComment");
-            break;
         case 0x9C9D: return _T("XPAuthor");
-            break;
         case 0x9C9e: return _T("XPKeywords");
-            break;
         case 0x9C9f: return _T("XPSubject");
-            break;
             //NEW: The following were found in IFD0 even though they should just be SubIFD?
         case 0xA401: return _T("CustomRendered");
-            break;
         case 0xA402: return _T("ExposureMode");
-            break;
         case 0xA403: return _T("WhiteBalance");
-            break;
         case 0xA406: return _T("SceneCaptureType");
-            break;
 
         default:
             strTmp.Format(_T("IFD0.0x%04X"), nTag);
             bUnknown = true;
             return strTmp;
-            break;
         }
     }
     if (strSect == _T("SubIFD"))
@@ -955,181 +945,147 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
         switch (nTag)
         {
         case 0x00fe: return _T("NewSubfileType");
-            break; //  unsigned long 1  
+            //  unsigned long 1
         case 0x00ff: return _T("SubfileType");
-            break; //  unsigned short 1   
+            //  unsigned short 1
         case 0x012d: return _T("TransferFunction");
-            break; //  unsigned short 3  
+            //  unsigned short 3
         case 0x013b: return _T("Artist");
-            break; //  ascii string 
+            //  ascii string
         case 0x013d: return _T("Predictor");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0x0142: return _T("TileWidth");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0x0143: return _T("TileLength");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0x0144: return _T("TileOffsets");
-            break; //  unsigned long 
+            //  unsigned long
         case 0x0145: return _T("TileByteCounts");
-            break; //  unsigned short 
+            //  unsigned short
         case 0x014a: return _T("SubIFDs");
-            break; //  unsigned long 
+            //  unsigned long
         case 0x015b: return _T("JPEGTables");
-            break; //  undefined 
+            //  undefined
         case 0x828d: return _T("CFARepeatPatternDim");
-            break; //  unsigned short 2  
+            //  unsigned short 2
         case 0x828e: return _T("CFAPattern");
-            break; //  unsigned byte 
+            //  unsigned byte
         case 0x828f: return _T("BatteryLevel");
-            break; //  unsigned rational 1  
+            //  unsigned rational 1
         case 0x829A: return _T("ExposureTime");
-            break;
         case 0x829D: return _T("FNumber");
-            break;
         case 0x83bb: return _T("IPTC/NAA");
-            break; //  unsigned long 
+            //  unsigned long
         case 0x8773: return _T("InterColorProfile");
-            break; //  undefined 
+            //  undefined
         case 0x8822: return _T("ExposureProgram");
-            break;
         case 0x8824: return _T("SpectralSensitivity");
-            break; //  ascii string 
+            //  ascii string
         case 0x8825: return _T("GPSInfo");
-            break; //  unsigned long 1  
+            //  unsigned long 1
         case 0x8827: return _T("ISOSpeedRatings");
-            break;
         case 0x8828: return _T("OECF");
-            break; //  undefined 
+            //  undefined
         case 0x8829: return _T("Interlace");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0x882a: return _T("TimeZoneOffset");
-            break; //  signed short 1  
+            //  signed short 1
         case 0x882b: return _T("SelfTimerMode");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0x9000: return _T("ExifVersion");
-            break;
         case 0x9003: return _T("DateTimeOriginal");
-            break;
         case 0x9004: return _T("DateTimeDigitized");
-            break;
         case 0x9101: return _T("ComponentsConfiguration");
-            break;
         case 0x9102: return _T("CompressedBitsPerPixel");
-            break;
         case 0x9201: return _T("ShutterSpeedValue");
-            break;
         case 0x9202: return _T("ApertureValue");
-            break;
         case 0x9203: return _T("BrightnessValue");
-            break;
         case 0x9204: return _T("ExposureBiasValue");
-            break;
         case 0x9205: return _T("MaxApertureValue");
-            break;
         case 0x9206: return _T("SubjectDistance");
-            break;
         case 0x9207: return _T("MeteringMode");
-            break;
         case 0x9208: return _T("LightSource");
-            break;
         case 0x9209: return _T("Flash");
-            break;
         case 0x920A: return _T("FocalLength");
-            break;
         case 0x920b: return _T("FlashEnergy");
-            break; //  unsigned rational 1  
+            //  unsigned rational 1
         case 0x920c: return _T("SpatialFrequencyResponse");
-            break; //  undefined 
+            //  undefined
         case 0x920d: return _T("Noise");
-            break; //  undefined 
+            //  undefined
         case 0x9211: return _T("ImageNumber");
-            break; //  unsigned long 1  
+            //  unsigned long 1
         case 0x9212: return _T("SecurityClassification");
-            break; //  ascii string 1  
+            //  ascii string 1
         case 0x9213: return _T("ImageHistory");
-            break; //  ascii string 
+            //  ascii string
         case 0x9214: return _T("SubjectLocation");
-            break; //  unsigned short 4  
+            //  unsigned short 4
         case 0x9215: return _T("ExposureIndex");
-            break; //  unsigned rational 1  
+            //  unsigned rational 1
         case 0x9216: return _T("TIFF/EPStandardID");
-            break; //  unsigned byte 4  
+            //  unsigned byte 4
         case 0x927C: return _T("MakerNote");
-            break;
         case 0x9286: return _T("UserComment");
-            break;
         case 0x9290: return _T("SubSecTime");
-            break; //  ascii string 
+            //  ascii string
         case 0x9291: return _T("SubSecTimeOriginal");
-            break; //  ascii string 
+            //  ascii string
         case 0x9292: return _T("SubSecTimeDigitized");
-            break; //  ascii string 
+            //  ascii string
         case 0xA000: return _T("FlashPixVersion");
-            break;
         case 0xA001: return _T("ColorSpace");
-            break;
         case 0xA002: return _T("ExifImageWidth");
-            break;
         case 0xA003: return _T("ExifImageHeight");
-            break;
         case 0xA004: return _T("RelatedSoundFile");
-            break;
         case 0xA005: return _T("ExifInteroperabilityOffset");
-            break;
         case 0xa20b: return _T("FlashEnergy  unsigned");
-            break; // rational 1  
+            // rational 1
         case 0xa20c: return _T("SpatialFrequencyResponse");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0xA20E: return _T("FocalPlaneXResolution");
-            break;
         case 0xA20F: return _T("FocalPlaneYResolution");
-            break;
         case 0xA210: return _T("FocalPlaneResolutionUnit");
-            break;
         case 0xa214: return _T("SubjectLocation");
-            break; //  unsigned short 1  
+            //  unsigned short 1
         case 0xa215: return _T("ExposureIndex");
-            break; //  unsigned rational 1 
+            //  unsigned rational 1
         case 0xA217: return _T("SensingMethod");
-            break;
         case 0xA300: return _T("FileSource");
-            break;
         case 0xA301: return _T("SceneType");
-            break;
         case 0xa302: return _T("CFAPattern");
-            break; //  undefined 1  
+            //  undefined 1
         case 0xa401: return _T("CustomRendered");
-            break; // Short Custom image processing 
+            // Short Custom image processing
         case 0xa402: return _T("ExposureMode");
-            break; // Short Exposure mode 
+            // Short Exposure mode
         case 0xa403: return _T("WhiteBalance");
-            break; // Short White balance 
+            // Short White balance
         case 0xa404: return _T("DigitalZoomRatio");
-            break; // Rational Digital zoom ratio 
+            // Rational Digital zoom ratio
         case 0xa405: return _T("FocalLengthIn35mmFilm");
-            break; // Short Focal length in 35 mm film 
+            // Short Focal length in 35 mm film
         case 0xa406: return _T("SceneCaptureType");
-            break; // Short Scene capture type 
+            // Short Scene capture type
         case 0xa407: return _T("GainControl");
-            break; // Rational Gain control 
+            // Rational Gain control
         case 0xa408: return _T("Contrast");
-            break; // Short Contrast 
+            // Short Contrast
         case 0xa409: return _T("Saturation");
-            break; // Short Saturation 
+            // Short Saturation
         case 0xa40a: return _T("Sharpness");
-            break; // Short Sharpness 
+            // Short Sharpness
         case 0xa40b: return _T("DeviceSettingDescription");
-            break; // Undefined Device settings description 
+            // Undefined Device settings description
         case 0xa40c: return _T("SubjectDistanceRange");
-            break; // Short Subject distance range 
+            // Short Subject distance range
         case 0xa420: return _T("ImageUniqueID");
-            break; // Ascii Unique image ID 
+            // Ascii Unique image ID
 
         default:
             strTmp.Format(_T("SubIFD.0x%04X"), nTag);
             bUnknown = true;
             return strTmp;
-            break;
         }
     }
     if (strSect == _T("IFD1"))
@@ -1137,43 +1093,43 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
         switch (nTag)
         {
         case 0x0100: return _T("ImageWidth");
-            break; //  unsigned short/long 1  Shows size of thumbnail image. 
+            break; //  unsigned short/long 1  Shows size of thumbnail image.
         case 0x0101: return _T("ImageLength");
-            break; //  unsigned short/long 1  
+            break; //  unsigned short/long 1
         case 0x0102: return _T("BitsPerSample");
-            break; //  unsigned short 3  When image format is no compression, this value shows the number of bits per component for each pixel. Usually this value is '8,8,8' 
+            break; //  unsigned short 3  When image format is no compression, this value shows the number of bits per component for each pixel. Usually this value is '8,8,8'
         case 0x0103: return _T("Compression");
-            break; //  unsigned short 1  Shows compression method. '1' means no compression, '6' means JPEG compression. 
+            break; //  unsigned short 1  Shows compression method. '1' means no compression, '6' means JPEG compression.
         case 0x0106: return _T("PhotometricInterpretation");
-            break; //  unsigned short 1  Shows the color space of the image data components. '1' means monochrome, '2' means RGB, '6' means YCbCr. 
+            break; //  unsigned short 1  Shows the color space of the image data components. '1' means monochrome, '2' means RGB, '6' means YCbCr.
         case 0x0111: return _T("StripOffsets");
-            break; //  unsigned short/long When image format is no compression, this value shows offset to image data. In some case image data is striped and this value is plural. 
+            break; //  unsigned short/long When image format is no compression, this value shows offset to image data. In some case image data is striped and this value is plural.
         case 0x0115: return _T("SamplesPerPixel");
-            break; //  unsigned short 1  When image format is no compression, this value shows the number of components stored for each pixel. At color image, this value is '3'. 
+            break; //  unsigned short 1  When image format is no compression, this value shows the number of components stored for each pixel. At color image, this value is '3'.
         case 0x0116: return _T("RowsPerStrip");
-            break; //  unsigned short/long 1  When image format is no compression and image has stored as strip, this value shows how many rows stored to each strip. If image has not striped, this value is the same as ImageLength(0x0101). 
+            break; //  unsigned short/long 1  When image format is no compression and image has stored as strip, this value shows how many rows stored to each strip. If image has not striped, this value is the same as ImageLength(0x0101).
         case 0x0117: return _T("StripByteConunts");
-            break; //  unsigned short/long  When image format is no compression and stored as strip, this value shows how many bytes used for each strip and this value is plural. If image has not stripped, this value is single and means whole data size of image. 
+            break; //  unsigned short/long  When image format is no compression and stored as strip, this value shows how many bytes used for each strip and this value is plural. If image has not stripped, this value is single and means whole data size of image.
         case 0x011a: return _T("XResolution");
-            break; //  unsigned rational 1  Display/Print resolution of image. Large number of digicam uses 1/72inch, but it has no mean because personal computer doesn't use this value to display/print out. 
+            break; //  unsigned rational 1  Display/Print resolution of image. Large number of digicam uses 1/72inch, but it has no mean because personal computer doesn't use this value to display/print out.
         case 0x011b: return _T("YResolution");
-            break; //  unsigned rational 1  
+            break; //  unsigned rational 1
         case 0x011c: return _T("PlanarConfiguration");
-            break; //  unsigned short 1  When image format is no compression YCbCr, this value shows byte aligns of YCbCr data. If value is '1', Y/Cb/Cr value is chunky format, contiguous for each subsampling pixel. If value is '2', Y/Cb/Cr value is separated and stored to Y plane/Cb plane/Cr plane format. 
+            break; //  unsigned short 1  When image format is no compression YCbCr, this value shows byte aligns of YCbCr data. If value is '1', Y/Cb/Cr value is chunky format, contiguous for each subsampling pixel. If value is '2', Y/Cb/Cr value is separated and stored to Y plane/Cb plane/Cr plane format.
         case 0x0128: return _T("ResolutionUnit");
-            break; //  unsigned short 1  Unit of XResolution(0x011a)/YResolution(0x011b). '1' means inch, '2' means centimeter. 
+            break; //  unsigned short 1  Unit of XResolution(0x011a)/YResolution(0x011b). '1' means inch, '2' means centimeter.
         case 0x0201: return _T("JpegIFOffset");
-            break; //  unsigned long 1  When image format is JPEG, this value show offset to JPEG data stored. 
+            break; //  unsigned long 1  When image format is JPEG, this value show offset to JPEG data stored.
         case 0x0202: return _T("JpegIFByteCount");
-            break; //  unsigned long 1  When image format is JPEG, this value shows data size of JPEG image. 
+            break; //  unsigned long 1  When image format is JPEG, this value shows data size of JPEG image.
         case 0x0211: return _T("YCbCrCoefficients");
-            break; //  unsigned rational 3  When image format is YCbCr, this value shows constants to translate it to RGB format. In usual, '0.299/0.587/0.114' are used. 
+            break; //  unsigned rational 3  When image format is YCbCr, this value shows constants to translate it to RGB format. In usual, '0.299/0.587/0.114' are used.
         case 0x0212: return _T("YCbCrSubSampling");
-            break; //  unsigned short 2  When image format is YCbCr and uses subsampling(cropping of chroma data, all the digicam do that), this value shows how many chroma data subsampled. First value shows horizontal, next value shows vertical subsample rate. 
+            break; //  unsigned short 2  When image format is YCbCr and uses subsampling(cropping of chroma data, all the digicam do that), this value shows how many chroma data subsampled. First value shows horizontal, next value shows vertical subsample rate.
         case 0x0213: return _T("YCbCrPositioning");
-            break; //  unsigned short 1  When image format is YCbCr and uses 'Subsampling'(cropping of chroma data, all the digicam do that), this value defines the chroma sample point of subsampled pixel array. '1' means the center of pixel array, '2' means the datum point(0,0). 
+            break; //  unsigned short 1  When image format is YCbCr and uses 'Subsampling'(cropping of chroma data, all the digicam do that), this value defines the chroma sample point of subsampled pixel array. '1' means the center of pixel array, '2' means the datum point(0,0).
         case 0x0214: return _T("ReferenceBlackWhite");
-            break; //  unsigned rational 6  Shows reference value of black point/white point. In case of YCbCr format, first 2 show black/white of Y, next 2 are Cb, last 2 are Cr. In case of RGB format, first 2 show black/white of R, next 2 are G, last 2 are B. 
+            break; //  unsigned rational 6  Shows reference value of black point/white point. In case of YCbCr format, first 2 show black/white of Y, next 2 are Cb, last 2 are Cr. In case of RGB format, first 2 show black/white of R, next 2 are G, last 2 are B.
 
         default:
             strTmp.Format(_T("IFD1.0x%04X"), nTag);
@@ -1322,51 +1278,51 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
             switch (nTag)
             {
             case 0x0002: return _T("Sigma.SerialNumber");
-                break; // Ascii Camera serial number 
+                break; // Ascii Camera serial number
             case 0x0003: return _T("Sigma.DriveMode");
-                break; // Ascii Drive Mode 
+                break; // Ascii Drive Mode
             case 0x0004: return _T("Sigma.ResolutionMode");
-                break; // Ascii Resolution Mode 
+                break; // Ascii Resolution Mode
             case 0x0005: return _T("Sigma.AutofocusMode");
-                break; // Ascii Autofocus mode 
+                break; // Ascii Autofocus mode
             case 0x0006: return _T("Sigma.FocusSetting");
-                break; // Ascii Focus setting 
+                break; // Ascii Focus setting
             case 0x0007: return _T("Sigma.WhiteBalance");
-                break; // Ascii White balance 
+                break; // Ascii White balance
             case 0x0008: return _T("Sigma.ExposureMode");
-                break; // Ascii Exposure mode 
+                break; // Ascii Exposure mode
             case 0x0009: return _T("Sigma.MeteringMode");
-                break; // Ascii Metering mode 
+                break; // Ascii Metering mode
             case 0x000a: return _T("Sigma.LensRange");
-                break; // Ascii Lens focal length range 
+                break; // Ascii Lens focal length range
             case 0x000b: return _T("Sigma.ColorSpace");
-                break; // Ascii Color space 
+                break; // Ascii Color space
             case 0x000c: return _T("Sigma.Exposure");
-                break; // Ascii Exposure 
+                break; // Ascii Exposure
             case 0x000d: return _T("Sigma.Contrast");
-                break; // Ascii Contrast 
+                break; // Ascii Contrast
             case 0x000e: return _T("Sigma.Shadow");
-                break; // Ascii Shadow 
+                break; // Ascii Shadow
             case 0x000f: return _T("Sigma.Highlight");
-                break; // Ascii Highlight 
+                break; // Ascii Highlight
             case 0x0010: return _T("Sigma.Saturation");
-                break; // Ascii Saturation 
+                break; // Ascii Saturation
             case 0x0011: return _T("Sigma.Sharpness");
-                break; // Ascii Sharpness 
+                break; // Ascii Sharpness
             case 0x0012: return _T("Sigma.FillLight");
-                break; // Ascii X3 Fill light 
+                break; // Ascii X3 Fill light
             case 0x0014: return _T("Sigma.ColorAdjustment");
-                break; // Ascii Color adjustment 
+                break; // Ascii Color adjustment
             case 0x0015: return _T("Sigma.AdjustmentMode");
-                break; // Ascii Adjustment mode 
+                break; // Ascii Adjustment mode
             case 0x0016: return _T("Sigma.Quality");
-                break; // Ascii Quality 
+                break; // Ascii Quality
             case 0x0017: return _T("Sigma.Firmware");
-                break; // Ascii Firmware 
+                break; // Ascii Firmware
             case 0x0018: return _T("Sigma.Software");
-                break; // Ascii Software 
+                break; // Ascii Software
             case 0x0019: return _T("Sigma.AutoBracket");
-                break; // Ascii Auto bracket 
+                break; // Ascii Auto bracket
             default:
                 strTmp.Format(_T("Sigma.0x%04X"), nTag);
                 bUnknown = true;
@@ -1413,39 +1369,39 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
             switch (nTag)
             {
             case 0x0000: return _T("Fujifilm.Version");
-                break; // Undefined Fujifilm Makernote version 
+                break; // Undefined Fujifilm Makernote version
             case 0x1000: return _T("Fujifilm.Quality");
-                break; // Ascii Image quality setting 
+                break; // Ascii Image quality setting
             case 0x1001: return _T("Fujifilm.Sharpness");
-                break; // Short Sharpness setting 
+                break; // Short Sharpness setting
             case 0x1002: return _T("Fujifilm.WhiteBalance");
-                break; // Short White balance setting 
+                break; // Short White balance setting
             case 0x1003: return _T("Fujifilm.Color");
-                break; // Short Chroma saturation setting 
+                break; // Short Chroma saturation setting
             case 0x1004: return _T("Fujifilm.Tone");
-                break; // Short Contrast setting 
+                break; // Short Contrast setting
             case 0x1010: return _T("Fujifilm.FlashMode");
-                break; // Short Flash firing mode setting 
+                break; // Short Flash firing mode setting
             case 0x1011: return _T("Fujifilm.FlashStrength");
-                break; // SRational Flash firing strength compensation setting 
+                break; // SRational Flash firing strength compensation setting
             case 0x1020: return _T("Fujifilm.Macro");
-                break; // Short Macro mode setting 
+                break; // Short Macro mode setting
             case 0x1021: return _T("Fujifilm.FocusMode");
-                break; // Short Focusing mode setting 
+                break; // Short Focusing mode setting
             case 0x1030: return _T("Fujifilm.SlowSync");
-                break; // Short Slow synchro mode setting 
+                break; // Short Slow synchro mode setting
             case 0x1031: return _T("Fujifilm.PictureMode");
-                break; // Short Picture mode setting 
+                break; // Short Picture mode setting
             case 0x1100: return _T("Fujifilm.Continuous");
-                break; // Short Continuous shooting or auto bracketing setting 
+                break; // Short Continuous shooting or auto bracketing setting
             case 0x1210: return _T("Fujifilm.FinePixColor");
-                break; // Short Fuji FinePix Color setting 
+                break; // Short Fuji FinePix Color setting
             case 0x1300: return _T("Fujifilm.BlurWarning");
-                break; // Short Blur warning status 
+                break; // Short Blur warning status
             case 0x1301: return _T("Fujifilm.FocusWarning");
-                break; // Short Auto Focus warning status 
+                break; // Short Auto Focus warning status
             case 0x1302: return _T("Fujifilm.AeWarning");
-                break; // Short Auto Exposure warning status 
+                break; // Short Auto Exposure warning status
             default:
                 strTmp.Format(_T("Fujifilm.0x%04X"), nTag);
                 bUnknown = true;
@@ -1461,35 +1417,35 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
                 switch (nTag)
                 {
                 case 0x0001: return _T("Nikon1.Version");
-                    break; // Undefined Nikon Makernote version 
+                    break; // Undefined Nikon Makernote version
                 case 0x0002: return _T("Nikon1.ISOSpeed");
-                    break; // Short ISO speed setting 
+                    break; // Short ISO speed setting
                 case 0x0003: return _T("Nikon1.ColorMode");
-                    break; // Ascii Color mode 
+                    break; // Ascii Color mode
                 case 0x0004: return _T("Nikon1.Quality");
-                    break; // Ascii Image quality setting 
+                    break; // Ascii Image quality setting
                 case 0x0005: return _T("Nikon1.WhiteBalance");
-                    break; // Ascii White balance 
+                    break; // Ascii White balance
                 case 0x0006: return _T("Nikon1.Sharpening");
-                    break; // Ascii Image sharpening setting 
+                    break; // Ascii Image sharpening setting
                 case 0x0007: return _T("Nikon1.Focus");
-                    break; // Ascii Focus mode 
+                    break; // Ascii Focus mode
                 case 0x0008: return _T("Nikon1.Flash");
-                    break; // Ascii Flash mode 
+                    break; // Ascii Flash mode
                 case 0x000f: return _T("Nikon1.ISOSelection");
-                    break; // Ascii ISO selection 
+                    break; // Ascii ISO selection
                 case 0x0010: return _T("Nikon1.DataDump");
-                    break; // Undefined Data dump 
+                    break; // Undefined Data dump
                 case 0x0080: return _T("Nikon1.ImageAdjustment");
-                    break; // Ascii Image adjustment setting 
+                    break; // Ascii Image adjustment setting
                 case 0x0082: return _T("Nikon1.Adapter");
-                    break; // Ascii Adapter used 
+                    break; // Ascii Adapter used
                 case 0x0085: return _T("Nikon1.FocusDistance");
-                    break; // Rational Manual focus distance 
+                    break; // Rational Manual focus distance
                 case 0x0086: return _T("Nikon1.DigitalZoom");
-                    break; // Rational Digital zoom setting 
+                    break; // Rational Digital zoom setting
                 case 0x0088: return _T("Nikon1.AFFocusPos");
-                    break; // Undefined AF focus position 
+                    break; // Undefined AF focus position
                 default:
                     strTmp.Format(_T("Nikon1.0x%04X"), nTag);
                     bUnknown = true;
@@ -1503,21 +1459,21 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
                 switch (nTag)
                 {
                 case 0x0003: return _T("Nikon2.Quality");
-                    break; // Short Image quality setting 
+                    break; // Short Image quality setting
                 case 0x0004: return _T("Nikon2.ColorMode");
-                    break; // Short Color mode 
+                    break; // Short Color mode
                 case 0x0005: return _T("Nikon2.ImageAdjustment");
-                    break; // Short Image adjustment setting 
+                    break; // Short Image adjustment setting
                 case 0x0006: return _T("Nikon2.ISOSpeed");
-                    break; // Short ISO speed setting 
+                    break; // Short ISO speed setting
                 case 0x0007: return _T("Nikon2.WhiteBalance");
-                    break; // Short White balance 
+                    break; // Short White balance
                 case 0x0008: return _T("Nikon2.Focus");
-                    break; // Rational Focus mode 
+                    break; // Rational Focus mode
                 case 0x000a: return _T("Nikon2.DigitalZoom");
-                    break; // Rational Digital zoom setting 
+                    break; // Rational Digital zoom setting
                 case 0x000b: return _T("Nikon2.Adapter");
-                    break; // Short Adapter used 
+                    break; // Short Adapter used
                 default:
                     strTmp.Format(_T("Nikon2.0x%04X"), nTag);
                     bUnknown = true;
@@ -1531,99 +1487,99 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
                 switch (nTag)
                 {
                 case 0x0001: return _T("Nikon3.Version");
-                    break; // Undefined Nikon Makernote version 
+                    break; // Undefined Nikon Makernote version
                 case 0x0002: return _T("Nikon3.ISOSpeed");
-                    break; // Short ISO speed used 
+                    break; // Short ISO speed used
                 case 0x0003: return _T("Nikon3.ColorMode");
-                    break; // Ascii Color mode 
+                    break; // Ascii Color mode
                 case 0x0004: return _T("Nikon3.Quality");
-                    break; // Ascii Image quality setting 
+                    break; // Ascii Image quality setting
                 case 0x0005: return _T("Nikon3.WhiteBalance");
-                    break; // Ascii White balance 
+                    break; // Ascii White balance
                 case 0x0006: return _T("Nikon3.Sharpening");
-                    break; // Ascii Image sharpening setting 
+                    break; // Ascii Image sharpening setting
                 case 0x0007: return _T("Nikon3.Focus");
-                    break; // Ascii Focus mode 
+                    break; // Ascii Focus mode
                 case 0x0008: return _T("Nikon3.FlashSetting");
-                    break; // Ascii Flash setting 
+                    break; // Ascii Flash setting
                 case 0x0009: return _T("Nikon3.FlashMode");
-                    break; // Ascii Flash mode 
+                    break; // Ascii Flash mode
                 case 0x000b: return _T("Nikon3.WhiteBalanceBias");
-                    break; // SShort White balance bias 
+                    break; // SShort White balance bias
                 case 0x000e: return _T("Nikon3.ExposureDiff");
-                    break; // Undefined Exposure difference 
+                    break; // Undefined Exposure difference
                 case 0x000f: return _T("Nikon3.ISOSelection");
-                    break; // Ascii ISO selection 
+                    break; // Ascii ISO selection
                 case 0x0010: return _T("Nikon3.DataDump");
-                    break; // Undefined Data dump 
+                    break; // Undefined Data dump
                 case 0x0011: return _T("Nikon3.ThumbOffset");
-                    break; // Long Thumbnail IFD offset 
+                    break; // Long Thumbnail IFD offset
                 case 0x0012: return _T("Nikon3.FlashComp");
-                    break; // Undefined Flash compensation setting 
+                    break; // Undefined Flash compensation setting
                 case 0x0013: return _T("Nikon3.ISOSetting");
-                    break; // Short ISO speed setting 
+                    break; // Short ISO speed setting
                 case 0x0016: return _T("Nikon3.ImageBoundary");
-                    break; // Short Image boundry 
+                    break; // Short Image boundry
                 case 0x0018: return _T("Nikon3.FlashBracketComp");
-                    break; // Undefined Flash bracket compensation applied 
+                    break; // Undefined Flash bracket compensation applied
                 case 0x0019: return _T("Nikon3.ExposureBracketComp");
-                    break; // SRational AE bracket compensation applied 
+                    break; // SRational AE bracket compensation applied
                 case 0x0080: return _T("Nikon3.ImageAdjustment");
-                    break; // Ascii Image adjustment setting 
+                    break; // Ascii Image adjustment setting
                 case 0x0081: return _T("Nikon3.ToneComp");
-                    break; // Ascii Tone compensation setting (contrast) 
+                    break; // Ascii Tone compensation setting (contrast)
                 case 0x0082: return _T("Nikon3.AuxiliaryLens");
-                    break; // Ascii Auxiliary lens (adapter) 
+                    break; // Ascii Auxiliary lens (adapter)
                 case 0x0083: return _T("Nikon3.LensType");
-                    break; // Byte Lens type 
+                    break; // Byte Lens type
                 case 0x0084: return _T("Nikon3.Lens");
-                    break; // Rational Lens 
+                    break; // Rational Lens
                 case 0x0085: return _T("Nikon3.FocusDistance");
-                    break; // Rational Manual focus distance 
+                    break; // Rational Manual focus distance
                 case 0x0086: return _T("Nikon3.DigitalZoom");
-                    break; // Rational Digital zoom setting 
+                    break; // Rational Digital zoom setting
                 case 0x0087: return _T("Nikon3.FlashType");
-                    break; // Byte Type of flash used 
+                    break; // Byte Type of flash used
                 case 0x0088: return _T("Nikon3.AFFocusPos");
-                    break; // Undefined AF focus position 
+                    break; // Undefined AF focus position
                 case 0x0089: return _T("Nikon3.Bracketing");
-                    break; // Short Bracketing 
+                    break; // Short Bracketing
                 case 0x008b: return _T("Nikon3.LensFStops");
-                    break; // Undefined Number of lens stops 
+                    break; // Undefined Number of lens stops
                 case 0x008c: return _T("Nikon3.ToneCurve");
-                    break; // Undefined Tone curve 
+                    break; // Undefined Tone curve
                 case 0x008d: return _T("Nikon3.ColorMode");
-                    break; // Ascii Color mode 
+                    break; // Ascii Color mode
                 case 0x008f: return _T("Nikon3.SceneMode");
-                    break; // Ascii Scene mode 
+                    break; // Ascii Scene mode
                 case 0x0090: return _T("Nikon3.LightingType");
-                    break; // Ascii Lighting type 
+                    break; // Ascii Lighting type
                 case 0x0092: return _T("Nikon3.HueAdjustment");
-                    break; // SShort Hue adjustment 
+                    break; // SShort Hue adjustment
                 case 0x0094: return _T("Nikon3.Saturation");
-                    break; // SShort Saturation adjustment 
+                    break; // SShort Saturation adjustment
                 case 0x0095: return _T("Nikon3.NoiseReduction");
-                    break; // Ascii Noise reduction 
+                    break; // Ascii Noise reduction
                 case 0x0096: return _T("Nikon3.CompressionCurve");
-                    break; // Undefined Compression curve 
+                    break; // Undefined Compression curve
                 case 0x0097: return _T("Nikon3.ColorBalance2");
-                    break; // Undefined Color balance 2 
+                    break; // Undefined Color balance 2
                 case 0x0098: return _T("Nikon3.LensData");
-                    break; // Undefined Lens data 
+                    break; // Undefined Lens data
                 case 0x0099: return _T("Nikon3.NEFThumbnailSize");
-                    break; // Short NEF thumbnail size 
+                    break; // Short NEF thumbnail size
                 case 0x009a: return _T("Nikon3.SensorPixelSize");
-                    break; // Rational Sensor pixel size 
+                    break; // Rational Sensor pixel size
                 case 0x00a0: return _T("Nikon3.SerialNumber");
-                    break; // Ascii Camera serial number 
+                    break; // Ascii Camera serial number
                 case 0x00a7: return _T("Nikon3.ShutterCount");
-                    break; // Long Number of shots taken by camera 
+                    break; // Long Number of shots taken by camera
                 case 0x00a9: return _T("Nikon3.ImageOptimization");
-                    break; // Ascii Image optimization 
+                    break; // Ascii Image optimization
                 case 0x00aa: return _T("Nikon3.Saturation");
-                    break; // Ascii Saturation 
+                    break; // Ascii Saturation
                 case 0x00ab: return _T("Nikon3.VariProgram");
-                    break; // Ascii Vari program 
+                    break; // Ascii Vari program
 
                 default:
                     strTmp.Format(_T("Nikon3.0x%04X"), nTag);
@@ -1803,7 +1759,7 @@ bool CjfifDecode::DecodeValRational(unsigned nPos, float& nVal) const
         // Divide by zero!
         return false;
     }
-    nVal = (float)nValNumer / (float)nValDenom;
+    nVal = static_cast<float>(nValNumer) / static_cast<float>(nValDenom);
     return true;
 }
 
@@ -1816,7 +1772,7 @@ bool CjfifDecode::DecodeValRational(unsigned nPos, float& nVal) const
 // RETURN:
 // - Formatted string
 //
-CString CjfifDecode::DecodeValFraction(unsigned nPos)
+CString CjfifDecode::DecodeValFraction(unsigned nPos) const
 {
     CString strTmp;
     int nValNumer = ReadSwap4(nPos + 0);
@@ -1851,8 +1807,8 @@ bool CjfifDecode::PrintValGPS(unsigned nCount, float fCoord1, float fCoord2, flo
         unsigned nCoordMin = unsigned(fCoord2);
         if (fCoord3 == 0)
         {
-            float fTemp = fCoord2 - (float)nCoordMin;
-            fCoordSec = fTemp * (float)60.0;
+            float fTemp = fCoord2 - static_cast<float>(nCoordMin);
+            fCoordSec = fTemp * 60.0f;
         }
         else
         {
@@ -2099,7 +2055,7 @@ CString CjfifDecode::PrintAsHex32(unsigned* anWords, unsigned nCount)
 // INPUT:
 // - ifdStr             The IFD section that we are processing
 // - pos_exif_start
-// - start_ifd_ptr      
+// - start_ifd_ptr
 //
 // PRE:
 // - m_strImgExifMake
@@ -2225,7 +2181,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
     // ==========================================================================
 
     // =========== EXIF IFD Header (Start) ===========
-    // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2 
+    // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2
     // - Contents (2 bytes total)
     //   - Number of fields (2 bytes)
 
@@ -2251,7 +2207,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         DbgAddLine(strTmp);
 
         // =========== EXIF IFD Interoperability entry (Start) ===========
-        // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2 
+        // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2
         // - Contents (12 bytes total)
         //   - Tag (2 bytes)
         //   - Type (2 bytes)
@@ -2438,7 +2394,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
                 // TODO: Clean this up
                 if (nVal != 0)
                 {
-                    char cVal = (char)nVal;
+                    char cVal = static_cast<char>(nVal);
                     if (!isprint(nVal))
                     {
                         cVal = '.';
@@ -3514,7 +3470,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
 
 
     // =========== EXIF IFD (End) ===========
-    // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2 
+    // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.6.2
     // - Is completed by 4-byte offset to next IFD, which is
     //   read in next iteration.
 
@@ -3533,8 +3489,8 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
 // - m_nImgQualPhotoshopSa
 unsigned CjfifDecode::DecodeApp13Ps()
 {
-    // Photoshop APP13 marker definition doesn't appear to have a 
-    // well-defined length, so I will read until I encounter a 
+    // Photoshop APP13 marker definition doesn't appear to have a
+    // well-defined length, so I will read until I encounter a
     // non-"8BIM" entry, then we reset the position counter
     // and move on to the next marker.
     // FIXME: This does not appear to be very robust
@@ -4106,7 +4062,7 @@ void CjfifDecode::DecodeDHT(bool bInject)
         strTmp.Format(_T("  Class = %u (%s)"), nDhtClass_Tc, (nDhtClass_Tc ? _T("AC Table") : _T("DC / Lossless Table")));
         m_pLog->AddLine(strTmp);
 
-        // Add in some error checking to prevent 
+        // Add in some error checking to prevent
         if (nDhtClass_Tc >= MAX_DHT_CLASS)
         {
             strTmp.Format(_T("ERROR: Invalid DHT Class (%u). Aborting DHT Load."), nDhtClass_Tc);
@@ -4437,7 +4393,7 @@ bool CjfifDecode::ValidateValue(unsigned& nVal, unsigned nMin, unsigned nMax, CS
 
 // This is the primary JFIF marker parser. It reads the
 // marker value at the current file position and launches the
-// specific parser routine. This routine exits when 
+// specific parser routine. This routine exits when
 #define DECMARK_OK 0
 #define DECMARK_ERR 1
 #define DECMARK_EOI 2
@@ -4628,7 +4584,7 @@ unsigned CjfifDecode::DecodeMarker()
         acIdentifier[MAX_IDENTIFIER - 1] = 0; // Null terminate just in case
         strTmp.Format(_T("  Identifier      = [%s]"), acIdentifier);
         m_pLog->AddLine(strTmp);
-        m_nPos += (unsigned)_tcslen(acIdentifier) + 1;
+        m_nPos += _tcslen(acIdentifier) + 1;
         if (_tcscmp(acIdentifier,_T("Photoshop 3.0")) != 0)
         {
             m_pLog->AddLine(_T("    Not Photoshop. Skipping remainder."));
@@ -4656,8 +4612,7 @@ unsigned CjfifDecode::DecodeMarker()
         acIdentifier[MAX_IDENTIFIER - 1] = 0; // Null terminate just in case
         strTmp.Format(_T("  Identifier      = [%s]"), acIdentifier);
         m_pLog->AddLine(strTmp);
-        m_nPos += (unsigned)_tcslen(acIdentifier);
-
+        m_nPos += _tcslen(acIdentifier);
 
         if (!_tcsnccmp(acIdentifier,_T("http://ns.adobe.com/xap/1.0/\x00"), 29) != 0)
         {
@@ -4717,7 +4672,7 @@ unsigned CjfifDecode::DecodeMarker()
             unsigned long nPosExifStart = m_nPos; // Save m_nPos @ start of EXIF used for all IFD offsets
 
             // =========== EXIF TIFF Header (Start) ===========
-            // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.5.2 
+            // - Defined in Exif 2.2 Standard (JEITA CP-3451) section 4.5.2
             // - Contents (8 bytes total)
             //   - Byte order (2 bytes)
             //   - 0x002A (2 bytes)
@@ -4728,7 +4683,7 @@ unsigned CjfifDecode::DecodeMarker()
             strFull = _T("  Identifier TIFF = ");
             for (unsigned int i = 0; i < 8; i++)
             {
-                acIdentifierTiff[i] = (unsigned char)Buf(m_nPos++);
+                acIdentifierTiff[i] = static_cast<unsigned char>(Buf(m_nPos++));
             }
             strTmp = PrintAsHexUC(acIdentifierTiff, 8);
             strFull += strTmp;
@@ -4895,7 +4850,7 @@ unsigned CjfifDecode::DecodeMarker()
         acIdentifier[MAX_IDENTIFIER - 1] = 0; // Null terminate just in case
         strTmp.Format(_T("  Identifier      = [%s]"), acIdentifier);
         m_pLog->AddLine(strTmp);
-        m_nPos += (unsigned)_tcslen(acIdentifier) + 1;
+        m_nPos += _tcslen(acIdentifier) + 1;
         if (_tcscmp(acIdentifier,_T("FPXR")) == 0)
         {
             // Photoshop
@@ -5011,8 +4966,7 @@ unsigned CjfifDecode::DecodeMarker()
         {
             // Only process remainder if it is JFIF. This marker
             // is also used for application-specific functions.
-
-            m_nPos += (unsigned)(_tcslen(m_acApp0Identifier) + 1);
+            m_nPos += _tcslen(m_acApp0Identifier) + 1;
 
             m_nImgVersionMajor = Buf(m_nPos++);
             m_nImgVersionMinor = Buf(m_nPos++);
@@ -5134,7 +5088,7 @@ unsigned CjfifDecode::DecodeMarker()
             nLength = Buf(m_nPos) * 256 + Buf(m_nPos + 1); // Lq
             unsigned long nPosEnd = m_nPos + nLength;
             m_nPos += 2;
-            //XXX       strTmp.Format(_T("  Table length <Lq> = %u"),nLength); 
+            //XXX       strTmp.Format(_T("  Table length <Lq> = %u"),nLength);
             strTmp.Format(_T("  Table length = %u"), nLength);
             m_pLog->AddLine(strTmp);
 
@@ -5297,11 +5251,11 @@ unsigned CjfifDecode::DecodeMarker()
                         if (m_anImgDqtTbl[nDqtQuantDestId_Tq][glb_anZigZag[nCoeffInd]] != 0)
                         {
                             m_afStdQuantLumCompare[glb_anZigZag[nCoeffInd]] =
-                                (float)(glb_anStdQuantLum[glb_anZigZag[nCoeffInd]]) /
-                                (float)(m_anImgDqtTbl[nDqtQuantDestId_Tq][glb_anZigZag[nCoeffInd]]);
+                                static_cast<float>(glb_anStdQuantLum[glb_anZigZag[nCoeffInd]]) /
+                                static_cast<float>(m_anImgDqtTbl[nDqtQuantDestId_Tq][glb_anZigZag[nCoeffInd]]);
                             dComparePercent = 100.0 *
-                                (double)(m_anImgDqtTbl[nDqtQuantDestId_Tq][glb_anZigZag[nCoeffInd]]) /
-                                (double)(glb_anStdQuantLum[glb_anZigZag[nCoeffInd]]);
+                                static_cast<double>(m_anImgDqtTbl[nDqtQuantDestId_Tq][glb_anZigZag[nCoeffInd]]) /
+                                static_cast<double>(glb_anStdQuantLum[glb_anZigZag[nCoeffInd]]);
                         }
                         else
                         {
@@ -5749,7 +5703,7 @@ unsigned CjfifDecode::DecodeMarker()
         // Note that the recovery is not very graceful. It will assume that the
         // field is actually zero-length, which will make the next byte trigger the
         // "Expected marker 0xFF" error message and probably abort. There is no
-        // obvious way to 
+        // obvious way to
 
         if ((nLength == 0) || (nLength == 1))
         {
@@ -5804,7 +5758,7 @@ unsigned CjfifDecode::DecodeMarker()
 
         break;
 
-    case JFIF_DHT: // DHT    
+    case JFIF_DHT: // DHT
         m_bStateDht = true;
         DecodeDHT(false);
         m_bStateDhtOk = true;
@@ -5963,10 +5917,10 @@ unsigned CjfifDecode::DecodeMarker()
                 // Did we run out of bytes?
 
                 // FIXME:
-                // NOTE: This line here doesn't allow us to attempt to 
+                // NOTE: This line here doesn't allow us to attempt to
                 // decode images that are missing EOI. Maybe this is
                 // not the best solution here? Instead, we should be
-                // checking m_nPos against file length? .. and not 
+                // checking m_nPos against file length? .. and not
                 // return but "break".
                 if (!m_pWBuf->GetBufOk())
                 {
@@ -7042,7 +6996,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
         // edited images. There are some known exceptions, so far:
         //  - Very old digicams
         //  - Certain camera phones
-        //  - Blackberry 
+        //  - Blackberry
         // Perhaps we can make an exception for particular digicams (based on
         // make/model) that this determination will not apply. This means that
         // we open up the doors for these files being edited and not caught.
@@ -7162,7 +7116,7 @@ bool CjfifDecode::CompareSignature(bool bQuiet = false)
     else if (m_eImgEdited == EDITED_NO)
     {
         m_pLog->AddLine(_T("  ASSESSMENT: Class 3 - Image has high probability of being original"));
-        // In case the EXIF Software field was detected, 
+        // In case the EXIF Software field was detected,
         if (bEditNotUnknownSw)
         {
             m_pLog->AddLine(_T("              Note that EXIF Software field is set (typically contains Firmware version)"));
@@ -7540,14 +7494,14 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
             }
             sSession.Close();
         }
-        catch (CInternetException* pEx) 
+        catch (CInternetException* pEx)
         {
-        // catch any exceptions from WinINet      
+        // catch any exceptions from WinINet
             TCHAR szErr[MAX_BUF_EX_ERR_MSG];
             szErr[0] = '\0';
             if(!pEx->GetErrorMessage(szErr, MAX_BUF_EX_ERR_MSG))
                 _tcscpy(szErr,_T("Unknown error"));
-            TRACE("Submit Failed! - %s",szErr);   
+            TRACE("Submit Failed! - %s",szErr);
             if (m_pAppConfig->bInteractive)
                 AfxMessageBox(szErr);
             pEx->Delete();
@@ -7555,7 +7509,7 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
                 delete pFile;
             if(pConnection)
                 delete pConnection;
-            session.Close(); 
+            session.Close();
             return;
         }
 #endif
@@ -8002,7 +7956,7 @@ bool CjfifDecode::DecodeAvi()
                 float fSampleRate = 0;
                 if (dwScale != 0)
                 {
-                    fSampleRate = (float)dwRate / (float)dwScale;
+                    fSampleRate = static_cast<float>(dwRate) / static_cast<float>(dwScale);
                 }
                 strTmp.Format(_T("      -[Sample Rate]  = [%.2f]"), fSampleRate);
                 if (fccType == _T("vids")) { strTmp.Append(_T(" frames/sec")); }
@@ -8430,7 +8384,7 @@ void CjfifDecode::ProcessFile(CFile* inFile)
 // PRE:
 // - m_nPosEmbedStart
 // - m_nPosEmbedEnd
-// - m_nPosFileEnd 
+// - m_nPosFileEnd
 //
 // RETURN:
 // - True if image is ready for extraction

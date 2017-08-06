@@ -134,7 +134,7 @@ bool Uni2AscBuf(PBYTE pBuf, CString strIn, unsigned nMaxBytes, unsigned& nOffset
     char chAsc;
 
     PBYTE pBufBase = pBuf + nOffsetBytes;
-    LPSTR pBufAsc = (LPSTR)pBufBase;
+    LPSTR pBufAsc = reinterpret_cast<LPSTR>(pBufBase);
 
     CW2A pszNonUnicode(strIn);
 

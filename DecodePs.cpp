@@ -136,7 +136,7 @@ bool CDecodePs::DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, 
             if (bDibOk)
             {
                 // Fetch the actual pixel array
-                pDibBits = (unsigned char*)(pDibTemp->GetDIBBitArray());
+                pDibBits = static_cast<unsigned char*>(pDibTemp->GetDIBBitArray());
             }
         }
 #endif
@@ -159,7 +159,7 @@ bool CDecodePs::DecodePsd(unsigned long nPos, CDIB* pDibTemp, unsigned& nWidth, 
 
 
 // Locate a field ID in the constant 8BIM / Image Resource array
-// 
+//
 // INPUT:
 // - nBimId             = Image Resource ID (16-bit unsigned)
 // OUTPUT:
@@ -458,7 +458,7 @@ CString CDecodePs::PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPo
         anStrBuf[nStrLenTrunc * 2 + 1] = 0;
         // Copy into unicode string
         // Ensure that it is terminated first!
-        lstrcpyW(acStrBuf, (LPCWSTR)anStrBuf);
+        lstrcpyW(acStrBuf, reinterpret_cast<LPCWSTR>(anStrBuf));
         // Copy into CString
         strVal = acStrBuf;
     }
@@ -710,7 +710,7 @@ void CDecodePs::PhotoshopParseReportFldFixPt(unsigned nIndent, CString strField,
     CString strVal;
     CString strLine;
 
-    float fVal = (nVal / (float)65536.0);
+    float fVal = nVal / 65536.f;
     CString strIndent = PhotoshopParseIndent(nIndent);
     strVal.Format(_T("%.f"), fVal);
     strLine.Format(_T("%s%-50s = %s %s"), strIndent.GetString(), strField.GetString(), strVal.GetString(), strUnits.GetString());
@@ -1292,7 +1292,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
     //   first alpha channel contains the transparency data for the merged result.
     // Therefore, we'll treat it as signed short and take absolute value
     unsigned short nLayerCountU = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
-    signed short nLayerCountS = (signed short)nLayerCountU;
+    signed short nLayerCountS = static_cast<signed short>(nLayerCountU);
     unsigned nLayerCount = abs(nLayerCountS);
     PhotoshopParseReportFldNum(nIndent,_T("Layer count"), nLayerCount,_T(""));
     if (nLayerCountU & 0x8000)
@@ -1319,7 +1319,6 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
     PhotoshopParseReportNote(nIndent,_T("Channel Image Data:"));
     CString strLine;
     unsigned nNumChans;
-    unsigned nPosLastChan;
     for (unsigned nLayerInd = 0; (bDecOk) && (nLayerInd < nLayerCount); nLayerInd++)
     {
         nNumChans = sLayerAllInfo.psLayers[nLayerInd].nNumChans;
@@ -1343,7 +1342,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
             if (bDibOk)
             {
                 // Fetch the actual pixel array
-                pDibBits = (unsigned char*)(pDibTemp->GetDIBBitArray());
+                pDibBits = static_cast<unsigned char*>(pDibTemp->GetDIBBitArray());
             }
         }
 #endif
@@ -1351,7 +1350,7 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
         unsigned nPosLastLayer = nPos;
         for (unsigned nChanInd = 0; (bDecOk) && (nChanInd < nNumChans); nChanInd++)
         {
-            nPosLastChan = nPos;
+            unsigned nPosLastChan = nPos;
             strLine.Format(_T("Layer %3u/%3u, Channel %2u/%2u"), nLayerInd + 1, nLayerCount, nChanInd + 1, nNumChans);
             //m_pLog->AddLine(strLine);
             PhotoshopParseReportNote(nIndent + 1, strLine);
@@ -1481,8 +1480,7 @@ bool CDecodePs::PhotoshopParseLayerRecord(unsigned long& nPos, unsigned nIndent,
         CString strLayerName = m_pWBuf->BufReadStrn(nPos, nLayerNameLen);
         nPos += nLayerNameLen;
         // According to spec, length is padded to multiple of 4 bytes,
-        unsigned nSkip = 0;
-        nSkip = (4 - ((1 + nLayerNameLen) % 4)) % 4;
+        unsigned nSkip = (4 - ((1 + nLayerNameLen) % 4)) % 4;
         nPos += nSkip;
     }
 
@@ -1733,7 +1731,7 @@ bool CDecodePs::PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsi
         unsigned nRowOffsetDecompLast = nRowOffsetDecomp;
 
         unsigned char nRleRun = m_pWBuf->BufRdAdv1(nPos,PS_BSWAP);
-        signed char nRleRunS = (signed char)(nRleRun);
+        signed char nRleRunS = static_cast<signed char>(nRleRun);
         nRowOffsetComp++;
 
         if (nRleRunS < 0)
@@ -2109,14 +2107,10 @@ bool CDecodePs::PhotoshopParseImageResourcesSection(unsigned long& nPos, unsigne
     PhotoshopParseReportNote(nIndent,_T("Image Resources Section:"));
     nIndent++;
 
-    unsigned long nPosSectionStart = 0;
-    unsigned long nPosSectionEnd = 0;
-
     unsigned nImgResLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     PhotoshopParseReportFldNum(nIndent,_T("Length"), nImgResLen,_T(""));
 
-    nPosSectionStart = nPos;
-    nPosSectionEnd = nPos + nImgResLen;
+    unsigned long nPosSectionEnd = nPos + nImgResLen;
 
     while (nPos < nPosSectionEnd)
     {
@@ -2192,9 +2186,8 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
 
     // Lookup 8BIM defined name
     CString strBimDefName;
-    bool bBimKnown = false;
     unsigned nFldInd = 0;
-    bBimKnown = FindBimRecord(nBimId, nFldInd);
+    bool bBimKnown = FindBimRecord(nBimId, nFldInd);
 
     if (bBimKnown)
     {
@@ -2319,7 +2312,6 @@ bool CDecodePs::PhotoshopParseImageResourceBlock(unsigned long& nPos, unsigned n
 
         default:
             return false;
-            break;
         } // switch
 
         // Check to see if we ended up with a length mismatch after decoding
@@ -3029,7 +3021,7 @@ struct tsBimRecord asBimRecords[] =
 };
 
 
-// Adobe Photoshop enumerated constants 
+// Adobe Photoshop enumerated constants
 // - See header for struct encoding
 struct tsBimEnum asBimEnums[] =
 {

@@ -164,7 +164,7 @@ public:
 
 private:
     CString PhotoshopParseGetLStrAsc(unsigned long& nPos) const;
-    CString PhotoshopParseIndent(unsigned nIndent);
+    static CString PhotoshopParseIndent(unsigned nIndent);
     void PhotoshopParseReportNote(unsigned nIndent, CString strNote);
     CString PhotoshopParseLookupEnum(teBimEnumField eEnumField, unsigned nVal);
     void PhotoshopParseReportFldNum(unsigned nIndent, CString strField, unsigned nVal, CString strUnits);
@@ -219,15 +219,15 @@ private:
     bool PhotoshopDecodeRowUncomp(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nChanID, unsigned char* pDibBits) const;
     bool PhotoshopDecodeRowRle(unsigned long& nPos, unsigned nWidth, unsigned nHeight, unsigned nRow, unsigned nRowLen, unsigned nChanID, unsigned char* pDibBits) const;
 
-    CString PhotoshopDispHexWord(unsigned nVal);
+    static CString PhotoshopDispHexWord(unsigned nVal);
 
     // 8BIM
     CString PhotoshopParseGetBimLStrUni(unsigned long nPos, unsigned& nPosOffset) const;
-    bool FindBimRecord(unsigned nBimId, unsigned& nFldInd);
+    static bool FindBimRecord(unsigned nBimId, unsigned& nFldInd);
 
     // IPTC
     void DecodeIptc(unsigned long& nPos, unsigned nLen, unsigned nIndent);
-    bool LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& nFldInd);
+    static bool LookupIptcField(unsigned nRecord, unsigned nDataSet, unsigned& nFldInd);
     CString DecodeIptcValue(teIptcType eIptcType, unsigned nFldCnt, unsigned long nPos) const;
 
     BYTE Buf(unsigned long offset, bool bClean) const;

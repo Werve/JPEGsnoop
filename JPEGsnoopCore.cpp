@@ -130,7 +130,7 @@ BOOL CJPEGsnoopCore::IsAnalyzed() const
 // RETURN:
 // - Indicates if file open was successful
 //
-BOOL CJPEGsnoopCore::AnalyzeOpen()
+bool CJPEGsnoopCore::AnalyzeOpen()
 {
     ASSERT(!m_strPathName.IsEmpty());
     if (m_strPathName.IsEmpty())
@@ -149,7 +149,7 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
         m_pFile->Close();
         delete m_pFile;
         m_pFile = nullptr;
-        m_lFileSize = 0L;
+        m_lFileSize = 0;
     }
 
     try
@@ -172,7 +172,7 @@ BOOL CJPEGsnoopCore::AnalyzeOpen()
             AfxMessageBox(strError);
         m_pFile = nullptr;
 
-        return FALSE;
+        return false;
     }
 
     // Set the file size variable
@@ -298,7 +298,7 @@ void CJPEGsnoopCore::AnalyzeFileDo()
 // RETURN:
 // - Status from opening file
 //
-BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
+bool CJPEGsnoopCore::AnalyzeFile(CString strFname)
 {
     // Save the input filename
     // This filename is used later to confirm that output filename doesn't
@@ -310,7 +310,7 @@ BOOL CJPEGsnoopCore::AnalyzeFile(CString strFname)
     // so that we can quickly recalculate the log file again
     // if an option changes.
 
-    BOOL bRetVal = AnalyzeOpen();
+    bool bRetVal = AnalyzeOpen();
     if (bRetVal)
     {
         // Only now that we have successfully opened the document
@@ -545,7 +545,7 @@ void CJPEGsnoopCore::GenBatchFileListSingle(CString strSrcRootName, CString strD
     // FIXME: Rewrite to use Windows APIs to do this or else
     // use the boost library as they will be more robust than
     // the simple searches for '\' and '.' that are done here.
-    //  
+    //
 #if 1
     // -----------
     CString strFnameOnly = strFnameSrc.Mid(strFnameSrc.ReverseFind('\\') + 1);
@@ -882,9 +882,9 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEGCmdLine()
 // - strOutPath unused
 void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOutputFname,
                                            bool bOverlayEn, bool bForceSoi, bool bForceEoi, bool bIgnoreEoi, bool bExtractAllEn, bool bDhtAviInsert,
-                                           CString strOutPath)
+                                           CString /*strOutPath*/)
 {
-    unsigned int nFileSize = 0;
+    unsigned int nFileSize;
     BOOL bRet;
 
     if (!bExtractAllEn)
@@ -972,9 +972,7 @@ void CJPEGsnoopCore::DoExtractEmbeddedJPEG(CString strInputFname, CString strOut
         unsigned long nSearchPos = 0;
         bool bSkipFrame = false;
 
-
         int nExtInd;
-
 
         // FIXME: Do I really want to use strOutputFname? That is typically the log file
         nExtInd = strOutputFname.ReverseFind('.');

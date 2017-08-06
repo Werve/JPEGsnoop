@@ -283,7 +283,10 @@ public:
 
     operator CString();
     CRegString& operator=(CString s);
-    CRegString& operator+=(CString s) { return *this = (CString)*this + s; }
+    CRegString& operator+=(CString s)
+    {
+        return *this = static_cast<CString>(*this) + s;
+    }
 
 protected:
     CString m_value; ///< the cached value of the registry

@@ -35,9 +35,9 @@ public:
 
     void SetStatusBar(CStatusBar* pStatBar);
 
-    BOOL AnalyzeFile(CString strFname);
+    bool AnalyzeFile(CString strFname);
     void AnalyzeFileDo();
-    BOOL AnalyzeOpen();
+    bool AnalyzeOpen();
     void AnalyzeClose();
     BOOL IsAnalyzed() const;
     BOOL DoAnalyzeOffset(CString strFname);

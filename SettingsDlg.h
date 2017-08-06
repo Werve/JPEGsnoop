@@ -46,7 +46,7 @@ private:
     afx_msg void OnBnClickedDbDirDefault();
     afx_msg void OnBnClickedCoachReset();
     CString SelectFolder(const CString& strMessage) const;
-    LPITEMIDLIST ConvertPathToLpItemIdList(const char* pszPath);
+    static LPITEMIDLIST ConvertPathToLpItemIdList(const char* pszPath);
 
     DECLARE_MESSAGE_MAP()
     DECLARE_DYNAMIC(CSettingsDlg)

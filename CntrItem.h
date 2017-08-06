@@ -30,16 +30,6 @@ public:
     //  zero arguments.  Normally, OLE items are constructed with a
     //  non-NULL document pointer
 
-    CJPEGsnoopDoc* GetDocument()
-    {
-        return reinterpret_cast<CJPEGsnoopDoc*>(CRichEditCntrItem::GetDocument());
-    }
-
-    CJPEGsnoopView* GetActiveView()
-    {
-        return reinterpret_cast<CJPEGsnoopView*>(CRichEditCntrItem::GetActiveView());
-    }
-
 #ifdef _DEBUG
     void AssertValid() const override;
     void Dump(CDumpContext& dc) const override;

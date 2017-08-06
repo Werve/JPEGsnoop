@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "LookupDlg.h"
-#include "jpegsnoop.h"
 #include "Resource.h"
 
 CLookupDlg::CLookupDlg(CWnd* pParent /*=NULL*/)
@@ -61,8 +60,7 @@ void CLookupDlg::DoDataExchange(CDataExchange* pDX)
 
 // Set callback function for Buf()
 void CLookupDlg::SetCbLookup(void* pClassCbLookup,
-                             void (*pCbLookup)(void* pClassCbLookup, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit)
-)
+                             void (*pCbLookup)(void* pClassCbBuf, unsigned nX, unsigned nY, unsigned& nByte, unsigned& nBit))
 {
     // Save pointer to class and function
     m_pClassCbLookup = pClassCbLookup;

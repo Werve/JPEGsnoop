@@ -683,8 +683,8 @@ void CJPEGsnoopApp::CmdLineMessage(CString strMsg) const
     bool bConsoleAttached = false;
     if (AttachConsole(ATTACH_PARENT_PROCESS))
     {
-        int osfh = _open_osfhandle((intptr_t)GetStdHandle(STD_OUTPUT_HANDLE), 8);
-        if ((HANDLE)osfh != INVALID_HANDLE_VALUE)
+        int osfh = _open_osfhandle(reinterpret_cast<intptr_t>(GetStdHandle(STD_OUTPUT_HANDLE)), 8);
+        if (reinterpret_cast<HANDLE>(osfh) != INVALID_HANDLE_VALUE)
         {
             *stdout = *_tfdopen(osfh, _T("a"));
             bConsoleAttached = true;
@@ -722,7 +722,7 @@ void CJPEGsnoopApp::CmdLineMessage(CString strMsg) const
 // INPUT:
 // - bForceNow          = Do we ignore day timer and force a check now?
 //
-void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
+void CJPEGsnoopApp::CheckUpdates(bool bForceNow) const
 {
     CString strUpdateLastChk = m_pAppConfig->strUpdateLastChk;
 
@@ -745,7 +745,7 @@ void CJPEGsnoopApp::CheckUpdates(bool bForceNow)
     CTimeSpan tmePeriod(m_pAppConfig->nUpdateAutoDays, 0, 0, 0);
     CTimeSpan tmeDiff = tmeToday - tmeUpdateLastChk;
 
-    if ((bForceNow) || (tmeDiff >= tmePeriod))
+    if (bForceNow || (tmeDiff >= tmePeriod))
     {
         CModelessDlg * pdlg = new CModelessDlg;
         pdlg->Create(IDD_MODELESSDLG, nullptr);

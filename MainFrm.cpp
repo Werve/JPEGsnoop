@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "MainFrm.h"
-#include "JPEGsnoop.h"
 #include "JPEGsnoopView.h"
 #include "JPEGsnoopViewImg.h"
 #include "Resource.h"
@@ -70,7 +69,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 // FindMenuItem() will find a menu item string from the specified
-// popup menu and returns its position (0-based) in the specified 
+// popup menu and returns its position (0-based) in the specified
 // popup menu. It returns -1 if no such menu item string is found.
 int CMainFrame::FindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
@@ -105,7 +104,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 //CAL! Following code was added to support split windows
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
-    //calculate client size 
+    //calculate client size
     CRect cr;
     GetClientRect(&cr);
 
@@ -135,7 +134,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
     }
 
     m_bInitSplitter = true;
-    
+
     //return true instead of the parent method since that would
     //not show our window
     return true;

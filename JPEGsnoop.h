@@ -50,10 +50,10 @@ private:
     void CmdLineMessage(CString strMsg) const;
     void CmdLineDoneMessage();
 
-    void CheckUpdates(bool bForceNow);
+    void CheckUpdates(bool bForceNow) const;
     bool CheckUpdatesWww() const;
     bool CheckEula() const;
-    CJPEGsnoopDoc* GetCurDoc();
+    static CJPEGsnoopDoc* GetCurDoc();
     void DocReprocess();
     void DocImageDirty();
     void HandleAutoReprocess();

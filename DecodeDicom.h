@@ -125,16 +125,16 @@ public:
 
     bool DecodeDicom(unsigned long nPos, unsigned long nPosFileEnd, unsigned long& nPosJpeg);
     bool GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail);
-    bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
+    static bool FindTag(unsigned nTagGroup, unsigned nTagElement, unsigned& nFldInd);
 
     BYTE Buf(unsigned long offset, bool bClean) const;
 
-    CString ParseIndent(unsigned nIndent);
+    static CString ParseIndent(unsigned nIndent);
     void ReportFldStr(unsigned nIndent, CString strField, CString strVal);
     void ReportFldStrEnc(unsigned nIndent, CString strField, CString strVal, CString strEncVal);
     void ReportFldHex(unsigned nIndent, CString strField, unsigned long nPosStart, unsigned nLen);
     void ReportFldEnum(unsigned nIndent, CString strField, unsigned nTagGroup, unsigned nTagElement, CString strVal);
-    bool LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString strVal, CString& strDesc);
+    static bool LookupEnum(unsigned nTagGroup, unsigned nTagElement, CString strVal, CString& strDesc);
 
     bool m_bDicom;
     bool m_bJpegEncap;

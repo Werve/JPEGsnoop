@@ -55,7 +55,7 @@ LPCITEMIDLIST CFolderDialog::BrowseForFolder(LPCTSTR title, UINT flags,
     m_brinfo.lpszTitle = title;
     m_brinfo.ulFlags = flags;
     m_brinfo.lpfn = CallbackProc;
-    m_brinfo.lParam = (LPARAM)this;
+    m_brinfo.lParam = reinterpret_cast<LPARAM>(this);
 
     // filtering only supported for new-style dialogs
     m_bFilter = bFilter;
@@ -113,14 +113,13 @@ void CFolderDialog::FreePIDL(LPCITEMIDLIST pidl)
     iMalloc->Free((void*)pidl);
 }
 
-//////////////////
 // Internal callback proc used for SHBrowseForFolder passes control to
 // appropriate virtual function after attaching browser window.
 //
 int CALLBACK CFolderDialog::CallbackProc(HWND hwnd,
                                          UINT msg, LPARAM lp, LPARAM lpData)
 {
-    CFolderDialog* pDlg = (CFolderDialog*)lpData;
+    CFolderDialog* pDlg = reinterpret_cast<CFolderDialog*>(lpData);
     ASSERT(pDlg);
     if (pDlg->m_hWnd != hwnd)
     {

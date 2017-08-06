@@ -297,7 +297,6 @@ public:
     void SetImageDimensions(unsigned nWidth, unsigned nHeight);
     void SetImageDetails(unsigned nDimX, unsigned nDimY, unsigned nCompsSOF, unsigned nCompsSOS, bool bRstEn, unsigned nRstInterval);
     void SetSofSampFactors(unsigned nCompInd, unsigned nSampFactH, unsigned nSampFactV);
-    void ResetImageContent();
 
     bool SetDqtEntry(unsigned nTblDestId, unsigned nCoeffInd, unsigned nCoeffIndZz, unsigned short nCoeffVal);
     bool SetDqtTables(unsigned nCompInd, unsigned nTbl);

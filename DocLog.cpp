@@ -252,7 +252,7 @@ unsigned CDocLog::AppendToLogLocal(CString strTxt, COLORREF sColor)
     if (numLines == DOCLOG_MAX_LINES)
     {
         m_saLogQuickTxt.Add(_T("*** TOO MANY LINES IN REPORT -- TRUNCATING ***"));
-        m_naLogQuickCol.Add((unsigned)sColor);
+        m_naLogQuickCol.Add(static_cast<unsigned>(sColor));
         return 0;
     }
     if (numLines > DOCLOG_MAX_LINES)
@@ -261,7 +261,7 @@ unsigned CDocLog::AppendToLogLocal(CString strTxt, COLORREF sColor)
     }
 
     m_saLogQuickTxt.Add(strTxt);
-    m_naLogQuickCol.Add((unsigned)sColor);
+    m_naLogQuickCol.Add(static_cast<unsigned>(sColor));
 
     return 0;
 }
@@ -328,7 +328,6 @@ void CDocLog::DoLogSave(CString strLogName)
                         strLogName.GetString(), msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
-        pLog = nullptr;
 
         return;
     }

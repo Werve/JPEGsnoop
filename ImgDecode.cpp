@@ -509,7 +509,7 @@ bool CimgDecode::SetDqtTables(unsigned nCompId, unsigned nTbl)
 {
     if ((nCompId < MAX_SOF_COMP_NF) && (nTbl < MAX_DQT_DEST_ID))
     {
-        m_anDqtTblSel[nCompId] = (int)nTbl;
+        m_anDqtTblSel[nCompId] = static_cast<int>(nTbl);
     }
     else
     {
@@ -544,8 +544,8 @@ bool CimgDecode::SetDhtTables(unsigned nCompInd, unsigned nTblDc, unsigned nTblA
     // Note use of (nCompInd < MAX_SOS_COMP_NS+1) as nCompInd is 1-based notation
     if ((nCompInd >= 1) && (nCompInd < MAX_SOS_COMP_NS + 1) && (nTblDc < MAX_DHT_DEST_ID) && (nTblAc < MAX_DHT_DEST_ID))
     {
-        m_anDhtTblSel[DHT_CLASS_DC][nCompInd] = (int)nTblDc;
-        m_anDhtTblSel[DHT_CLASS_AC][nCompInd] = (int)nTblAc;
+        m_anDhtTblSel[DHT_CLASS_DC][nCompInd] = static_cast<int>(nTblDc);
+        m_anDhtTblSel[DHT_CLASS_AC][nCompInd] = static_cast<int>(nTblAc);
     }
     else
     {
@@ -604,12 +604,6 @@ void CimgDecode::SetImageDetails(unsigned nDimX, unsigned nDimY, unsigned nComps
     m_nNumSosComps = nCompsSOS;
     m_bRestartEn = bRstEn;
     m_nRestartInterval = nRstInterval;
-}
-
-// Reset the image content to prepare it for the upcoming scans
-// - TODO: Migrate pixel bitmap allocation / clearing from DecodeScanImg() to here
-void CimgDecode::ResetImageContent()
-{
 }
 
 // Set the sampling factor for an image component
@@ -800,7 +794,7 @@ bool CimgDecode::SetDhtEntry(unsigned nDestId, unsigned nClass, unsigned nInd, u
         //   nBitsExtraLen = 8-len = 8-5 = 3
 
         //   nBitsExtraVal = (1<<nBitsExtraLen) -1 = 1<<3 -1 = 8'b0000_1000 -1 = 8'b0000_0111
-        //   
+        //
         //   nBitsMax = nBitsMsb + nBitsExtraVal
         //   nBitsMax =  8'b1011_1111
         unsigned nBitsMsb = (nBits & nMask) >> (32 - DHT_FAST_SIZE);
@@ -1455,35 +1449,35 @@ unsigned CimgDecode::BuffAddByte()
             /*
                         // Now we need to skip to the next bytes
                         m_nScanBuffPtr+=2;
-            
+
                         // Update local saved buffer vars
                         nBuf0 = m_pWBuf->Buf(m_nScanBuffPtr);
                         nBuf1 = m_pWBuf->Buf(m_nScanBuffPtr+1);
-            
-            
+
+
                         // Use ScanBuffAddErr() to mark this byte as being after Restart marker!
                         m_anScanBuffPtr_err[m_nScanBuffPtr_num] = SCANBUF_RST;
-            
+
                         // FIXME: We should probably discontinue filling the scan
                         // buffer if we encounter a restart marker. This will stop us
                         // from reading past the restart marker and missing the necessary
                         // step in resetting the decoder accumulation state.
-            
+
                         // When we stop adding bytes to the buffer, we should also
                         // mark this scan buffer with a flag to indicate that it was
                         // ended by RST not by EOI or an Invalid Marker.
-            
-                        // If the main decoder (in ReadScanVal) cannot find a VLC code 
-                        // match with the few bits left in the scan buffer 
+
+                        // If the main decoder (in ReadScanVal) cannot find a VLC code
+                        // match with the few bits left in the scan buffer
                         // (presumably padded with 1's), then it should check to see
-                        // if the buffer is terminated by RST. If so, then it 
+                        // if the buffer is terminated by RST. If so, then it
                         // purges the scan buffer, advances to the next byte (after the
                         // RST marker) and does a fill, then re-invokes the ReadScanVal
                         // routine. At the level above, the Decoder that is calling
                         // ReadScanVal should be counting MCU rows and expect this error
                         // from ReadScanVal (no code match and buf terminated by RST).
                         // If it happened out of place, we have corruption somehow!
-            
+
                         // See IJG Code:
                         //   jdmarker.c:
                         //     read_restart_marker()
@@ -1604,7 +1598,7 @@ unsigned CimgDecode::BuffAddByte()
 // - Pull bits from the main buffer
 // - Find matching huffman codes
 // - Fill in the IDCT matrix (m_anDctBlock[])
-// - Perform the IDCT to create spatial domain 
+// - Perform the IDCT to create spatial domain
 //
 // INPUT:
 // - nTblDhtDc                  = DHT table ID for DC component
@@ -2187,7 +2181,7 @@ void CimgDecode::ReportDctMatrix()
 
 // Report out the variable length codes (VLC)
 //
-// Need to consider impact of padding bytes... When pads get extracted, they 
+// Need to consider impact of padding bytes... When pads get extracted, they
 // will not appear in the binary display shown below. Might want the get buffer
 // to do post-pad removal first.
 //
@@ -2478,8 +2472,8 @@ void CimgDecode::DecodeIdctCalcFixedpt()
 // - nHeight                = Current allocated image height
 // POST:
 // - m_pPixValY
-// - m_pPixValCb 
-// - m_pPixValCr 
+// - m_pPixValCb
+// - m_pPixValCr
 //
 void CimgDecode::ClrFullRes(unsigned nWidth, unsigned nHeight)
 {
@@ -2566,7 +2560,7 @@ void CimgDecode::SetFullRes(unsigned nMcuX, unsigned nMcuY, unsigned nComp, unsi
             short int nVal = ((short int)(fVal * 8) + nDcOffset);
 #endif
 
-            // NOTE: These range checks were already done in DecodeScanImg()    
+            // NOTE: These range checks were already done in DecodeScanImg()
             ASSERT(nCssXInd<MAX_SAMP_FACT_H);
             ASSERT(nCssYInd<MAX_SAMP_FACT_V);
             ASSERT(nY<BLK_SZ_Y);
@@ -2853,7 +2847,7 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
     //   [ 0 1 ] [ 4 5 ]
     //   [ 2 3 ] [ 6 7 ]
     // - The sequence for decode should be:
-    //   [ 0 ] [ 1 ] [ 2 ] [ 3 ] [ 4 ] ...  
+    //   [ 0 ] [ 1 ] [ 2 ] [ 3 ] [ 4 ] ...
     // - Which is equivalent to the non-subsampled ordering (ie. 0x11)
     // - Apply a correction for such images to remove the sampling factor
     if (m_nNumSosComps == 1)
@@ -3540,15 +3534,15 @@ void CimgDecode::DecodeScanImg(unsigned nStart, bool bDisplay, bool bQuiet)
 
             /*
                                     m_nDcChrK += m_anDctBlock[DCT_COEFF_DC];
-            
-            
+
+
                                     if (bVlcDump) {
                                         //PrintDcCumVal(nMcuX,nMcuY,m_nDcChrCb);
                                     }
-            
+
                                     // Now take a snapshot of the current cumulative DC value
                                     m_anDcChrKCss[nCssIndV*MAX_SAMP_FACT_H+nCssIndH] = m_nDcChrK;
-            
+
                                     // Store fullres value
                                     if (bDisplay)
                                         SetFullRes(nMcuX,nMcuY,nComp,0,0,m_nDcChrK);
@@ -4731,7 +4725,7 @@ void CimgDecode::CalcChannelPreviewFull(CRect* /*pRectView*/, unsigned char* pTm
     // NOTE: if we were to make these ranges a subset of the
     // full image dimensions, then we'd have to determine the best
     // way to handle the brightest pixel search & average luminance logic
-    // since those appear in the nRngX/Y loops. 
+    // since those appear in the nRngX/Y loops.
 
     unsigned nRngX1 = 0;
     unsigned nRngX2 = m_nImgSizeX;
@@ -5072,7 +5066,7 @@ void CimgDecode::GetBitmapPtr(unsigned char* & pBitmap) const
 // POST:
 // - m_pDibTemp
 // NOTE:
-// - Channels are selected in CalcChannelPreviewFull() 
+// - Channels are selected in CalcChannelPreviewFull()
 //
 void CimgDecode::CalcChannelPreview()
 {
@@ -5272,7 +5266,7 @@ CPoint CimgDecode::GetMarkerBlk(unsigned nInd)
 // POST:
 // - m_nMarkersBlkNum
 // - m_aptMarkersBlk[]
-// 
+//
 void CimgDecode::SetMarkerBlk(unsigned nBlkX, unsigned nBlkY)
 {
     if (m_nMarkersBlkNum == MAX_BLOCK_MARKERS)

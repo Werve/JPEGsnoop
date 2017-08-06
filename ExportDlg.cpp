@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "ExportDlg.h"
-#include "JPEGsnoop.h"
 #include "Resource.h"
 
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)

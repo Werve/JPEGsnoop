@@ -419,9 +419,8 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
             return;
         }
 
-
-        unsigned long nVal = (unsigned long)m_pBufFile->Seek(nPositionAdj, CFile::begin);
-        nVal = (unsigned long)m_pBufFile->Read(m_pBuffer,MAX_BUF_WINDOW);
+        m_pBufFile->Seek(nPositionAdj, CFile::begin);
+        unsigned long nVal = (unsigned long)m_pBufFile->Read(m_pBuffer,MAX_BUF_WINDOW);
         if (nVal <= 0)
         {
         }
@@ -448,7 +447,7 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
 // - nInd       Overlay index to allocate
 //
 // POST:
-// - m_psOverlay[] 
+// - m_psOverlay[]
 //
 bool CwindowBuf::OverlayAlloc(unsigned nInd)
 {
@@ -628,7 +627,7 @@ void CwindowBuf::OverlayRemoveAll()
 //
 // RETURN:
 // - Success if overlay index was allocated and enabled
-// 
+//
 bool CwindowBuf::OverlayGet(unsigned nOvrInd, BYTE* & pOverlay, unsigned& nLen, unsigned& nBegin)
 {
     if ((m_psOverlay[nOvrInd]) && (m_psOverlay[nOvrInd]->bEn))
@@ -1008,7 +1007,7 @@ CString CwindowBuf::BufReadUniStr2(unsigned long nPos, unsigned nBufLen)
     anStrBuf[nStrLenTrunc * 2 + 1] = 0;
     // Copy into unicode string
     // Ensure that it is terminated first!
-    lstrcpyW(acStrBuf, (LPCWSTR)anStrBuf);
+    lstrcpyW(acStrBuf, reinterpret_cast<LPCWSTR>(anStrBuf));
     // Copy into CString
     CString strVal = acStrBuf;
 

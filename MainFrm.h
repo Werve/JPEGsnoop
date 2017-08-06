@@ -38,7 +38,7 @@ protected:
 private:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnSize(UINT nType, int cx, int cy);
-    int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
+    static int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
 
     CSplitterWnd m_mainSplitter;
     BOOL m_bInitSplitter;

@@ -57,7 +57,7 @@ public:
     void WriteIfdEntrySingle(unsigned short nTag, unsigned short nType, unsigned nValOffset);
     void WriteIfdEntryMult(unsigned short nTag, unsigned short nType, unsigned nNumVals, unsigned* nVals);
 
-    unsigned GetTypeLen(unsigned nType);
+    static unsigned GetTypeLen(unsigned nType);
 
     void WriteVal8(BYTE nVal);
     void WriteVal16(unsigned short nVal);

@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "TermsDlg.h"
-#include "JPEGsnoop.h"
 #include "Resource.h"
 
 CTermsDlg::CTermsDlg(CWnd* pParent /*=NULL*/)

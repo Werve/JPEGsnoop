@@ -94,10 +94,10 @@ public:
                           CString strQual, CString strSig, CString strSigRot, CString strCss,
                           teSource eUserSource, CString strUserSoftware);
 
-    bool BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned nMaxBytes, unsigned& nOffsetBytes);
-    bool BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool bUni, unsigned& nOffsetBytes);
-    bool BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned nMaxBytes, unsigned& nOffsetBytes);
-    bool BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bUni, unsigned& nOffsetBytes);
+    static bool BufReadNum(PBYTE pBuf, unsigned& nOut, unsigned nMaxBytes, unsigned& nOffsetBytes);
+    static bool BufReadStr(PBYTE pBuf, CString& strOut, unsigned nMaxBytes, bool bUni, unsigned& nOffsetBytes);
+    static bool BufWriteNum(PBYTE pBuf, unsigned nIn, unsigned nMaxBytes, unsigned& nOffsetBytes);
+    static bool BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bUni, unsigned& nOffsetBytes);
 
     bool SearchSignatureExactInternal(CString strMake, CString strModel, CString strSig) const;
     bool SearchCom(CString strCom) const;
@@ -106,7 +106,7 @@ public:
     bool LookupExcMmIsEdit(CString strMake, CString strModel) const;
 
     unsigned GetIjgNum() const;
-    LPCTSTR GetIjgEntry(unsigned nInd);
+    static LPCTSTR GetIjgEntry(unsigned nInd);
 
     void SetDbDir(CString strDbDir);
     void SetFirstRun(bool bFirstRun);

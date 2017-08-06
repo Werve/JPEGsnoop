@@ -19,7 +19,6 @@
 #include "stdafx.h"
 
 #include "OverlayBufDlg.h"
-#include "jpegsnoop.h"
 #include "General.h"
 #include "Resource.h"
 
@@ -72,7 +71,7 @@ void COverlayBufDlg::DoDataExchange(CDataExchange* pDX)
 
 // Set callback function for Buf()
 void COverlayBufDlg::SetCbBuf(void* pClassCbBuf,
-                              BYTE (*pCbBuf)(void* pClassCbBuf, unsigned long nNum, bool bBool)
+                              BYTE (*pCbBuf)(void* pClassCbBufParam, unsigned long nNum, bool bBool)
 )
 {
     // Save pointer to class and function

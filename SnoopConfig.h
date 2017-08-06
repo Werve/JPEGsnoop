@@ -31,12 +31,12 @@ public:
 
     void UseDefaults();
 
-    void RegistryLoadStr(CString strKey, CString strDefault, CString& strSetting);
-    void RegistryLoadBool(CString strKey, unsigned nDefault, bool& bSetting);
-    void RegistryLoadUint(CString strKey, unsigned nDefault, unsigned& nSetting);
-    void RegistryStoreStr(CString strKey, CString strSetting);
+    static void RegistryLoadStr(CString strKey, CString strDefault, CString& strSetting);
+    static void RegistryLoadBool(CString strKey, unsigned nDefault, bool& bSetting);
+    static void RegistryLoadUint(CString strKey, unsigned nDefault, unsigned& nSetting);
+    static void RegistryStoreStr(CString strKey, CString strSetting);
     void RegistryStoreBool(CString strKey, bool bSetting);
-    void RegistryStoreUint(CString strKey, unsigned nSetting);
+    static void RegistryStoreUint(CString strKey, unsigned nSetting);
 
     void RegistryLoad();
     void RegistryStore();
@@ -48,8 +48,8 @@ public:
 
     // Debug Log
     // - Used if DEBUG_LOG_OUT
-    bool DebugLogCreate();
-    bool DebugLogAdd(CString strText);
+    static bool DebugLogCreate();
+    static bool DebugLogAdd(CString strText);
 
     // Interactive mode: shows message dialog box alerts
     // In non-interactive mode we suppress most alert dialogs but still
@@ -126,5 +126,5 @@ public:
 
 private:
     CString GetExeDir() const;
-    void CreateDir(LPTSTR Path);
+    static void CreateDir(LPTSTR Path);
 };

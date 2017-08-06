@@ -45,7 +45,9 @@ CJPEGsnoopDoc::CJPEGsnoopDoc()
     m_pAppConfig = pApp->m_pAppConfig;
     ASSERT(m_pAppConfig);
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Begin"));
+#if DEBUG_EN > 0
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Begin"));
+#endif
 
     // Allocate the processing core
     m_pCore = new CJPEGsnoopCore;
@@ -53,14 +55,18 @@ CJPEGsnoopDoc::CJPEGsnoopDoc()
     // Setup link to CDocument for document log
     ASSERT(glb_pDocLog);
     glb_pDocLog->SetDoc(this);
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Checkpoint 1"));
+
+#if DEBUG_EN > 0
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Checkpoint 1"));
+#endif
 
     // Reset all members
     Reset();
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Checkpoint 5"));
-
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() End"));
+#if DEBUG_EN > 0
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Checkpoint 5"));
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() End"));
+#endif
 }
 
 // Cleanup all of the allocated classes
@@ -110,7 +116,10 @@ void CJPEGsnoopDoc::Reset()
 // Main entry point for creation of a new document
 BOOL CJPEGsnoopDoc::OnNewDocument()
 {
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::OnNewDocument() Start"));
+#if DEBUG_EN > 0
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::OnNewDocument() Start"));
+#endif
+
     if (!CRichEditDoc::OnNewDocument())
         return FALSE;
 
@@ -127,7 +136,9 @@ BOOL CJPEGsnoopDoc::OnNewDocument()
     m_pCore->I_SetStatusBar(pStatBar);
     // ---------------------------------------
 
-    if (DEBUG_EN) m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::OnNewDocument() End"));
+#if DEBUG_EN > 0
+    m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::OnNewDocument() End"));
+#endif
 
     return true;
 }
@@ -358,8 +369,8 @@ CStatusBar* CJPEGsnoopDoc::GetStatusBar() const
         CWnd* pMessageBar = ((CFrameWnd*)pMainWnd)->GetMessageBar();
         return DYNAMIC_DOWNCAST(CStatusBar,pMessageBar);
     }
-    else
-        return DYNAMIC_DOWNCAST(CStatusBar,pMainWnd->GetDescendantWindow(AFX_IDW_STATUS_BAR));
+
+    return DYNAMIC_DOWNCAST(CStatusBar,pMainWnd->GetDescendantWindow(AFX_IDW_STATUS_BAR));
 }
 
 // NOTE:
@@ -470,7 +481,7 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
 // - bRecSubdir         Flag to descend recursively into sub-directories
 // - bExtractAll        Flag to extract all JPEGs from files
 //
-void CJPEGsnoopDoc::DoBatchProcess(CString strBatchDir, bool /*bRecSubdir*/, bool bExtractAll)
+void CJPEGsnoopDoc::DoBatchProcess(CString /*strBatchDir*/, bool /*bRecSubdir*/, bool bExtractAll)
 {
     CFolderDialog myFolderDlg(nullptr);
     CString strRootDir;
@@ -866,10 +877,8 @@ void CJPEGsnoopDoc::OnUpdateToolsSearchreverse(CCmdUI* pCmdUI)
 // - Show a coach message for first time ever
 // - Update both views (invalidate and redraw)
 //
-BOOL CJPEGsnoopDoc::Reprocess()
+bool CJPEGsnoopDoc::Reprocess()
 {
-    BOOL bRet = false;
-
     // ------------------------------------------------
     // Give coach message
     // ------------------------------------------------
@@ -900,7 +909,7 @@ BOOL CJPEGsnoopDoc::Reprocess()
     // Clean out document first (especially buffer)
     DeleteContents();
     // Now we can reprocess the file
-    bRet = m_pCore->AnalyzeFile(m_strPathName);
+    bool bRet = m_pCore->AnalyzeFile(m_strPathName);
     // Insert the log
     InsertQuickLog();
 
@@ -1490,15 +1499,11 @@ BOOL CJPEGsnoopDoc::OnSaveDocument(LPCTSTR lpszPathName)
     {
         return CRichEditDoc::OnSaveDocument(lpszPathName);
     }
-    else
-    {
-        // Pretend we were successful so that we don't allow it
-        // to try to write the file if not successful!
-        AfxMessageBox(_T("NOTE: Attempt to overwrite source file prevented"));
-        return true;
-    }
 
-    //return CRichEditDoc::OnSaveDocument(lpszPathName);
+    // Pretend we were successful so that we don't allow it
+    // to try to write the file if not successful!
+    AfxMessageBox(_T("NOTE: Attempt to overwrite source file prevented"));
+    return true;
 }
 
 
@@ -1628,7 +1633,7 @@ void CJPEGsnoopDoc::OnUpdateToolsExtractembeddedjpeg(CCmdUI* pCmdUI)
 // Create static wrapper for B_Buf callback function
 BYTE CJPEGsnoopDoc::CbWrap_B_Buf(void* pWrapClass, unsigned long nNum, bool bBool)
 {
-    CJPEGsnoopDoc* mySelf = (CJPEGsnoopDoc*)pWrapClass;
+    CJPEGsnoopDoc* mySelf = static_cast<CJPEGsnoopDoc*>(pWrapClass);
     return mySelf->m_pCore->B_Buf(nNum, bBool);
 }
 
@@ -2036,9 +2041,9 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
                 nOffsetDst = (nIndY * nSizeX + nIndX) * 3;
                 // pBitmapRgb is actually the DIB, which is inverted vertically
                 nOffsetSrc = ((nSizeY - 1 - nIndY) * nSizeX + nIndX) * 4;
-                unsigned short nValR = (unsigned short)pBitmapRgb[nOffsetSrc + 2];
-                unsigned short nValG = (unsigned short)pBitmapRgb[nOffsetSrc + 1];
-                unsigned short nValB = (unsigned short)pBitmapRgb[nOffsetSrc + 0];
+                unsigned short nValR = pBitmapRgb[nOffsetSrc + 2];
+                unsigned short nValG = pBitmapRgb[nOffsetSrc + 1];
+                unsigned short nValB = pBitmapRgb[nOffsetSrc + 0];
                 if (!bMode16b)
                 {
                     // Rearrange into file-order
@@ -2093,9 +2098,9 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
                 if (!bMode16b)
                 {
                     // Rearrange into file-order
-                    pBitmapSel8[nOffsetDst + 0] = (unsigned char)((0x0400 + nValY) >> 3);
-                    pBitmapSel8[nOffsetDst + 1] = (unsigned char)((0x0400 + nValCb) >> 3);
-                    pBitmapSel8[nOffsetDst + 2] = (unsigned char)((0x0400 + nValCr) >> 3);
+                    pBitmapSel8[nOffsetDst + 0] = static_cast<unsigned char>((0x0400 + nValY) >> 3);
+                    pBitmapSel8[nOffsetDst + 1] = static_cast<unsigned char>((0x0400 + nValCb) >> 3);
+                    pBitmapSel8[nOffsetDst + 2] = static_cast<unsigned char>((0x0400 + nValCr) >> 3);
                 }
                 else
                 {
