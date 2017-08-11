@@ -46,6 +46,9 @@
 #include <afxrich.h>        // MFC rich edit classes
 #include <afxinet.h>
 
+#include <memory>
+#include <vector>
+
 // Redefining C++ keywords is in general a bad practice.
 // The Microsoft C++ headers file are designed to handle redefining to the debug MFC allocator.
 #ifdef _DEBUG

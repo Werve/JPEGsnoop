@@ -365,40 +365,29 @@ public:
     }
 };
 
-CJPEGsnoopApp::CJPEGsnoopApp()
+CSnoopConfig* GetJPEGsnoopConfig()
 {
-    // Reset fatal error flag
-    m_bFatal = false;
+    CJPEGsnoopApp* pApp = static_cast<CJPEGsnoopApp*>(AfxGetApp());
+   return pApp->m_pAppConfig.get();
+}
 
-    // Application-level config options
-    m_pAppConfig = new CSnoopConfig();
-
+CJPEGsnoopApp::CJPEGsnoopApp() :
+    m_pAppConfig(new CSnoopConfig()),
+    m_pDbSigs(new CDbSigs()),
+    m_bFatal(false)
+{
     glb_pDocLog = new CDocLog();
-
-    m_pDbSigs = new CDbSigs();
 }
 
 CJPEGsnoopApp::~CJPEGsnoopApp()
 {
-    // Save and then Delete
-    if (m_pAppConfig != nullptr)
-    {
-        m_pAppConfig->RegistryStore();
-
-        delete m_pAppConfig;
-        m_pAppConfig = nullptr;
-    }
+    // Save
+    m_pAppConfig->RegistryStore();
 
     if (glb_pDocLog != nullptr)
     {
         delete glb_pDocLog;
         glb_pDocLog = nullptr;
-    }
-
-    if (m_pDbSigs != nullptr)
-    {
-        delete m_pDbSigs;
-        m_pDbSigs = nullptr;
     }
 }
 
@@ -491,7 +480,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     m_pAppConfig->bInteractive = true;
 
     // Parse command line for standard shell commands, DDE, file open
-    CMyCommandParser cmdInfo(m_pAppConfig);
+    CMyCommandParser cmdInfo(m_pAppConfig.get());
     ParseCommandLine(cmdInfo);
 
     if (m_pAppConfig->bGuiMode)
@@ -1017,7 +1006,6 @@ void CJPEGsnoopApp::OnAppAbout()
 //
 void CJPEGsnoopApp::MyOnFileOpen()
 {
-    //bool bStatus = 0;
     TCHAR aszFilter[] =
         _T("JPEG Image (*.jpg;*.jpeg)|*.jpg;*.jpeg|")
         _T("Thumbnail (*.thm)|*.thm|")
@@ -1039,7 +1027,7 @@ void CJPEGsnoopApp::MyOnFileOpen()
     // Extend the maximum filename length
     // Default is 64 for filename, 260 for path
     // Some users have requested support for longer filenames
-    LPTSTR spFilePath = new TCHAR[501];
+    TCHAR spFilePath[501];
     spFilePath[0] = TCHAR(0);
     FileDlg.m_pOFN->lpstrFile = spFilePath;
     FileDlg.m_pOFN->nMaxFile = 500;
@@ -1078,8 +1066,6 @@ void CJPEGsnoopApp::MyOnFileOpen()
 
         // if returns NULL, the user has already been alerted
     }
-
-    if (spFilePath) { delete[] spFilePath; }
 }
 
 // Basic placeholder for OnFileNew

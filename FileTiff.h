@@ -18,6 +18,9 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #define TIFF_TYPE_BYTE          0x00
 #define TIFF_TYPE_ASCII         0x01
 #define TIFF_TYPE_SHORT         0x03
@@ -50,7 +53,6 @@ class FileTiff
 {
 public:
     FileTiff();
-    ~FileTiff();
 
     void WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* pBitmap, unsigned nSizeX, unsigned nSizeY);
     void WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bMode16b);
@@ -67,7 +69,7 @@ public:
     void WriteIfdExtraBuf32(unsigned int nVal);
 
 private:
-    CFile* m_pFileOutput;
+    std::unique_ptr<CFile> m_pFileOutput;
 
     unsigned m_nPtrIfdExtra;
     unsigned m_nPtrImg;
@@ -75,6 +77,6 @@ private:
 
     bool m_bPreCalc;
     unsigned short m_nNumIfd;
-    BYTE* m_pIfdExtraBuf;
+    std::vector<BYTE> m_pIfdExtraBuf;
     unsigned m_nIfdExtraLen;
 };

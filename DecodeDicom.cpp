@@ -37,8 +37,7 @@ CDecodeDicom::CDecodeDicom(CwindowBuf* pWBuf, CDocLog* pLog)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
-    m_pAppConfig = pApp->m_pAppConfig;
+    m_pAppConfig = GetJPEGsnoopConfig();
 
     Reset();
 }
@@ -312,7 +311,7 @@ bool CDecodeDicom::GetTagHeader(unsigned long nPos, tsTagDetail& sTagDetail)
         strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
     }
 #else
-    // Simple tag info  
+    // Simple tag info
     strTag.Format(_T("%s"), strTagName.GetString());
 #endif
 
@@ -384,7 +383,7 @@ bool CDecodeDicom::DecodeTagHeader(unsigned long nPos,CString &strTag,CString &s
     }
     strVR = m_pWBuf->BufReadStrn(nPos+4,2);
     nVR = m_pWBuf->BufX(nPos+4,2,false);
-    
+
 
 // Value Representation (VR)
 // Reference: Part 5, Section 6.2
@@ -538,7 +537,7 @@ bool CDecodeDicom::DecodeTagHeader(unsigned long nPos,CString &strTag,CString &s
         strTag.Format(_T("@ 0x%08X (%04X,%04X) VR=[%2s] Len=0x%08X %s"),nPos,nTagGroup,nTagElement,strVR,nLen,strTagName);
     }
 #else
-// Simple tag info  
+// Simple tag info
     strTag.Format(_T("%s"),strTagName);
 #endif
 
@@ -682,7 +681,7 @@ void CDecodeDicom::ReportFldStrEnc(unsigned nIndent, CString strField, CString s
 }
 
 // Locate a field ID in the constant Meta Tag array
-// 
+//
 // INPUT:
 // - nTagGroup              = Meta Tag (High)
 // - nTagElement                = Meta Tag (Low)

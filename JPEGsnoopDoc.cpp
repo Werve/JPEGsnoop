@@ -40,10 +40,7 @@ CJPEGsnoopDoc::CJPEGsnoopDoc()
 {
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
-    ASSERT(pApp);
-    m_pAppConfig = pApp->m_pAppConfig;
-    ASSERT(m_pAppConfig);
+    m_pAppConfig = GetJPEGsnoopConfig();
 
 #if DEBUG_EN > 0
     m_pAppConfig->DebugLogAdd(_T("CJPEGsnoopDoc::CJPEGsnoopDoc() Begin"));

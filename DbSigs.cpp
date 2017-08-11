@@ -21,6 +21,7 @@
 #include "DbSigs.h"
 #include "snoop.h"
 #include "Signatures.inl"
+#include <memory>
 
 #define MAX_BUF_SET_FILE    131072
 
@@ -277,7 +278,7 @@ bool CDbSigs::BufWriteStr(PBYTE pBuf, CString strIn, unsigned nMaxBytes, bool bU
 
 void CDbSigs::DatabaseExtraLoad()
 {
-    CFile* pInFile;
+    std::unique_ptr<CFile> pInFile;
     PBYTE pBuf;
     unsigned nBufLenBytes;
     CString strError;
@@ -297,7 +298,7 @@ void CDbSigs::DatabaseExtraLoad()
     try
     {
         // Open specified file
-        pInFile = new CFile(szFilePathName, CFile::modeRead);
+        pInFile = std::make_unique<CFile>(szFilePathName, CFile::modeRead);
     }
     catch (CFileException* e)
     {
@@ -381,13 +382,10 @@ void CDbSigs::DatabaseExtraLoad()
                         szFilePathName);
         OutputDebugString(strError);
         AfxMessageBox(strError);
+
         // Close the file to ensure no sharing violation
-        if (pInFile)
-        {
-            pInFile->Close();
-            delete pInFile;
-            pInFile = nullptr;
-        }
+        pInFile->Close();
+
         // Copy old config file
         TCHAR szFilePathNameBak[200];
         _stprintf_s(szFilePathNameBak,_T("%s\\%s.bak"), m_strDbDir.GetString(),DAT_FILE);
@@ -522,12 +520,7 @@ void CDbSigs::DatabaseExtraLoad()
 
     // ----------------------
 
-    if (pInFile)
-    {
-        pInFile->Close();
-        delete pInFile;
-        pInFile = nullptr;
-    }
+    pInFile->Close();
 
     if (pBuf)
     {

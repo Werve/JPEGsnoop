@@ -26,7 +26,7 @@ CJPEGsnoopCore::CJPEGsnoopCore()
     // Initialize processing classes
 
     // Save a local copy of the config struct pointer
-    m_pAppConfig = theApp.m_pAppConfig;
+    m_pAppConfig = GetJPEGsnoopConfig();
 
     // Ensure the local log isn't linked to a CDocument
     glb_pDocLog->SetDoc(nullptr);

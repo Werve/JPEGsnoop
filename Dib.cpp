@@ -32,21 +32,16 @@
 
 #include "dib.h"
 
-
 CDIB::CDIB() : m_pDIB(nullptr)
 {
-}
-
-CDIB::~CDIB()
-{
-    if (m_pDIB) delete m_pDIB;
 }
 
 void CDIB::Kill()
 {
     if (m_pDIB)
     {
-        delete m_pDIB;
+        m_bitmapInfoBuffer.clear();
+        m_bitmapInfoBuffer.shrink_to_fit();
         m_pDIB = nullptr;
     }
 }
@@ -65,8 +60,8 @@ bool CDIB::CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits)
         ((dwWidth * dwHeight) * sizeof(RGBQUAD)) +
         4;
 
-    m_pDIB = reinterpret_cast<LPBITMAPINFO>(new BYTE[dwSize]);
-    memset(m_pDIB, 0x00, dwSize);
+    m_bitmapInfoBuffer.resize(dwSize);
+    m_pDIB = reinterpret_cast<LPBITMAPINFO>(m_bitmapInfoBuffer.data());
 
     m_pDIB->bmiHeader.biSize = dwcBihSize;
     m_pDIB->bmiHeader.biWidth = dwWidth;

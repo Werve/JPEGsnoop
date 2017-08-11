@@ -30,11 +30,12 @@
 
 #pragma once
 
+#include <vector>
+
 class CDIB : public CObject
 {
 public:
     CDIB();
-    virtual ~CDIB();
 
     void Kill();
     bool CreateDIB(DWORD dwWidth, DWORD dwHeight, unsigned short nBits);
@@ -50,5 +51,6 @@ public:
     CBitmap m_bmBitmap;
 
 private:
+    std::vector<BYTE> m_bitmapInfoBuffer;
     LPBITMAPINFO m_pDIB;
 };

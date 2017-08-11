@@ -44,8 +44,7 @@ CDecodePs::CDecodePs(CwindowBuf* pWBuf, CDocLog* pLog)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
-    m_pAppConfig = pApp->m_pAppConfig;
+    m_pAppConfig = GetJPEGsnoopConfig();
 
     Reset();
 }
@@ -1604,7 +1603,7 @@ bool CDecodePs::PhotoshopParseChannelImageData(unsigned long& nPos, unsigned nIn
         // -   LOOP [nHeight]
         // -     16-bit: row length
         // -   ENDLOOP
-        unsigned* anRowLen = new unsigned [nHeight];
+        std::vector<unsigned> anRowLen(nHeight);
         for (unsigned nRow = 0; nRow < nHeight; nRow++)
         {
             anRowLen[nRow] = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
@@ -1616,9 +1615,6 @@ bool CDecodePs::PhotoshopParseChannelImageData(unsigned long& nPos, unsigned nIn
             unsigned nRowLen = anRowLen[nRow];
             bDecOk = PhotoshopDecodeRowRle(nPos, nWidth, nHeight, nRow, nRowLen, nChan, pDibBits);
         } //nRow
-
-        // Deallocate
-        delete [] anRowLen;
     }
     else if (nCompressionMethod == 0)
     {
@@ -1834,7 +1830,7 @@ bool CDecodePs::PhotoshopParseImageData(unsigned long& nPos, unsigned nIndent, t
         // -     16-bit: row length
         // -   ENDLOOP
         // - ENDLOOP
-        unsigned* anRowLen = new unsigned [nNumChans * nHeight];
+        std::vector<unsigned> anRowLen(nNumChans * nHeight);
         for (unsigned nRow = 0; nRow < (nNumChans * nHeight); nRow++)
         {
             anRowLen[nRow] = m_pWBuf->BufRdAdv2(nPos,PS_BSWAP);
@@ -1849,8 +1845,6 @@ bool CDecodePs::PhotoshopParseImageData(unsigned long& nPos, unsigned nIndent, t
                 bDecOk = PhotoshopDecodeRowRle(nPos, nWidth, nHeight, nRow, nRowLen, nChan, pDibBits);
             } // nRow
         } // nChan
-
-        delete [] anRowLen;
     }
     else if (nCompressionMethod == 0)
     {

@@ -23,29 +23,13 @@
 
 
 FileTiff::FileTiff() :
-    m_pFileOutput(nullptr),
     m_nPtrIfdExtra(0),
     m_nPtrImg(0),
     m_nPos(0),
     m_bPreCalc(false),
     m_nNumIfd(0),
-    m_pIfdExtraBuf(nullptr),
     m_nIfdExtraLen(0)
 {
-}
-
-FileTiff::~FileTiff()
-{
-    if (m_pFileOutput)
-    {
-        delete m_pFileOutput;
-        m_pFileOutput = nullptr;
-    }
-    if (m_pIfdExtraBuf)
-    {
-        delete m_pIfdExtraBuf;
-        m_pIfdExtraBuf = nullptr;
-    }
 }
 
 void FileTiff::WriteVal8(BYTE nVal)
@@ -61,7 +45,6 @@ void FileTiff::WriteIfdExtraBuf8(BYTE nVal)
 {
     if (!m_bPreCalc)
     {
-        ASSERT (m_pIfdExtraBuf);
         m_pIfdExtraBuf[m_nIfdExtraLen + 0] = nVal;
     }
     m_nIfdExtraLen += 1;
@@ -87,7 +70,6 @@ void FileTiff::WriteIfdExtraBuf16(unsigned short nVal)
         BYTE nTmp[2];
         nTmp[0] = (nVal & 0xFF00) >> 8;
         nTmp[1] = (nVal & 0x00FF) >> 0;
-        ASSERT (m_pIfdExtraBuf);
         m_pIfdExtraBuf[m_nIfdExtraLen + 0] = nTmp[0];
         m_pIfdExtraBuf[m_nIfdExtraLen + 1] = nTmp[1];
     }
@@ -120,7 +102,6 @@ void FileTiff::WriteIfdExtraBuf32(unsigned int nVal)
         nTmp[1] = static_cast<BYTE>((nVal & 0x00FF0000) >> 16);
         nTmp[2] = static_cast<BYTE>((nVal & 0x0000FF00) >> 8);
         nTmp[3] = static_cast<BYTE>((nVal & 0x000000FF) >> 0);
-        ASSERT (m_pIfdExtraBuf);
         m_pIfdExtraBuf[m_nIfdExtraLen + 0] = nTmp[0];
         m_pIfdExtraBuf[m_nIfdExtraLen + 1] = nTmp[1];
         m_pIfdExtraBuf[m_nIfdExtraLen + 2] = nTmp[2];
@@ -310,11 +291,8 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
     bool bPreCalcSaved = m_bPreCalc;
 
     // Save the position of the start of IFD
-
     m_nPtrIfdExtra = 0;
     m_nIfdExtraLen = 0;
-
-    ASSERT(!m_pIfdExtraBuf);
 
     unsigned short nFinalNumIfd = 0;
     unsigned nFinalPtrIfdStart = m_nPos;
@@ -342,8 +320,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
 
             // Allocate the IfdExtra buffer now that
             // we know how large it will be
-            m_pIfdExtraBuf = new BYTE[nFinalIfdExtraLen];
-            ASSERT(m_pIfdExtraBuf);
+            m_pIfdExtraBuf.reserve(nFinalIfdExtraLen);
         }
         // Number of Dir Entries
         WriteVal16(nFinalNumIfd);
@@ -435,11 +412,6 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
         // Now write out IFD Extra buffer
         if (m_nIfdExtraLen > 0)
         {
-            if (!m_bPreCalc)
-            {
-                ASSERT(m_pIfdExtraBuf);
-            }
-
             for (unsigned nBufInd = 0; nBufInd < m_nIfdExtraLen; nBufInd++)
             {
                 // In PreCalc phase, fill with placeholder bytes
@@ -452,11 +424,7 @@ void FileTiff::WriteIfd(unsigned nSizeX, unsigned nSizeY, bool bModeYcc, bool bM
     }
 
     // Elininate the IFD Extra buffer
-    if (m_pIfdExtraBuf)
-    {
-        delete m_pIfdExtraBuf;
-        m_pIfdExtraBuf = nullptr;
-    }
+    m_pIfdExtraBuf.clear();
 
     // Restore the PreCalc mode
     m_bPreCalc = bPreCalcSaved;
@@ -475,7 +443,7 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
         // Open specified file
         // Added in shareDenyNone as this apparently helps resolve some people's troubles
         // with an error showing: Couldn't open file "Sharing Violation"
-        m_pFileOutput = new CFile(sFnameOut, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary | CFile::shareDenyNone);
+        m_pFileOutput = std::make_unique<CFile>(sFnameOut, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary | CFile::shareDenyNone);
     }
     catch (CFileException* e)
     {
@@ -556,12 +524,5 @@ void FileTiff::WriteFile(CString sFnameOut, bool bModeYcc, bool bMode16b, void* 
     }
 
     m_pFileOutput->Close();
-
-    // Clean up
-    // Don't really need to delete m_pFileOutput
-    if (m_pFileOutput)
-    {
-        delete m_pFileOutput;
-        m_pFileOutput = nullptr;
-    }
+    m_pFileOutput.reset();
 }

@@ -149,9 +149,7 @@ CjfifDecode::CjfifDecode(CDocLog* pLog, CwindowBuf* pWBuf, CimgDecode* pImgDec)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
-    m_pAppConfig = pApp->m_pAppConfig;
-    ASSERT(m_pAppConfig);
+    m_pAppConfig = GetJPEGsnoopConfig();
 
     // Need to zero out the private members
     m_bOutputDB = false; // mySQL output for web

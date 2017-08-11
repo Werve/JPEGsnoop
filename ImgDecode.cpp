@@ -153,9 +153,7 @@ CimgDecode::CimgDecode(CDocLog* pLog, CwindowBuf* pWBuf)
 
     // Ideally this would be passed by constructor, but simply access
     // directly for now.
-    CJPEGsnoopApp* pApp = (CJPEGsnoopApp*)AfxGetApp();
-    m_pAppConfig = pApp->m_pAppConfig;
-    ASSERT(m_pAppConfig);
+    m_pAppConfig = GetJPEGsnoopConfig();
 
     m_bVerbose = false;
 

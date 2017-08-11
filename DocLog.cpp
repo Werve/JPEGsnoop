@@ -294,8 +294,6 @@ bool CDocLog::GetLineLogLocal(unsigned nLine, CString& strOut, COLORREF& sCol)
 //
 void CDocLog::DoLogSave(CString strLogName)
 {
-    CStdioFile* pLog;
-
     // Open the file for output
     ASSERT(!strLogName.IsEmpty());
 
@@ -316,7 +314,20 @@ void CDocLog::DoLogSave(CString strLogName)
     try
     {
         // Open specified file
-        pLog = new CStdioFile(strLogName, CFile::modeCreate | CFile::modeWrite | CFile::typeText | CFile::shareDenyNone);
+        CStdioFile pLog(strLogName, CFile::modeCreate | CFile::modeWrite | CFile::typeText | CFile::shareDenyNone);
+
+        // Step through the current log buffer
+        CString strLine;
+        COLORREF sCol;
+        unsigned nQuickLines = GetNumLinesLocal();
+        for (unsigned nLine = 0; nLine < nQuickLines; nLine++)
+        {
+            GetLineLogLocal(nLine, strLine, sCol);
+            pLog.WriteString(strLine);
+        }
+
+        // Close the file
+        pLog.Close();
     }
     catch (CFileException* e)
     {
@@ -328,24 +339,5 @@ void CDocLog::DoLogSave(CString strLogName)
                         strLogName.GetString(), msg);
         // FIXME: Find an alternate method of signaling error in command-line mode
         AfxMessageBox(strError);
-
-        return;
-    }
-
-    // Step through the current log buffer
-    CString strLine;
-    COLORREF sCol;
-    unsigned nQuickLines = GetNumLinesLocal();
-    for (unsigned nLine = 0; nLine < nQuickLines; nLine++)
-    {
-        GetLineLogLocal(nLine, strLine, sCol);
-        pLog->WriteString(strLine);
-    }
-
-    // Close the file
-    if (pLog)
-    {
-        pLog->Close();
-        delete pLog;
     }
 }

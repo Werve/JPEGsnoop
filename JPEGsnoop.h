@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <memory>
+
 class CDbSigs;
 class CDocLog;
 class CSnoopConfig;
@@ -26,6 +28,7 @@ class CJPEGsnoopDoc;
 // Define global variable for application log
 extern CDocLog* glb_pDocLog;
 
+CSnoopConfig* GetJPEGsnoopConfig();
 
 class CJPEGsnoopApp : public CWinApp
 {
@@ -36,10 +39,10 @@ public:
     BOOL InitInstance() override;
 
     // Main config options
-    CSnoopConfig* m_pAppConfig;
+    std::unique_ptr<CSnoopConfig> m_pAppConfig;
 
     // Needs to be accessed by JfifDec
-    CDbSigs* m_pDbSigs;
+    std::unique_ptr<CDbSigs> m_pDbSigs;
 
 private:
     void MyOnFileOpen();
