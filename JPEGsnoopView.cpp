@@ -130,9 +130,9 @@ void CJPEGsnoopView::OnDropFiles(HDROP hDropInfo)
 
 BEGIN_MESSAGE_MAP(CJPEGsnoopView, CRichEditView)
     ON_WM_DESTROY()
-    ON_COMMAND(ID_FILE_PRINT, CRichEditView::OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_DIRECT, CRichEditView::OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_PREVIEW, CRichEditView::OnFilePrintPreview)
+    ON_COMMAND(ID_FILE_PRINT, &CRichEditView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_DIRECT, &CRichEditView::OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CRichEditView::OnFilePrintPreview)
     ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 

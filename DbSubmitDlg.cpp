@@ -72,7 +72,7 @@ void CDbSubmitDlg::OnBnClickedOk()
 }
 
 BEGIN_MESSAGE_MAP(CDbSubmitDlg, CDialog)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_BN_CLICKED(IDOK, &CDbSubmitDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CDbSubmitDlg, CDialog)

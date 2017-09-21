@@ -56,7 +56,7 @@ void CDecodeDetailDlg::OnBnClickedBtnLoad()
 }
 
 BEGIN_MESSAGE_MAP(CDecodeDetailDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoad)
+    ON_BN_CLICKED(IDC_BTN_LOAD, &CDecodeDetailDlg::OnBnClickedBtnLoad)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CDecodeDetailDlg, CDialog)

@@ -120,8 +120,8 @@ void CDbManageDlg::GetRemainIndices(CUIntArray& anRemain) const
 }
 
 BEGIN_MESSAGE_MAP(CDbManageDlg, CDialog)
-    ON_BN_CLICKED(IDC_REMOVE, OnBnClickedRemove)
-    ON_BN_CLICKED(IDC_REMOVEALL, OnBnClickedRemoveall)
+    ON_BN_CLICKED(IDC_REMOVE, &CDbManageDlg::OnBnClickedRemove)
+    ON_BN_CLICKED(IDC_REMOVEALL, &CDbManageDlg::OnBnClickedRemoveall)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CDbManageDlg, CDialog)

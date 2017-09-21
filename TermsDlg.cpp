@@ -117,7 +117,7 @@ void CTermsDlg::OnBnClickedOk()
 }
 
 BEGIN_MESSAGE_MAP(CTermsDlg, CDialog)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_BN_CLICKED(IDOK, &CTermsDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CTermsDlg, CDialog)

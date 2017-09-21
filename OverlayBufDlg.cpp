@@ -169,9 +169,9 @@ BOOL COverlayBufDlg::OnInitDialog()
 }
 
 BEGIN_MESSAGE_MAP(COverlayBufDlg, CDialog)
-    ON_BN_CLICKED(IDC_OVR_LOAD, OnBnClickedOvrLoad)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
-    ON_BN_CLICKED(IDC_APPLY, OnBnClickedApply)
+    ON_BN_CLICKED(IDC_OVR_LOAD, &COverlayBufDlg::OnBnClickedOvrLoad)
+    ON_BN_CLICKED(IDOK, &COverlayBufDlg::OnBnClickedOk)
+    ON_BN_CLICKED(IDC_APPLY, &COverlayBufDlg::OnBnClickedApply)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(COverlayBufDlg, CDialog)

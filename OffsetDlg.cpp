@@ -176,9 +176,9 @@ void COffsetDlg::OnBnClickedOk()
 }
 
 BEGIN_MESSAGE_MAP(COffsetDlg, CDialog)
-    ON_BN_CLICKED(IDC_BASEH, OnBnClickedBaseh)
-    ON_BN_CLICKED(IDC_BASED, OnBnClickedBased)
-    ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_BN_CLICKED(IDC_BASEH, &COffsetDlg::OnBnClickedBaseh)
+    ON_BN_CLICKED(IDC_BASED, &COffsetDlg::OnBnClickedBased)
+    ON_BN_CLICKED(IDOK, &COffsetDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(COffsetDlg, CDialog)

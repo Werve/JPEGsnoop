@@ -75,8 +75,8 @@ void CBatchDlg::OnBnClickedBtnDirDstBrowse()
 }
 
 BEGIN_MESSAGE_MAP(CBatchDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_DIR_SRC_BROWSE, OnBnClickedBtnDirSrcBrowse)
-    ON_BN_CLICKED(IDC_BTN_DIR_DST_BROWSE, OnBnClickedBtnDirDstBrowse)
+    ON_BN_CLICKED(IDC_BTN_DIR_SRC_BROWSE, &CBatchDlg::OnBnClickedBtnDirSrcBrowse)
+    ON_BN_CLICKED(IDC_BTN_DIR_DST_BROWSE, &CBatchDlg::OnBnClickedBtnDirDstBrowse)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CBatchDlg, CDialog)

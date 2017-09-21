@@ -95,7 +95,7 @@ void CLookupDlg::OnBnClickedBtnCalc()
 }
 
 BEGIN_MESSAGE_MAP(CLookupDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTN_CALC, OnBnClickedBtnCalc)
+    ON_BN_CLICKED(IDC_BTN_CALC, &CLookupDlg::OnBnClickedBtnCalc)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CLookupDlg, CDialog)

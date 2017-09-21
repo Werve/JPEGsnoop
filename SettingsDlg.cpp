@@ -128,9 +128,9 @@ void CSettingsDlg::OnBnClickedCoachReset()
 }
 
 BEGIN_MESSAGE_MAP(CSettingsDlg, CDialog)
-    ON_BN_CLICKED(IDC_DB_DIR_BROWSE, OnBnClickedDbDirBrowse)
-    ON_BN_CLICKED(IDC_DB_DIR_DEFAULT, OnBnClickedDbDirDefault)
-    ON_BN_CLICKED(IDC_COACH_RESET, OnBnClickedCoachReset)
+    ON_BN_CLICKED(IDC_DB_DIR_BROWSE, &CSettingsDlg::OnBnClickedDbDirBrowse)
+    ON_BN_CLICKED(IDC_DB_DIR_DEFAULT, &CSettingsDlg::OnBnClickedDbDirDefault)
+    ON_BN_CLICKED(IDC_COACH_RESET, &CSettingsDlg::OnBnClickedCoachReset)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CSettingsDlg, CDialog)

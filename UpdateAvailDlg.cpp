@@ -44,7 +44,7 @@ void CUpdateAvailDlg::OnBnClickedButton1()
 }
 
 BEGIN_MESSAGE_MAP(CUpdateAvailDlg, CDialog)
-    ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedButton1)
+    ON_BN_CLICKED(IDC_BUTTON1, &CUpdateAvailDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CUpdateAvailDlg, CDialog)
