@@ -25,20 +25,12 @@
 // - Resets state
 // - Clears all buffer overlay bytes
 //
-CwindowBuf::CwindowBuf() :
-    m_nBufWinSize(0),
-    m_nBufWinStart(0)
+CwindowBuf::CwindowBuf()
 {
-    m_pBuffer = new BYTE[MAX_BUF];
-
-    m_pStatBar = nullptr;
-
-    Reset();
+    m_pBuffer.resize(MAX_BUF);
 
     // Initialize all overlays as not defined.
     // Only create space for them as required
-    m_nOverlayNum = 0;
-    m_nOverlayMax = 0;
     for (unsigned nInd = 0; nInd < NUM_OVERLAYS; nInd++)
     {
         m_psOverlay[nInd] = nullptr;
@@ -48,29 +40,14 @@ CwindowBuf::CwindowBuf() :
 // Destructor deallocates buffers and overlays
 CwindowBuf::~CwindowBuf()
 {
-    if (m_pBuffer != nullptr)
-    {
-        delete m_pBuffer;
-        m_pBuffer = nullptr;
-        m_bBufOK = false;
-    }
-
     // Clear up overlays
     for (unsigned nInd = 0; nInd < NUM_OVERLAYS; nInd++)
     {
         if (m_psOverlay[nInd])
         {
             delete m_psOverlay[nInd];
-            m_psOverlay[nInd] = nullptr;
         }
     }
-}
-
-void CwindowBuf::Reset()
-{
-    // File handling
-    m_bBufOK = false; // Initialize the buffer to not loaded yet
-    m_pBufFile = nullptr; // No file open yet
 }
 
 // Accessor for m_bBufOk
@@ -409,7 +386,7 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
         // Need to ensure that we don't try to read past the end of file.
         // I have encountered some JPEGs that have Canon makernote
         // fields with OffsetValue > 0xFFFF0000! Interpreting this as-is
-        // would cuase BufLoadWindow() to read past the end of file.
+        // would cause BufLoadWindow() to read past the end of file.
         if (nPositionAdj >= m_nPosEof)
         {
             // ERROR! For now, just do this silently
@@ -422,7 +399,7 @@ void CwindowBuf::BufLoadWindow(unsigned long nPosition)
         }
 
         m_pBufFile->Seek(nPositionAdj, CFile::begin);
-        unsigned long nVal = (unsigned long)m_pBufFile->Read(m_pBuffer,MAX_BUF_WINDOW);
+        unsigned long nVal = (unsigned long)m_pBufFile->Read(m_pBuffer.data(), MAX_BUF_WINDOW);
         if (nVal <= 0)
         {
         }

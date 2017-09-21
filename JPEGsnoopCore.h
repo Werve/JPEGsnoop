@@ -29,7 +29,6 @@ class CJPEGsnoopCore
 {
 public:
     CJPEGsnoopCore();
-    ~CJPEGsnoopCore();
 
     void Reset();
 
@@ -140,9 +139,9 @@ private:
     BOOL m_bFileOpened; // Is a file currently opened?
 
     // Decoders and Buffers
-    CjfifDecode* m_pJfifDec;
-    CimgDecode* m_pImgDec;
-    CwindowBuf* m_pWBuf;
+    std::unique_ptr<CjfifDecode> m_pJfifDec;
+    std::unique_ptr<CimgDecode> m_pImgDec;
+    std::unique_ptr<CwindowBuf> m_pWBuf;
 
     // Batch processing
     CStringArray m_asBatchFiles;

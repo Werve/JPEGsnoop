@@ -21,7 +21,10 @@
 #include "JPEGsnoopCore.h"
 #include "JPEGsnoop.h"
 
-CJPEGsnoopCore::CJPEGsnoopCore()
+CJPEGsnoopCore::CJPEGsnoopCore() :
+    m_pWBuf{ new CwindowBuf() },
+    m_pImgDec{ new CimgDecode(glb_pDocLog, m_pWBuf.get()) },
+    m_pJfifDec{ new CjfifDecode(glb_pDocLog, m_pWBuf.get(), m_pImgDec.get()) }
 {
     // Initialize processing classes
 
@@ -30,14 +33,6 @@ CJPEGsnoopCore::CJPEGsnoopCore()
 
     // Ensure the local log isn't linked to a CDocument
     glb_pDocLog->SetDoc(nullptr);
-
-    // Allocate the file window buffer
-    m_pWBuf = new CwindowBuf();
-
-    // Allocate the JPEG decoder
-    m_pImgDec = new CimgDecode(glb_pDocLog, m_pWBuf);
-
-    m_pJfifDec = new CjfifDecode(glb_pDocLog, m_pWBuf, m_pImgDec);
 
     // Reset all members
     Reset();
@@ -48,28 +43,6 @@ CJPEGsnoopCore::CJPEGsnoopCore()
 #else
     glb_pDocLog->SetQuickMode(false);
 #endif
-}
-
-
-CJPEGsnoopCore::~CJPEGsnoopCore()
-{
-    if (m_pJfifDec != nullptr)
-    {
-        delete m_pJfifDec;
-        m_pJfifDec = nullptr;
-    }
-
-    if (m_pWBuf != nullptr)
-    {
-        delete m_pWBuf;
-        m_pWBuf = nullptr;
-    }
-
-    if (m_pImgDec != nullptr)
-    {
-        delete m_pImgDec;
-        m_pImgDec = nullptr;
-    }
 }
 
 // Reset all state

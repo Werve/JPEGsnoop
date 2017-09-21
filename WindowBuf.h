@@ -104,19 +104,17 @@ public:
     unsigned long GetPosEof() const;
 
 private:
-    void Reset();
+    std::vector<BYTE> m_pBuffer;
+    CFile* m_pBufFile = nullptr;
+    unsigned long m_nBufWinSize = 0;
+    unsigned long m_nBufWinStart = 0;
 
-    BYTE* m_pBuffer;
-    CFile* m_pBufFile;
-    unsigned long m_nBufWinSize;
-    unsigned long m_nBufWinStart;
-
-    unsigned m_nOverlayMax; // Number of overlays allocated (limited by mem)
-    unsigned m_nOverlayNum;
+    unsigned m_nOverlayMax = 0; // Number of overlays allocated (limited by mem)
+    unsigned m_nOverlayNum = 0;
     sOverlay* m_psOverlay[NUM_OVERLAYS];
 
-    CStatusBar* m_pStatBar;
+    CStatusBar* m_pStatBar = nullptr;
 
-    bool m_bBufOK;
+    bool m_bBufOK = false;
     unsigned long m_nPosEof; // Byte count at EOF
 };
