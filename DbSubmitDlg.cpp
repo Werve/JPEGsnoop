@@ -42,7 +42,7 @@ void CDbSubmitDlg::DoDataExchange(CDataExchange* pDX)
 
 void CDbSubmitDlg::OnBnClickedOk()
 {
-    UpdateData(TRUE);
+    UpdateData(true);
     // If "Software" selected, then make sure title is filled in!
     if (m_nSource == 1)
     {

@@ -55,5 +55,5 @@ private:
     CStringArray m_saLogQuickTxt;
     CUIntArray m_naLogQuickCol;
 
-    bool m_bLogQuickMode; // In m_bUseDoc=TRUE, do we write to local buffer instead?
+    bool m_bLogQuickMode; // In m_bUseDoc=true, do we write to local buffer instead?
 };

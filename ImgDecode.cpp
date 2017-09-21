@@ -1651,7 +1651,7 @@ bool CimgDecode::DecodeScanComp(unsigned nTblDhtDc, unsigned nTblDhtAc, unsigned
         // Handle Restart marker first.
         if (eRsvRet == RSV_RST_TERM)
         {
-            // Assume that m_bRestartRead is TRUE
+            // Assume that m_bRestartRead is true
             // No huffman code found because either we ran out of bits
             // in the scan buffer or the bits padded with 1's didn't result
             // in a valid VLC code.
@@ -1943,7 +1943,7 @@ bool CimgDecode::DecodeScanCompPrint(unsigned nTblDhtDc, unsigned nTblDhtAc, uns
         // Handle Restart marker first.
         if (eRsvRet == RSV_RST_TERM)
         {
-            // Assume that m_bRestartRead is TRUE
+            // Assume that m_bRestartRead is true
             // No huffman code found because either we ran out of bits
             // in the scan buffer or the bits padded with 1's didn't result
             // in a valid VLC code.

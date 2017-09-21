@@ -47,7 +47,7 @@ BOOL CDbManageDlg::OnInitDialog()
     // Transfer the pending list of
     PopulateList();
 
-    return TRUE;
+    return true;
 }
 
 // Prepare a custom signature entry for addition into the dialog listbox

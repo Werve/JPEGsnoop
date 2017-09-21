@@ -41,7 +41,7 @@ BOOL CExportTiffDlg::OnInitDialog()
     m_nCtlFmt = 0;
     UpdateData(false);
 
-    return TRUE;
+    return true;
 }
 
 BEGIN_MESSAGE_MAP(CExportTiffDlg, CDialog)

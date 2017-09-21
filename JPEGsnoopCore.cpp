@@ -84,7 +84,7 @@ void CJPEGsnoopCore::SetStatusBar(CStatusBar* pStatBar)
 // - This indicator is used extensively in the CJPEGsnoopDoc
 //   to determine whether menu items are enabled or not
 //
-BOOL CJPEGsnoopCore::IsAnalyzed() const
+bool CJPEGsnoopCore::IsAnalyzed() const
 {
     return m_bFileAnalyzed;
 }
@@ -443,7 +443,7 @@ void CJPEGsnoopCore::GenBatchFileListRecurse(CString strSrcRootName, CString str
     }
 
     // start working for files
-    BOOL bWorking = finder.FindFile(strWildcard);
+    bool bWorking = finder.FindFile(strWildcard);
 
     while (bWorking)
     {
@@ -631,12 +631,12 @@ CString CJPEGsnoopCore::GetBatchFileInfo(unsigned nFileInd)
 // Perform AnalyzeFile() but handle any search modes first
 //
 // RETURN:
-// - TRUE if file opened OK, FALSE if issue during open
+// - true if file opened OK, false if issue during open
 //
-BOOL CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
+bool CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
 {
     // Handle the different file offset / search modes
-    BOOL bStatus = false;
+    bool bStatus = false;
     bool bSearchResult = false;
     unsigned long nStartPos = 0;
     unsigned long nSearchPos = 0;
@@ -697,7 +697,7 @@ BOOL CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     // bStatus reports the success in opening the file
@@ -714,7 +714,7 @@ BOOL CJPEGsnoopCore::DoAnalyzeOffset(CString strFname)
 //
 void CJPEGsnoopCore::DoBatchFileProcess(unsigned nFileInd, bool bWriteLog, bool bExtractAll)
 {
-    BOOL bStatus = false;
+    bool bStatus = false;
     unsigned nBatchFileCount = GetBatchFileCount();
     if (nFileInd >= nBatchFileCount)
     {

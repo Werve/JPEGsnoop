@@ -64,18 +64,18 @@
 //          return 0;
 //      }
 //
-// You can set CFolderDialog::bTRACE=TRUE to turn on debugging TRACE
+// You can set CFolderDialog::bTRACE=true to turn on debugging TRACE
 // diagnostics to help you understand what's going on.
 //
 class CFolderDialog : public CWnd
 {
 public:
-    static BOOL bTRACE; // controls tracing
+    static bool bTRACE; // controls tracing
 
     explicit CFolderDialog(CWnd* pWnd);
 
     LPCITEMIDLIST BrowseForFolder(LPCTSTR title, UINT flags,
-                                  LPCITEMIDLIST pidRoot = nullptr, BOOL bFilter = FALSE);
+                                  LPCITEMIDLIST pidRoot = nullptr, bool bFilter = false);
 
     CString GetDisplayName() const
     {
@@ -92,7 +92,7 @@ public:
 protected:
     BROWSEINFO m_brinfo; // internal structure for SHBrowseForFolder
     CString m_sDisplayName; // display name of folder chosen
-    BOOL m_bFilter; // do custom filtering?
+    bool m_bFilter; // do custom filtering?
     CComQIPtr<IShellFolder> m_shfRoot; // handy to have root folder
 
     static int CALLBACK CallbackProc(HWND hwnd, UINT msg, LPARAM lp, LPARAM lpData);
@@ -140,7 +140,7 @@ protected:
 
     void SetExpanded(LPCITEMIDLIST pidl) const
     {
-        SendMessage(BFFM_SETEXPANDED,FALSE, reinterpret_cast<LPARAM>(pidl));
+        SendMessage(BFFM_SETEXPANDED,false, reinterpret_cast<LPARAM>(pidl));
     }
 
     // Set status window text
@@ -149,7 +149,7 @@ protected:
         SendMessage(BFFM_SETSTATUSTEXT, 0, reinterpret_cast<LPARAM>(pText));
     }
 
-    // Override for custom filtering. You must call BrowseForFolder with bFilter=TRUE.
+    // Override for custom filtering. You must call BrowseForFolder with bFilter=true.
     virtual HRESULT OnGetEnumFlags(IShellFolder* psf,
                                    LPCITEMIDLIST pidlFolder,
                                    DWORD* pgrfFlags);

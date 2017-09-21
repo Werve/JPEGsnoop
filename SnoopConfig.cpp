@@ -112,7 +112,7 @@ void CSnoopConfig::RegistryLoad()
 
     CString strField = _T("General\\UserDbPath");
     CString strKeyFull = strKeyPath + strField;
-    CRegString regUserDbPath(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
+    CRegString regUserDbPath(strKeyFull,_T("???"),true,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
     if (static_cast<CString>(regUserDbPath) == _T("???"))
@@ -132,7 +132,7 @@ void CSnoopConfig::RegistryLoad()
 
     strField = _T("General\\UpdateLastChk");
     strKeyFull = strKeyPath + strField;
-    CRegString regUpdateLastChk(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
+    CRegString regUpdateLastChk(strKeyFull,_T("???"),true,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
     if (static_cast<CString>(regUpdateLastChk) == _T("???"))
@@ -243,7 +243,7 @@ void CSnoopConfig::RegistryLoadStr(CString strKey, CString strDefault, CString& 
 {
     CString strKeyPath = REG_KEY_PATH;
     CString strKeyFull = strKeyPath + strKey;
-    CRegString reg(strKeyFull, strDefault,TRUE,HKEY_CURRENT_USER);
+    CRegString reg(strKeyFull, strDefault,true,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
     if (reg == strDefault)
@@ -270,7 +270,7 @@ void CSnoopConfig::RegistryLoadBool(CString strKey, unsigned nDefault, bool& bSe
 {
     CString strKeyPath = REG_KEY_PATH;
     CString strKeyFull = strKeyPath + strKey;
-    CRegDWORD reg(strKeyFull, nDefault,TRUE,HKEY_CURRENT_USER);
+    CRegDWORD reg(strKeyFull, nDefault,true,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
     if (reg == nDefault)
@@ -297,7 +297,7 @@ void CSnoopConfig::RegistryLoadUint(CString strKey, unsigned nDefault, unsigned&
 {
     CString strKeyPath = REG_KEY_PATH;
     CString strKeyFull = strKeyPath + strKey;
-    CRegDWORD reg(strKeyFull, nDefault,TRUE,HKEY_CURRENT_USER);
+    CRegDWORD reg(strKeyFull, nDefault,true,HKEY_CURRENT_USER);
 
     // Try to load the registry entry
     if (reg == nDefault)
@@ -321,9 +321,9 @@ void CSnoopConfig::RegistryStoreUint(CString strKey, unsigned nSetting)
 {
     CString strKeyPath = REG_KEY_PATH;
     CString strKeyFull = strKeyPath + strKey;
-    CRegDWORD regWr(strKeyFull, 999,TRUE,HKEY_CURRENT_USER);
+    CRegDWORD regWr(strKeyFull, 999,true,HKEY_CURRENT_USER);
     regWr = nSetting;
-    CRegDWORD regRd(strKeyFull, 999,TRUE,HKEY_CURRENT_USER);
+    CRegDWORD regRd(strKeyFull, 999,true,HKEY_CURRENT_USER);
     ASSERT(regRd == nSetting);
 }
 
@@ -348,9 +348,9 @@ void CSnoopConfig::RegistryStoreStr(CString strKey, CString strSetting)
 {
     CString strKeyPath = REG_KEY_PATH;
     CString strKeyFull = strKeyPath + strKey;
-    CRegString regWr(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
+    CRegString regWr(strKeyFull,_T("???"),true,HKEY_CURRENT_USER);
     regWr = strSetting;
-    CRegString regRd(strKeyFull,_T("???"),TRUE,HKEY_CURRENT_USER);
+    CRegString regRd(strKeyFull,_T("???"),true,HKEY_CURRENT_USER);
     ASSERT(regRd == strSetting);
 }
 

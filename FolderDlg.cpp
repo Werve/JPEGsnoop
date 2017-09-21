@@ -47,7 +47,7 @@ CFolderDialog::CFolderDialog(CWnd* /*pWnd*/) :
 // careful!
 //
 LPCITEMIDLIST CFolderDialog::BrowseForFolder(LPCTSTR title, UINT flags,
-                                             LPCITEMIDLIST root, BOOL bFilter)
+                                             LPCITEMIDLIST root, bool bFilter)
 {
     TCHAR* buf = m_sDisplayName.GetBuffer(MAX_PATH);
     m_brinfo.pidlRoot = root;
@@ -145,7 +145,7 @@ int CFolderDialog::OnMessage(UINT msg, LPARAM lp)
         {
             LPARAM lpStartPath = reinterpret_cast<LPARAM>(m_strStartPath.GetBuffer(1));
             m_strStartPath.ReleaseBuffer();
-            ::SendMessage(this->m_hWnd,BFFM_SETSELECTION,TRUE, lpStartPath);
+            ::SendMessage(this->m_hWnd,BFFM_SETSELECTION,true, lpStartPath);
         }
         return 0;
     case BFFM_IUNKNOWN:
@@ -191,7 +191,7 @@ void CFolderDialog::OnSelChanged(LPCITEMIDLIST /*pidl*/)
 // User attempted to enter a name in the edit box that isn't a folder.
 BOOL CFolderDialog::OnValidateFailed(LPCTSTR /*lpsz*/)
 {
-    return TRUE; // don't close dialog.
+    return true; // don't close dialog.
 }
 
 // Used for custom filtering. You must override to specify filter flags.

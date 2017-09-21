@@ -29,17 +29,15 @@ public:
     CString m_strDirSrc;
     CString m_strDirDst;
 
-#ifdef AFX_DESIGN_TIME
-    enum
-    {
-        IDD = IDD_BATCHDLG
-    };
-#endif
-
 protected:
     void DoDataExchange(CDataExchange* pDX) override;
+
     afx_msg void OnBnClickedBtnDirSrcBrowse();
     afx_msg void OnBnClickedBtnDirDstBrowse();
+
+#ifdef AFX_DESIGN_TIME
+    enum { IDD = IDD_BATCHDLG };
+#endif
 
     DECLARE_DYNAMIC(CBatchDlg)
     DECLARE_MESSAGE_MAP()

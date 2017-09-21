@@ -50,16 +50,16 @@ CRegDWORD::CRegDWORD() :
  * Constructor.
  * @param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
  * @param def the default value used when the key does not exist or a read error occured
- * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+ * @param force set to true if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
-CRegDWORD::CRegDWORD(CString key, DWORD def, BOOL force, HKEY base)
+CRegDWORD::CRegDWORD(CString key, DWORD def, bool force, HKEY base)
 {
     m_value = 0;
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
-    m_read = FALSE;
+    m_read = false;
     key.TrimLeft(_T("\\"));
     m_path = key.Left(key.ReverseFind(_T('\\')));
     m_path.TrimRight(_T("\\"));
@@ -78,7 +78,7 @@ DWORD CRegDWORD::read()
         if (RegQueryValueEx(m_hKey, m_key, nullptr, &type, reinterpret_cast<BYTE*>(&m_value), &size) == ERROR_SUCCESS)
         {
             ASSERT(type==REG_DWORD);
-            m_read = TRUE;
+            m_read = true;
             RegCloseKey(m_hKey);
             return m_value;
         }
@@ -98,7 +98,7 @@ void CRegDWORD::write()
     }
     if (RegSetValueEx(m_hKey, m_key, 0, REG_DWORD, reinterpret_cast<const BYTE*>(&m_value), sizeof(m_value)) == ERROR_SUCCESS)
     {
-        m_read = TRUE;
+        m_read = true;
     }
     RegCloseKey(m_hKey);
 }
@@ -126,23 +126,23 @@ CRegDWORD& CRegDWORD::operator =(DWORD d)
 CRegString::CRegString()
 {
     m_base = HKEY_CURRENT_USER;
-    m_read = FALSE;
-    m_force = FALSE;
+    m_read = false;
+    m_force = false;
 }
 
 /**
  * Constructor.
  * @param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
  * @param def the default value used when the key does not exist or a read error occured
- * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+ * @param force set to true if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
-CRegString::CRegString(CString key, CString def, BOOL force, HKEY base)
+CRegString::CRegString(CString key, CString def, bool force, HKEY base)
 {
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
-    m_read = FALSE;
+    m_read = false;
     key.TrimLeft(_T("\\"));
     m_path = key.Left(key.ReverseFind(_T('\\')));
     m_path.TrimRight(_T("\\"));
@@ -164,7 +164,7 @@ CString CRegString::read()
         {
             m_value = CString(pStr.data());
             ASSERT(type==REG_SZ);
-            m_read = TRUE;
+            m_read = true;
             RegCloseKey(m_hKey);
             return m_value;
         }
@@ -184,7 +184,7 @@ void CRegString::write()
     }
     if (RegSetValueEx(m_hKey, m_key, 0, REG_SZ, reinterpret_cast<const BYTE*>(m_value.GetString()), (m_value.GetLength() + 1) * sizeof(TCHAR)) == ERROR_SUCCESS)
     {
-        m_read = TRUE;
+        m_read = true;
     }
     RegCloseKey(m_hKey);
 }
@@ -213,15 +213,15 @@ CRegString& CRegString::operator =(CString s)
 CRegStdString::CRegStdString()
 {
     m_base = HKEY_CURRENT_USER;
-    m_read = FALSE;
-    m_force = FALSE;
+    m_read = false;
+    m_force = false;
 }
 
 /**
  * Constructor.
  * @param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
  * @param def the default value used when the key does not exist or a read error occured
- * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+ * @param force set to true if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
 CRegStdString::CRegStdString(std::wstring key, std::wstring def, BOOL force, HKEY base)
@@ -229,7 +229,7 @@ CRegStdString::CRegStdString(std::wstring key, std::wstring def, BOOL force, HKE
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
-    m_read = FALSE;
+    m_read = false;
 
     std::wstring::size_type pos = key.find_last_of(_T('\\'));
     m_path = key.substr(0, pos);
@@ -248,7 +248,7 @@ std::wstring CRegStdString::read()
         if (RegQueryValueEx(m_hKey, m_key.c_str(), nullptr, &type, reinterpret_cast<BYTE*>(pStr.data()), &size) == ERROR_SUCCESS)
         {
             m_value.assign(pStr.data());
-            m_read = TRUE;
+            m_read = true;
             RegCloseKey(m_hKey);
             return m_value;
         }
@@ -267,7 +267,7 @@ void CRegStdString::write()
     }
     if (RegSetValueEx(m_hKey, m_key.c_str(), 0, REG_SZ, reinterpret_cast<const BYTE*>(m_value.c_str()), m_value.size() + 1) == ERROR_SUCCESS)
     {
-        m_read = TRUE;
+        m_read = true;
     }
     RegCloseKey(m_hKey);
 }
@@ -303,15 +303,15 @@ CRegStdWORD::CRegStdWORD()
     m_value = 0;
     m_defaultvalue = 0;
     m_base = HKEY_CURRENT_USER;
-    m_read = FALSE;
-    m_force = FALSE;
+    m_read = false;
+    m_force = false;
 }
 
 /**
  * Constructor.
  * @param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
  * @param def the default value used when the key does not exist or a read error occured
- * @param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+ * @param force set to true if no cache should be used, i.e. always read and write directly from/to registry
  * @param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
  */
 CRegStdWORD::CRegStdWORD(std::wstring key, DWORD def, BOOL force, HKEY base)
@@ -320,7 +320,7 @@ CRegStdWORD::CRegStdWORD(std::wstring key, DWORD def, BOOL force, HKEY base)
     m_defaultvalue = def;
     m_force = force;
     m_base = base;
-    m_read = FALSE;
+    m_read = false;
 
     std::wstring::size_type pos = key.find_last_of(_T('\\'));
     m_path = key.substr(0, pos);
@@ -336,7 +336,7 @@ DWORD CRegStdWORD::read()
         DWORD type;
         if (RegQueryValueEx(m_hKey, m_key.c_str(), nullptr, &type, reinterpret_cast<BYTE*>(&m_value), &size) == ERROR_SUCCESS)
         {
-            m_read = TRUE;
+            m_read = true;
             RegCloseKey(m_hKey);
             return m_value;
         }
@@ -355,7 +355,7 @@ void CRegStdWORD::write()
     }
     if (RegSetValueEx(m_hKey, m_key.c_str(), 0, REG_DWORD, reinterpret_cast<const BYTE*>(&m_value), sizeof(m_value)) == ERROR_SUCCESS)
     {
-        m_read = TRUE;
+        m_read = true;
     }
     RegCloseKey(m_hKey);
 }

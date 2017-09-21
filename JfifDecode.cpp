@@ -291,7 +291,7 @@ unsigned long CjfifDecode::GetPosEmbedEnd() const
 // Determine if the last analysis revealed a JFIF with known markers
 //
 // RETURN:
-// - TRUE if file (at position during analysis) appeared to decode OK
+// - true if file (at position during analysis) appeared to decode OK
 //
 bool CjfifDecode::GetDecodeStatus() const
 {
@@ -2160,7 +2160,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
         // By default, show single-line value summary
         // bExtraDecode is used to indicate that additional special
         // parsing output is available for this entry
-        BOOL bExtraDecode = FALSE;
+        bool bExtraDecode = false;
 
         strTmp.Format(_T("    Entry #%02u:"), nIfdEntryInd);
         DbgAddLine(strTmp);
@@ -3159,7 +3159,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             nInd += 4;
             if ((nHorzRepeat < 16) && (nVertRepeat < 16))
             {
-                bExtraDecode = TRUE;
+                bExtraDecode = true;
                 strTmp.Format(_T("    [%-36s] ="), strIfdTag.GetString());
                 m_pLog->AddLine(strTmp);
                 for (unsigned nY = 0; nY < nVertRepeat; nY++)
@@ -3215,7 +3215,7 @@ unsigned CjfifDecode::DecodeExifIfd(CString strIfd, unsigned nPosExifStart, unsi
             {
                 // Print summary line now, before sub details
                 // Disable later summary line
-                bExtraDecode = TRUE;
+                bExtraDecode = true;
                 if ((!m_pAppConfig->bExifHideUnknown) || (!nIfdTagUnknown))
                 {
                     strTmp.Format(_T("    [%-36s]"), strIfdTag.GetString());
@@ -7423,7 +7423,7 @@ void CjfifDecode::SendSubmit(CString strExifMake, CString strExifModel, CString 
         CInternetSession        sSession;
         CHttpConnection*        pConnection;
         CHttpFile*              pFile;
-        BOOL                    bResult;
+        bool                    bResult;
         DWORD                   dwRet;
 
         // *** NOTE: Will not work on Windows 95/98!
@@ -8220,7 +8220,7 @@ void CjfifDecode::ProcessFile(CFile* inFile)
 
     unsigned nDataAfterEof = 0;
 
-    BOOL bDone = FALSE;
+    BOOL bDone = false;
     while (!bDone)
     {
         // Allow some other threads to jump in
@@ -8230,7 +8230,7 @@ void CjfifDecode::ProcessFile(CFile* inFile)
         //              2 - EOI
         if (DecodeMarker() != DECMARK_OK)
         {
-            bDone = TRUE;
+            bDone = true;
             if (m_nPosFileEnd >= m_nPosEoi)
             {
                 nDataAfterEof = m_nPosFileEnd - m_nPosEoi;
@@ -8241,7 +8241,7 @@ void CjfifDecode::ProcessFile(CFile* inFile)
             if (m_nPos > m_pWBuf->GetPosEof())
             {
                 m_pLog->AddLineErr(_T("ERROR: Early EOF - file may be missing EOI"));
-                bDone = TRUE;
+                bDone = true;
             }
         }
     }

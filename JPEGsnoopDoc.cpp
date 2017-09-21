@@ -118,7 +118,7 @@ BOOL CJPEGsnoopDoc::OnNewDocument()
 #endif
 
     if (!CRichEditDoc::OnNewDocument())
-        return FALSE;
+        return false;
 
     // TODO: add reinitialization code here
     // (SDI documents will reuse this document)
@@ -166,7 +166,7 @@ void CJPEGsnoopDoc::Serialize(CArchive& ar)
 
     // Calling the base class CRichEditDoc enables serialization
     //  of the container document's COleClientItem objects.
-    // TODO: set CRichEditDoc::m_bRTF = FALSE if you are serializing as text
+    // TODO: set CRichEditDoc::m_bRTF = false if you are serializing as text
     CRichEditDoc::Serialize(ar);
 }
 
@@ -392,9 +392,9 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
 
     if (lPosition == -1L)
     {
-        TRACE2("CJPEGsnoopDoc::ReadLine returns FALSE Seek (%8.8lX, %8.8lX)\n",
+        TRACE2("CJPEGsnoopDoc::ReadLine returns false Seek (%8.8lX, %8.8lX)\n",
             lOffset, lPosition);
-        return FALSE;
+        return false;
     }
 
     BYTE* pszBuffer = new BYTE[nLength];
@@ -407,19 +407,19 @@ BOOL CJPEGsnoopDoc::ReadLine(CString& strLine,
     //   is 'nLength*1' bytes, but '2' bytes may be read.
     if (nReturned > nLength)
     {
-        return FALSE;
+        return false;
     }
 
     if (nReturned <= 0)
     {
-        TRACE2("CJPEGsnoopDoc::ReadLine returns FALSE Read (%d, %d)\n",
+        TRACE2("CJPEGsnoopDoc::ReadLine returns false Read (%d, %d)\n",
             nLength,
             nReturned);
         if (pszBuffer)
         {
             delete [] pszBuffer;
         }
-        return FALSE;
+        return false;
     }
 
     CString strTemp;
@@ -982,7 +982,7 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
     //     as it will try to interpret the file as well as call the
     //     DeleteContents() on the RichEdit.
     if (!CRichEditDoc::OnOpenDocument(lpszPathName))
-        return FALSE;
+        return false;
 
     // Reset internal state
     Reset();
@@ -1023,8 +1023,8 @@ BOOL CJPEGsnoopDoc::OnOpenDocument(LPCTSTR lpszPathName)
 void CJPEGsnoopDoc::OnFileSaveAs()
 {
     // Preserve
-    CString strPathName = m_strPathName;
-    BOOL bRTF = m_bRTF;
+    const CString strPathName = m_strPathName;
+    const bool bRTF = m_bRTF;
 
     // FIXME:
     // Need to determine the best method to allow user selection between
@@ -1043,7 +1043,7 @@ void CJPEGsnoopDoc::OnFileSaveAs()
         _T("Log - Plain Text (*.txt)|*.txt|")
         _T("All Files (*.*)|*.*||");
 
-    CFileDialog FileDlg(FALSE, _T(".txt"), m_strPathName, OFN_OVERWRITEPROMPT, aszFilter);
+    CFileDialog FileDlg(false, _T(".txt"), m_strPathName, OFN_OVERWRITEPROMPT, aszFilter);
 
     CString strTitle;
     VERIFY(strTitle.LoadString(IDS_CAL_FILESAVE));
@@ -1564,7 +1564,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
     // ------------------------------------------
 
     // Preserve CDocument settings
-    BOOL bSavedRTF = m_bRTF;
+    const bool bSavedRTF = m_bRTF;
 
     // Override the RTF setting
     m_bRTF = false;
@@ -1578,7 +1578,7 @@ void CJPEGsnoopDoc::DoGuiExtractEmbeddedJPEG()
         _T("JPEG Image (*.jpg)|*.jpg|")
         _T("All Files (*.*)|*.*||");
 
-    CFileDialog FileDlg(FALSE, _T(".jpg"), strExportFname, OFN_OVERWRITEPROMPT, aszFilter);
+    CFileDialog FileDlg(false, _T(".jpg"), strExportFname, OFN_OVERWRITEPROMPT, aszFilter);
 
     CString title = _T("Save Exported JPEG file as");
     FileDlg.m_ofn.lpstrTitle = title;
@@ -1920,7 +1920,7 @@ void CJPEGsnoopDoc::OnToolsExporttiff()
         _T("TIFF (*.tif)|*.tif|")
         _T("All Files (*.*)|*.*||");
 
-    CFileDialog FileDlg(FALSE, _T(".tif"), strFnameOut, OFN_OVERWRITEPROMPT, aszFilter);
+    CFileDialog FileDlg(false, _T(".tif"), strFnameOut, OFN_OVERWRITEPROMPT, aszFilter);
 
     CString strFileName;
     CString strTitle = _T("Output TIFF Filename");

@@ -113,7 +113,7 @@ void CwindowBuf::BufFileUnset()
 // - nStartPos          Starting byte offset for search
 // - nSearchVal         Value to search for (up to 32-bit unsigned)
 // - nSearchLen         Maximum number of bytes to search
-// - bDirFwd            TRUE for forward, FALSE for backwards
+// - bDirFwd            true for forward, false for backwards
 //
 // PRE:
 // - m_nPosEof
@@ -222,7 +222,7 @@ void CwindowBuf::SetStatusBar(CStatusBar* pStatBar)
 // - nStartPos          Starting byte offset for search
 // - anSearchVal        Byte array to search for
 // - nSearchLen         Maximum number of bytes to search
-// - bDirFwd            TRUE for forward, FALSE for backwards
+// - bDirFwd            true for forward, false for backwards
 //
 // PRE:
 // - m_nPosEof
@@ -633,7 +633,7 @@ unsigned CwindowBuf::OverlayGetNum() const
 // INPUT:
 // - nOffset            File offset to fetch from (via cache)
 // - bClean             Flag that indicates if overlays can be used
-//                      If set to FALSE, then content from overlays that span
+//                      If set to false, then content from overlays that span
 //                      the offset address will be returned instead of the file content
 //
 // RETURN:

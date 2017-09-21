@@ -41,7 +41,7 @@ private:
     static int FindMenuItem(CMenu* Menu, LPCTSTR MenuString);
 
     CSplitterWnd m_mainSplitter;
-    BOOL m_bInitSplitter;
+    bool m_bInitSplitter;
     CStatusBar m_wndStatusBar;
     CToolBar m_wndToolBar;
 

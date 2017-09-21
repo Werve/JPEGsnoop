@@ -414,14 +414,14 @@ BOOL CJPEGsnoopApp::InitInstance()
     if (!AfxOleInit())
     {
         AfxMessageBox(IDP_OLE_INIT_FAILED);
-        return FALSE;
+        return false;
     }
     AfxEnableControlContainer();
 
     // Check to see if we had any fatal errors yet (e.g. mem alloc)
     if (m_bFatal)
     {
-        return FALSE;
+        return false;
     }
 
     // Standard initialization
@@ -512,7 +512,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     // support to other batch commands later.
     // ----------------------------------------------------------
     if (!ProcessShellCommand(cmdInfo))
-        return FALSE;
+        return false;
 
     // Now handle any other command-line directives that we haven't
     // already covered above
@@ -531,7 +531,7 @@ BOOL CJPEGsnoopApp::InitInstance()
     // call DragAcceptFiles only if there's a suffix
     //  In an SDI app, this should occur after ProcessShellCommand
 
-    return TRUE;
+    return true;
 }
 
 // Process any command-line operations

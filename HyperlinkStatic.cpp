@@ -85,7 +85,7 @@ void CHyperlinkStatic::OnDestroy()
 
 void CHyperlinkStatic::PreSubclassWindow()
 {
-    ModifyStyle(0, SS_NOTIFY, TRUE);
+    ModifyStyle(0, SS_NOTIFY, true);
     GetWindowText(_strCaption);
     _bGetCaptionSize = false;
     CStatic::PreSubclassWindow();
@@ -126,7 +126,7 @@ void CHyperlinkStatic::CreateFont()
     {
         LOGFONT lf;
         pFontParent->GetObject(sizeof(lf), &lf);
-        lf.lfUnderline = TRUE;
+        lf.lfUnderline = true;
         _fontCaption.CreateFontIndirect(&lf);
         _bCreateFont = true;
     }

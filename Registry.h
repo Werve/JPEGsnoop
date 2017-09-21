@@ -130,7 +130,7 @@ public: //methods
  * a write to the registry is only made if the new value assigned with the variable
  * is different than the last assigned value.
  * to force a write use the method write();
- * another option to force reads and writes to the registry is to specify TRUE as the
+ * another option to force reads and writes to the registry is to specify true as the
  * third parameter in the constructor.
  *
  * \par requirements
@@ -163,10 +163,10 @@ public:
      * Constructor.
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param def the default value used when the key does not exist or a read error occured
-     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param force set to true if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    explicit CRegDWORD(CString key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegDWORD(CString key, DWORD def = 0, bool force = false, HKEY base = HKEY_CURRENT_USER);
 
     /**
      * reads the assigned value from the registry. Use this method only if you think the registry
@@ -193,8 +193,8 @@ protected:
 
     DWORD m_value; ///< the cached value of the registry
     DWORD m_defaultvalue; ///< the default value to use
-    BOOL m_read; ///< indicates if the value has already been read from the registry
-    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
+    bool m_read; ///< indicates if the value has already been read from the registry
+    bool m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 /**
@@ -240,7 +240,7 @@ protected:
  * a write to the registry is only made if the new value assigned with the variable
  * is different than the last assigned value.
  * to force a write use the method write();
- * another option to force reads and writes to the registry is to specify TRUE as the
+ * another option to force reads and writes to the registry is to specify true as the
  * third parameter in the constructor.
  *
  * \par requirements
@@ -273,10 +273,10 @@ public:
      * Constructor.
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param def the default value used when the key does not exist or a read error occured
-     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param force set to true if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    explicit CRegString(CString key, CString def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegString(CString key, CString def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER);
 
     CString read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
@@ -291,8 +291,8 @@ public:
 protected:
     CString m_value; ///< the cached value of the registry
     CString m_defaultvalue; ///< the default value to use
-    BOOL m_read; ///< indicates if the value has already been read from the registry
-    BOOL m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
+    bool m_read; ///< indicates if the value has already been read from the registry
+    bool m_force; ///< indicates if no cache should be used, i.e. always read and write directly from registry
 };
 
 
@@ -361,7 +361,7 @@ public: //methods
  * a write to the registry is only made if the new value assigned with the variable
  * is different than the last assigned value.
  * to force a write use the method write();
- * another option to force reads and writes to the registry is to specify TRUE as the
+ * another option to force reads and writes to the registry is to specify true as the
  * third parameter in the constructor.
  *
  * \par requirements
@@ -389,10 +389,10 @@ public:
      * Constructor.
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param def the default value used when the key does not exist or a read error occured
-     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param force set to true if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    explicit CRegStdString(std::wstring key, std::wstring def = _T(""), BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegStdString(std::wstring key, std::wstring def = _T(""), BOOL force = false, HKEY base = HKEY_CURRENT_USER);
 
     std::wstring read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry
@@ -444,7 +444,7 @@ protected:
  * a write to the registry is only made if the new value assigned with the variable
  * is different than the last assigned value.
  * to force a write use the method write();
- * another option to force reads and writes to the registry is to specify TRUE as the
+ * another option to force reads and writes to the registry is to specify true as the
  * third parameter in the constructor.
  *
  * \par requirements
@@ -475,10 +475,10 @@ public:
      * Constructor.
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param def the default value used when the key does not exist or a read error occured
-     * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
+     * \param force set to true if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
      */
-    explicit CRegStdWORD(std::wstring key, DWORD def = 0, BOOL force = FALSE, HKEY base = HKEY_CURRENT_USER);
+    explicit CRegStdWORD(std::wstring key, DWORD def = 0, BOOL force = false, HKEY base = HKEY_CURRENT_USER);
 
     DWORD read(); ///< reads the value from the registry
     void write(); ///< writes the value to the registry

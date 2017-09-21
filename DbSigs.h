@@ -56,7 +56,7 @@ struct CompSigConst
 // Signature structure for runtime table (can use CStrings)
 struct CompSig
 {
-    bool bValid; // Set to FALSE for removal
+    bool bValid; // Set to  for removal
     teEditor eEditor;
     CString strXMake; // Blank for editors
     CString strXModel; // Blank for editors

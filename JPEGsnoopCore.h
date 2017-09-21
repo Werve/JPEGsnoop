@@ -38,8 +38,8 @@ public:
     void AnalyzeFileDo();
     bool AnalyzeOpen();
     void AnalyzeClose();
-    BOOL IsAnalyzed() const;
-    BOOL DoAnalyzeOffset(CString strFname);
+    bool IsAnalyzed() const;
+    bool DoAnalyzeOffset(CString strFname);
 
     void DoLogSave(CString strLogName);
 
@@ -139,9 +139,9 @@ private:
     BOOL m_bFileOpened; // Is a file currently opened?
 
     // Decoders and Buffers
-    std::unique_ptr<CjfifDecode> m_pJfifDec;
-    std::unique_ptr<CimgDecode> m_pImgDec;
     std::unique_ptr<CwindowBuf> m_pWBuf;
+    std::unique_ptr<CimgDecode> m_pImgDec;
+    std::unique_ptr<CjfifDecode> m_pJfifDec;
 
     // Batch processing
     CStringArray m_asBatchFiles;
