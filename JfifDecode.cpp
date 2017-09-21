@@ -1133,7 +1133,6 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
             strTmp.Format(_T("IFD1.0x%04X"), nTag);
             bUnknown = true;
             return strTmp;
-            break;
         }
     }
     if (strSect == _T("InteropIFD"))
@@ -1141,21 +1140,15 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
         switch (nTag)
         {
         case 0x0001: return _T("InteroperabilityIndex");
-            break;
         case 0x0002: return _T("InteroperabilityVersion");
-            break;
         case 0x1000: return _T("RelatedImageFileFormat");
-            break;
         case 0x1001: return _T("RelatedImageWidth");
-            break;
         case 0x1002: return _T("RelatedImageLength");
-            break;
 
         default:
             strTmp.Format(_T("Interop.0x%04X"), nTag);
             bUnknown = true;
             return strTmp;
-            break;
         }
     }
     if (strSect == _T("GPSIFD"))
@@ -1163,73 +1156,41 @@ CString CjfifDecode::LookupExifTag(CString strSect, unsigned nTag, bool& bUnknow
         switch (nTag)
         {
         case 0x0000: return _T("GPSVersionID");
-            break;
         case 0x0001: return _T("GPSLatitudeRef");
-            break;
         case 0x0002: return _T("GPSLatitude");
-            break;
         case 0x0003: return _T("GPSLongitudeRef");
-            break;
         case 0x0004: return _T("GPSLongitude");
-            break;
         case 0x0005: return _T("GPSAltitudeRef");
-            break;
         case 0x0006: return _T("GPSAltitude");
-            break;
         case 0x0007: return _T("GPSTimeStamp");
-            break;
         case 0x0008: return _T("GPSSatellites");
-            break;
         case 0x0009: return _T("GPSStatus");
-            break;
         case 0x000A: return _T("GPSMeasureMode");
-            break;
         case 0x000B: return _T("GPSDOP");
-            break;
         case 0x000C: return _T("GPSSpeedRef");
-            break;
         case 0x000D: return _T("GPSSpeed");
-            break;
         case 0x000E: return _T("GPSTrackRef");
-            break;
         case 0x000F: return _T("GPSTrack");
-            break;
         case 0x0010: return _T("GPSImgDirectionRef");
-            break;
         case 0x0011: return _T("GPSImgDirection");
-            break;
         case 0x0012: return _T("GPSMapDatum");
-            break;
         case 0x0013: return _T("GPSDestLatitudeRef");
-            break;
         case 0x0014: return _T("GPSDestLatitude");
-            break;
         case 0x0015: return _T("GPSDestLongitudeRef");
-            break;
         case 0x0016: return _T("GPSDestLongitude");
-            break;
         case 0x0017: return _T("GPSDestBearingRef");
-            break;
         case 0x0018: return _T("GPSDestBearing");
-            break;
         case 0x0019: return _T("GPSDestDistanceRef");
-            break;
         case 0x001A: return _T("GPSDestDistance");
-            break;
         case 0x001B: return _T("GPSProcessingMethod");
-            break;
         case 0x001C: return _T("GPSAreaInformation");
-            break;
         case 0x001D: return _T("GPSDateStamp");
-            break;
         case 0x001E: return _T("GPSDifferential");
-            break;
 
         default:
             strTmp.Format(_T("GPS.0x%04X"), nTag);
             bUnknown = true;
             return strTmp;
-            break;
         }
     }
     if (strSect == _T("MakerIFD"))

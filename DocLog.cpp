@@ -109,7 +109,7 @@ void CDocLog::AddLine(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }
@@ -134,7 +134,7 @@ void CDocLog::AddLineHdr(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }
@@ -159,7 +159,7 @@ void CDocLog::AddLineHdrDesc(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }
@@ -184,7 +184,7 @@ void CDocLog::AddLineWarn(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }
@@ -209,7 +209,7 @@ void CDocLog::AddLineErr(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }
@@ -223,7 +223,7 @@ void CDocLog::AddLineErr(CString strTxt)
 // Add a "good" indicator text line to the log
 void CDocLog::AddLineGood(CString strTxt)
 {
-    COLORREF sCol = RGB(16, 128, 16);
+    const COLORREF sCol = RGB(16, 128, 16);
     if (m_bEn)
     {
         if (m_bUseDoc)
@@ -234,7 +234,7 @@ void CDocLog::AddLineGood(CString strTxt)
             }
             else
             {
-                CJPEGsnoopDoc* pSnoopDoc = (CJPEGsnoopDoc*)m_pDoc;
+                CJPEGsnoopDoc* pSnoopDoc = static_cast<CJPEGsnoopDoc*>(m_pDoc);
                 pSnoopDoc->AppendToLog(strTxt + _T("\n"), sCol);
             }
         }

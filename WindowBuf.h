@@ -116,5 +116,5 @@ private:
     CStatusBar* m_pStatBar = nullptr;
 
     bool m_bBufOK = false;
-    unsigned long m_nPosEof; // Byte count at EOF
+    unsigned long m_nPosEof = 0; // Byte count at EOF
 };

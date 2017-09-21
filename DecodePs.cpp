@@ -1375,7 +1375,6 @@ bool CDecodePs::PhotoshopParseLayerInfo(unsigned long& nPos, unsigned nIndent, C
             }
         }
         delete [] sLayerAllInfo.psLayers;
-        sLayerAllInfo.psLayers = nullptr;
     }
 
     return bDecOk;
@@ -1555,9 +1554,8 @@ bool CDecodePs::PhotoshopParseLayerBlendingRanges(unsigned long& nPos, unsigned 
     bool bDecOk = true;
 
     PhotoshopParseReportNote(nIndent,_T("Layer blending ranges data:"));
-    nIndent++;
 
-    unsigned nLayerBlendLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
+    const unsigned nLayerBlendLen = m_pWBuf->BufRdAdv4(nPos,PS_BSWAP);
     if (nLayerBlendLen == 0)
     {
         return bDecOk;
@@ -1565,7 +1563,7 @@ bool CDecodePs::PhotoshopParseLayerBlendingRanges(unsigned long& nPos, unsigned 
 
     m_pWBuf->BufRdAdv4(nPos,PS_BSWAP); // unsigned nCompGrayBlendSrc
     m_pWBuf->BufRdAdv4(nPos,PS_BSWAP); // unsigned nCompGrayBlendDstRng
-    unsigned nNumChans = (nLayerBlendLen - 8) / 8;
+    const unsigned nNumChans = (nLayerBlendLen - 8) / 8;
 
     for (unsigned nChanInd = 0; nChanInd < nNumChans; nChanInd++)
     {

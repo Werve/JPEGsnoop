@@ -35,10 +35,9 @@
 #include "WindowBuf.h"
 #include "afxwin.h"
 #include "Dib.h"
-#include <map>
 
 // Color conversion clipping (YCC) reporting
-#define YCC_CLIP_REPORT_ERR true    // Are YCC clips an error?
+constexpr bool YCC_CLIP_REPORT_ERR = true;   // Are YCC clips an error?
 #define YCC_CLIP_REPORT_MAX 10      // Number of same error to report
 
 // Scan image component indices for known arrangements
